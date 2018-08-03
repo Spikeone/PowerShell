@@ -1,0 +1,9 @@
+Information:
+- entählt sowohl Powershell-Script, als auch VBA-Code (in Access)
+
+Features:
+- Auslesen der Server aus Access-Tabelle (Access-Query + Powershell CSV-Parser)
+- Verbinden auf die Server und Holen der Configs (Powershell Get-Telnet)
+- wichtige Informationen aus Config auslesen (Powershell + Regex)
+- Informationen in CSV speichern (Powershell)
+- CSV in Access wieder einlesen (Access TransferText)
