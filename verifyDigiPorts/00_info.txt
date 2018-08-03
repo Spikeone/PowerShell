@@ -1,5 +1,6 @@
 Information:
 - entählt sowohl Powershell-Script, als auch VBA-Code (in Access)
+- außerdem eine XML für Testzwecke
 
 Features:
 - Auslesen der Server aus Access-Tabelle (Access-Query + Powershell CSV-Parser)
