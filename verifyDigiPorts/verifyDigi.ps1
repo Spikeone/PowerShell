@@ -137,11 +137,28 @@ function compareConfig ($DigiAccess, $DigiConfig)
 	$arrDigiFull = New-Object System.Collections.ArrayList
 	
 	$numberOfPorts = (($DigiAccess.Length - 2),$DigiConfig.Length | Measure -Max).Maximum
-	
+
 	for ($i=0; $i -lt $numberOfPorts; $i++)
 	{
-		$arrDigiFull += ,@($DigiAccess[$i + 2],$DigiConfig[$i])
+		if ($DigiAccess[$i + 2])
+		{	$Acc = $DigiAccess[$i + 2]
+		}
+		Else
+		{	$Acc = ""
+		}
+		
+		If ($DigiConfig[$i])
+		{	$Conf = $DigiConfig[$i]
+		}
+		Else
+		{	$Conf = ""
+		}
+		
+		$arrDigiFull += ,@($Acc,$Conf)
+		
 	}
+	
+	$arrDigiFull += ,@("ENDE","ENDE")
 	
 	return $arrDigiFull
 }
@@ -159,11 +176,15 @@ ForEach ($Digi in $arrDigi)
 
 	$arrComparison = compareConfig $Digi $arrPorts
 	
-	
+	$Row = 1
 	ForEach ($Port in $arrComparison)
 	{
-		$strLine = $Digi[0] + ';' + $Port[0] + ';' + $Port[1]
-		$strLine | Out-File "output.csv" -Append
+		if ($Port[0] -ne "ENDE")
+		{
+			$strLine = $Digi[0] + ';' + ([string]$Row) + ';' + $Port[0] + ';' + $Port[1]
+			$strLine | Out-File "\\stringer\it\Bischof\verifyDigiPorts\output.csv" -Append
+			$Row++
+		}
 	}
 }
 
