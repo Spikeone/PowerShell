@@ -1,0 +1,42 @@
+
+
+print '--- Lauris: Benutzer auslisten  ---'
+
+select
+  Ident=I.IDENTCODE,
+  PersonID=P1.PERSONID,
+  LoginID=L.LOGINID,
+  Fachabteilung=E.EINSCODE, 
+  LoginLetzt=convert(char(11),I.LOGINDATLETZT,104)+convert(char(8),I.LOGINDATLETZT,108)+' ',
+  Status = case when (I.SPERRE=0) then 'aktiv'   
+                when (I.SPERRE=1) then 'geperrt'
+                when (I.SPERRE=2) then 'neu'
+                when (I.SPERRE=3) then 'automatisch gesperrt'
+           end,
+  Aktivab=convert(char(11),I.AKTIVAB,104)+convert(char(8),I.AKTIVAB,108)+' ',
+  Aktivbis=convert(char(11),I.AKTIVBIS,104)+convert(char(8),I.AKTIVBIS,108)+' ',
+  Erfasspers=P2.PERSONID,
+  Erfassdat=convert(char(11),I.ERFASSDAT,104)+convert(char(8),I.ERFASSDAT,108)+' ',
+  Mutpers=P3.PERSONID,
+  Mutdat=convert(char(11),I.MUTDAT,104)+convert(char(8),I.MUTDAT,108)+' '
+from 
+  IDENT I,
+  PERSON P1,
+  PERSON P2,
+  PERSON P3,
+  EINSENDER E,
+  LOGIN L
+
+where 
+  I.STORNODAT is null and 
+  E.EINSENDERX=*I.EINSENDERX and
+  P1.PERSONX=*I.PERSONX and
+  L.PERSONX=*I.PERSONX and
+  I.ERFASSPERS=P2.PERSONX and
+  P3.PERSONX=*I.MUTPERS
+  
+order by Fachabteilung, Ident  
+go
+
+
+

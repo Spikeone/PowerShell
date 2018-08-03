@@ -1,0 +1,59 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 16.09.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            sqlserver            Deutsches Herzzentru Adaptive Server Enterprise/12.5.3/EBF 12599 ESD#3/P/NT (IX86)/OS 4.0/ase1253/1912/32-bit/OPT/Fri Jul 08 18:58:47 2005                                                                                                                                           
+                            sqlserver            DHM - KC und BB      Adaptive Server Enterprise/12.5.3/EBF 12599 ESD#3/P/NT (IX86)/OS 4.0/ase1253/1912/32-bit/OPT/Fri Jul 08 18:58:47 2005                                                                                                                                           
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    29.07.09  09:50                 
+ swissup3.tab                       2.08 $    29.07.09  09:39                 
+ swlupgrade.tab                     2.20 $    29.07.09  09:39                 
+ Lauris (via lauris.ini)            1.03 $    29.07.09  09:48                 
+ Blutbank (via barkasse.pro)        1.06 $    29.07.09  09:47                 
+ Statistik (via statistik.pro)      5.53 $    29.07.09  10:44                 
+ BB-Statistik (via spendestat.pro)  1.21 $    29.07.09  09:47                 
+                                                                              
+ neu:sp__dumpdb                     1.26 $    30.07.09  12:35 sybsystemprocs  
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                          34 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#8.06.25# FW=#2.0.50727.832# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                     
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#8.06.25# FW=#2.0.50727.42# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                      
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                  1057             782         144 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 

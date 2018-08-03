@@ -1,0 +1,20 @@
+set dateformat dmy
+go
+select
+  AI.ANALYTINFOX,
+  AN.CODE,
+  AI.INFOPARAM,
+  Erfassdat=convert(char(11),AI.ERFASSDAT,104)+convert(char(8),AI.ERFASSDAT,108)+' ',
+  ErfassPers=P.PERSONID,
+  Mutdat=convert(char(11),AI.MUTDAT,104)+convert(char(8),AI.MUTDAT,108)+' ',           
+  MutPers=P2.PERSONID,                                                                 
+  Stornodat=convert(char(11),AI.STORNODAT,104)+convert(char(8),AI.STORNODAT,108)+' ',  
+  StornoPers=P3.PERSONID,
+  AI.INFOTEXT                                                              
+
+  from     ANALYTINFO AI, ANALYT AN, PERSON P, PERSON P2, PERSON P3
+  where    AN.ANALYTX=AI.ANALYTX and
+           AI.ERFASSPERS=P.PERSONX and
+           AI.MUTPERS*=P2.PERSONX and
+           AI.STORNOPERS*=P3.PERSONX 
+go

@@ -1,0 +1,314 @@
+-- set showplan on
+-- go
+-- set statistics time,io on
+-- go
+
+declare
+  @anz_einsgruppen               int,
+  @found                         int,
+  @found_bd                      int,
+  @cnt                           int,
+  @REPORT                        tinyint,
+  @nhours                        tinyint,
+  @DEBUG                         tinyint,
+  @UPDATE                        tinyint,
+  @STORNO                        tinyint,
+  @QUIET                         tinyint,
+  @MODUS                         tinyint,
+  @USER                          smallint,
+  @EINSENDERX                    int,
+  @IDENTX                        int,
+  @PATIFALLX                     int,
+  @PATIART                       char(8),
+  @KOSTTRTYP                     char(6),
+  @PZIMMERNR                     varchar(8),
+  @AKTIVBIS                      smalldatetime,
+  @TABELLE                       varchar(30),
+  @INSERTPF                      varchar(4)
+
+set nocount on
+
+/* -------- Aufrufparameter Beginn -------- */
+select @REPORT         =     0   -- REPORT-Modus 0=aus, 1=ein
+select @DEBUG          =     0   -- DEBUG-Modus  0=aus, 1=ein
+select @UPDATE         =     1   -- 1 -> Reorganisation + insert into PATILISTE,  0 -> keine Änderungen an PATILISTE
+select @nhours         =    12   -- Nur Patientenfälle mit Aufträgen LABEINDAT nicht älter als @nhours
+
+/* ------------ Voreinstellungen PI_PATILISTE Beginn -------------------*/
+select @STORNO         =     0
+select @QUIET          =     1
+select @MODUS          =     3           -- XREF ist 1=EINSENDERX, 2=CLIENTX, 3=IDENTX
+select @TABELLE        =     'BDEINS'    -- temporärer Geltung-Tabellenname
+
+
+/* Auflösung der Bereitschafts-Einsendergruppen        */
+create table #bd_einsender(
+  cnt                      numeric       identity not null,
+  einsvektorx              int           null,
+  einsvektorcode           char(16)      null,
+  einsenderx               int           null,
+  einscode                 char(16)      null,
+  zieleinsenderx           int           null,
+  zieleinscode             char(16)      null )
+insert into #bd_einsender
+select
+  einsvektorx            =     E1.EINSENDERX,
+  einsvektorcode         =     E1.EINSCODE,
+  einsenderx             =     E2.EINSENDERX,
+  einscode               =     E2.EINSCODE,
+  zieleinsenderx         =     E3.EINSENDERX,
+  zieleinscode           =     E3.EINSCODE
+
+from EINSENDER E1, EINSENDER E2, EINSENDER E3, EINSVEKTOR V
+where
+  E1.EINSCODE in ('VKJK','VINC','LAU','SML')
+  and V.EINSVEKTORX = E1.EINSENDERX
+  and E2.EINSENDERX = V.EINSENDERX
+  and E1.EINSENDERX <> E2.EINSENDERX
+  and E2.STORNODAT is null
+  and E2.AKTIVBIS is null
+  and E3.EINSCODE = 'BD' + E1.EINSCODE
+select @anz_einsgruppen = @@identity
+if @DEBUG = 1
+begin
+  print ''
+  print 'Stationen des Bereitschaftsdienstes'
+  select * from #bd_einsender
+  print ''
+end
+
+-- Liste mit Patientenfällen, die aktuelle Aufträge haben
+create table #ptemp(
+  cnt              numeric       identity not null,
+  patifallnr       char(16)      null,
+  patiart          char(8)       null,
+  kosttrtyp        char(6)       null,
+  pzimmernr        varchar(8)    null,
+  entldatverw      smalldatetime null,
+  bdeinscode       char(16)      null,
+  patifalleins     char(16)      null,
+  patifallx        int           null,
+  pfeinsenderx     int           null,
+  BDFallEins       char(32)      null,
+  bdeinsenderx     int           null,
+  labeindat        smalldatetime null,
+  insertpf         char(4)       null
+ )
+
+insert into #ptemp
+select distinct
+  patifallnr            =     PF.PATIFALLNR,
+  patiart               =     PF.PATIART,
+  kosttrtyp             =     PF.KOSTTRTYP,
+  pzimmernr             =     PF.PZIMMERNR,
+  entldatverw           =     PF.ENTLDATVERW,
+  bdeinscode            =     ev.zieleinscode,
+  patifalleins          =     P1.EINSCODE,
+  patifallx             =     PF.PATIFALLX,
+  pfeinsenderx          =     PF.EINSENDERX,
+  BDFallEins            =     PF.PATIFALLNR+"_"+ev.zieleinscode,
+  bdeinsenderx          =     ev.zieleinsenderx,
+  labeindat             =     AU.LABEINDAT,
+  insertpf              =     'no'
+from PATIFALL PF, EINSENDER P1, #bd_einsender ev, AUFTRAG AU
+where
+      datediff(hour,AU.LABEINDAT,getdate()) < @nhours
+  and PF.PATIFALLX = AU.PATIFALLX
+  and ev.einsenderx = AU.EINSENDERX
+  and AU.EINSENDERX not in (10150)
+  and P1.EINSENDERX =* PF.EINSENDERX
+select @found = @@identity
+
+if @DEBUG = 1
+begin
+  print ''
+  print ''
+  print 'Liste mit Patientenfällen, die aktuelle Aufträge haben'
+  print ''
+  select patifallnr, Labeindat=convert(char(11),labeindat ,104)+convert(char(8),labeindat ,108)+' ', patifalleins, Entldatverw=convert(char(11),entldatverw ,104)+convert(char(8),entldatverw ,108)+' ', BDFallEins  from #ptemp
+end
+
+-- Alle bereits für Facheinsender existierenden Einträge
+create table #ptemp_bd(
+  cnt_bd         numeric       identity not null,
+  patifallx        int           null,
+  patifallnr       char(16)      null,
+  pfeinsenderx     int           null,
+  pffacheinsenderx int           null,
+  patiart          char(8)       null,
+  kosttrtyp        char(6)       null,
+  pzimmernr        varchar(8)    null,
+  entldatverw      smalldatetime null,
+  patilistex       int           null,
+  pleinsenderx     int           null,
+  BDFallEins       char(32)      null,
+  aktivbis         smalldatetime null,
+  patifalleins     char(16)      null,
+  patilisteeins    char(16)      null
+ )
+
+insert into #ptemp_bd
+select
+  patifallx             =     PF.PATIFALLX,
+  patifallnr            =     PF.PATIFALLNR,
+  pfeinsenderx          =     PF.EINSENDERX,
+  pffacheinsenderx      =     PF.FACHEINSENDERX,
+  patiart               =     PF.PATIART,
+  kosttrtyp             =     PF.KOSTTRTYP,
+  pzimmernr             =     PF.PZIMMERNR,
+  entldatverw           =     PF.ENTLDATVERW,
+  patilistex            =     PL.PATILISTEX,
+  pleinsenderx          =     PL.EINSENDERX,
+  BDFallEins            =     PF.PATIFALLNR+"_"+P2.EINSCODE,
+  aktivbis              =     PL.AKTIVBIS,
+  patifalleins          =     P1.EINSCODE,
+  patilisteeins         =     P2.EINSCODE
+
+from PATIFALL PF, PATILISTE PL, EINSENDER P1, EINSENDER P2
+
+where
+      PL.TABELLE = 'EINSENDER'
+  and PL.IDENTX is not null      -- Hier steht die (virtuelle) Bereitschaftsdienst-Station.
+  and (PL.AKTIVBIS is null or PL.AKTIVBIS > dateadd(minute,-1,getdate()))
+  and PF.PATIFALLX = PL.PATIFALLX
+  and P1.EINSENDERX =* PF.EINSENDERX
+  and P2.EINSENDERX = PL.EINSENDERX
+select @found_bd = @@identity
+
+if @DEBUG = 1
+begin
+  print ''
+  print ''
+  print 'Alle bereits für den Bereitschaftsdienst existierenden Einträge'
+  print ''
+  select cnt_bd, patifallnr, patifalleins, patilisteeins, Entldatverw=convert(char(11),entldatverw ,104)+convert(char(8),entldatverw ,108)+' ', Aktivbis=convert(char(11),aktivbis ,104)+convert(char(8),aktivbis ,108)+' ', BDFallEins from #ptemp_bd
+  print ''
+end
+
+-- Bereitschaftsdiensteinträge reorganisieren
+create table #reotemp(
+  cnt_reo          numeric       identity not null,
+  ppatilistex      int           null,
+  patilistex       int           null,
+  patifallnr       char(16)      null,
+  patifalleins     char(16)      null,
+  patilisteeins    char(16)      null,
+  entldatverw      smalldatetime null,
+  aktivbis         smalldatetime null,
+  BDFallEins       char(32)      null
+ )
+select @cnt = 0
+while @cnt < @found_bd
+begin
+  select @cnt        = @cnt+1
+  insert into #reotemp
+  select PL.PATILISTEX, patilistex, patifallnr, patifalleins, patilisteeins, entldatverw, aktivbis, BDFallEins
+  from #ptemp_bd t1, PATILISTE PL
+  where
+        cnt_bd=@cnt
+    and (aktivbis is null or aktivbis > getdate())
+    and t1.BDFallEins not in (select BDFallEins from #ptemp)
+    and PL.PATILISTEX = t1.patilistex
+end
+if @DEBUG = 1
+begin
+  print ''
+  print ''
+  print 'diese Bereitschaftsdiensteinträge werden reorganisiert'
+  print ''
+  select patifallnr, patifalleins, patilisteeins, Entldatverw=convert(char(11),entldatverw ,104)+convert(char(8),entldatverw ,108)+' ', Aktivbis=convert(char(11),aktivbis ,104)+convert(char(8),aktivbis ,108)+' ', BDFallEins from #reotemp
+  print ''
+end
+if @UPDATE=1
+begin
+  update PATILISTE
+  set
+    AKTIVBIS=dateadd(minute,-1,getdate())
+  from PATILISTE PL, #reotemp rt
+  where
+    PL.PATILISTEX = rt.patilistex
+end
+
+select @cnt = 0
+while @cnt < @found
+begin
+  select @cnt        = @cnt+1
+  update #ptemp set insertpf = 'yes'
+  from #ptemp
+  where
+        cnt=@cnt
+    and insertpf = 'no'
+    and (entldatverw is null or entldatverw > getdate())
+    and BDFallEins not in (select BDFallEins from #ptemp_bd)
+end
+
+if @REPORT=1
+begin
+  print ''
+  print ' Patientenfaelle fuer Facheinsender eintragen'
+  print ''
+
+  set nocount off
+  select
+         patifallnr,
+         patifalleins,
+         entldatverw,
+         BD_Station = bdeinscode
+  from #ptemp
+  where insertpf = 'yes'
+  order by bdeinscode
+  set nocount on
+end
+
+select @cnt = 0
+while @cnt < @found
+begin
+
+  select @cnt        = @cnt+1
+  select @EINSENDERX = pt.bdeinsenderx,
+         @IDENTX     = pt.bdeinsenderx,
+--         @CLIENTX    = pt.patilistex,
+         @PATIFALLX  = pt.patifallx ,
+         @PATIART    = pt.patiart   ,
+         @KOSTTRTYP  = pt.kosttrtyp ,
+         @PZIMMERNR  = pt.pzimmernr ,
+--          @AKTIVBIS   = case
+--                             when (pt.aktivbis is null and pt.entldatverw > getdate()) then pt.entldatverw
+--                             when pt.aktivbis is not null then pt.aktivbis
+--                        end,
+         @INSERTPF  = pt.insertpf
+  from #ptemp pt
+  where
+        pt.cnt=@cnt
+    and insertpf = 'yes'
+
+
+    if (@UPDATE=1 and @INSERTPF='yes')
+    begin
+      exec PI_PATILISTE
+             @USER       = @USER      ,
+             @EINSENDERX = @EINSENDERX,
+             @MODUS      = @MODUS     ,
+             @TABELLE    = @TABELLE   ,
+             @IDENTX     = @IDENTX    ,
+--             @CLIENTX    = @CLIENTX   ,
+             @PATIFALLX  = @PATIFALLX ,
+             @PATIART    = @PATIART   ,
+             @KOSTTRTYP  = @KOSTTRTYP ,
+             @PZIMMERNR  = @PZIMMERNR ,
+             @AKTIVBIS   = @AKTIVBIS  ,
+             @STORNO     = @STORNO    ,
+             @QUIET      = @QUIET
+    end
+
+end
+if @UPDATE=1
+begin
+  update PATILISTE
+  set
+    TABELLE='EINSENDER',
+    EINSENDERX=IDENTX
+  where TABELLE='BDEINS'
+end
+
+go

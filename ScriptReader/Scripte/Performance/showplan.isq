@@ -1,0 +1,6 @@
+set showplan on
+go
+set statistics time,io on
+go
+PR_LASRESULTATVEKTOR @xyz=...
+go

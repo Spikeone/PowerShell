@@ -1,0 +1,66 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 09.03.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16791 ESD#10/P/NT (IX86)/OS 4.0/ase1254/2159/32-bit/OPT/Mon Nov 02 05:01:55 2009                                                                                                                                          
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Konrad_Zuse                       2010.01    23.06.10  00:00                 
+ letztes Swisspro                  2010.01    09.11.10  14:48                 
+ swissup3.tab                       2.13 $    09.11.10  14:34                 
+ swlupgrade.tab                     2.20.1 $  20.05.10  10:33                 
+ Lauris (via lauris.ini)            1.04 $    09.11.10  14:42                 
+ Blutbank (via barkasse.pro)        1.09 $    09.11.10  14:41                 
+ Statistik (via statistik.pro)      5.77.1 $  01.12.10  13:39                 
+ BB-Statistik (via spendestat.pro)  1.24 $    09.11.10  14:41                 
+                                                                              
+ neu:PR_TASKWHY                     1.31 $    22.02.11  09:00 SWISSLAB        
+ neu:PR_TASKWHYOUTPUT               1.02 $    22.02.11  09:00 SWISSLAB        
+ neu:sp__killall                    1.03 $    16.02.11  17:06 sybsystemprocs  
+ neu:PI_DUMPSTART                   1.23 $    16.02.11  15:56 SWISSLAB        
+ neu:sp__dumpdb                     1.33 $    16.02.11  15:56 sybsystemprocs  
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                        1275 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#9.04.24# FW=#2.0.50727.4206# OS=#6.0.6002.131072#Win32NT                                                                                                                                                                                                    
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#10.07.15# FW=#2.0.50727.3053# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                   
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                 27086           27086           0 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                VIROLOGIE        Routine - Antrag Virologie                                       
+                                MIBI-MRSA-Screen MRSA-Screening Mikrobiologie                                     
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ AUFTRAG  NACHFORDERN      0         NULL             KZLB176W   NULL             NULL       NULL     22.04.2010 08:29:00  MN                                    NULL                     6849           1          -1 LAURIS          NULL      0        0           1 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NEUMANN_M        NULL       NULL     05.05.2010 13:03:00  MN                                    NULL                     6923           1          -1 LAURIS            41      0        0           1 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 

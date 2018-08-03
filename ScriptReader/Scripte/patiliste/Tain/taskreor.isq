@@ -1,0 +1,20 @@
+/* ganz oben als ersten Eintrag in taskreor.isq                             */
+
+/* --- Systembereinigung -------------------------------------------------- */
+/* - Vektorrefresh                                                          */
+/* - Patiliste bereinigen                                                   */
+/* - in Logdoc alles alte loeschen                                          */
+/* - in Nachricht alles alte loeschen                                       */
+/* - Statistikdaten zur Performancesteigerung speichern                     */
+/*                                                                          */
+/* spezielle (kundenspezifische) Parameter in tain.pri nachlesen!           */
+/* insbesondere: Parameter zum Patiliste bereinigen                         */
+/*               Defaults:                                                  */
+/*  @PATILISTE    = "JA",  nur Eingabe von "NE" laesst die Task aus         */
+/*    weitere Parameter siehe Prozedurkopf                                  */
+/* ggf. PI_..VEKTORREMAKE, PD_LOGDOC und PD_NACHRICHT vorher inaktivieren   */
+
+print " => Systembereinigung mit PI_TAIN:"
+go
+exec    PI_TAIN @OK=1, @LOGDOCTAGE=8
+go

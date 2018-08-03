@@ -1,0 +1,264 @@
+set dateformat dmy  
+
+print ''
+print '--- zu löschende benutzerdefinierte Vorlagen (Profile) ---'
+print ''
+set nocount on
+select distinct
+ FormularCode=F.FORMULARCODE,
+ Vorlage=substring(VO.VORLAGENAME,1,32),
+ Abteilung=E.EINSCODE,
+ Arbeitsplatz=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Ersteller=P.PERSONID,
+ Erfassdat=convert(char(11),VO.ERFASSDAT,104)+convert(char(8),VO.ERFASSDAT,108)+' ',
+ Mutdat=convert(char(11),VO.MUTDAT,104)+convert(char(8),VO.MUTDAT,108)+' ',           
+ MutPers=P2.PERSONID,
+ Formularx=F.FORMULARX,
+ Vorlagex=VO.VORLAGEX
+into #vtemp1
+from 
+ VORLAGEANF VA, 
+ PERSON P, 
+ PERSON P2, 
+ VORLAGE VO, 
+ ANALYT AN1, 
+ ANALYT AN2, 
+ ANALYT AN3, 
+ BEHAELTER BE, 
+ FORMULAR F, 
+ EINSENDER E, 
+ CLIENT C, 
+ IDENT I
+ 
+where
+ F.FORMULARCODE in ('Charly',
+                    'FORM1'   ) and
+ VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VA.ERFASSPERS = P.PERSONX and
+ P.PERSONID like '*%' and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ VO.FORMULARX=F.FORMULARX and
+ VO.MUTPERS *= P2.PERSONX
+
+order by 
+ Abteilung desc, Arbeitsplatz desc,Benutzer desc
+
+set nocount off
+select * from #vtemp1
+
+print ''
+print '--- zu löschende admindefinierte Vorlagen (Profile) ---'
+print ''
+set nocount on
+
+select distinct
+ FormularCode=F.FORMULARCODE,
+ Vorlage=substring(VO.VORLAGENAME,1,32),
+ Abteilung=E.EINSCODE,
+ Arbeitsplatz=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Ersteller=P.PERSONID,
+ Erfassdat=convert(char(11),VO.ERFASSDAT,104)+convert(char(8),VO.ERFASSDAT,108)+' ',
+ Mutdat=convert(char(11),VO.MUTDAT,104)+convert(char(8),VO.MUTDAT,108)+' ',           
+ MutPers=P2.PERSONID,
+ Formularx=F.FORMULARX,
+ Vorlagex=VO.VORLAGEX
+into #vtemp2
+from 
+ VORLAGEANF VA, 
+ PERSON P, 
+ PERSON P2, 
+ VORLAGE VO, 
+ ANALYT AN1, 
+ ANALYT AN2, 
+ ANALYT AN3, 
+ BEHAELTER BE, 
+ FORMULAR F, 
+ EINSENDER E, 
+ CLIENT C, 
+ IDENT I
+ 
+where
+ F.FORMULARCODE in ('Charly',
+                    'FORM1'   ) and
+ VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VA.ERFASSPERS = P.PERSONX and
+ P.PERSONID not like '*%' and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ VO.FORMULARX=F.FORMULARX and
+ VO.MUTPERS *= P2.PERSONX
+
+order by 
+ Abteilung desc, Arbeitsplatz desc,Benutzer desc
+set nocount off
+select * from #vtemp2 
+
+
+/* ------ VORLAGEANF ermitteln benutzerdefiniert ----------- */
+print ''
+print '--- zu löschende benutzerdefinierter Vorlagenanforderungen (Profile) ---'
+print ''
+set nocount on
+select
+ Vorlageanfx=VA.VORLAGEANFX,
+ FormularCode=F.FORMULARCODE,
+ Vorlage=substring(VO.VORLAGENAME,1,32),
+ Abteilung=E.EINSCODE,
+ Arbeitsplatz=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Ersteller=P.PERSONID,
+ Erfassdat=convert(char(11),VO.ERFASSDAT,104)+convert(char(8),VO.ERFASSDAT,108)+' ',
+ Mutdat=convert(char(11),VO.MUTDAT,104)+convert(char(8),VO.MUTDAT,108)+' ',           
+ MutPers=P2.PERSONID,
+ Formularx=F.FORMULARX,
+ Vorlagex=VO.VORLAGEX
+into #vatemp1
+from 
+ VORLAGEANF VA, 
+ PERSON P, 
+ PERSON P2, 
+ VORLAGE VO, 
+ ANALYT AN1, 
+ ANALYT AN2, 
+ ANALYT AN3, 
+ BEHAELTER BE, 
+ FORMULAR F, 
+ EINSENDER E, 
+ CLIENT C, 
+ IDENT I
+ 
+where
+ F.FORMULARCODE in ('Charly',
+                    'FORM1'   ) and
+ VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VA.ERFASSPERS = P.PERSONX and
+ P.PERSONID like '*%' and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ VO.FORMULARX=F.FORMULARX and
+ VO.MUTPERS *= P2.PERSONX
+
+order by 
+ Abteilung desc, Arbeitsplatz desc,Benutzer desc
+
+set nocount off
+select * from #vatemp1
+
+/* ------ VORLAGEANF ermitteln admindefiniert ----------- */
+print ''
+print '--- zu löschende admindefinierter Vorlagenanforderungen (Profile) ---'
+print ''
+set nocount on
+select
+ Vorlageanfx=VA.VORLAGEANFX,
+ FormularCode=F.FORMULARCODE,
+ Vorlage=substring(VO.VORLAGENAME,1,32),
+ Abteilung=E.EINSCODE,
+ Arbeitsplatz=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Ersteller=P.PERSONID,
+ Erfassdat=convert(char(11),VO.ERFASSDAT,104)+convert(char(8),VO.ERFASSDAT,108)+' ',
+ Mutdat=convert(char(11),VO.MUTDAT,104)+convert(char(8),VO.MUTDAT,108)+' ',           
+ MutPers=P2.PERSONID,
+ Formularx=F.FORMULARX,
+ Vorlagex=VO.VORLAGEX
+into #vatemp2
+from 
+ VORLAGEANF VA, 
+ PERSON P, 
+ PERSON P2, 
+ VORLAGE VO, 
+ ANALYT AN1, 
+ ANALYT AN2, 
+ ANALYT AN3, 
+ BEHAELTER BE, 
+ FORMULAR F, 
+ EINSENDER E, 
+ CLIENT C, 
+ IDENT I
+ 
+where
+ F.FORMULARCODE in ('Charly',
+                    'FORM1'   ) and
+ VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VA.ERFASSPERS = P.PERSONX and
+ P.PERSONID not like '*%' and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ VO.FORMULARX=F.FORMULARX and
+ VO.MUTPERS *= P2.PERSONX
+
+order by 
+ Abteilung desc, Arbeitsplatz desc,Benutzer desc
+set nocount off
+select * from #vatemp2 
+
+
+/* ------ Hier wird storniert!  ----------- */
+print ''
+print '--- Hier wird storniert! ---'
+print ''
+set nocount off
+update VORLAGEANF
+set 
+ STORNODAT = '07.12.2008 08:15',
+ STORNOPERS = 4711
+from #vatemp1 t1
+where
+ VORLAGEANFX = t1.Vorlageanfx
+ 
+update VORLAGE
+set 
+ STORNODAT = '07.12.2008 08:15',
+ STORNOPERS = 4711
+from #vtemp1 t1
+where
+ VORLAGEX = t1.Vorlagex
+
+update VORLAGEANF
+set 
+ STORNODAT = '07.12.2008 08:15',
+ STORNOPERS = 4711
+from #vatemp2 t2
+where
+ VORLAGEANFX = t2.Vorlageanfx
+ 
+update VORLAGE
+set 
+ STORNODAT = '07.12.2008 08:15',
+ STORNOPERS = 4711
+from #vtemp2 t2
+where
+ VORLAGEX = t2.Vorlagex
+go

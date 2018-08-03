@@ -1,0 +1,40 @@
+declare
+  @abdatum                       smalldatetime,
+  @bisdatum                      smalldatetime
+
+set nocount on
+select @abdatum  = '01.01.2012'
+select @bisdatum = getdate()
+set nocount off
+
+select 
+  PatifallNr = PF.PATIFALLNR,
+  PatifallErfassdat = PF.ERFASSDAT,
+  count(*) as Anzahl
+into #temp
+from
+  PATIFALL PF (index PATIFALL_PK), AUFTRAG AU
+
+where
+  AU.ERFASSDAT between @abdatum and @bisdatum
+  and PF.PATIFALLX=AU.PATIFALLX 
+  and PF.ERFASSDAT between @abdatum and @bisdatum
+group by PF.PATIFALLX having COUNT(*) > 10
+order by Anzahl desc
+
+select * from #temp
+
+go
+-- select
+--   Lauris_Version = 'v'+substring(VERSIONINFO,5,10)
+-- into #vertemp
+-- from CLIENT 
+-- where 
+--   STORNODAT is null and LOGINDATLETZT > @abDatum
+-- 
+-- select 
+--   count(*) as Anzahl,
+--   Lauris_Version
+-- from #vertemp
+-- group by Lauris_Version 
+-- order by Lauris_Version desc

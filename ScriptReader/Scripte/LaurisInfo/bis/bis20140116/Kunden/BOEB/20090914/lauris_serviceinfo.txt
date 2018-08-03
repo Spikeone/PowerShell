@@ -1,0 +1,49 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLSERVER            Routineserver        Adaptive Server Enterprise/12.5.3/EBF 13331 ESD#7/P/NT (IX86)/OS 4.0/ase1253/1951/32-bit/OPT/Fri Mar 24 02:17:56 2006                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       3406            1241          58 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                Mikro07_BB       Mikrobiologie BB,LB,HB                                           
+                                Mikro07_CW       Mikrobiologie CW,NA                                              
+                                Mikro07_SI       Mikrobiologie SI                                                 
+
+(3 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Routine1         Antrag Routine                                                          Oct 19 2006 11:34AM                       NULL       50000000        59999999         51215077          9999999               1215077                8784922    12.1508 %    1145.22 Nummern            7670.96 Tage                  NULL                   NULL         NULL 
+
+(1 row affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

@@ -1,0 +1,8 @@
+set nocount on
+go
+select
+ "update UNINUMBER set NUMNEXT = ",NUMNEXT," where UNINUMBERX = ",UNINUMBERX
+from UNINUMBER
+where 
+  STORNODAT is null
+go 

@@ -1,0 +1,35 @@
+ 
+  Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  ------------------------------ -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                                 SQLCLUSTER           Routineserver Labor  Adaptive Server Enterprise/12.5.3/EBF 12461 ESD#2/P/NT (IX86)/OS 4.0/ase1253/1904/32-bit/OPT/Tue Mar 22 17:23:51 2005                                                                                                                                            
+   
+   
+  Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------------ ----------- --------------- -----------  
+                                        7397            7397           0  
+   
+   
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+                                 FORM3            Mikrobiologie Klinikum Bayreuth                                   
+   
+   
+  Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                   
+  ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ --------------------------  
+                                                  NULL                                                                      53          53 USAMGES      Sammelurin gesäuert                  26        Sep  1 2005  9:25AM  
+                                 EDTA             EDTA                                                                      65           2 EDTA         EDTA                                  2                       NULL  
+                                 EDTA             EDTA Vollblut (BB)                                                        29           2 EDTA         EDTA                                  2        Sep 15 2005  3:03PM  
+   
+   
+  Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------  
+                                 BAYREUTH         Klinikum Bayreuth / Hohe Warte                                          Jun 24 2005 10:54AM                       NULL       10000000        19999999         10675243          9999999                675243                9324756     6.7524 %     467.30 Nummern           19954.70 Tage                  NULL                   NULL         NULL  
+                                 MIKRO            Mikrobiologie Klinikum Bayreuth                                         Dec 13 2005  8:45AM                       NULL       42000000        42999999         42034387           999999                 34387                 965612     3.4387 %      27.01 Nummern           35746.77 Tage                  NULL                   NULL         NULL  
+   
+   
+  Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- ---------  
+   
+   
+  Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)    
+  ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- --------------------------  

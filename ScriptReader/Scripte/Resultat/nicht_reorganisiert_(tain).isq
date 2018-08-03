@@ -1,0 +1,64 @@
+set dateformat dmy
+go
+-- set showplan on
+-- go
+-- set statistics time,io on
+-- go
+set nocount on
+select
+  A.AUFTRAGNR,
+  A.AUFTRAGX,
+  A.LABEINDAT,
+  A.EINSENDERX,
+  A.ERFASSPERS
+into #temp1
+from AUFTRAG A (index AUFTRAG_PK1), TASKFLAG T (index TASKFLAG_PK1)
+
+where
+  T.TSTATUS = 1 and
+  A.AUFTRAGX = T.XREF and
+  dateadd(day,10,A.LABEINDAT) < getdate()
+
+set nocount off
+select
+  t1.AUFTRAGNR,
+  LaborEingang=convert(char(11),t1.LABEINDAT ,104)+convert(char(8),t1.LABEINDAT ,108)+' ',
+  AnalytCode=AN.CODE,
+  Reorganisation = case when (A.REORGSTATUS =   0) then 'immer' 
+                        when (A.REORGSTATUS =   1) then 'erfasst'   
+                        when (A.REORGSTATUS =   2) then 'freigegeben'
+                        when (A.REORGSTATUS =   4) then 'validiert'
+                        when (A.REORGSTATUS =  64) then 'gedruckt1'
+                        when (A.REORGSTATUS = 128) then 'gedruckt2'
+                        when (A.REORGSTATUS =  68) then 'val.+gedruckt1'
+                        when (A.REORGSTATUS = 132) then 'val.+gedruckt2'
+                        when (A.REORGSTATUS = 192) then 'gedruckt1+2'
+                   end,                                            
+
+  Resultatstatus=case when (R.STATUS =   0) then 'angefordert' 
+                      when (R.STATUS =   1) then 'gemessen, unplausibel, gesperrt'   
+                      when (R.STATUS =   3) then 'gemessen, plausibel, gesperrt'
+                      when (R.STATUS =   5) then 'gemessen, unplausibel, tech. freigegeben'
+                      when (R.STATUS =   7) then 'gemessen, plausibel, tech. freigegeben'
+                      when (R.STATUS =  13) then 'gemessen, unplausibel, validiert'
+                      when (R.STATUS =  15) then 'gemessen, plausibel, validiert'
+                   end,
+  Druckdaterst=convert(char(11),R.DRUCKDATERST ,104)+convert(char(8),R.DRUCKDATERST ,108)+' ',                   
+  AnfordPers=P.PERSONID,
+  Anforddat=convert(char(11),R.ANFORDDAT ,104)+convert(char(8),R.ANFORDDAT ,108)+' ',
+  E.EINSCODE,
+  ErfassPersAuft=P2.PERSONID
+
+from #temp1 t1, ANALYT AN (index ANALYT_PK) , PERSON P, PERSON P2, RESULTAT R, EINSENDER E, ANALYT A
+where
+  R.AUFTRAGX = t1.AUFTRAGX and
+  A.ANALYTX = R.ANALYTX  and
+  A.REORGSTATUS > 0 and  
+  ((A.REORGSTATUS=1 and R.STATUS=0) or (A.REORGSTATUS=2 and R.STATUS<5) or (A.REORGSTATUS=4 and R.STATUS<13) or (A.REORGSTATUS>4 and R.DRUCKDATERST is null)) and  
+  P2.PERSONX=t1.ERFASSPERS and
+  R.STORNODAT is null and
+  P.PERSONX=R.ANFORDPERS and
+  AN.ANALYTX=R.ANALYTX and
+  E.EINSENDERX=t1.EINSENDERX
+order by t1.LABEINDAT
+go

@@ -1,0 +1,56 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                sqlroutine           Routine_Sybase_Serve Adaptive Server Enterprise/12.5.4/EBF 14925 ESD#7/P/NT (IX86)/OS 4.0/ase1254/2093/32-bit/OPT/Wed Oct 10 23:00:01 2007                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                        328             328           0 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                CC-Serum         Serum                                                                     34           2 Serum        Serum Spezial                         4        Nov 27 2007 12:00PM 
+                                EDTA             EDTA                                                                       3           3 EDTA         EDTA                                  2                       NULL 
+                                Serum            Serum Spezial                                                              2           2 Serum        Serum Spezial                         4                       NULL 
+
+(3 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Routine          Routine                                                                                NULL                       NULL         350000          599999           358820           249999                  8820                 241179     3.5280 % NULL                NULL                                    NULL                   NULL            1 
+                                Notfall          Notfall                                                                                NULL                       NULL         100000          199999           113500            99999                 13500                  86499    13.5001 % NULL                NULL                                    NULL                   NULL            1 
+                                Urin/Stuhl       Urin/Stuhl                                                                             NULL                       NULL         600000          629999           604320            29999                  4320                  25679    14.4005 % NULL                NULL                                    NULL                   NULL            1 
+                                Liquor           Liquor                                                                                 NULL                       NULL         900000          939999           900900            39999                   900                  39099     2.2501 % NULL                NULL                                    NULL                   NULL            1 
+                                Blutzucker       Blutzucker                                                                             NULL                       NULL         200000          249999           200000            49999                     0                  49999     0.0000 % NULL                NULL                                    NULL                   NULL         NULL 
+                                Blutkultur       Blutkultur                                                                             NULL                       NULL         630000          699999           630000            69999                     0                  69999     0.0000 % NULL                NULL                                    NULL                   NULL            1 
+                                Funktionstests   Funktionstests                                                                         NULL                       NULL         250000          259999           250000             9999                     0                   9999     0.0000 % NULL                NULL                                    NULL                   NULL            1 
+                                BSG              BSG                                                                                    NULL                       NULL         300000          349999           302520            49999                  2520                  47479     5.0401 % NULL                NULL                                    NULL                   NULL            1 
+
+(8 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

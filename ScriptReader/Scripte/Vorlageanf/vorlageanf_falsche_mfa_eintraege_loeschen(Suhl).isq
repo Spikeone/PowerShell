@@ -1,0 +1,35 @@
+print '--- Tabelle  VORLAGEANF, falsche MFA-Einträge löschen ---'
+set dateformat dmy
+go
+select
+ Erfassdat=convert(char(11),VA.ERFASSDAT,104)+convert(char(8),VA.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ VorlageAnfX=VA.VORLAGEANFX,
+ VA.ANALYTX,
+ VA.VORLAGEANFX,
+ VO.VORLAGEX,
+ VO.VORLAGENAME
+
+from VORLAGEANF VA, PERSON P, VORLAGE VO, ANALYT AN1
+where
+ VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ VA.ANALYTX = AN1.ANALYTX and
+ VA.MFAANALYTX is null and
+ AN1.KENNUNG = 7 and
+ P.PERSONX = VA.ERFASSPERS
+go
+
+
+update VORLAGEANF set STORNODAT='15.05.2008 08:45', STORNOPERS=166   
+from VORLAGEANF VA, PERSON P, VORLAGE VO, ANALYT AN1                 
+where                                                                
+ VA.STORNODAT is null and                                            
+ VA.VORLAGEX = VO.VORLAGEX and                                       
+ VO.STORNODAT is null and                                            
+ VA.ANALYTX = AN1.ANALYTX and                                        
+ VA.MFAANALYTX is null and                                           
+ AN1.KENNUNG = 7 and                                                 
+ P.PERSONX = VA.ERFASSPERS                              
+go                                                                   

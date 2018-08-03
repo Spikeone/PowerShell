@@ -1,0 +1,65 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16791 ESD#10/P/NT (IX86)/OS 4.0/ase1254/2159/32-bit/OPT/Mon Nov 02 05:01:55 2009                                                                                                                                          
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                      27086           27086           0 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                VIROLOGIE        Routine - Antrag Virologie                                       
+                                MIBI-MRSA-Screen MRSA-Screening Mikrobiologie                                     
+
+(2 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                FRCTW            Fruchtwasser - Verteilplatz (1                                           183          83 SOND         Sondermaterial                       18        Aug 26 2009  1:19PM 
+                                SERUM2           Serum                                                                    313           1 SERUM1       Serum - Verteilplatz (1)              1        Jul 17 2006  2:36PM 
+                                SERUM2           Serum - Verteilplatz (2)                                                 106           6 SERUM2       Serum - Verteilplatz (2)              6                       NULL 
+
+(3 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                ROUTINE ZL       Antragsnummern Routine ZL                                                              NULL                       NULL        1900000         3999999          1907900          2099999                  7900                2092099     0.3762 % NULL                NULL                                    NULL                   NULL            1 
+                                NOTFALL ZL       Antragsnummern Notfall ZL                                               Aug 23 2005  9:52AM                       NULL        9200000         9999999          9200800           799999                   800                 799199     0.1000 %       0.40 Nummern         2021973.47 Tage                  NULL                   NULL            1 
+                                SONDER ZL        Auftragsnummern Sonder ZL                                               Aug 23 2005  9:53AM                       NULL        4500000         4999999          4501600           499999                  1600                 498399     0.3200 %       0.79 Nummern          630474.74 Tage                  NULL                   NULL            1 
+                                VIROLOGIE        Auftragsnummern Virologie                                               Aug 23 2005  9:55AM                       NULL        7500000         7999999          7581600           499999                 81600                 418399    16.3200 %      40.32 Nummern           10377.94 Tage                  NULL                   NULL            1 
+                                ENDOLABOR        Auftragsnummern Endo-Labor                                              Aug 23 2005  9:57AM                       NULL       51000000        59999999         51206000          8999999                206000                8793999     2.2889 %     101.78 Nummern           86403.17 Tage                  NULL                   NULL            1 
+                                NUKLEARMED       Auftragsnummern Nuklearmedizin                                          Aug 23 2005  9:59AM                       NULL       31000000        39999999         31115500          8999999                115500                8884499     1.2833 %      57.07 Nummern          155690.27 Tage                  NULL                   NULL            1 
+                                PK-NOTFALL       Auftragsnummern PK-Notfall                                              Aug 23 2005 10:01AM                       NULL        6950000         6999999          6985400            49999                 35400                  14599    70.8014 %      17.49 Nummern             834.70 Tage                  NULL                   NULL            1 
+                                PK-ROUTINE       Auftragsnummern PK-Routine                                              Aug 23 2005 10:02AM                       NULL        6500000         6899999          6500700           399999                   700                 399299     0.1750 %       0.35 Nummern         1154544.54 Tage                  NULL                   NULL            1 
+                                KOPF NOTFALL     Auftragsnummern Kopfkl Notfall                                          Aug 23 2005 10:05AM                       NULL       81000000        86999999         81014600          5999999                 14600                5985399     0.2433 %       7.21 Nummern          829756.68 Tage                  NULL                   NULL            1 
+                                KOPF ROUTINE     Auftragsnummern Kopfkl Routine                                          Aug 23 2005 10:07AM                       NULL       88000000        89999999         88095900          1999999                 95900                1904099     4.7950 %      47.38 Nummern           40186.61 Tage                  NULL                   NULL            1 
+                                MIBI-BAKT        MIkrobiologie (Bakteriologie) Test                                      Sep 23 2005  2:10PM                       NULL       77000000        78999999         77001100          1999999                  1100                1998899     0.0550 %       0.55 Nummern         3621641.55 Tage                  NULL                   NULL            1 
+                                KINDER           Auftragsnummern Kinderklinik                                            May 17 2006  8:23AM                       NULL       61000000        69999999         61121700          8999999                121700                8878299     1.3522 %      69.27 Nummern          128177.25 Tage                  NULL                   NULL            1 
+                                ROUTINE_ZL_8     Auftragsnummern Routine ZL                                              Jan 31 2007  8:47AM                       NULL       11900000        13999999         12926500          2099999               1026500                1073499    48.8810 %     685.25 Nummern            1566.59 Tage                  NULL                   NULL            1 
+                                NOTFALL_ZL_8     Auftragsnummern Notfall ZL                                              Jan 31 2007  8:59AM                       NULL       19200000        19999999         19609700           799999                409700                 390299    51.2126 %     273.50 Nummern            1427.06 Tage                  NULL                   NULL            1 
+                                SONDER_ZL_8      Auftragsnummern Sonder ZL                                               Jan 31 2007  9:03AM                       NULL       14500000        14999999         14655700           499999                155700                 344299    31.1401 %     103.94 Nummern            3312.52 Tage                  NULL                   NULL            1 
+
+(15 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

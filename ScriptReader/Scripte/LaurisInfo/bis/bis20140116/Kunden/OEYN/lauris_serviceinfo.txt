@@ -1,0 +1,65 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLCLUSTER           Windows 2003 Cluster Adaptive Server Enterprise/12.5.3/EBF 13061 ESD#5/P/NT (IX86)/OS 4.0/ase1253/1939/32-bit/OPT/Tue Dec 06 00:21:31 2005                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       6003            2113           5 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                Mikro            Mikrobiologie                                                    
+                                KAMB             Kardiologische Ambulanz                                          
+                                CHAMB            Ambulanz Dr. Körtke                                              
+                                VIRPCR           Virologie (Direktnachweise, PCR)                                 
+                                Mikro_GMK        Mikrobiologie                                                    
+                                KIAMB            Kinderkardiologie Ambulanz                                       
+
+(6 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                                 Mikrobiologie: Keime                                                       1           2 NULL         Mikrobiologie: Keime                 41        Oct 11 2004  1:40PM 
+                                Gewebe/Excisions Gewebe/Excisionsmaterial                                                 132          50 BMAT         Mikrobiologisches Material            6                       NULL 
+                                Gewebe/Excisions Gewebe/Excisionsmaterial                                                 149          50 BMAT         Mikrobiologisches Material            6        Mar 20 2007  2:03PM 
+                                ORGHI            NULL                                                                     146          59 ORGHI        Oranisatorische Hilfsmethoden        16                       NULL 
+                                ORGHI            Oranisatorische Hilfsmethoden                                             28          59 ORGHI        Oranisatorische Hilfsmethoden        16        Oct  7 2004  2:27PM 
+                                ORGHI            Kein Etikett notwendig                                                    76          59 ORGHI        Oranisatorische Hilfsmethoden        16        Nov 17 2005 10:50AM 
+                                ORGHI            Dummy                                                                    141          59 ORGHI        Oranisatorische Hilfsmethoden        16        Dec  7 2006  5:36PM 
+                                tr.Tupfer (H1N1) tr.Tupfer (H1N1) rechts                                                  204          61 PMAT         PCR-Material                         17                       NULL 
+                                tr.Tupfer (H1N1) tr.Tupfer (H1N1) links                                                   205          61 PMAT         PCR-Material                         17                       NULL 
+
+(9 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Lauris           Lauris                                                                  Jul 20 2004  1:47PM        Jun 28 2005 11:29AM        9000000         9999999         90000100           999999              81000100              -80000101  8100.0181 %   33415.88 Nummern           -2394.07 Tage                  NULL                   NULL         NULL 
+                                LAURISN          Lauris                                                                  Mar  2 2005  5:13PM                       NULL       90000000        99999999         91199520          9999999               1199520                8800479    11.9952 %     545.48 Nummern           16133.33 Tage                  NULL                   NULL         NULL 
+                                LAURISB          Anf.Blutkonserven                                                       Nov 11 2005 11:01AM        Nov 11 2005  4:32PM       80000000        89999999         80000010          9999999                    10                9999989     0.0001 %       0.01 Nummern      1944997860.50 Tage                  NULL                   NULL         NULL 
+                                LAURISB          LAURISB                                                                 Nov 16 2005 12:32PM                       NULL       81000000        89999999         81083930          8999999                 83930                8916069     0.9326 %      43.26 Nummern          206090.48 Tage                  NULL                   NULL         NULL 
+
+(4 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+                                                   4 LAURISB          LAURISB                                                                               3 LAURISB          Anf.Blutkonserven                                                       Nov 11 2005  4:32PM 
+
+(1 row affected)

@@ -1,0 +1,107 @@
+set dateformat dmy
+go
+set nocount on
+go
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2000 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2000' and '31.12.2000'
+group by KOSTTRTYP
+go  
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2001 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2001' and '31.12.2001'
+group by KOSTTRTYP
+go  
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2002 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2002' and '31.12.2002'
+group by KOSTTRTYP
+go  
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2003 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2003' and '31.12.2003'
+group by KOSTTRTYP
+go 
+ print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2004 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2004' and '31.12.2004'
+group by KOSTTRTYP
+go 
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2005 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2005' and '31.12.2005'
+group by KOSTTRTYP
+go 
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2006 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2006' and '31.12.2006'
+group by KOSTTRTYP
+go 
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2007 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2007' and '31.12.2007'
+group by KOSTTRTYP
+go 
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2008 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2008' and '31.12.2008'
+group by KOSTTRTYP
+go 
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2009 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2009' and '31.12.2009'
+group by KOSTTRTYP
+go 
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2010 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2010' and '31.12.2010'
+group by KOSTTRTYP
+go 
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2011 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2011' and '31.12.2011'
+group by KOSTTRTYP
+go 
+print ''
+print ' ----------------------------------------------------- '
+print ' Kostenträgerstatistik der Patientenfälle im Jahr 2012 '
+print ' ----------------------------------------------------- '
+select KOSTTRTYP, count(*) as "ANZAHL"
+from PATIFALL where ERFASSDAT between '01.01.2012' and '31.12.2012'
+group by KOSTTRTYP
+go 

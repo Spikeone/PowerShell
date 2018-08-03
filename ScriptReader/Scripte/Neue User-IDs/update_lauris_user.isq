@@ -1,0 +1,43 @@
+set nocount on
+select
+  identx=I.IDENTX,
+  identcode_alt=I.IDENTCODE,
+  identcode_neu=I01.IDENTCODE_NEU,
+  person_id_alt=P.PERSONID,
+  person_id_neu='*'+I01.IDENTCODE_NEU,
+  personx=P.PERSONX
+  
+into #temp1
+
+from
+  IDENT I,
+  IDENT01 I01,
+  PERSON P
+where
+  I.IDENTCODE=I01.IDENTCODE_ALT and
+  P.PERSONX=I.PERSONX
+
+set nocount off
+select * from #temp1
+
+set nocount on
+update 
+  IDENT 
+set     
+  IDENTCODE=identcode_neu      
+from 
+  #temp1,
+  IDENT I
+where 
+  I.IDENTX=identx
+
+update 
+  PERSON 
+set 
+  PERSONID=person_id_neu
+from 
+  #temp1,
+  PERSON P2
+where 
+  P2.PERSONX=personx  
+go

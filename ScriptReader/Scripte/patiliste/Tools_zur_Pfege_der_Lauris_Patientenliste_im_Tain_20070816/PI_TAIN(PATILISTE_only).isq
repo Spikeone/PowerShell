@@ -1,0 +1,2 @@
+PI_TAIN @OK=1, @VEKTOR  = "NE",  @DEFIVEKTOR = "NE",  @EINSVEKTOR = "NE",  @GERVEKTOR = "NE",  @MATVEKTOR = "NE",  @LAUFGRUPPE = "NE",  @BEFSTUFEVEKTOR = "NE",  @CHARGEVEKTOR = "NE",  @TASKHISTORIE = "NE",  @PATILISTE = "JA",  @LOGDOC = "NE",  @NACHRICHT = "NE",  @COPYPWD = "NE",  @IDENTINAKTIV = "NE", @TABELLENLOCK = "NE", @DELQCREGELLOG = 'NE' 
+go                                                    

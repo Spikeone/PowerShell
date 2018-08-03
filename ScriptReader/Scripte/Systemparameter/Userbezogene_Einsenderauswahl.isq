@@ -1,0 +1,12 @@
+select 
+  IDENTX,
+  EINSENDERX,
+  IDENTCODE,
+  ROLLEX
+into #ctemp
+from IDENT
+where 
+  STORNODAT is null 
+  and LOGINDATLETZT > dateadd(day,-30,getdate())
+select * from #ctemp
+go  

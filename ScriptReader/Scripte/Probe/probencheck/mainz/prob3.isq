@@ -1,0 +1,33 @@
+set dateformat dmy
+go
+set showplan on
+go
+select
+  PR.PROBEEXTID,
+  PR.PSTATUS,
+  PR.PKENNUNG,
+  BE.BEHAELTERCODE,
+  BehName=substring(BE.BEHAELTERNAME,1,12),
+  PR.SQLERFASSDAT,
+  PR.VERTEILDATERST,
+  PR.STORNODAT,
+  Erfasspers=P1.PERSONID,
+  Stornopers=P2.PERSONID,
+  PR.AUFTRAGX,
+  AuftStorno=AU.STORNODAT,
+  Etikinfo=substring(PR.ETIKINFO,1,12),
+  EtikDruck=substring(PR.ETIKDRUCK,1,12),
+  PR.ETIKDRUCKDAT
+from PROBE PR (index PROBE_ERFASSDAT), PERSON P1, PERSON P2, AUFTRAG AU, BEHAELTER BE
+where 
+  PR.SQLERFASSDAT > '20.01.2012 00:00'
+--  and PR.STORNODAT is not null
+--  and PR.PSTATUS > 0
+  and PR.PKENNUNG = 3
+  and PR.ETIKDRUCK is null
+  and P1.PERSONX=PR.ERFASSPERS
+  and P2.PERSONX=*PR.STORNOPERS
+  and AU.AUFTRAGX=PR.AUFTRAGX
+  and BE.BEHAELTERX=*PR.BEHAELTERX
+order by PR.STORNODAT 
+go

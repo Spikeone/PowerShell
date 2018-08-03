@@ -1,0 +1,64 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [141009]                                                       */
+/*KURZINFO : Welche Formulare sind aktiv?                                   */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20141009.1913>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[141009] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+set nocount on
+declare
+   @tage     int
+set nocount on
+/*******************************************************************************************************************************************/
+select @tage                   =  90    /* !!!!!! Anzahl Tage rückwirkend ab jetzt auswerten                                       !!!!!!! */
+/*******************************************************************************************************************************************/
+
+declare
+   @strmessage       varchar(128),
+   @datum            varchar(64),
+   @sys_kurz         varchar(40)
+select @datum=', ausgeführt am: ' + convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)+' '
+select @sys_kurz = ' für System: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+select @strmessage = ' Lauris: aktive Formulare in den letzten ' + convert(varchar(2),@tage) + ' Tagen' + @datum + @sys_kurz
+print @strmessage
+print ''
+
+select  
+  count(*) as Anzahl, 
+  FORMULARX 
+into #temp
+from AUFTRAG (index auftrag_ED)
+where 
+  ERFASSDAT > dateadd(day,-@tage,getdate())
+  and FORMULARX is not null
+  and STORNODAT is null
+group by FORMULARX 
+order by Anzahl desc
+set nocount off
+select 
+ 'Anz. Auftr.' = t.Anzahl,
+ FO.FORMULARCODE,
+ FO.FORMULARNAME,
+ FO.FORMULARX
+from #temp t, FORMULAR FO
+where
+ FO.FORMULARX=t.FORMULARX
+
+print''
+print'inaktive Formulare:' 
+select 
+  FORMULARCODE,
+  FORMULARNAME,
+  FORMULARX
+from FORMULAR
+where
+ FORMULARX not in (select FORMULARX from #temp)
+ and STORNODAT is null
+
+go

@@ -1,0 +1,87 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: OSTALB, ausgeführt am: 09.06.2015 10:20
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           OSTALB           Mutlangen, Stauferkl SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+                           OSTALB           Mutlangen, Stauferkl SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 173     Anzahl User: 20      Anzahl Auftraege Lauris: 0       Anzahl Auftraege ohne Lauris: 14916  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         163 v14.02.13.2      
+          10 v10.01.08¹#      
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Falcon 2.14.1                                                                    2.14       NULL                                     16.04.14  00:00                 
+ letztes Swisspro                                                                 2.14       NULL                                     20.05.14  13:58                 
+ swissup3.tab                                                                      2.14 $    NULL                                     30.01.13  08:12                 
+ swissup3.tab                                                                      2.14 $    NULL                                     30.01.13  08:12                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     20.05.14  13:50                 
+ Blutbank (via barkasse.pro)                                                       1.10 $    NULL                                     20.05.14  13:47                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     20.05.14  13:51                 
+ BB-Statistik (via spendestat.pro)                                                 1.25 $    NULL                                     20.05.14  13:48                 
+                                                                                             NULL                                                                     
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ CLIENT   POCTQC           NULL       NULL       2IN1       
+ CLIENT   POCTQC           NULL       MM         NULL       
+ CLIENT   POCTQC           NULL       ssc        NULL       
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: OSTALB, beendet am: 09.06.2015 10:20 
+SQL-Abfrage-Dauer: 15  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.11.5.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_02 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 14.2.13.2 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.14.1.002265 

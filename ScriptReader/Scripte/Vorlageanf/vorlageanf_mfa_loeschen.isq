@@ -1,0 +1,48 @@
+print '--- Tabelle  VORLAGEANF (Lauris) ---'
+go
+select
+ F.FORMULARX,
+ FormularCode=F.FORMULARCODE,
+ Vorlagenname=substring(VO.VORLAGENAME,1,32),
+ Analyt=AN1.CODE,
+ MFA_Analyt=AN2.CODE,
+ PAnalyt=AN3.CODE,
+ Behälter=BE.BEHAELTERCODE,
+ Erfassdat=convert(char(11),VA.ERFASSDAT,104)+convert(char(8),VA.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ Mutdat=convert(char(11),VA.MUTDAT,104)+convert(char(8),VA.MUTDAT,108)+' ',
+ Mutpers=P2.PERSONID,
+ VorlageAnfX=VA.VORLAGEANFX
+
+into #temp1
+
+from VORLAGEANF VA, PERSON P, PERSON P2, VORLAGE VO, ANALYT AN1, ANALYT AN2, ANALYT AN3, BEHAELTER BE, FORMULAR F
+where
+ VA.STORNODAT is null and
+ VA.VORLAGEX *= VO.VORLAGEX and
+ VA.ERFASSPERS *= P.PERSONX and
+ VA.MUTPERS *= P2.PERSONX and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ VO.FORMULARX*=F.FORMULARX 
+order by VA.VORLAGEANFX
+
+-- select * from #temp1
+
+select * into #temp2
+from #temp1
+where
+ (Analyt = 'CHAMFA' or MFA_Analyt = 'CHAMFA' or PAnalyt = 'CHAMFA')
+
+
+select * from #temp2
+
+update VORLAGEANF                                     
+set STORNODAT='01.12.2008 08:15', STORNOPERS=9999
+from #temp2 t2, VORLAGEANF VA
+where 
+VA.VORLAGEANFX=t2.VorlageAnfX
+
+go

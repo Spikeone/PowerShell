@@ -1,0 +1,65 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 17.02.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            sybsunr              Routinesystem Sun    Adaptive Server Enterprise/12.5.3/EBF 13057 ESD#5/P/RS6000/AIX 5.1/ase1253/1939/64-bit/FBO/Tue Dec  6 03:37:19 2005                                                                                                                                             
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.03    23.10.09  00:00                 
+ letztes Swisspro                  2009.03    23.02.10  08:42                 
+ swissup3.tab                       2.09 $    23.02.10  08:34                 
+ swlupgrade.tab                     2.33 $    29.07.09  16:14                 
+ Lauris (via lauris.ini)            1.04 $    23.02.10  08:26                 
+ Blutbank (via barkasse.pro)        1.06 $    23.02.10  08:24                 
+ Statistik (via statistik.pro)      5.63 $    23.02.10  08:36                 
+ BB-Statistik (via spendestat.pro)  1.24 $    23.02.10  08:24                 
+                                                                              
+ neu:PR_STAMMLIST_IXSERV            1.00 $    07.07.10  14:17 SWISSLAB        
+ neu:PR_BEFUNDLISTE                 1.19 $    16.04.10  14:35 SWISSLAB        
+ neu:PR_ARCHBEFUNDRESULTAT          5.89.2    15.04.10  10:22 SWISSLAB        
+ neu:PR_BEFUNDRESULTAT              5.89.2    15.04.10  10:22 SWISSLAB        
+ neu:PR_KONSERVEVERBRAUCH           2.19.1    15.04.10  10:20 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                         397 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#6.12.08# FW=#2.0.50727.42# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                      
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#6.12.08# FW=#2.0.50727.3082# OS=#5.2.3790.131072#Win32NT                                                                                                                                                                                                    
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                  2050            2012           0 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ CLIENT   POCTGERAET       0         NULL             NULL       wrightc          NULL       NULL     02.12.2004 10:20:00  Cjka             26.06.2008 09:22:00  Cdew                      310          -1          -1 LAURIS            92      0       30           2 
+ CLIENT   POCTKOMMENT      0         NULL             NULL       wrightc          NULL       NULL     02.12.2004 10:20:00  Cjka             26.06.2008 09:22:00  Cdew                      311          -1          -1 LAURIS            92      0       14           1 
+ CLIENT   POCTQC           0         NULL             NULL       wrightc          NULL       NULL     02.12.2004 10:20:00  Cjka             26.06.2008 09:22:00  Cdew                      312          -1          -1 LAURIS            92      0        0           1 

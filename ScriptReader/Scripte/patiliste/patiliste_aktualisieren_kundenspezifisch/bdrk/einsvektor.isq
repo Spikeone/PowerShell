@@ -1,0 +1,35 @@
+declare
+  @EINSVEKTORX    int      ,
+  @EINSVEKTORCODE char(16) ,
+  @EINSTYPMAX     int      ,
+  @MITEINZEL      tinyint  ,
+  @AKTIV          tinyint
+  
+set nocount on
+select @EINSTYPMAX = 2147483647   -- 2 hoch 31 -1
+-- select @EINSTYPMAX = 1            -- nur Typ 1 liefern
+select @MITEINZEL  = 0            -- 1: auch Einzeleinsender liefern
+select @AKTIV      = 0
+select @EINSVEKTORCODE='CHAGR'
+select @EINSVEKTORX = EINSENDERX from EINSENDER where EINSCODE = @EINSVEKTORCODE and AKTIVBIS is null
+if @EINSVEKTORX  is null select @EINSVEKTORX = 0
+
+select EINSVEKTORX,   /* Einsender des Vektors   */
+       V.EINSENDERX,    /* Einsenderx der Vektorzeile  */
+       SORT,     /* Nummer der Vektorzeile  */
+       EINSCODE,EINSKURZ, EINSTYP
+into  #vtemp      
+from EINSVEKTOR V, EINSENDER E
+where EINSVEKTORX  = @EINSVEKTORX
+   and V.EINSENDERX  = E.EINSENDERX
+   and isnull(EINSTYP,1)<=@EINSTYPMAX
+   and (V.SORT>0 or @MITEINZEL=1)
+   and (E.AKTIVBIS is null or @AKTIV<>1)
+order by SORT
+
+select * from #vtemp
+
+select * from PATILISTE P, #vtemp VT
+where P.EINSENDERX in (select VT.EINSENDERX)
+
+go

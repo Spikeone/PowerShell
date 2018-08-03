@@ -1,0 +1,34 @@
+set nocount on
+go
+Select
+  I.IDENTX, 
+  I.ERFASSPERS,
+  LaurisKuerzel         = I.IDENTCODE, 
+  LaurisPerson          = P2.PERSONID,
+  LoginLetzt            = convert(char(11),I.LOGINDATLETZT ,104)+convert(char(8),I.LOGINDATLETZT ,108)+' ',
+  Eigner                =I.EIGNER,
+  Nutzer                =I.NUTZER,
+  ErfassPers            =P.PERSONID,
+  L.EIGNER,
+  L.NUTZER,
+  L.LOGINX,
+  Fachabteilung         =E.EINSCODE,
+  Erfassdat             =convert(char(11),I.ERFASSDAT ,104)+convert(char(8),I.ERFASSDAT ,108)+' ',
+  Mutdat=convert(char(11),I.MUTDAT ,104)+convert(char(8),I.MUTDAT ,108)+' ',
+  MutPers=P3.PERSONID  
+from  
+  IDENT I,
+  EINSENDER E, 
+  PERSON P,
+  PERSON P2,
+  PERSON P3,
+  LOGIN L    
+where  
+   I.STORNODAT is null and   
+   I.PERSONX=P2.PERSONX and    
+   I.EINSENDERX*=E.EINSENDERX and 
+   I.ERFASSPERS=P.PERSONX and
+   P3.PERSONX=*I.MUTPERS and
+   I.ERFASSPERS=L.PERSONX
+order by I.IDENTX   
+go

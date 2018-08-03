@@ -1,0 +1,36 @@
+ 
+  Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  ------------------------------ -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                                 SQLSERVER            Sybase 12.5.3 EBF 5  Adaptive Server Enterprise/12.5.3/EBF 13061 ESD#5/P/NT (IX86)/OS 4.0/ase1253/1939/32-bit/OPT/Tue Dec 06 00:21:31 2005                                                                                                                                            
+                                 SWFHETZNEU           Sybase ASE 12.5.3 EB Adaptive Server Enterprise/12.5.3/EBF 13061 ESD#5/P/NT (IX86)/OS 4.0/ase1253/1939/32-bit/OPT/Tue Dec 06 00:21:31 2005                                                                                                                                            
+   
+   
+  Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------------ ----------- --------------- -----------  
+                                       30390           30258          24  
+   
+   
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+                                 LLIMB            Labor Limbach                                                     
+   
+   
+  Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                   
+  ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ --------------------------  
+   
+   
+  Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------  
+                                 Routine1.0       Routine1.0                                                              Sep 27 2006  9:25AM                       NULL       50000000        59999999         50207150          9999999                207150                9792849     2.0715 %     210.09 Nummern           46612.35 Tage                  NULL                   NULL         NULL  
+                                 Blutzucker2.0    Blutzucker2.0                                                           Oct  4 2006  1:33PM                       NULL       25000000        25999999         25002650           999999                  2650                 997349     0.2650 %       2.71 Nummern          368454.59 Tage                  NULL                   NULL         NULL  
+                                 Blutdepot4.0     Blutdepot4.0                                                            Oct  9 2006  9:07AM                       NULL       40500000        49999999         40500600          9499999                   600                9499399     0.0063 %       0.62 Nummern        15420691.04 Tage                  NULL                   NULL         NULL  
+                                 LabLimbach       Labor Limbach                                                           Sep 15 2008  9:29AM                       NULL       90000000        90003000         90000758             3000                   758                   2242    25.2667 %       2.84 Nummern             789.73 Tage                  NULL                   NULL         NULL  
+                                 LaborLimbach     Labor Limbach                                                           Apr  8 2009 11:54AM                       NULL      150800001       150850000        150800002            49999                     1                  49998     0.0020 %       0.02 Nummern         3099876.00 Tage                  NULL                   NULL         NULL  
+   
+   
+  Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- ---------  
+   
+   
+  Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)    
+  ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- --------------------------  

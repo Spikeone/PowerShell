@@ -1,0 +1,132 @@
+/* Ausgabe einiger Systeminfos */
+set nocount on
+select '' as 'Systeminformationen:          ',
+       substring(KUERZEL, 1, 20) as 'Kuerzel',
+       substring(ORT, 1, 20) as 'Ort',
+       substring(SERVERNAME, 1, 20) as 'Servername',
+       substring(BESCHREIBUNG, 1, 20) as 'Beschreibung',
+       @@version as 'Version'
+  from master..SYSTEMINFO
+go
+
+
+/* Variablen zum Zwischenspeichern einiger Ergebnisse (Fallanzahl PATILISTE) */
+declare
+  @PatilisteFaelleGesamt          int,
+  @PatilisteFaelleOhneAktivBis    int,
+  @PatilisteFaelleInaktiv         int
+
+
+/* Füllung der Variablen (Fallanzahl PATILISTE) */
+select @PatilisteFaelleGesamt=count(*) from PATILISTE
+select @PatilisteFaelleOhneAktivBis=count(*) from PATILISTE where AKTIVBIS is NULL
+select @PatilisteFaelleInaktiv=count (*) from PATILISTE where AKTIVBIS is not NULL and AKTIVBIS < getdate()
+
+
+/* Ausgabe der Anzahl der Fälle in PATILISTE */
+print ''
+print ''
+select '' as 'Anzahl Fälle (PATILISTE):     ',
+       @PatilisteFaelleGesamt as 'Gesamt  ',
+       @PatilisteFaelleOhneAktivBis as 'ohne AKTIVBIS  ',
+       @PatilisteFaelleInaktiv as 'Inaktiv  '
+
+set nocount off
+/* Ausgabe aller Mikrobiologie-Formulare */
+print ''
+print ''
+select '' as 'Mikrobiologie-Formulare:      ',
+       FORMULARCODE as 'Code  ',
+       FORMULARNAME as 'Name  '
+  from FORMULAR
+ where STORNODAT is null 
+   and (FORMULARCODE like '%MB%' or
+        FORMULARNAME like '%Mibe%' or
+        FORMULARNAME like '%Mikro%' or
+        FORMULARNAME like '%Viro%')
+
+
+/* Ausgabe aller doppelten Behälter */   
+print ''
+print ''
+select
+  '' as 'Doppelte Behälter:            ',
+  Behälter=B.BEHAELTERCODE,
+  Behältername=B.BEHAELTERNAME,
+  B.BEHAELTERX,
+  M1.MATERIALX,
+  MaterialCode=M1.MATCODE,
+  MaterialName=M1.MATERIALNAME,
+  Kreis=M1.MATERIALKREISNR,  
+  B.STORNODAT
+from 
+  (select BEHAELTERCODE, BEHAELTERNAME, BEHAELTERX, STORNODAT, MATERIALX from BEHAELTER group by BEHAELTERCODE having count(*)>1) B 
+  inner join MATERIAL M1
+  on B.MATERIALX=M1.MATERIALX
+order by
+  Behälter, MaterialCode
+
+
+/* Nummernkreise */
+print ''
+print ''
+select
+  '' as 'Übersicht über Nummernkreise: ',
+  UNINUMBERCODE as 'Code  ',
+  UNINUMBERNAME as 'Name  ',
+  ERFASSDAT as 'Erstellzeitpunkt  ',
+  STORNODAT as 'Stornozeitpunkt  ',
+  NUMFIRST as 'Erste Nummer  ',
+  NUMLAST as 'Letzte Nummer  ',
+  NUMNEXT as 'Nächste Nummer  ',
+  (NUMLAST - NUMFIRST) as 'Anzahl Nummern  ',
+  (NUMNEXT - NUMFIRST) as 'Verbrauchte Nummern  ',
+  (NUMLAST - NUMNEXT) as 'Verbleibende Nummern  ',
+  str(100 - ((NUMLAST - NUMNEXT) / ((NUMLAST - NUMFIRST) * 0.01)), 10, 4) + ' %' as 'Füllstand  ',
+  CASE WHEN ERFASSDAT = NULL THEN NULL ELSE CASE WHEN datediff(dd, ERFASSDAT, getdate()) = 0 THEN str((NUMNEXT - NUMFIRST), 8) + ' Nummern' ELSE str(((NUMNEXT - NUMFIRST) / (datediff(dd, ERFASSDAT, getdate()) * 1.0)), 10, 2) + ' Nummern' END END as 'Verbrauch pro Tag  ',
+  CASE WHEN ERFASSDAT = NULL THEN NULL ELSE CASE WHEN (NUMNEXT - NUMFIRST) = 0 OR datediff(dd, ERFASSDAT, getdate()) = 0 THEN NULL ELSE str(((NUMLAST - NUMNEXT) / ((NUMNEXT - NUMFIRST) / (datediff(dd, ERFASSDAT, getdate()) * 1.0))), 17, 2) + ' Tage' END END as 'Zeit bis Voll  ',
+  RESFIRST as 'Erste Reservenummer  ',
+  RESLAST as 'Letzte Reservenummer  ',
+  RECYCLETYP as 'Recycletyp  '
+from
+  UNINUMBER
+
+
+/* Volle Nummernkreise */
+print ''
+print ''
+select
+  '' as 'Fast volle Nummernkreise:     ',
+  UNINUMBERCODE as 'Code  ',
+  UNINUMBERNAME as 'Name  ',
+  ERFASSDAT as 'Erstellzeitpunkt  ',
+  (NUMNEXT - NUMFIRST) as 'Verbrauchte Nummern  ',
+  (NUMLAST - NUMNEXT) as 'Verbleibende Nummern  ',
+  str(100 - ((NUMLAST - NUMNEXT) / ((NUMLAST - NUMFIRST) * 0.01)), 10, 4) + ' %' as 'Füllstand  ',
+  CASE WHEN ERFASSDAT = NULL THEN NULL ELSE CASE WHEN (NUMNEXT - NUMFIRST) = 0 OR datediff(dd, ERFASSDAT, getdate()) = 0 THEN NULL ELSE str(((NUMLAST - NUMNEXT) / ((NUMNEXT - NUMFIRST) / (datediff(dd, ERFASSDAT, getdate()) * 1.0))), 17, 2) + ' Tage' END END as 'Zeit bis Voll  ',
+  RESFIRST as 'Erste Reservenummer  ',
+  RESLAST as 'Letzte Reservenummer  ',
+  CASE WHEN RECYCLETYP = 1 THEN 'ja' ELSE 'nein' END as 'Recycle  '
+from
+  UNINUMBER
+where STORNODAT is NULL and ((NUMLAST - NUMNEXT) / ((NUMLAST - NUMFIRST) * 0.01)) < 10.0
+order by 'Füllstand  ' desc
+
+
+/* Doppelte Nummernkreise */
+print ''
+print ''
+select
+  '' as 'Doppelte Nummernkreise:       ',
+  UNINUMBERX as 'UninumberX (Aktiv)  ',
+  UNINUMBERCODE as 'Code (Aktiv)  ',
+  UNINUMBERNAME as 'Name (Aktiv)  ',
+  OLDUNINUMBERX as 'UninumberX (Inaktiv)  ',
+  OLDUNINUMBERCODE as 'Code (Inaktiv)  ',
+  OLDUNINUMBERNAME as 'Name (Inaktiv)  ',
+  OLDSTORNODAT as 'Stornozeipunkt (Inaktiv)  '
+from
+  (select UNINUMBERX as 'OLDUNINUMBERX', UNINUMBERCODE as 'OLDUNINUMBERCODE', UNINUMBERNAME as 'OLDUNINUMBERNAME', STORNODAT as 'OLDSTORNODAT' from UNINUMBER where STORNODAT is not NULL) U1
+  inner join UNINUMBER U2
+  on U1.OLDUNINUMBERCODE=U2.UNINUMBERCODE and (not U1.OLDUNINUMBERX=U2.UNINUMBERX) and U2.STORNODAT=NULL
+go

@@ -1,0 +1,76 @@
+set dateformat dmy
+go
+print ''
+print '- Liste im Detail -'
+print ''
+set nocount on
+select  
+  count(*) as Anzahl, 
+  EINSENDERX 
+into #temp
+from PATILISTE 
+where 
+  AKTIVBIS is null or AKTIVBIS > getdate()
+group by EINSENDERX 
+order by Anzahl desc
+-- select * from #temp
+set nocount off
+select 
+ t.Anzahl,
+ E.EINSCODE
+from #temp t, EINSENDER E
+where
+ E.EINSENDERX=t.EINSENDERX
+
+print ''
+print '- Liste im Detail -'
+print ''
+select 
+  FallNr=F.PATIFALLNR,
+  PatiArt=F.PATIART,
+  Erfassdat=convert(char(11),P.ERFASSDAT ,104)+convert(char(8),P.ERFASSDAT ,108)+' ',
+  AufndatVerw=convert(char(11),F.AUFNDAT ,104)+convert(char(8),F.AUFNDAT ,108)+' ',
+  EntldatVerw=convert(char(11),F.ENTLDATVERW ,104)+convert(char(8),F.ENTLDATVERW ,108)+' ',
+  Aktivbis=convert(char(11),P.AKTIVBIS ,104)+convert(char(8),P.AKTIVBIS ,108)+' ',
+  Auftragletzt=convert(char(11),F.AUFTRAGLETZT ,104)+convert(char(8),F.AUFTRAGLETZT ,108)+' ',  
+  EinsListe=E1.EINSCODE + " / " + E1.EINSNREXT, 
+  EinsFall=E2.EINSCODE + " / " + E2.EINSNREXT, 
+  ErfassPers=PE.PERSONID, 
+  Erfasspersx=P.ERFASSPERS,
+  TERFASSDAT=P.ERFASSDAT,
+  TAUFNDAT=F.AUFNDAT,
+  TENTLDATVERW=F.ENTLDATVERW,
+  TAKTIVBIS=F.AUFTRAGLETZT,
+  TAUFTRAGLETZT=F.AUFTRAGLETZT  
+  
+into #temp1  
+
+from PATILISTE P, PATIFALL F, EINSENDER E1, EINSENDER E2, PERSON PE
+  where F.PATIFALLX=P.PATIFALLX 
+  and P.EINSENDERX*=E1.EINSENDERX
+  and F.EINSENDERX*=E2.EINSENDERX
+  and PE.PERSONX=P.ERFASSPERS  
+  order by TERFASSDAT
+
+-- select distinct EinsListe  into #temp2 from  #temp1
+-- 
+-- select count(*), t2.EinsListe
+-- from #temp1 t1, #temp2 t2
+-- where t1.EinsListe = t2.EinsListe
+set nocount off
+select   
+  FallNr,
+  PatiArt,
+  Erfassdat,
+  AufndatVerw,
+  EntldatVerw,
+  Aktivbis,
+  Auftragletzt,  
+  EinsListe, 
+  EinsFall, 
+  ErfassPers, 
+  Erfasspersx
+  
+from #temp1
+  
+go

@@ -1,0 +1,244 @@
+--*-----------------------------------------------------------------------------
+--*FILEDESCR   : Systemparameter_Auslesen
+--*KURZINFO    : Liest alle Systemparameter von Lauris aus
+--               isql -Ssqlserver -Uswissdbo -W32000 -s"|" -i Systemparam.txt -o SystemparamAusgabe.txt
+--*AUTOR       : son
+--*ERSTELLT    : [2015.11.25]
+--*BEMERKUNG   : 
+--*$Revision: 1.01 $
+--*-----------------------------------------------------------------------------
+--*AENDERUNG:
+--*[20151125] 1.00   son - erstellt
+--*[20161024] 1.01   son - Perfomance verbessert
+
+--set statistics io, time on
+--set nocount off
+--set proc_return_status on
+
+set nocount on
+set proc_return_status off
+
+   create table #temp(
+      SYSTEMPARAMX int null,
+      PARAMTYP smallint not null,
+      VALX int null,
+      VALCODE nvarchar(16) null,
+      VALCODEXT nvarchar(16) null,
+      VALKURZ nvarchar(32) null,
+      VALNAME nvarchar(64) null,
+	  SYSTEMPARAMTYP nvarchar(16) null)
+
+   -- Parameter in die Tabelle einfuegen
+
+      insert into #temp select
+         SYSTEMPARAMX,
+         PARAMTYP,
+         INTVALUE,
+         null,
+         null,
+         null,
+         null,
+		 null
+      from
+         SYSTEMPARAM (index SYSTEMPARAM_XREF)
+      where
+         PRODUKT = 'LAURIS'
+
+   update #temp set
+      VALCODE = convert(nvarchar(16),A.CODE),
+      VALKURZ = convert(nvarchar(32),A.ANAKURZ),
+      VALNAME = convert(nvarchar(64),A.BESCHREIBUNG)
+   from
+      #temp T,
+      ANALYT A
+   where
+      (T.PARAMTYP = 10 or T.PARAMTYP = 11 or T.PARAMTYP = 12)
+      and T.VALX = A.ANALYTX
+
+   -- Texte aufloesen
+   update #temp set
+      VALCODE = convert(nvarchar(16),D.DEFICODE),
+      VALNAME = convert(nvarchar(64),D.TEXT),
+	  SYSTEMPARAMTYP = "Text"
+   from
+      #temp T,
+      DEFI D
+   where
+      (T.PARAMTYP = 13 or T.PARAMTYP = 14 or T.PARAMTYP = 15)
+      and T.VALX = D.DEFIX
+
+   -- Einsender aufloesen
+   update #temp set
+      VALCODE = convert(nvarchar(16),E.EINSCODE),
+      VALCODEXT = convert(nvarchar(16),E.EINSNREXT),
+      VALKURZ = convert(nvarchar(16),E.EINSKURZ),
+      VALNAME = convert(nvarchar(64),E.NAME1),
+	  SYSTEMPARAMTYP = "Einsender"
+   from
+      #temp T,
+      EINSENDER E
+   where
+      (T.PARAMTYP = 16 or T.PARAMTYP = 17 or T.PARAMTYP = 18 or T.PARAMTYP = 26)
+      and T.VALX = E.EINSENDERX
+
+   -- Material aufloesen
+   update #temp set
+      VALCODE = convert(nvarchar(16),M.MATCODE),
+      VALNAME = convert(nvarchar(64),M.MATERIALNAME),
+	  SYSTEMPARAMTYP = "Material"
+   from
+      #temp T,
+      MATERIAL M
+   where
+      T.PARAMTYP = 19
+      and T.VALX = M.MATERIALX
+
+   -- Rollen aufloesen
+   update #temp set
+      VALCODE = convert(nvarchar(16),R.CODE),
+      VALNAME = convert(nvarchar(64),R.NAME),
+	  SYSTEMPARAMTYP = "Rolle"
+   from
+      #temp T,
+      ROLLE R
+   where
+      T.PARAMTYP = 23
+      and T.VALX = R.ROLLEX
+
+   -- Formulare aufloesen
+   update #temp set
+      VALCODE = convert(nvarchar(16),F.FORMULARCODE),
+      VALNAME = convert(nvarchar(64),F.FORMULARNAME),
+	  SYSTEMPARAMTYP = "Formular"
+   from
+      #temp T,
+      FORMULAR F
+   where
+      T.PARAMTYP = 24
+      and T.VALX = F.FORMULARX
+
+   -- Tarifwerk aufloesen
+   update #temp set
+      VALCODE = convert(nvarchar(16),W.TARIFCODE),
+      VALNAME = convert(nvarchar(64),W.BEZEICHNUNG),
+	  SYSTEMPARAMTYP = "Formular"
+   from
+      #temp T,
+      TARIFWERK W
+   where
+      T.PARAMTYP = 27
+      and T.VALX = W.TARIFWERKX
+
+   -- Doktypen aufloesen
+   update #temp set
+      VALCODE = convert(nvarchar(16),D.DOKTYPCODE),
+      VALNAME = convert(nvarchar(64),D.DOKBESCHREIBUNG),
+	  SYSTEMPARAMTYP = "Dokumenttyp"
+   from
+      #temp T,
+      SWISSDOC..DOKUMENTTYP D
+   where
+      (T.PARAMTYP = 28 or T.PARAMTYP = 29)
+      and T.VALX = D.DOKUMENTTYPX
+
+   -- Geraete aufloesen
+   update #temp set
+      VALCODE = convert(nvarchar(16),G.GERAETECODE),
+      VALNAME = convert(nvarchar(64),G.BEZEICHNUNG),
+	  SYSTEMPARAMTYP = "Geraet"
+   from
+      #temp T,
+      GERAET G
+   where
+      (T.PARAMTYP = 30 or T.PARAMTYP = 31)
+      and T.VALX = G.GERAETX
+
+	  set nocount off
+set proc_return_status on
+   -- Ergebnis aus Tempo Tabelle ausgeben
+   select
+	 	  	  
+	  Case 
+	  when P.CLIENTX    != Null then "Client"
+	  when P.IDENTX     != Null then "Ident"
+	  when P.EINSENDERX != Null then "Einsender"
+	  else
+	  "Global"
+	  end as Geltungsbereich,	  
+	  
+ Case 
+ when P.CLIENTX    != Null then
+   isnull((select CASE when C.SPERRE     != 0    then
+   ("Gesperrt:" + RTRIM(C.CLIENTCODE)) else (RTRIM(C.CLIENTCODE)) end
+   from CLIENT C  where C.CLIENTX    = P.CLIENTX   ), "Nicht existierender Client:")    + "_[X:" + RTRIM (convert(char(10),P.CLIENTX    )) + "]"
+ when P.IDENTX     != Null then
+  isnull((select CASE when I.STORNOPERS != Null then 
+  ("Stornierter Ident:" + RTRIM(I.IDENTCODE)) else (RTRIM(I.IDENTCODE)) end
+  from IDENT I     where I.IDENTX     = P.IDENTX    ), "Nicht existierender Ident:")     + "_[X:" + RTRIM (convert(char(10),P.IDENTX     )) + "]"
+ when P.EINSENDERX != Null then
+  isnull((select CASE when E.STORNOPERS != Null then 
+  ("Stornierter Einsender:" + RTRIM(E.EINSCODE))  else (RTRIM(E.EINSCODE)) end
+  from EINSENDER E where E.EINSENDERX = P.EINSENDERX), "Nicht existierender Einsender:") + "_[X:" + RTRIM (convert(char(10),P.EINSENDERX )) + "]"
+ else
+  "Global"
+end as Geltungscode,
+	  
+	  P.MODULID,	  
+      P.PARAMID,
+      P.PARAMNAME, 
+	  
+	  case
+	  when (T.SYSTEMPARAMTYP = Null and P.TXTVALUE !=Null) then ("StringValue")
+	  when (T.SYSTEMPARAMTYP = Null and P.INTVALUE !=Null) then ("IntValue")
+	  when (T.SYSTEMPARAMTYP = Null and P.TXTVALUE !=NULL and P.INTVALUE !=Null) then ("Int&StringValue") 
+	  when T.SYSTEMPARAMTYP != Null then (T.SYSTEMPARAMTYP)
+	  else
+	  "Nicht gesetzt"
+	  end as ValueArt,
+ 
+      Case 
+	  when T.VALCODE !=NULL then T.VALCODE   + "_[" + RTRIM (convert(char(10),P.INTVALUE   )) +"]"
+	  else
+	  RTRIM (convert(char(10),P.INTVALUE   ))
+	  end as VAL,
+	  
+      T.VALCODEXT as VAL_Extern,
+      T.VALKURZ as VAL_Kurzbescr,
+      T.VALNAME as VAL_Beschr,
+	  P.TXTVALUE as TEXT_VAL,
+
+	  Case 
+	  when P.ROLLEX     != NULL then isnull((Select RTRIM(R.CODE) from ROLLE R where R.ROLLEX = P.ROLLEX ), "Nicht existierende Rolle") + "_[X:" + RTRIM (convert(char(10),P.ROLLEX     )) + "]"
+      else
+      null
+      end as ROLLE, 
+	  
+	  P.PRIORI,  
+	  MUTPERSON = (select PERSONID from PERSON where P.MUTPERS = PERSONX),
+      MUTDAT    = convert(char(11),P.MUTDAT,104)    +convert(char(5),P.MUTDAT,108   ),	 
+	  ERFASSPERSON = (select PERSONID from PERSON where P.ERFASSPERS = PERSONX),
+	  ERFASSDAT = convert(char(11),P.ERFASSDAT,104) +convert(char(5),P.ERFASSDAT,108),	 
+	  STORNOPERSON = (select PERSONID from PERSON where P.STORNOPERS = PERSONX),
+	  STORNODAT = convert(char(11),P.STORNODAT,104) +convert(char(5),P.STORNODAT,108),
+      T.SYSTEMPARAMX,
+	  P.EIGNER,
+      P.NUTZER,
+	  P.PARAMTYP
+   from
+      #temp T,
+      SYSTEMPARAM P
+   where
+      T.SYSTEMPARAMX = P.SYSTEMPARAMX
+   order by
+      P.MODULID,
+      P.PARAMID,
+      P.PARAMNAME
+go
+
+
+
+
+
+
+
+

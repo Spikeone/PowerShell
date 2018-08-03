@@ -1,0 +1,26 @@
+set dateformat dmy
+go
+
+select
+ A.AUFTRAGNR, 
+ Analyt=AN.CODE,
+ PStatus=PR.PSTATUS,
+ RStatus=R.STATUS,
+ Probe=PR.PROBEEXTID,
+ R.RESULTATX,
+ Resultatdat=convert(char(11),R.ERFASSDAT,104)+convert(char(8),R.ERFASSDAT,108)+' ',
+ RÜbertragen=convert(char(11),R.EXTERNDAT,104)+convert(char(8),R.EXTERNDAT,108)+' ',
+ RStorniert=convert(char(11),R.STORNODAT,104)+convert(char(8),R.STORNODAT,108)+' ',
+ Resultat=substring(R.ERGEBNIST,1,24),
+  Auftragdat=convert(char(11), A.ERFASSDAT,104)+convert(char(8),A.ERFASSDAT,108)+' '
+
+from RESULTAT R, AUFTRAG A, PROBE PR, TASKFLAG T, ANALYT AN
+where 
+ A.AUFTRAGNR='12345678' and
+ T.XREF=A.AUFTRAGX and
+ T.TSTATUS > 0 and
+ R.AUFTRAGX=A.AUFTRAGX and  
+ PR.PROBEX=R.PROBEX and
+ AN.ANALYTX=R.ANALYTX
+
+go

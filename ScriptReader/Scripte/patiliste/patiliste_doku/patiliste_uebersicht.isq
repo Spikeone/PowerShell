@@ -1,0 +1,19 @@
+set nocount on
+select  
+  count(*) as Anzahl, 
+  EINSENDERX 
+into #temp
+from PATILISTE 
+where 
+  AKTIVBIS is null or AKTIVBIS > getdate()
+group by EINSENDERX 
+order by Anzahl desc
+-- select * from #temp
+set nocount off
+select 
+ t.Anzahl,
+ E.EINSCODE
+from #temp t, EINSENDER E
+where
+ E.EINSENDERX=t.EINSENDERX
+go

@@ -1,0 +1,394 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_aktualisieren.isq        */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [060130.2030]                                                  */
+/*KURZINFO : SWL-II: Pflege der Lauris-Patientenliste im TAIN               */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20130108.11:40>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[150203] 1.01 daf Weiteren SQImport Benutzer @sqi2 ergänzt                */
+/*[130108] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy
+
+-- set showplan on
+-- go
+-- set statistics time,io on
+-- go
+
+/* Parameter deklarieren         */
+
+declare
+  @TageAbEntl                     int,
+  @TageInaktiv                    int,
+  @TageAmbAufn                    int,
+  @TageAmbErfasst                 int,
+  @ignore_RK_amb_entl             int,
+  @sqi                            varchar(16),
+  @sqi1                           varchar(16),
+  @sqi2                           varchar(16),
+  @ambPatArt                      varchar(16),
+  @manuell_erfasste               tinyint,
+  @EINSVEKTORNICHT                char(16),
+  @REPORT                         tinyint,
+  @UPDATE                         tinyint,
+  @DEBUG                          tinyint,
+  @checkeinsender                 int,
+  @checkautoentlass               int,
+  @checkentldatverw               int,
+  @checkinaktiv                   int,
+  @checkambulant                  int,
+  @checknonsense                  int
+
+
+set nocount on
+
+/*******************************************************************************************************************************************/
+select @TageAbEntl           =  3                   /* !!!!!! soviel Tage nach Entlassung (Verwaltung) aufheben                        !!!!!!! */
+select @TageInaktiv          = 28                   /* !!!!!! soviel Tage kann der Fall inaktiv bleiben                                !!!!!!! */
+select @TageAmbAufn          =  7                   /* !!!!!! ambulante Fälle 7 Tage nach AUFNAHMEDAT weg (@checkambulant = 2)         !!!!!!! */
+select @TageAmbErfasst       =  40                  /* !!!!!! ambulante Fälle 60 Tage nach ERFASSDAT weg (@checkambulant = 3)          !!!!!!! */
+select @manuell_erfasste     =  0                   /* !!!!!! 1 = auch manuell erfasste Patienten reorganisieren                       !!!!!!! */
+select @ignore_RK_amb_entl   =  0                   /* !!!!!! 1 = Entlassung zum Quartalsende ignorieren (von RK gesetzt)              !!!!!!! */
+/*******************************************************************************************************************************************/
+select @checkeinsender       =  1                   /* !!!!!! 1 = Abgleich Einsender PATIFALL vs. PATILISTE                            !!!!!!! */
+select @checkautoentlass     =  0                   /* !!!!!! 1 = Autoentlassung einsenderbezogen                                      !!!!!!! */
+select @checkentldatverw     =  1                   /* !!!!!! 1 = ENTLDATVERW aus PATIFALL uebernehmen                                 !!!!!!! */
+select @checkinaktiv         =  1                   /* !!!!!! 1 = inaktive Fälle löschen                                               !!!!!!! */
+select @checkambulant        =  3                   /* !!!!!! 1 = zum Quartalsende, 2 = Tage nach Aufnahme, 3 = Tage nach Erfassung    !!!!!!! */
+select @checknonsense        =  1                   /* !!!!!! 1 = Neueintrag mit ENTLDATVERW in der Vergangenheit                      !!!!!!! */
+/*******************************************************************************************************************************************/
+select @REPORT               =  1                   /* !!!!!! 1 = Änderungen an PATILISTE berichten                                    !!!!!!! */
+select @UPDATE               =  1                   /* !!!!!! 0 = keine Änderungen an PATILISTE durchführen                            !!!!!!! */
+select @DEBUG                =  0                   /* !!!!!! 1 = Debug-Output                                                         !!!!!!! */
+/*******************************************************************************************************************************************/
+select @EINSVEKTORNICHT      = 'PL_MANUELL'         /* !!!!!! diese Einsendergruppe nicht bearbeiten                                   !!!!!!! */
+select @sqi                  = 'SQImport'           /* !!!!!! hier den PATI-SQImport-Login eintragen                                   !!!!!!! */
+select @sqi1                 = 'SQImportPati'       /* !!!!!! hier den PATI-SQImport-Login eintragen                                   !!!!!!! */
+select @sqi2                 = 'SQImportPati_ini'   /* !!!!!! hier den PATI-SQImport-Login eintragen                                   !!!!!!! */
+select @ambPatArt            = 'A'                  /* !!!!!! Kennung für ambulante Patienten (PATART)                                 !!!!!!! */
+/*******************************************************************************************************************************************/
+
+declare
+  @startdat                       smalldatetime,
+  @enddat                         smalldatetime,
+  @datum                          varchar(64),
+  @sqix                           int,
+  @sqix1                          int,
+  @sqix2                          int,
+  @PatilisteFaelleGesamt          int,
+  @PatilisteFaelleOhneAktivBis    int,
+  @PatilisteFaelleInaktiv         int,
+  @PatilisteFaelleAktiv           int,
+  @PatilisteFaelleZukunft         int,
+  @EINSVEKTORX                    int,
+  @EINSTYPMAX                     int,
+  @MITEINZEL                      tinyint,
+  @AKTIV                          tinyint,
+  @found                          int,
+  @cnt                            int,
+  @strMessage                     varchar(64),
+  @quartn                         varchar(6),
+  @quart                          tinyint,
+  @year                           int,
+  @minquart                       smalldatetime,
+  @maxquart                       smalldatetime
+
+
+/* Auflösung der Einsendergruppen nicht zu bearbeitenden Einsendergruppe EINSVEKTORNICHT        */
+select @EINSTYPMAX  = 2147483647   -- 2 hoch 31 -1
+select @MITEINZEL   = 0            -- 1: auch Einzeleinsender liefern
+select @EINSVEKTORX = EINSENDERX from EINSENDER where EINSCODE = @EINSVEKTORNICHT and AKTIVBIS is null
+if @EINSVEKTORX  is null select @EINSVEKTORX = 0
+
+select EINSVEKTORX,     /* Einsender des Vektors   */
+       V.EINSENDERX,    /* Einsenderx der Vektorzeile  */
+       SORT,            /* Nummer der Vektorzeile  */
+       EINSCODE,EINSKURZ, EINSTYP
+into  #temp_eins_nicht
+from EINSVEKTOR V, EINSENDER E
+where EINSVEKTORX  = @EINSVEKTORX
+   and V.EINSENDERX  = E.EINSENDERX
+   and isnull(EINSTYP,1)<=@EINSTYPMAX
+   and (V.SORT>0 or @MITEINZEL=1)
+   and (E.AKTIVBIS is null or @AKTIV<>1)
+order by SORT
+
+if (@EINSVEKTORX <> 0 and @DEBUG = 1)
+begin
+  print ''
+  print ' Debug: Diese Einsender werden nicht reorganisiert '
+  select * from #temp_eins_nicht
+  print ''
+end
+
+
+select @sqix  = 0
+select @sqix1 = 0
+select @sqix2 = 0
+select @sqix =PERSONX from PERSON where PERSONID=@sqi and STORNODAT is null
+select @sqix1=PERSONX from PERSON where PERSONID=@sqi1 and STORNODAT is null
+select @sqix2=PERSONX from PERSON where PERSONID=@sqi2 and STORNODAT is null
+
+select @startdat=getdate()
+select @datum='|Lauris, Reorganisation der Patientenliste am ' + convert(char(9),@startdat,4)+convert(char(5),@startdat,8) + ' |'
+select @quart=datepart(qq,@startdat)
+select @year=datepart(yy,@startdat)
+select @minquart = case when (@quart = 1) then '01.01.'+convert(varchar(4),@year)+' 00:00'
+                        when (@quart = 2) then '01.04.'+convert(varchar(4),@year)+' 00:00'
+                        when (@quart = 3) then '01.07.'+convert(varchar(4),@year)+' 00:00'
+                        when (@quart = 4) then '01.10.'+convert(varchar(4),@year)+' 00:00'
+                   end
+select @maxquart = case when (@quart = 1) then '31.03.'+convert(varchar(4),@year)+' 23:59'
+                        when (@quart = 2) then '30.06.'+convert(varchar(4),@year)+' 23:59'
+                        when (@quart = 3) then '30.09.'+convert(varchar(4),@year)+' 23:59'
+                        when (@quart = 4) then '31.12.'+convert(varchar(4),@year)+' 23:59'
+                   end
+select quart=@quart,year=@year,minquart=@minquart,maxquart=@maxquart
+
+-- select @quartn=convert(char(6),@startdat,4)
+-- select @quart=0
+-- if @quartn='01.01.' select @quart=4
+-- if @quartn='01.04.' select @quart=1
+-- if @quartn='01.07.' select @quart=2
+-- if @quartn='01.10.' select @quart=3
+
+if @DEBUG = 1
+begin
+  print ''
+  select @PatilisteFaelleGesamt=count(*) from PATILISTE
+  select @PatilisteFaelleOhneAktivBis=count(*) from PATILISTE where AKTIVBIS is NULL
+  select @PatilisteFaelleInaktiv=count (*) from PATILISTE where AKTIVBIS is not NULL and AKTIVBIS <= getdate()
+  select @PatilisteFaelleAktiv=count (*) from PATILISTE where AKTIVBIS is not NULL and AKTIVBIS > getdate()
+  -- select @PatilisteFaelleZukunft=count (*) from PATILISTE where AUFNAHMEDAT is not NULL and AUFNAHMEDAT > getdate()
+  select '' as 'Anzahl Fälle vorher:',
+         @PatilisteFaelleGesamt as 'Gesamt  ',
+         @PatilisteFaelleOhneAktivBis as 'ohne AKTIVBIS  ',
+         @PatilisteFaelleInaktiv as 'AKTIVBIS abgelaufen  ',
+         @PatilisteFaelleAktiv as 'AKTIVBIS zukünftig  '
+  --       @PatilisteFaelleZukunft as 'AUFNAHMEDAT zukünftig  '
+end
+
+-- Temp-Table Patientenfälle
+create table #temp_patiliste(
+  cnt_patiliste        numeric                identity not null,
+  patilistex           int                    null,
+  einsenderx           int                    null,
+  patifallx            int                    null,
+  patistammx           int                    null,
+  PatiArtFall          varchar(16)            null,
+  PatiArtListe         varchar(16)            null,
+  aktivbis_alt         smalldatetime          null,
+  aktivbis_neu         smalldatetime          null,
+  ErfassDat            smalldatetime          null,
+  erfasspers           smallint               null,
+  PatifallNr           varchar(32)            null,
+  EinsFall             varchar(16)            null,
+  EinsListe            varchar(16)            null,
+  AufnahmeDat          smalldatetime          null,
+  EntlDat              smalldatetime          null,
+  AuftragLetzt         smalldatetime          null,
+  ErfPers              varchar(16)            null,
+  Loeschgrund          varchar(64)            null
+ )
+
+insert into #temp_patiliste
+select
+  patilistex    = PL.PATILISTEX,
+  einsenderx    = PL.EINSENDERX,
+  patifallx     = PL.PATIFALLX,
+  patistammx    = PF.PATISTAMMX,
+  PatiArtFall   = PF.PATIART,
+  PatiArtListe  = PL.PATIART,
+  aktivbis_alt  = PL.AKTIVBIS,
+  aktivbis_neu  = null,
+  ErfassDat     = PL.ERFASSDAT,
+  erfasspers    = PL.ERFASSPERS,
+  PatifallNr    = PF.PATIFALLNR,
+  EinsFall      = EF.EINSCODE,
+  EinsListe     = EL.EINSCODE,
+  AufnahmeDat   = PF.AUFNDAT,
+  EntlDat       = PF.ENTLDATVERW,
+  AuftragLetzt  = PF.AUFTRAGLETZT,
+  ErfPers       = PE.PERSONID,
+  Loeschgrund   = 'bleibt'
+from PATILISTE PL, PATIFALL PF, EINSENDER EF, EINSENDER EL, PERSON PE
+where
+  (PL.AKTIVBIS is null or PL.AKTIVBIS > @startdat)
+  and PL.TABELLE = 'EINSENDER'
+  and (PL.IDENTX is null or PL.IDENTX = 0)      -- Hier steht FACHEINSENDERX drin, wenn es ein fachbzogener Eintrag ist.
+  and PL.XREF not in (select EINSENDERX from #temp_eins_nicht)
+  and PF.PATIFALLX = PL.PATIFALLX
+  and EF.EINSENDERX = PF.EINSENDERX
+  and PE.PERSONX = PL.ERFASSPERS
+  and EL.EINSENDERX = PL.XREF
+
+if (@DEBUG = 1)
+begin
+  print ''
+  print ' Debug: unbearbeitete PATILISTE '
+  select PatifallNr, PatiArtListe, EinsFall, EinsListe, ErfassDat, AufnahmeDat, EntlDat, AuftragLetzt, ErfPers
+  from #temp_patiliste
+  print ''
+end
+
+
+if @checkeinsender = 1
+begin
+  update #temp_patiliste set Loeschgrund = '1 falscher Einsender'
+  where
+    EinsListe <> EinsFall
+    and EinsListe not in (select EINSCODE from #temp_eins_nicht)
+    and (ErfPers=@sqi or ErfPers=@sqi1 or ErfPers=@sqi2 or @manuell_erfasste = 1)
+end
+
+if @checkentldatverw = 1
+begin
+  select @strMessage ='2 seit mindestens ' + convert(varchar,@TageAbEntl) + ' Tagen entlassen (stationär)'
+  update #temp_patiliste set Loeschgrund = @strMessage
+  where
+    Loeschgrund   = 'bleibt'
+    and EntlDat is not null
+    and EntlDat < dateadd(day,@TageAbEntl,getdate())
+    and EinsListe not in (select EINSCODE from #temp_eins_nicht)
+    and not (upper (PatiArtFall) = @ambPatArt)
+    and (ErfPers=@sqi or ErfPers=@sqi1 or ErfPers=@sqi2 or @manuell_erfasste = 1)
+end
+
+if @checkinaktiv = 1
+begin
+  select @strMessage ='3 inaktiv, letzter Auftrag älter als ' + convert(varchar,@TageInaktiv) + ' Tage (stationär)'
+  update #temp_patiliste set Loeschgrund = @strMessage
+  where
+    Loeschgrund   = 'bleibt'
+    and EinsListe not in (select EINSCODE from #temp_eins_nicht)
+    and (upper(PatiArtFall) <> @ambPatArt or PatiArtFall is null)
+    and (ErfPers=@sqi or ErfPers=@sqi1 or ErfPers=@sqi2 or @manuell_erfasste = 1)
+    and (EntlDat is null or EntlDat < @startdat)                -- keine zukünftigen Entlassungen
+    and (AufnahmeDat is null or AufnahmeDat < @startdat)        -- keine zukünftigen Fälle
+    and (AuftragLetzt is NULL or (AuftragLetzt is not null and dateadd(day,@TageInaktiv,AuftragLetzt) <  @startdat))
+    and (dateadd(day,@TageInaktiv,ErfassDat) < @startdat)
+end
+
+if @checkambulant = 1
+begin
+  select @strMessage ='4 quartalsweise Entlassung, ambulanter Fall vor dem '+ convert(char(11),@minquart,104)
+  update #temp_patiliste set Loeschgrund = @strMessage
+  where
+    Loeschgrund   = 'bleibt'
+    and EinsListe not in (select EINSCODE from #temp_eins_nicht)
+    and upper(PatiArtFall) = @ambPatArt
+    and (ErfPers=@sqi or ErfPers=@sqi1 or ErfPers=@sqi2 or @manuell_erfasste = 1)
+    and (EntlDat is null or EntlDat < @startdat or @ignore_RK_amb_entl = 1)     -- keine zukünftigen Entlassungen
+    and (AufnahmeDat is null or AufnahmeDat < @minquart)                        -- nicht aus diesem oder zukünftigen Quartalen
+end
+if @checkambulant = 2
+begin
+  select @strMessage ='5 ambulante Fälle ' + convert(varchar,@TageAmbAufn) + ' Tage nach Aufnahmedatum entfernen'
+  update #temp_patiliste set Loeschgrund = @strMessage
+  where
+    Loeschgrund   = 'bleibt'
+    and EinsListe not in (select EINSCODE from #temp_eins_nicht)
+    and upper(PatiArtFall) = @ambPatArt
+    and (ErfPers=@sqi or ErfPers=@sqi1 or ErfPers=@sqi2 or @manuell_erfasste = 1)
+    and (EntlDat is null or EntlDat < @startdat or @ignore_RK_amb_entl = 1)     -- keine zukünftigen Entlassungen
+    and (AufnahmeDat is null or AufnahmeDat < @startdat)                        -- keine zukünftigen Fälle
+    and dateadd(day,@TageAmbAufn,AufnahmeDat) <  @startdat
+end
+if @checkambulant = 3
+begin
+  select @strMessage ='6 ambulante Fälle ' + convert(varchar,@TageAmbErfasst) + ' Tage nach Erfassungsdatum entfernen'
+  update #temp_patiliste set Loeschgrund = @strMessage
+  where
+    Loeschgrund   = 'bleibt'
+    and EinsListe not in (select EINSCODE from #temp_eins_nicht)
+    and upper(PatiArtFall) = @ambPatArt
+    and (ErfPers=@sqi or ErfPers=@sqi1 or ErfPers=@sqi2 or @manuell_erfasste = 1)
+    and (EntlDat is null or EntlDat < @startdat or @ignore_RK_amb_entl = 1)     -- keine zukünftigen Entlassungen
+    and dateadd(day,@TageAmbErfasst,ErfassDat) <  @startdat
+end
+
+if @checknonsense = 1
+begin
+  select @strMessage ='7 Neueintrag aus dem KIS mit Entlassung in der Vergangenheit'
+  update #temp_patiliste set Loeschgrund = @strMessage
+  where
+    Loeschgrund   = 'bleibt'
+    and EinsListe not in (select EINSCODE from #temp_eins_nicht)
+    and (ErfPers=@sqi or ErfPers=@sqi1 or ErfPers=@sqi2)
+    and (EntlDat < ErfassDat)
+end
+
+if @REPORT > 0
+begin
+  print ''
+  print ''
+  print '+============================================================+'
+  print @datum
+  print '+============================================================+'
+  print ''
+  select
+    PatiFallNr=substring(PatifallNr,1,10),
+    PatArt=substring(PatiArtFall,1,2) +' / '+ substring(PatiArtListe,1,2),
+    Einsender_PATIFALL=EinsFall,
+    Einsender_PATILISTE=EinsListe,
+    ErfPers_PATILISTE=ErfPers,
+    ErfassdatPatiliste=convert(char(11),ErfassDat,104)+convert(char(5),ErfassDat,108)+' ',
+    Aufnahmedatum=convert(char(11),AufnahmeDat,104)+convert(char(5),AufnahmeDat,108)+' ',
+    EntlassungdatVerw=convert(char(11),EntlDat,104)+convert(char(5),EntlDat,108)+' ',
+    LetzterAuftrag=convert(char(11),AuftragLetzt,104)+convert(char(5),AuftragLetzt,108)+' ',
+    Loeschgrund
+  from #temp_patiliste
+  where Loeschgrund <> 'bleibt'
+    order by Einsender_PATILISTE, Loeschgrund
+end
+if @REPORT > 1
+begin
+  select @datum='|Lauris, verbleibende Einträge (PATILISTE) am ' + convert(char(9),@startdat,4)+convert(char(5),@startdat,8) + ' |'
+  print ''
+  print ''
+  print '+============================================================+'
+  print @datum
+  print '+============================================================+'
+  print ''
+  select
+    PatiFallNr=substring(PatifallNr,1,10),
+    PatArt=substring(PatiArtFall,1,2) +' / '+ substring(PatiArtListe,1,2),
+    Einsender_PATIFALL=EinsFall,
+    Einsender_PATILISTE=EinsListe,
+    ErfPers_PATILISTE=ErfPers,
+    ErfassdatPatiliste=convert(char(11),ErfassDat,104)+convert(char(5),ErfassDat,108)+' ',
+    Aufnahmedatum=convert(char(11),AufnahmeDat,104)+convert(char(5),AufnahmeDat,108)+' ',
+    EntlassungdatVerw=convert(char(11),EntlDat,104)+convert(char(5),EntlDat,108)+' ',
+    LetzterAuftrag=convert(char(11),AuftragLetzt,104)+convert(char(5),AuftragLetzt,108)+' ',
+    Loeschgrund
+  from #temp_patiliste
+  where Loeschgrund = 'bleibt'
+    order by Einsender_PATILISTE, Loeschgrund
+end
+
+if @UPDATE = 1
+begin
+  set nocount on
+  update PATILISTE set AKTIVBIS = @startdat
+  from PATILISTE PL, #temp_patiliste t
+  where
+    t.Loeschgrund <> 'bleibt'
+    and PL.PATILISTEX = t.patilistex
+end
+
+
+set nocount on
+if @REPORT > 0
+begin
+  select @enddat=getdate()
+  select @datum='Ende: ' + convert(char(9),@enddat,4)+convert(char(5),@enddat,8)
+  print ''
+  print @datum
+end
+
+go

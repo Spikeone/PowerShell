@@ -1,0 +1,33 @@
+-- set showplan on
+-- go
+set dateformat dmy
+go
+select
+  FallNr=substring(PF.PATIFALLNR,1,10),
+  StammNr=substring(PS.PATISTAMMNR,1,10),
+  Name=substring(PS.NAME,1,12),
+  Vorname=substring(PS.VORNAME,1,10),
+  Mandant=substring(PF.MANDANT,1,3),
+  AuftragsNr=substring(AU.AUFTRAGNR,1,10),
+  AU.ERFASSDAT,
+  EI.EINSCODE,
+  AErfassPers=PE1.PERSONID,
+  Probe = PR.PROBEEXTID,
+  KonserveNr = KO.KONSERVENR,
+  KErfassPers=PE2.PERSONID
+
+from AUFTRAG AU, PERSON PE1, PERSON PE2, EINSENDER EI, PATISTAMM PS, PATIFALL PF, KONSERVE KO, PROBE PR
+where
+  KO.ERFASSDAT > '01.06.2013' and
+  AU.ERFASSDAT > dateadd(day,-3,getdate()) and
+  AU.AUFTRAGX = KO.KAUFTRAGX and
+  PF.PATIFALLX = AU.PATIFALLX and
+  PS.PATISTAMMX = PF.PATISTAMMX and
+  PE1.PERSONX = AU.ERFASSPERS and
+  KO.KAUFTRAGX = AU.AUFTRAGX and
+  PE2.PERSONX = KO.ERFASSPERS and
+  EI.EINSENDERX = AU.EINSENDERX and
+  AU.AUFTRAGX = PR.AUFTRAGX
+order by AU.ERFASSDAT
+go
+

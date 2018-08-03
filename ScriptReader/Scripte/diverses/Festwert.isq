@@ -1,0 +1,23 @@
+select
+ Tabelle=substring(TABELLE,1,16),
+ Spalte=substring(SPALTE,1,16),
+ INTWERT,
+ CharWert=substring(CHARWERT,1,16),
+ Text1=substring(FWTEXT1,1,64),
+ Text2=substring(FWTEXT2,1,32),
+ SPRACHID,
+ Erfassdat=convert(char(11),ERFASSDAT,104)+convert(char(8),ERFASSDAT,108)+' '
+
+from FESTWERT
+where 
+ STORNODAT is null and
+ TABELLE = 'PROBE' and
+ SPRACHID = 10
+
+order by 
+ SPRACHID, 
+ TABELLE, 
+ SPALTE,
+ INTWERT
+
+go

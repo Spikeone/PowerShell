@@ -1,0 +1,66 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 16.02.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLBACKUP            Backup SQLServer     Adaptive Server Enterprise/12.5.4/EBF 14925 ESD#7/P/NT (IX86)/OS 4.0/ase1254/2093/32-bit/OPT/Wed Oct 10 23:00:01 2007                                                                                                                                           
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    07.12.09  12:16                 
+ swissup3.tab                       2.08 $    07.12.09  12:10                 
+ swlupgrade.tab                     2.20.1 $  24.03.10  12:28                 
+ Lauris (via lauris.ini)            1.04 $    09.12.09  15:42                 
+ Blutbank (via barkasse.pro)        1.06 $    24.03.10  12:27                 
+ Statistik (via statistik.pro)      5.58 $    07.12.09  12:23                 
+ BB-Statistik (via spendestat.pro)  1.21 $    07.12.09  12:40                 
+                                                                              
+ neu:PI_REARCH                      1.03 $    03.11.10  11:11 SWISSLAB        
+ neu:PR_SPENDESPERRESTAT            1.17 $    24.03.10  18:46 SWISSLAB        
+ neu:PR_SPERRESTAT                  1.23 $    24.03.10  18:46 SWISSLAB        
+ neu:PI_ABLI                        3.37 $    24.03.10  12:28 SWISSLAB        
+ neu:PI_AKTQMMASOLL                 1.00.1    24.03.10  12:28 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                         262 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#9.11.24# FW=#2.0.50727.832# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                     
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#9.11.24# FW=#2.0.50727.1433# OS=#5.0.2195.262144#Win32NT                                                                                                                                                                                                    
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                  6693            1208          54 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                Mikrobiologie    Mikrobiologie                                                    
+                                SJB-MiBi         SJB-Mikrobiologie                                                
+                                mb-test          Mikrobiologie                                                    
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             NULL       NULL     14.02.2008 13:11:00  ssc              12.03.2008 09:36:00  ssc                        50          -1          -1 LAURIS          NULL      0        0           3 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 

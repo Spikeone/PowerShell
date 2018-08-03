@@ -1,0 +1,62 @@
+ 
+ ----------------------------------------- 
+ Lauris Info-Script Version vom 18.08.2009 
+ ----------------------------------------- 
+   
+ Ausgeführt am: 19.07. 
+   
+   
+  SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  -------------------------- -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                             SQLCLUSTER           Routine KC und Haema Adaptive Server Enterprise/12.5.4/EBF 15438 ESD#8/P/NT (IX86)/OS 4.0/ase1254/2105/32-bit/OPT/Sat Mar 22 04:44:15 2008                                                                                                                                            
+   
+ Swisslab-Information: 
+  Name                              Revision   CrDate          DB               
+  --------------------------------- ---------- --------------- ---------------  
+  Kalenderwoche                     2009.02    08.04.09  00:00                  
+  letztes Swisspro                  2009.02    28.10.09  15:22                  
+  swissup3.tab                       2.08 $    28.10.09  15:14                  
+  swlupgrade.tab                     2.20.1 $  15.04.10  13:53                  
+  Lauris (via lauris.ini)            1.03 $    28.10.09  15:20                  
+  Blutbank (via barkasse.pro)        1.06 $    15.04.10  13:53                  
+  Statistik (via statistik.pro)      5.51 $    15.04.10  13:54                  
+  BB-Statistik (via spendestat.pro)  1.21 $    28.10.09  15:19                  
+                                                                                
+  neu:sp__bcp                        2.57 $    23.04.10  08:24 sybsystemprocs   
+  neu:sp__columns                    1.09 $    23.04.10  08:18 sybsystemprocs   
+  neu:sp__index                      1.10 $    23.04.10  08:17 sybsystemprocs   
+  neu:sp__rows                       1.19 $    23.04.10  08:17 sybsystemprocs   
+  neu:sp__space                      1.32 $    23.04.10  08:16 sybsystemprocs   
+  mehr mit: PR_REVISION A(LLE)                                                  
+ aktive Lauris-Versionen: 
+  Anzahl Clients:              
+  --------------- -----------  
+                            0  
+  LaurisVersion(max)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     NULL                                                                                                                                                                                                                                                             
+  LaurisVersion(min)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     NULL                                                                                                                                                                                                                                                             
+   
+   
+  Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------- ----------- --------------- -----------  
+                                      4               4           0  
+   
+   
+   
+ Anforderung für die Mikrobiologie? 
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+   
+ --- Nachfordern  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+   
+   
+ --- POCTen  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  

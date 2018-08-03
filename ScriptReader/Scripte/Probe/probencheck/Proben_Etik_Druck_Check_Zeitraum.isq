@@ -1,0 +1,255 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\proben_check.isq                   */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: Check des Probenetikettendrucks, Verbleib in der Ablage*/
+/*MODULE   : Lauris                                                         */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20100207.21:26>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[100207] 1.00 lis erstellt                                                */
+/****************************************************************************/
+-- set showplan on
+-- go
+-- set statistics time,io on
+-- go
+set dateformat dmy
+go
+
+declare
+  @startdat                       smalldatetime,
+  @enddat                         smalldatetime
+
+set nocount on
+select @startdat = '01.10.2012 00:00'
+select @enddat   = getdate()
+set nocount off
+
+print ''
+print 'aktivierte Proben aktiver Aufträge, deren Etiketten nicht gedruckt wurden'
+print ''
+
+select
+  AuftragNr=A.AUFTRAGNR,
+  Einsender=E.EINSCODE,
+  ProbeExtid=PR.PROBEEXTID,
+  ProbeSQLErfassDat=convert(char(11),PR.SQLERFASSDAT ,104)+convert(char(8),PR.SQLERFASSDAT ,108)+' ',
+  ProbeErfassPers=P1.PERSONID,
+  EtikDruckDat=convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' ',
+  EtikInfo = substring(PR.ETIKINFO,1,16),
+  EtikDruck = substring(PR.ETIKDRUCK,1,16),
+  Pstatus   = case when (PR.PSTATUS = 0) then 'inaktive Probe, Probe nicht im Labor      '
+                   when (PR.PSTATUS = 1) then 'von PI_PROBE aktivierte Probe             '
+                   when (PR.PSTATUS = 2) then 'von PI_RESULTAT aktivierte Probe          '
+                   when (PR.PSTATUS = 3) then 'von PI_STORNOLAURISANFO aktivierte Probe  '
+                   when (PR.PSTATUS = 4) then 'von PI_STORNOLAURISANFO aktivierte Probe  '
+                   when (PR.PSTATUS = 5) then 'von PI_TASKFLAGREORG aktivierte Probe     '
+                   when (PR.PSTATUS = 6) then 'von PR_ABLIRESULTATANALYT aktivierte Probe'
+              end,
+
+  Pkennung  = case when (PR.PKENNUNG =   1) then '(Serum-)Archivprobe Diese Archivproben werden von der Materialvert. ignoriert                                  '
+                   when (PR.PKENNUNG =   2) then 'Auftragsnummer mit Materialextension ONLINE                                                                    '
+                   when (PR.PKENNUNG =   3) then 'Auftragsnummer mit Materialextension LAURIS                                                                    '
+                   when (PR.PKENNUNG =   4) then 'Auftragsnummer mit Materialextension von PI_Probe                                                              '
+                   when (PR.PKENNUNG =   5) then 'Auftragsnummer mit Materialextension SQImport (kein Online)                                                    '
+                   when (PR.PKENNUNG =   6) then 'Auftragsnummer mit Materialextension Matvert                                                                   '
+                   when (PR.PKENNUNG =   7) then 'Auftragsnummer mit Materialextension sonstiges                                                                 '
+                   when (PR.PKENNUNG =   8) then 'Konservennummer (Zuordnung/Ausgabe)                                                                            '
+                   when (PR.PKENNUNG =   9) then 'Konservennummer (Untersuchung der Konserve (Blutmerkmale))                                                     '
+                   when (PR.PKENNUNG =  16) then 'Materialsequenznummer      (@SEQKOPIER=1/11)                                                                   '
+                   when (PR.PKENNUNG =  17) then 'PTagNr BESCHREIBUNG=TGNR   (@SEQKOPIER=2)                                                                      '
+                   when (PR.PKENNUNG =  18) then 'PTagNr BESCHREIBUNG=TGNR   (@SEQKOPIER=3)                                                                      '
+                   when (PR.PKENNUNG =  19) then 'Materialsequenznummer      (@SEQKOPIER=4)                                                                      '
+                   when (PR.PKENNUNG =  20) then 'PTagNr BESCHREIBUNG=TGN   (@SEQKOPIER=5)                                                                       '
+                   when (PR.PKENNUNG =  21) then 'frei fuer weitere SEQKOPIERWERTE                                                                               '
+                   when (PR.PKENNUNG =  22) then 'frei fuer weitere SEQKOPIERWERTE                                                                               '
+                   when (PR.PKENNUNG =  23) then 'Seqkopier=23 fuer Bakt                                                                                         '
+                   when (PR.PKENNUNG =  24) then 'Spezielle Verteilung (PROBEEXTID %* + PABLIX<>null)                                                            '
+                   when (PR.PKENNUNG =  32) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  33) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  34) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  35) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  36) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  37) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  38) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  39) then 'Probe zu negativen Keimergebnissen                                                                             '
+                   when (PR.PKENNUNG =  40) then 'Probe zu einem Isolat (Keim/Pilz) ueber @SETEXTENSION, wenn Pkennung=null                                      '
+                   when (PR.PKENNUNG =  41) then 'QK                                                                                                             '
+                   when (PR.PKENNUNG =  48) then 'Online                                                                                                         '
+                   when (PR.PKENNUNG =  49) then 'Online                                                                                                         '
+                   when (PR.PKENNUNG =  50) then 'Pathologie. Proben zum Auftrag. Zugehörige Analysen definieren Material, Lokalisation und Leistungen           '
+                   when (PR.PKENNUNG =  51) then 'Pathologie. Unterproben zu Proben mit PKENNUNG=50                                                              '
+                   when (PR.PKENNUNG =  52) then 'Pathologie. Unterproben zu Unterproben mit PKENNUNG=51                                                         '
+                   when (PR.PKENNUNG =  53) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  54) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  55) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  56) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  57) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  58) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  59) then 'Pathologie Proben fuer Unterschriftsanalyte                                                                    '
+                   when (PR.PKENNUNG = 100) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 101) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 102) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 103) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 104) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 105) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 106) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 107) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 108) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 109) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 128) then 'Hygiene-Standard-Probe Infos zu: Entnahmestelle(ABNAHMEORT) Pruefkoerper(PBESCHREIBUNG) und Programm(PROBEKURZ)'
+                   when (PR.PKENNUNG = 129) then 'Hygiene Unterprobe zur Keimbestimmung(PRO_PROBEX zu 128)                                                       '
+                   when (PR.PKENNUNG = 130) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 131) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 132) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 133) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 134) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 135) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 255) then 'Allgemeine, nicht Probenbezogene Information = Hilfsanalyte, wie z.B.: Koerpergroesse,etc.                     '
+              end,
+  AuftragErfassDat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  AuftragErfassPers=P2.PERSONID,
+  A.AUFTRAGX,
+  PR.PROBEX
+
+
+from
+  AUFTRAG A (index AUFTRAG_PK1),
+  PROBE PR (index PROBE_FK2),
+  PERSON P1 (index PERSON_PK),
+  PERSON P2 (index PERSON_PK),
+  EINSENDER E (index EINSENDER_PK)
+
+where
+  A.AUFTRAGDAT between @startdat and @enddat and
+  PR.AUFTRAGX = A.AUFTRAGX and
+  PR.ETIKINFO is not null and
+  PR.PSTATUS > 0 and
+  PR.STORNODAT is null and
+  (PR.ETIKDRUCKDAT is null or CHAR_LENGTH(PR.ETIKINFO) <> CHAR_LENGTH(PR.ETIKDRUCK)) and
+--  PR.ETIKINFO <> PR.ETIKDRUCK and
+--  PR.ETIKINFO <> PR.ETIKDRUCK or (PR.PSTATUS = 0 and T.TSTATUS = 1) or (PR.ETIKDRUCKDAT is null and T.TSTATUS = 1)and
+  P1.PERSONX=PR.ERFASSPERS and
+  P2.PERSONX=A.ERFASSPERS and
+  E.EINSENDERX=A.EINSENDERX
+
+order by Einsender, AuftragNr
+
+go
+
+print ''
+print 'stornierte Proben aktiver Auftraege'
+print ''
+
+select
+  AuftragNr=A.AUFTRAGNR,
+  Einsender=E.EINSCODE,
+  ProbeExtid=PR.PROBEEXTID,
+  ProbeErfassDat=convert(char(11),PR.SQLERFASSDAT ,104)+convert(char(8),PR.SQLERFASSDAT ,108)+' ',
+  ProbeErfassPers=P1.PERSONID,
+  EtikDruckDat=convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' ',
+  ProbeStornoDat=convert(char(11),PR.STORNODAT ,104)+convert(char(8),PR.STORNODAT ,108)+' ',
+  EtikInfo = substring(PR.ETIKINFO,1,16),
+  EtikDruck = substring(PR.ETIKDRUCK,1,16),
+  Pstatus   = case when (PR.PSTATUS = 0) then 'inaktive Probe, Probe nicht im Labor      '
+                   when (PR.PSTATUS = 1) then 'von PI_PROBE aktivierte Probe             '
+                   when (PR.PSTATUS = 2) then 'von PI_RESULTAT aktivierte Probe          '
+                   when (PR.PSTATUS = 3) then 'von PI_STORNOLAURISANFO aktivierte Probe  '
+                   when (PR.PSTATUS = 4) then 'von PI_STORNOLAURISANFO aktivierte Probe  '
+                   when (PR.PSTATUS = 5) then 'von PI_TASKFLAGREORG aktivierte Probe     '
+                   when (PR.PSTATUS = 6) then 'von PR_ABLIRESULTATANALYT aktivierte Probe'
+              end,
+
+  Pkennung  = case when (PR.PKENNUNG =   1) then '(Serum-)Archivprobe Diese Archivproben werden von der Materialvert. ignoriert                                  '
+                   when (PR.PKENNUNG =   2) then 'Auftragsnummer mit Materialextension ONLINE                                                                    '
+                   when (PR.PKENNUNG =   3) then 'Auftragsnummer mit Materialextension LAURIS                                                                    '
+                   when (PR.PKENNUNG =   4) then 'Auftragsnummer mit Materialextension von PI_Probe                                                              '
+                   when (PR.PKENNUNG =   5) then 'Auftragsnummer mit Materialextension SQImport (kein Online)                                                    '
+                   when (PR.PKENNUNG =   6) then 'Auftragsnummer mit Materialextension Matvert                                                                   '
+                   when (PR.PKENNUNG =   7) then 'Auftragsnummer mit Materialextension sonstiges                                                                 '
+                   when (PR.PKENNUNG =   8) then 'Konservennummer (Zuordnung/Ausgabe)                                                                            '
+                   when (PR.PKENNUNG =   9) then 'Konservennummer (Untersuchung der Konserve (Blutmerkmale))                                                     '
+                   when (PR.PKENNUNG =  16) then 'Materialsequenznummer      (@SEQKOPIER=1/11)                                                                   '
+                   when (PR.PKENNUNG =  17) then 'PTagNr BESCHREIBUNG=TGNR   (@SEQKOPIER=2)                                                                      '
+                   when (PR.PKENNUNG =  18) then 'PTagNr BESCHREIBUNG=TGNR   (@SEQKOPIER=3)                                                                      '
+                   when (PR.PKENNUNG =  19) then 'Materialsequenznummer      (@SEQKOPIER=4)                                                                      '
+                   when (PR.PKENNUNG =  20) then 'PTagNr BESCHREIBUNG=TGN   (@SEQKOPIER=5)                                                                       '
+                   when (PR.PKENNUNG =  21) then 'frei fuer weitere SEQKOPIERWERTE                                                                               '
+                   when (PR.PKENNUNG =  22) then 'frei fuer weitere SEQKOPIERWERTE                                                                               '
+                   when (PR.PKENNUNG =  23) then 'Seqkopier=23 fuer Bakt                                                                                         '
+                   when (PR.PKENNUNG =  24) then 'Spezielle Verteilung (PROBEEXTID %* + PABLIX<>null)                                                            '
+                   when (PR.PKENNUNG =  32) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  33) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  34) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  35) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  36) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  37) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  38) then 'BAKT/Viro-Nummer                                                                                               '
+                   when (PR.PKENNUNG =  39) then 'Probe zu negativen Keimergebnissen                                                                             '
+                   when (PR.PKENNUNG =  40) then 'Probe zu einem Isolat (Keim/Pilz) ueber @SETEXTENSION, wenn Pkennung=null                                      '
+                   when (PR.PKENNUNG =  41) then 'QK                                                                                                             '
+                   when (PR.PKENNUNG =  48) then 'Online                                                                                                         '
+                   when (PR.PKENNUNG =  49) then 'Online                                                                                                         '
+                   when (PR.PKENNUNG =  50) then 'Pathologie. Proben zum Auftrag. Zugehörige Analysen definieren Material, Lokalisation und Leistungen           '
+                   when (PR.PKENNUNG =  51) then 'Pathologie. Unterproben zu Proben mit PKENNUNG=50                                                              '
+                   when (PR.PKENNUNG =  52) then 'Pathologie. Unterproben zu Unterproben mit PKENNUNG=51                                                         '
+                   when (PR.PKENNUNG =  53) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  54) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  55) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  56) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  57) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  58) then 'reserviert fuer Patho                                                                                          '
+                   when (PR.PKENNUNG =  59) then 'Pathologie Proben fuer Unterschriftsanalyte                                                                    '
+                   when (PR.PKENNUNG = 100) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 101) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 102) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 103) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 104) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 105) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 106) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 107) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 108) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 109) then 'Probenlager                                                                                                    '
+                   when (PR.PKENNUNG = 128) then 'Hygiene-Standard-Probe Infos zu: Entnahmestelle(ABNAHMEORT) Pruefkoerper(PBESCHREIBUNG) und Programm(PROBEKURZ)'
+                   when (PR.PKENNUNG = 129) then 'Hygiene Unterprobe zur Keimbestimmung(PRO_PROBEX zu 128)                                                       '
+                   when (PR.PKENNUNG = 130) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 131) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 132) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 133) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 134) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 135) then 'reserviert fuer Hygiene                                                                                        '
+                   when (PR.PKENNUNG = 255) then 'Allgemeine, nicht Probenbezogene Information = Hilfsanalyte, wie z.B.: Koerpergroesse,etc.                     '
+              end,
+  AuftragErfassDat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  AuftragErfassPers=P2.PERSONID,
+  A.AUFTRAGX,
+  PR.PROBEX
+
+
+from
+  TASKFLAG T ,
+  AUFTRAG A (index AUFTRAG_PK),
+  PROBE PR (index PROBE_FK2),
+  PERSON P1 (index PERSON_PK),
+  PERSON P2 (index PERSON_PK),
+  EINSENDER E (index EINSENDER_PK)
+
+where
+  T.TSTATUS = 1 and
+  A.AUFTRAGX = T.XREF and
+  PR.AUFTRAGX = A.AUFTRAGX and
+  PR.ETIKINFO is not null and
+--  PR.PSTATUS > 0 and
+  PR.STORNODAT is not null and
+  (PR.ETIKDRUCKDAT is null or PR.ETIKINFO <> PR.ETIKDRUCK) and
+--  PR.ETIKINFO <> PR.ETIKDRUCK and
+--  PR.ETIKINFO <> PR.ETIKDRUCK or (PR.PSTATUS = 0 and T.TSTATUS = 1) or (PR.ETIKDRUCKDAT is null and T.TSTATUS = 1)and
+  P1.PERSONX=PR.ERFASSPERS and
+  P2.PERSONX=A.ERFASSPERS and
+  E.EINSENDERX=A.EINSENDERX
+
+order by Einsender, AuftragNr
+
+go

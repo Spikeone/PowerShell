@@ -1,0 +1,37 @@
+-- set showplan on
+-- go
+-- set statistics time,io on
+-- go
+set nocount on
+select
+  A.AUFTRAGNR,
+  A.AUFTRAGDAT,
+  A.AUFTRAGX,
+  A.EINSENDERX,
+  A.ERFASSPERS
+into #temp1
+from AUFTRAG A (index AUFTRAG_PK1)
+where
+  dateadd(day,92,A.AUFTRAGDAT) > getdate()
+set nocount off
+select
+  t1.AUFTRAGNR,
+  Auftdat=convert(char(11),t1.AUFTRAGDAT ,104)+convert(char(8),t1.AUFTRAGDAT ,108)+' ',
+  E.EINSCODE,
+  ErfassPersAuft=P2.PERSONID,
+  AN.CODE,
+  Resultatstatus=R.STATUS,
+  AnfordPers=P.PERSONID,
+  Anforddat=convert(char(11),R.BEFUNDDAT ,104)+convert(char(8),R.BEFUNDDAT ,108)+' '
+--  Stornodat=convert(char(11),R.STORNODAT ,104)+convert(char(8),R.STORNODAT ,108)+' '
+from #temp1 t1, ANALYT AN (index ANALYT_PK) , PERSON P, PERSON P2, RESULTAT R, EINSENDER E
+where
+  R.AUFTRAGX = t1.AUFTRAGX and
+  R.STORNODAT is null and
+  P2.PERSONX=t1.ERFASSPERS and
+  R.LEISTUNGDAT is null and
+  R.BEFUNDDAT is not null and
+  P.PERSONX=R.ANFORDPERS and
+  AN.ANALYTX=R.ANALYTX and
+  E.EINSENDERX=t1.EINSENDERX
+go

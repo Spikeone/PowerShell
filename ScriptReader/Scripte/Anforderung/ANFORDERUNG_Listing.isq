@@ -1,0 +1,669 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [141009]                                                       */
+/*KURZINFO : Auslisten der Tabelle ANFORDERUNG für ein Formular             */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20141009.1913>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[141009] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+-- dieses Script wurde (wie man leicht sieht) aus der PR_ANFORDERUNG erstellt, mit ein paar Erweiterungen
+-- weitere Items zum Auslisten im unteren Teil des Scripts nach Bedarf entkommentarisieren!
+
+declare
+   @FORMULARCODE     varchar(16)
+   
+set nocount on
+/*******************************************************************************************************************************************/
+select @FORMULARCODE           =  'zROUTINE'    /* !!!!!! Anforderungen dieses Formulars auslisten                                 !!!!!!! */
+/*******************************************************************************************************************************************/
+   
+
+declare
+   @FORMULARX        int ,
+   @FORMULARTYP      smallint ,
+   @BARCODEX         int ,
+   @TARIFWERKX       int ,
+   @MITGRUPPEN       tinyint ,
+   @PSPRACHID        int ,
+   @NOEXEC           tinyint,
+   @EIGNER           int ,
+   @EXKLUSIV         char(1),
+   @strmessage       varchar(128),
+   @datum            varchar(64),
+   @sys_kurz         varchar(40)
+
+
+   select @FORMULARX = FORMULARX from FORMULAR where FORMULARCODE = @FORMULARCODE
+   if @FORMULARX is null 
+   begin
+   	 select @strmessage = 'Formular ' + @FORMULARCODE + ' ist unbekannt!'
+   	 print @strmessage
+     goto ende
+   end
+   select @FORMULARTYP = FORMULARTYP from FORMULAR where FORMULARX = @FORMULARX
+   select @MITGRUPPEN = 1
+
+   -- Tempo Tabelle anlegen
+   create table #temp(
+      ANFORDERUNGX int null,
+      PANFORDERUNGX int null,
+      ANFORDERUNGTYP smallint null,
+      FORMULARX int null,
+      KATALOGANFX int null,
+      PKATALOGANFX int null,
+      SORT int,
+      SUBSORT int,
+      SUBSUBSORT int,
+      EBENE int,
+      ART char(1) null,
+      ANALYTX int null,
+      PANALYTX int null,
+      ANA_ANALYTX int null,
+      MFAANALYTX int null,
+      DEFIX int null,
+      BEHAELTERX int null,
+      KENNUNG tinyint null,
+      AUSWAHL tinyint null,
+      LABELVAR varchar(32) null,
+      DISPICON int null,
+      PREIS money null,
+      PUNKTE int null,
+      BARCODEANFX int null)
+
+   -- Anforderungen in die Tabelle einfuegen
+   insert into #temp select
+      R.ANFORDERUNGX,   -- ANFORDERUNGX
+      null,             -- PANFORDERUNGX
+      R.ANFORDERUNGTYP, -- ANFORDERUNGTYP
+      R.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      null,             -- PKATALOGANFX
+      R.SORT,           -- SORT
+      0,                -- SUBSORT
+      0,                -- SUBSUBSORT
+      R.EBENE,          -- EBENE
+      R.ART,            -- ART
+      R.ANALYTX,        -- ANALYTX
+      R.PANALYTX,       -- PANALYTX
+      null,             -- ANA_ANALYTX
+      case when (A.KENNUNG = 7) then R.ANALYTX else null end,  -- MFAANALYTX
+      R.DEFIX,          -- DEFIX
+      R.BEHAELTERX,     -- BEHAELTERX
+      A.KENNUNG,        -- KENNUNG
+      R.AUSWAHL,        -- AUSWAHL
+      R.LABELVAR,       -- LABELVAR
+      R.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      ANFORDERUNG R (index ANFORDERUNG_FK1), -- FORMULARX
+      ANALYT A (index ANALYT_PK)             -- ANALYTX
+   where
+      R.FORMULARX = @FORMULARX
+      and R.KATALOGANFX is null  -- abgeleitete Anforderungen aus dem Katalog erst im zweiten Schritt einfuegen
+      and R.STORNODAT is null
+      and R.ANALYTX *= A.ANALYTX
+      and A.AKTIVBIS is null
+      and A.STORNODAT is null
+
+   if (@FORMULARTYP = 1)
+   begin
+      -- abgeleitete Anforderungen aus dem Katalog einfuegen
+      insert into #temp select
+         O.ANFORDERUNGX,   -- ANFORDERUNGX
+         null,             -- PANFORDERUNGX
+         R.ANFORDERUNGTYP, -- ANFORDERUNGTYP
+         R.FORMULARX,      -- FORMULARX
+         O.KATALOGANFX,    -- KATALOGANFX
+         null,             -- PKATALOGANFX
+         O.SORT,           -- SORT
+         0,                -- SUBSORT
+         0,                -- SUBSUBSORT
+         O.EBENE,          -- EBENE
+         R.ART,            -- ART
+         R.ANALYTX,        -- ANALYTX
+         R.PANALYTX,       -- PANALYTX
+         null,             -- ANA_ANALYTX
+         case when (A.KENNUNG = 7) then R.ANALYTX else null end,  -- MFAANALYTX
+         R.DEFIX,          -- DEFIX
+         R.BEHAELTERX,     -- BEHAELTERX
+         A.KENNUNG,        -- KENNUNG
+         R.AUSWAHL,        -- AUSWAHL
+         R.LABELVAR,       -- LABELVAR
+         R.DISPICON,       -- DISPICON
+         null,             -- PREIS
+         null,             -- PUNKTE
+         null              -- BARCODEANFX
+      from
+         ANFORDERUNG O (index ANFORDERUNG_FK1), -- FORMULARX
+         ANFORDERUNG R (index ANFORDERUNG_PK),  -- ANFORDERUNGX
+         ANALYT A (index ANALYT_PK)             -- ANALYTX
+      where
+         O.FORMULARX = @FORMULARX
+         and O.STORNODAT is null
+         and O.KATALOGANFX = R.ANFORDERUNGX
+         and R.STORNODAT is null
+         and R.ANALYTX *= A.ANALYTX
+         and A.AKTIVBIS is null
+         and A.STORNODAT is null
+   end -- if (@FORMULARTYP = 1)
+
+   if (@MITGRUPPEN is null or @MITGRUPPEN <> 1) goto ende
+
+   -- Block, MFA- und Ketten-Anforderungen aufloesen
+   insert into #temp select
+      null,             -- ANFORDERUNGX
+      T.ANFORDERUNGX,   -- PANFORDERUNGX
+      3,                -- ANFORDERUNGTYP = Einzel-Anforderung
+      T.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      null,             -- PKATALOGANFX
+      T.SORT,           -- SORT
+      G.SORT,           -- SUBSORT
+      0,                -- SUBSUBSORT
+      T.EBENE + 1,      -- EBENE
+      "R",              -- ART
+      G.ANALYTX,        -- ANALYTX
+      isnull(T.PANALYTX, G.ANA_ANALYTX),  -- PANALYTX
+      G.ANA_ANALYTX,    -- ANA_ANALYTX
+      case when (T.ANFORDERUNGTYP = 7) then G.ANA_ANALYTX else null end,  -- MFAANALYTX
+      null,             -- DEFIX
+      T.BEHAELTERX,     -- BEHAELTERX
+      null,             -- KENNUNG
+      case when (isnull(A.ANAFLAG,0) & 1) = 0 then 2 else 8 end,  -- AUSWAHL = 2:gesperrt, 8:unsichtbar
+      T.LABELVAR,       -- LABELVAR
+      T.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      #temp T,
+      METHGRUPPE G,
+      ANALYT A
+   where
+      T.ANFORDERUNGTYP in (6, 7, 8) -- Block (6) oder MFA (7) oder Kette (8)
+      and T.ANALYTX = G.ANA_ANALYTX
+      and G.ANALYTX = A.ANALYTX
+      and A.AKTIVBIS is null
+      and A.STORNODAT is null
+
+   -- Block (33) oder MFA (34) oder Kette (35) mit Abnahmeort aufloesen
+   insert into #temp select
+      null,             -- ANFORDERUNGX
+      T.ANFORDERUNGX,   -- PANFORDERUNGX
+      27,               -- ANFORDERUNGTYP = Einzel mit Abnahmeort
+      T.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      null,             -- PKATALOGANFX
+      T.SORT,           -- SORT
+      G.SORT,           -- SUBSORT
+      0,                -- SUBSUBSORT
+      T.EBENE + 1,      -- EBENE
+      "R",              -- ART
+      G.ANALYTX,        -- ANALYTX
+      isnull(T.PANALYTX, G.ANA_ANALYTX),  -- PANALYTX
+      G.ANA_ANALYTX,    -- ANA_ANALYTX
+      case when (T.ANFORDERUNGTYP = 34) then G.ANA_ANALYTX else null end,  -- MFAANALYTX
+      null,             -- DEFIX
+      T.BEHAELTERX,     -- BEHAELTERX
+      null,             -- KENNUNG
+      case when (isnull(A.ANAFLAG,0) & 1) = 0 then 2 else 8 end,  -- AUSWAHL = 2:gesperrt, 8:unsichtbar
+      T.LABELVAR,       -- LABELVAR
+      T.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      #temp T,
+      METHGRUPPE G,
+      ANALYT A
+   where
+      T.ANFORDERUNGTYP in (33, 34, 35) -- Block (33) oder MFA (34) oder Kette (45)
+      and T.ANALYTX = G.ANA_ANALYTX
+      and G.ANALYTX = A.ANALYTX
+      and A.AKTIVBIS is null
+      and A.STORNODAT is null
+
+   -- Analyt-Gruppenauswahl-Anforderungen aufloesen
+   insert into #temp select
+      null,             -- ANFORDERUNGX
+      T.ANFORDERUNGX,   -- PANFORDERUNGX
+      3,                -- ANFORDERUNGTYP = Einzel-Anforderung
+      T.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      T.KATALOGANFX,    -- PKATALOGANFX
+      T.SORT,           -- SORT
+      G.SORT,           -- SUBSORT
+      0,                -- SUBSUBSORT
+      T.EBENE + 1,      -- EBENE
+      T.ART,            -- ART
+      G.ANALYTX,        -- ANALYTX
+      isnull(T.PANALYTX, G.ANA_ANALYTX),  -- PANALYTX
+      G.ANA_ANALYTX,    -- ANA_ANALYTX
+      null,             -- MFAANALYTX
+      null,             -- DEFIX
+      T.BEHAELTERX,     -- BEHAELTERX
+      null,             -- KENNUNG
+      T.AUSWAHL,        -- AUSWAHL
+      T.LABELVAR,       -- LABELVAR
+      T.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      #temp T,
+      METHGRUPPE G,
+      ANALYT A
+   where
+      T.ANFORDERUNGTYP = 11
+      and T.ANALYTX = G.ANA_ANALYTX
+      and G.ANALYTX = A.ANALYTX
+      and A.AKTIVBIS is null
+      and A.STORNODAT is null
+
+   -- Alle Gruppen nochmals aufloesen (Verschachtelung)
+   insert into #temp select
+      null,             -- ANFORDERUNGX
+      T.PANFORDERUNGX,  -- PANFORDERUNGX
+      T.ANFORDERUNGTYP, -- ANFORDERUNGTYP
+      T.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      null,             -- PKATALOGANFX
+      T.SORT,           -- SORT
+      T.SUBSORT,        -- SUBSORT
+      G.SORT,           -- SUBSUBSORT
+      T.EBENE,          -- EBENE
+      T.ART,            -- ART
+      G.ANALYTX,        -- ANALYTX
+      T.PANALYTX,       -- PANALYTX
+      G.ANA_ANALYTX,    -- ANA_ANALYTX
+      T.MFAANALYTX,     -- MFAANALYTX
+      null,             -- DEFIX
+      T.BEHAELTERX,     -- BEHAELTERX
+      1,                -- KENNUNG = ab hier nur noch Einzelanalysen
+      case when (isnull(A.ANAFLAG,0) & 1) = 0 then 2 else 8 end,  -- AUSWAHL = 2:gesperrt, 8:unsichtbar
+      T.LABELVAR,       -- LABELVAR
+      T.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      #temp T,
+      METHGRUPPE G,
+      ANALYT A
+   where
+      T.ANA_ANALYTX is not null
+      and T.ANALYTX = G.ANA_ANALYTX
+      and G.ANALYTX = A.ANALYTX
+      and A.AKTIVBIS is null
+      and A.STORNODAT is null
+
+   -- Analyt-Anforderungen aufloesen
+   insert into #temp select
+      null,             -- ANFORDERUNGX
+      T.ANFORDERUNGX,   -- PANFORDERUNGX
+      41,               -- ANFORDERUNGTYP = Analyt-Anforderung
+      T.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      T.KATALOGANFX,    -- PKATALOGANFX
+      T.SORT,           -- SORT
+      G.SORT,           -- SUBSORT
+      0,                -- SUBSUBSORT
+      T.EBENE + 1,      -- EBENE
+      T.ART,            -- ART
+      G.ANALYTX,        -- ANALYTX
+      isnull(T.PANALYTX, G.ANA_ANALYTX),  -- PANALYTX = Analyt das angefordert wurde
+      G.ANA_ANALYTX,    -- ANA_ANALYTX = unmittelbar uebergeordnetes Analyt
+      case when (A.KENNUNG = 7) then G.ANALYTX when (T.KENNUNG = 7) then G.ANA_ANALYTX else null end,  -- MFAANALYTX
+      null,             -- DEFIX
+      T.BEHAELTERX,     -- BEHAELTERX
+      A.KENNUNG,        -- KENNUNG
+      case when (isnull(A.ANAFLAG,0) & 1) = 0 then 2 else 8 end,  -- AUSWAHL = 2:gesperrt, 8:unsichtbar
+      T.LABELVAR,       -- LABELVAR
+      T.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      #temp T,
+      METHGRUPPE G,
+      ANALYT A
+   where
+      T.ANFORDERUNGTYP = 41         -- nur Analyt-Anforderungen
+      and T.KENNUNG in (6, 7, 8)    -- Kette (6) oder MFA (7) oder Block (8)
+      and T.ANALYTX = G.ANA_ANALYTX
+      and G.ANALYTX = A.ANALYTX
+      and A.AKTIVBIS is null
+      and A.STORNODAT is null
+
+   -- Analyt-Anforderungen nochmals aufloesen (Verschachtelung)
+   insert into #temp select
+      null,             -- ANFORDERUNGX
+      T.PANFORDERUNGX,  -- PANFORDERUNGX
+      41,               -- ANFORDERUNGTYP = Analyt-Anforderung
+      T.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      T.PKATALOGANFX,   -- PKATALOGANFX
+      T.SORT,           -- SORT
+      T.SUBSORT,        -- SUBSORT
+      G.SORT,           -- SUBSUBSORT
+      T.EBENE,          -- EBENE
+      T.ART,            -- ART
+      G.ANALYTX,        -- ANALYTX
+      T.PANALYTX,       -- PANALYTX = Analyt das angefordert wurde
+      G.ANA_ANALYTX,    -- ANA_ANALYTX = unmittelbar uebergeordnetes Analyt
+      case when (T.KENNUNG = 7) then G.ANA_ANALYTX else null end,  -- MFAANALYTX
+      null,             -- DEFIX
+      T.BEHAELTERX,     -- BEHAELTERX
+      1,                -- KENNUNG = ab hier nur noch Einzelanalysen
+      case when (isnull(A.ANAFLAG,0) & 1) = 0 then 2 else 8 end,  -- AUSWAHL = 2:gesperrt, 8:unsichtbar
+      T.LABELVAR,       -- LABELVAR
+      T.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      #temp T,
+      METHGRUPPE G,
+      ANALYT A
+   where
+      T.ANFORDERUNGTYP = 41
+      and T.ANA_ANALYTX is not null -- als Bestandteil einer Gruppe eingefügt
+      and T.KENNUNG in (6, 7, 8)    -- Kette (6) oder MFA (7) oder Block (8)
+      and T.ANALYTX = G.ANA_ANALYTX
+      and G.ANALYTX = A.ANALYTX
+      and A.AKTIVBIS is null
+      and A.STORNODAT is null
+
+   -- Text-Gruppenauswahl-Anforderungen aufloesen
+   insert into #temp select
+      null,             -- ANFORDERUNGX
+      T.ANFORDERUNGX,   -- PANFORDERUNGX
+      4,                -- ANFORDERUNGTYP = Einzeltext-Anforderung
+      T.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      T.KATALOGANFX,    -- PKATALOGANFX
+      T.SORT,           -- SORT
+      G.SORT,           -- SUBSORT
+      0,                -- SUBSUBSORT
+      T.EBENE + 1,      -- EBENE
+      T.ART,            -- ART
+      T.ANALYTX,        -- ANALYTX
+      T.PANALYTX,       -- PANALYTX
+      null,             -- ANA_ANALYTX
+      null,             -- MFAANALYTX
+      G.DEFIX,          -- DEFIX
+      T.BEHAELTERX,     -- BEHAELTERX
+      null,             -- KENNUNG
+      T.AUSWAHL,        -- AUSWAHL
+      T.LABELVAR,       -- LABELVAR
+      T.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      #temp T,
+      DEFIGRUPPE G
+   where
+      T.ANFORDERUNGTYP = 12
+      and T.DEFIX = G.DEF_DEFIX
+
+   -- Mikrobiologie-Material aufloesen
+   insert into #temp select
+      null,             -- ANFORDERUNGX
+      T.ANFORDERUNGX,   -- PANFORDERUNGX
+      4,                -- ANFORDERUNGTYP = Einzeltext-Anforderung
+      T.FORMULARX,      -- FORMULARX
+      null,             -- KATALOGANFX
+      null,             -- PKATALOGANFX
+      T.SORT,           -- SORT
+      G.SORT,           -- SUBSORT
+      0,                -- SUBSUBSORT
+      T.EBENE + 1,      -- EBENE
+      "R",              -- ART
+      T.ANALYTX,        -- ANALYTX
+      null,             -- PANALYTX
+      null,             -- ANA_ANALYTX
+      null,             -- MFAANALYTX
+      G.DEFIX,          -- DEFIX
+      T.BEHAELTERX,     -- BEHAELTERX
+      null,             -- KENNUNG
+      T.AUSWAHL,        -- AUSWAHL
+      T.LABELVAR,       -- LABELVAR
+      T.DISPICON,       -- DISPICON
+      null,             -- PREIS
+      null,             -- PUNKTE
+      null              -- BARCODEANFX
+   from
+      #temp T,
+      DEFIGRUPPE G
+   where
+      T.ANFORDERUNGTYP = 26
+      and T.DEFIX = G.DEF_DEFIX
+
+   -- Barcode einbringen
+   if (@BARCODEX is not null)
+   begin
+      update #temp set
+         BARCODEANFX = B.BARCODEANFX
+      from
+         BARCODEANF B (index BARCODEANF_FK1)
+      where
+         #temp.AUSWAHL > 0
+         and B.BARCODEX = @BARCODEX
+         and #temp.ART = B.ART
+         and #temp.ANALYTX = B.ANALYTX
+         and ((#temp.DEFIX is null and B.ERGEBNISD is null) or #temp.DEFIX = B.ERGEBNISD)
+         and ((#temp.PANALYTX is null and B.PANALYTX is null) or #temp.PANALYTX = B.PANALYTX)
+         and ((#temp.BEHAELTERX is null and B.BEHAELTERX is null) or #temp.BEHAELTERX = B.BEHAELTERX)
+      -- and ((#temp.MFAANALYTX... entfaellt, wird in BARCODEANF nicht verwendet
+         and B.STORNODAT is null
+   end -- if (@BARCODEX is not null)
+
+   -- Tarikwerk herausfinden
+   if (@TARIFWERKX is null) select @TARIFWERKX = TARIFWERKX from FORMULAR where FORMULARX = @FORMULARX
+
+   -- Tarifwerk testen
+   if (@TARIFWERKX is not null)
+   begin
+      -- Tarifwerk einbringen
+      declare @faktor real, @punktwert money, @punktwert2 numeric(11,8)
+      select @faktor = FAKTOR, @punktwert = PUNKTWERT, @punktwert2 = PUNKTWERT2 from TARIFWERK where TARIFWERKX = @TARIFWERKX
+      if (@punktwert2 is null) select @punktwert2 = @punktwert
+      if (@punktwert2 is not null and @punktwert2 > 0 and @faktor is not null and @faktor > 0)
+      begin
+         -- Normaltarife mit Faktor und Punktwert einbringen
+         update #temp set
+            PREIS = isnull(nullif(F.GPUNKTEINTERN * @punktwert2 * @faktor, 0), F.GPREISINTERN),
+            PUNKTE = F.GPUNKTEINTERN
+         from
+            TARIF F (index TARIF_PK)
+         where
+            #temp.ART = 'R' and #temp.AUSWAHL > 0
+            and #temp.ANALYTX = F.ANALYTX
+            and F.TARIFWERKX = @TARIFWERKX
+            and F.STORNODAT is null
+      end
+      else begin
+         -- Normaltarife nur mit Festpreisen einbringen
+         update #temp set
+            PREIS = F.GPREISINTERN,
+            PUNKTE = F.GPUNKTEINTERN
+         from
+            TARIF F (index TARIF_PK)
+         where
+            #temp.ART = 'R' and #temp.AUSWAHL > 0
+            and #temp.ANALYTX = F.ANALYTX
+            and F.TARIFWERKX = @TARIFWERKX
+            and F.STORNODAT is null
+      end
+      -- Sondertarife einbringen: WERT
+      if (@faktor is not null and @faktor > 0)
+      begin
+         update #temp set
+            PREIS = F.WERT * @faktor
+         from
+            TARIF F (index TARIF_PK)
+         where
+            #temp.ART = 'R' and #temp.AUSWAHL > 0
+            and #temp.ANALYTX = F.ANALYTX
+            and F.TARIFWERKX = @TARIFWERKX
+            and F.WERT is not null
+            and F.WERT <> 0
+            and F.STORNODAT is null
+      end
+      -- Sondertarife einbringen: FAKTOR
+      if (@punktwert2 is not null and @punktwert2 > 0)
+      begin
+         update #temp set
+            PREIS = F.GPUNKTEINTERN * @punktwert2 * F.FAKTOR
+         from
+            TARIF F (index TARIF_PK)
+         where
+            #temp.ART = 'R' and #temp.AUSWAHL > 0
+            and #temp.ANALYTX = F.ANALYTX
+            and F.TARIFWERKX = @TARIFWERKX
+            and F.FAKTOR is not null
+            and F.FAKTOR <> 0
+            and F.STORNODAT is null
+      end
+      -- Sondertarife einbringen: PREIS
+      update #temp set
+         PREIS = F.PREIS
+      from
+         TARIF F (index TARIF_PK)
+      where
+         #temp.ART = 'R' and #temp.AUSWAHL > 0
+         and #temp.ANALYTX = F.ANALYTX
+         and F.TARIFWERKX = @TARIFWERKX
+         and F.PREIS is not null
+         and F.PREIS <> 0
+         and F.STORNODAT is null
+   end -- if (@TARIFWERKX is not null)
+
+   -- Ergebnis aus Tempo Tabelle ausgeben
+ 	 select @datum=', ausgeführt am: ' + convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)+' '
+ 	 select @sys_kurz = ' für System: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+ 	 select @strmessage = ' Lauris: Alle Anforderungen im Formular ' + @FORMULARCODE + @datum + @sys_kurz
+ 	 print @strmessage
+ 	 print ''
+   set nocount off   
+   select
+        Anforderungtyp = substring(FW1.FWTEXT1,1,24),
+        Analytkennung = substring(FW2.FWTEXT1,1,24),
+--      T.ANFORDERUNGX,
+--      T.PANFORDERUNGX,
+--      T.ANFORDERUNGTYP,
+--      T.FORMULARX,
+--      T.KATALOGANFX,
+--      T.PKATALOGANFX,
+--      T.SORT,
+--      T.SUBSORT,
+--      T.SUBSUBSORT,
+--      T.EBENE,
+      AnfArt = T.ART,
+--      T.ANALYTX,
+      A.CODE as ANALYTCODE,
+--      A.KENNUNG,
+      Beschreibung = case when R.BESCHREIBUNG is null then substring(A.BESCHREIBUNG,1,64)
+                          when R.BESCHREIBUNG is not null then substring(R.BESCHREIBUNG,1,64)
+                     end,
+--      A.EINHEIT,
+--      A.DEFTEXT as ANALYTDEFTEXT,
+--      A.DEFWERT as ANALYTDEFWERT,
+--      A.DEFDEFIX as ANALYTDEFDEFIX,
+--      A.DEFERFASS,
+--      A.DEFMATERIALX,
+--      A.VOLUMEN as ANALYTVOLUMEN,
+--      A.ANAFLAG,
+--      A.KOMMASTELLE,
+--      T.PANALYTX,
+      P.CODE as PANALYTCODE,
+--      T.ANA_ANALYTX,
+--      T.MFAANALYTX,
+--      T.DEFIX,
+--      D.DEFICODE,
+--      D.TEXT as DEFITEXT,
+--      T.BEHAELTERX,
+      B.BEHAELTERCODE,
+--      B.BEHAELTERNAME,
+--      B.MATERIALX,
+      M.MATCODE,
+      M.MATERIALKREISNR,
+--      M.FKTESTVON,
+--      M.FKTESTBIS,
+--      M.MATNRVON,
+--      M.MATNRBIS,      
+--      B.FARBE,
+--      B.ZUSATZ,
+--      B.LABOR,
+      B.MATEXT,
+--      B.ZEITOFFSET,
+--      B.VOLUMEN as BEHAELTERVOLUMEN,
+--      B.LAYOUTNAME,
+--      B.BARCODE,
+--      R.BEHAELTERID,
+--      R.ANZAHLBEHAELTER,
+--      R.BESCHREIBUNG,
+--      R.AUSGABEFORM,
+--      T.AUSWAHL,
+--      R.STEUERUNG,
+--      R.BISDRING,
+--      R.DEFTEXT,
+--      R.DEFWERT,
+      T.LABELVAR,
+--      R.VOLUMEN,
+      R.NACHFORDERN
+--      T.DISPICON,
+--      R.DISPFORMAT,
+--      T.PREIS,
+--      T.PUNKTE
+--      T.BARCODEANFX,
+--      C.BARPOSITION,
+--      C.BARBREITE,
+--      C.BARINHALT
+   from
+      #temp T,
+      ANFORDERUNG R (index ANFORDERUNG_PK),
+      ANALYT A (index ANALYT_PK),
+      ANALYT P (index ANALYT_PK),
+      DEFI D (index DEFI_PK),
+      BEHAELTER B (index BEHAELTER_PK),
+      MATERIAL M (index MATERIAL_PK),
+      BARCODEANF C (index BARCODEANF_PK),
+      FESTWERT FW1,
+      FESTWERT FW2
+
+   where
+      isnull(T.KATALOGANFX, T.ANFORDERUNGX) *= R.ANFORDERUNGX
+      and T.ANALYTX *= A.ANALYTX
+      and T.PANALYTX *= P.ANALYTX
+      and T.DEFIX *= D.DEFIX
+      and T.BEHAELTERX *= B.BEHAELTERX
+      and B.MATERIALX *= M.MATERIALX
+      and T.BARCODEANFX *= C.BARCODEANFX
+      and FW1.SPRACHID = 10 
+      and FW1.TABELLE = 'ANFORDERUNG' 
+      and FW1.SPALTE = 'ANFORDERUNGTYP' 
+      and FW1.INTWERT = T.ANFORDERUNGTYP 
+      and FW2.SPRACHID = 10 
+      and FW2.TABELLE = 'ANALYT' 
+      and FW2.SPALTE = 'KENNUNG' 
+      and FW2.INTWERT =* A.KENNUNG 
+   order by
+      T.SORT,
+      T.SUBSORT,
+      T.SUBSUBSORT
+
+ende:
+go
+/*Dateiende*/
+
+
+

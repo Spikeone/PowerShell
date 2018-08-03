@@ -1,0 +1,119 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 10.03.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLCLUSTER           Windows 2003 Cluster Adaptive Server Enterprise/12.5.3/EBF 13061 ESD#5/P/NT (IX86)/OS 4.0/ase1253/1939/32-bit/OPT/Tue Dec 06 00:21:31 2005                                                                                                                                           
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    27.01.10  19:21                 
+ swissup3.tab                       2.08 $    27.01.10  19:08                 
+ swlupgrade.tab                     2.20.1 $  30.03.10  16:39                 
+ Lauris (via lauris.ini)            1.03 $    27.01.10  19:17                 
+ Blutbank (via barkasse.pro)        1.06 $    30.03.10  16:38                 
+ Statistik (via statistik.pro)      1.01 $    13.09.10  12:27                 
+ BB-Statistik (via spendestat.pro)  1.21 $    27.01.10  19:15                 
+                                                                              
+ neu:KE_PR_MONATSSTATISTIK                    02.03.11  17:05 SWISSLAB        
+ neu:sp_ke_KONSSTATQUARTAL                    14.02.11  19:56 SWISSLAB        
+ neu:sp_ke_TMDRERUNS                1.01 $    07.02.11  20:32 SWISSLAB        
+ neu:sp_ke_KONSERVEBLUTGR                     28.01.11  12:31 SWISSLAB        
+ neu:sp_ke_RKI_QUARTALSSTATISTIK              26.01.11  12:10 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                         402 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#7.01.17# FW=#2.0.50727.42# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                      
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#10.01.08# FW=#2.0.50727.1433# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                   
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                  6004            2114           5 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                Mikro            Mikrobiologie                                                    
+                                KAMB             Kardiologische Ambulanz                                          
+                                CHAMB            Ambulanz Dr. Körtke                                              
+                                VIRPCR           Virologie (Direktnachweise, PCR)                                 
+                                Mikro_GMK        Mikrobiologie                                                    
+                                KIAMB            Kinderkardiologie Ambulanz                                       
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ CLIENT   POCTGRUPPE       0         NULL             AB_Test    NULL             NULL       NULL     17.02.2011 14:54:00  KHEM                                  NULL                    10882          -1          -1 LAURIS          NULL      0       31         204 
+ CLIENT   POCTGRUPPE       0         NULL             CO-06504   NULL             NULL       NULL     01.03.2011 10:45:00  KHEM                                  NULL                    10906          -1          -1 LAURIS          NULL      0       31         186 
+ CLIENT   POCTGRUPPE       0         NULL             PC-04852   NULL             NULL       NULL     24.02.2011 09:52:00  KHEM                                  NULL                    10904          -1          -1 LAURIS          NULL      0       31         191 
+ CLIENT   POCTGRUPPE       0         NULL             PC-05073   NULL             NULL       NULL     23.02.2011 17:31:00  KHEM                                  NULL                    10900          -1          -1 LAURIS          NULL      0       31         214 
+ CLIENT   POCTGRUPPE       0         NULL             PC-05358   NULL             NULL       NULL     18.02.2011 13:54:00  KHEM                                  NULL                    10893          -1          -1 LAURIS          NULL      0       31         186 
+ CLIENT   POCTGRUPPE       0         NULL             PC-05363   NULL             NULL       NULL     28.04.2010 13:29:00  WK                                    NULL                     9014          -1          -1 LAURIS          NULL      0       31         162 
+ CLIENT   POCTGRUPPE       0         NULL             PC-06253   NULL             NULL       NULL     14.02.2011 17:54:00  KHEM                                  NULL                    10842          -1          -1 LAURIS          NULL      0       31         197 
+ CLIENT   POCTGRUPPE       0         NULL             PC-06257   NULL             NULL       NULL     18.02.2011 13:55:00  KHEM                                  NULL                    10894          -1          -1 LAURIS          NULL      0       31         186 
+ CLIENT   POCTGRUPPE       0         NULL             PC-06541   NULL             NULL       NULL     10.02.2011 11:33:00  KHEM                                  NULL                    10820          -1          -1 LAURIS          NULL      0       31         184 
+ CLIENT   POCTGRUPPE       0         NULL             PC-07167   NULL             NULL       NULL     17.02.2011 14:14:00  KHEM                                  NULL                    10864          -1          -1 LAURIS          NULL      0       31         204 
+ CLIENT   POCTGRUPPE       0         NULL             PC-07168   NULL             NULL       NULL     17.02.2011 14:55:00  ALE                                   NULL                    10892          -1          -1 LAURIS          NULL      0       31         204 
+ CLIENT   POCTGRUPPE       0         NULL             PC-07169   NULL             NULL       NULL     17.02.2011 14:14:00  KHEM             17.02.2011 14:54:00  KHEM                    10866          -1          -1 LAURIS          NULL      0       31         204 
+ CLIENT   POCTGRUPPE       0         NULL             PC-07174   NULL             NULL       NULL     17.02.2011 14:13:00  KHEM                                  NULL                    10863          -1          -1 LAURIS          NULL      0       31         204 
+ CLIENT   POCTGRUPPE       0         NULL             PC-07610   NULL             NULL       NULL     10.02.2011 11:07:00  KHEM             10.02.2011 14:41:00  KHEM                    10818          -1          -1 LAURIS          NULL      0       31         177 
+ CLIENT   POCTGRUPPE       0         NULL             PC-07612   NULL             NULL       NULL     16.02.2011 14:24:00  KHEM                                  NULL                    10848          -1          -1 LAURIS          NULL      0       31         195 
+ CLIENT   POCTGRUPPE       0         NULL             PC-07613   NULL             NULL       NULL     16.02.2011 14:24:00  KHEM                                  NULL                    10849          -1          -1 LAURIS          NULL      0       31         195 
+ CLIENT   POCTGRUPPE       0         NULL             ST-CHIV-06 NULL             NULL       NULL     10.02.2011 14:42:00  KHEM                                  NULL                    10824          -1          -1 LAURIS          NULL      0       31         177 
+ CLIENT   POCTGRUPPE       0         NULL             ST-KK1A-06 NULL             NULL       NULL     23.02.2011 17:29:00  KHEM                                  NULL                    10898          -1          -1 LAURIS          NULL      0       31         191 
+ CLIENT   POCTGRUPPE       0         NULL             ST-KKI-060 NULL             NULL       NULL     23.02.2011 17:32:00  KHEM                                  NULL                    10902          -1          -1 LAURIS          NULL      0       31         214 
+ CLIENT   POCTGRUPPE       0         NULL             NULL       ALESCHINSKI      NULL       NULL     22.11.2010 16:08:00  KHEM                                  NULL                    10340          -1          -1 LAURIS          2556      0       31         177 
+ CLIENT   POCTGRUPPE       0         NULL             NULL       CROECKERS        NULL       NULL     19.02.2010 14:16:00  KHEM                                  NULL                     8764          -1          -1 LAURIS          2330      0       31         162 
+ CLIENT   POCTGRUPPE       0         NULL             NULL       MRUDLOFF         NULL       NULL     01.03.2011 10:48:00  KHEM                                  NULL                    10908          -1          -1 LAURIS          2620      0       31         186 
+ CLIENT   POCTGRUPPE       0         NULL             NULL       WKOESTER-EISERFU NULL       NULL     17.05.2010 10:03:00  WK                                    NULL                     9168          -1          -1 LAURIS          1834      0       31         162 
+ CLIENT   POCTGRUPPE       0         NULL             NULL       ladmin           NULL       NULL     10.02.2011 11:47:00  KHEM             15.02.2011 10:17:00  KHEM                    10822          -1          -1 LAURIS           813      0       31         186 
+ CLIENT   POCTGRUPPE       0         NULL             NULL       thie             NULL       NULL     02.11.2010 19:12:00  KHEM                                  NULL                    10226          -1          -1 LAURIS          1977      0       31         177 
+ CLIENT   POCTKOMMENT      0         NULL             PC-05363   NULL             NULL       NULL     28.04.2010 13:41:00  WK                                    NULL                     9015          -1          -1 LAURIS          NULL      0       14        2675 
+ CLIENT   POCTQC           0         NULL             AB_Test    NULL             NULL       NULL     17.02.2011 14:54:00  KHEM                                  NULL                    10883          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             CO-06504   NULL             NULL       NULL     01.03.2011 10:45:00  KHEM                                  NULL                    10905          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-04852   NULL             NULL       NULL     24.02.2011 09:52:00  KHEM                                  NULL                    10903          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-05073   NULL             NULL       NULL     23.02.2011 17:31:00  KHEM                                  NULL                    10899          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-05358   NULL             NULL       NULL     15.02.2011 10:35:00  KHEM                                  NULL                    10843          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-05363   NULL             NULL       NULL     28.04.2010 13:13:00  WK                                    NULL                     9012          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-06253   NULL             NULL       NULL     14.02.2011 17:54:00  KHEM                                  NULL                    10841          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-06257   NULL             NULL       NULL     15.02.2011 10:35:00  KHEM                                  NULL                    10846          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-06541   NULL             NULL       NULL     10.02.2011 11:33:00  KHEM                                  NULL                    10819          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-07167   NULL             NULL       NULL     17.02.2011 14:14:00  KHEM                                  NULL                    10865          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-07168   NULL             NULL       NULL     17.02.2011 14:55:00  ALE                                   NULL                    10891          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-07169   NULL             NULL       NULL     17.02.2011 14:14:00  KHEM             17.02.2011 14:54:00  KHEM                    10867          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-07174   NULL             NULL       NULL     17.02.2011 14:13:00  KHEM                                  NULL                    10862          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-07610   NULL             NULL       NULL     10.02.2011 11:07:00  KHEM                                  NULL                    10817          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-07612   NULL             NULL       NULL     16.02.2011 14:24:00  KHEM                                  NULL                    10847          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             PC-07613   NULL             NULL       NULL     16.02.2011 14:24:00  KHEM                                  NULL                    10850          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             ST-CHIV-06 NULL             NULL       NULL     10.02.2011 14:42:00  KHEM                                  NULL                    10823          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             ST-KK1A-06 NULL             NULL       NULL     23.02.2011 17:29:00  KHEM                                  NULL                    10897          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             ST-KKI-060 NULL             NULL       NULL     23.02.2011 17:32:00  KHEM                                  NULL                    10901          -1          -1 LAURIS          NULL      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       ALESCHINSKI      NULL       NULL     22.11.2010 16:08:00  KHEM                                  NULL                    10341          -1          -1 LAURIS          2556      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       CROECKERS        NULL       NULL     05.02.2010 13:41:00  KHEM                                  NULL                     8739          -1          -1 LAURIS          2330      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       MRUDLOFF         NULL       NULL     01.03.2011 10:48:00  KHEM                                  NULL                    10907          -1          -1 LAURIS          2620      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       WKOESTER-EISERFU NULL       NULL     17.05.2010 10:03:00  WK                                    NULL                     9169          -1          -1 LAURIS          1834      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       ladmin           NULL       NULL     10.02.2011 11:47:00  KHEM                                  NULL                    10821          -1          -1 LAURIS           813      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       thie             NULL       NULL     02.11.2010 19:12:00  KHEM                                  NULL                    10225          -1          -1 LAURIS          1977      0        0           1 

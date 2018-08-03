@@ -1,0 +1,97 @@
+/* Parameter deklarieren         */
+
+declare
+  @Patistammnr    varchar(32),
+  @Patistammx     int
+
+set nocount on
+
+
+/* ------------------------------------------------------------------------------------------- */
+select @Patistammnr = '08150314'   /* !!!!!! hier die zu beforschende PATISTAMMNR eintragen !! */
+/* ------------------------------------------------------------------------------------------- */
+
+
+select @Patistammx = 0
+select @Patistammx = PATISTAMMX from PATISTAMM where PATISTAMMNR = @Patistammnr and STORNODAT is null 
+
+if @Patistammx = 0 
+  begin
+    print ' Fehler, PATISTAMMNR unbekannt ' 
+  end
+set nocount off
+
+select
+ PS.PATISTAMMNR,
+ PF.PATIFALLNR,
+ PF.ERFASSDAT,
+ PF.AUFTRAGLETZT,
+ E1.EINSCODE
+from
+ PATISTAMM PS,
+ PATIFALL PF,
+ EINSENDER E1
+where
+ PS.PATISTAMMX=@Patistammx and
+ PF.PATISTAMMX=PS.PATISTAMMX and
+ E1.EINSENDERX =* PF.EINSENDERX
+
+
+print ''
+print ''
+print 'Auftraege in SWISSLAB'
+select
+ PS.PATISTAMMNR,
+ PF.PATIFALLNR,
+ PF.ERFASSDAT,
+ PF.AUFTRAGLETZT,
+ AU.AUFTRAGNR,
+ AU.AUFTRAGX,
+ E1.EINSCODE,
+ DO.DOKUMENTX,
+ DOTYP.FORMAT
+from
+ PATISTAMM PS,
+ PATIFALL PF,
+ AUFTRAG AU,
+ EINSENDER E1,
+ SWISSDOC..DOKUMENT DO,
+ SWISSDOC..DOKUMENTTYP DOTYP
+where
+ PS.PATISTAMMX = @Patistammx and
+ PF.PATISTAMMX = PS.PATISTAMMX and
+ AU.PATIFALLX = PF.PATIFALLX and
+ E1.EINSENDERX =* AU.EINSENDERX and
+ DO.AUFTRAGX =* AU.AUFTRAGX and
+ DOTYP.DOKUMENTTYPX =* DO.DOKUMENTTYPX
+
+
+print ''
+print ''
+print 'Auftraege in SWISSARCH'
+select
+ PS.PATISTAMMNR,
+ PF.PATIFALLNR,
+ PF.ERFASSDAT,
+ PF.AUFTRAGLETZT,
+ AU.AUFTRAGNR,
+ AU.AUFTRAGX,
+ E1.EINSCODE,
+ DO.DOKUMENTX,
+ DOTYP.FORMAT
+from
+ PATISTAMM PS,
+ PATIFALL PF,
+ SWISSARCH..AUFTRAG_ARCH AU,
+ EINSENDER E1,
+ SWISSDOC..DOKUMENT DO,
+ SWISSDOC..DOKUMENTTYP DOTYP
+where
+ PS.PATISTAMMX = @Patistammx and
+ PF.PATISTAMMX = PS.PATISTAMMX and
+ AU.PATIFALLX = PF.PATIFALLX and
+ E1.EINSENDERX =* AU.EINSENDERX and
+ DO.AUFTRAGX =* AU.AUFTRAGX and
+ DOTYP.DOKUMENTTYPX =* DO.DOKUMENTTYPX
+go
+

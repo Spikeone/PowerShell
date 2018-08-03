@@ -1,0 +1,22 @@
+print '--- Tabelle SYSTEMPARAM (Lauris)  ---'
+go
+select
+ ModulID=substring(SP.MODULID,1,8),
+ ParamID=SP.PARAMID,
+ ParamName=substring(SP.PARAMNAME,1,8),
+ Autoentlass = SP.INTVALUE,
+ Clientcode=substring(C.CLIENTCODE,1,10),
+ I.IDENTCODE,
+ Einsender=substring(E.EINSCODE,1,10),
+ Erfassdat=convert(char(11),SP.ERFASSDAT,104)+convert(char(8),SP.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+from SYSTEMPARAM SP, CLIENT C, IDENT I, EINSENDER E, ROLLE R, PERSON P
+where 
+ SP.PARAMID = "PATIENT" and
+ SP.PARAMNAME = "AUTOENTLASS" and
+ SP.CLIENTX *= C.CLIENTX and 
+ SP.IDENTX *= I.IDENTX and 
+ SP.EINSENDERX *= E.EINSENDERX and
+ SP.ROLLEX *= R.ROLLEX and
+ SP.ERFASSPERS *= P.PERSONX
+go

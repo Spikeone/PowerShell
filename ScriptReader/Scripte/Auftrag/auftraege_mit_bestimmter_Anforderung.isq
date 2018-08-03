@@ -1,0 +1,15 @@
+select 
+  R.AUFTRAGX, 
+  A.FORMULARX, 
+  A.AUFTRAGNR, 
+  R.ANFORDPERS, 
+  R.ANFORDDAT, 
+  R.RESULTATX 
+from 
+  RESULTAT R, 
+  AUFTRAG A 
+where 
+  R.AUFTRAGX in (select AUFTRAGX from AUFTRAG (index auftrag_ED) where dateadd(day,10,ERFASSDAT) > getdate())
+  and R.ANALYTX=7529      
+  and A.AUFTRAGX=R.AUFTRAGX
+go

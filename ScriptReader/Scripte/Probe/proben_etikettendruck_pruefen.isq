@@ -1,0 +1,42 @@
+-- set showplan on
+-- go
+
+set nocount on
+select
+  A.AUFTRAGNR,
+  A.AUFTRAGX,
+  A.EINSENDERX,
+  A.ERFASSPERS,
+  A.LABEINDAT
+into #temp1
+from AUFTRAG A, TASKFLAG T
+where
+  T.XREF=A.AUFTRAGX
+  and T.TSTATUS > 0
+  and A.FORMULARX is not null
+
+-- select * from #temp1
+set nocount off
+select
+  EI.EINSCODE,
+  PR.PROBEEXTID,
+  Etikinfo=substring(PR.ETIKINFO,1,12),
+  EtikDruck=substring(PR.ETIKDRUCK,1,12),
+  PR.ETIKDRUCKDAT,
+  PR.VERTEILDATERST,
+  PR.ERFASSDAT,
+  PR.AUFTRAGX,
+  t1.EINSENDERX,
+  t1.LABEINDAT
+
+from PROBE PR (index PROBE_FK2), EINSENDER EI, #temp1 t1
+where
+      PR.AUFTRAGX=t1.AUFTRAGX
+  and PR.PSTATUS > 0
+  and PR.PKENNUNG = 3
+  and PR.ETIKINFO is not null
+  and (PR.ETIKDRUCK is null or (PR.ETIKDRUCK <> PR.ETIKINFO and len(PR.ETIKDRUCK) < len(PR.ETIKINFO)))
+  and EI.EINSENDERX=t1.EINSENDERX
+order by EINSCODE
+
+go

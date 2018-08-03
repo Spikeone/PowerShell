@@ -1,0 +1,88 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_doppelte_weg.isq         */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [060128.2030]                                                  */
+/*KURZINFO : SWL-II: doppelte Einträge in PATILISTE entfernen               */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20090119.2200>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/*[090119] 1.01 lis nur noch doppelte Einträge einer Station inaktivieren   */
+/****************************************************************************/
+print '+----------------------------------------------------------+'
+print '|Lauris: entfernen doppelter Einträge in der Patientenliste|'
+print '| ---       nur doppelte Einträge einer Station        --- |'
+print '+----------------------------------------------------------+'
+print ''
+print '--- mehrfache Einträge in PATILISTE (Lauris) ---'
+set nocount on
+Select
+  PL.PATIFALLX, PL.PATILISTEX, PL.EINSENDERX, PL.ERFASSPERS
+  into #P1
+from
+  PATILISTE PL
+Group By
+  PL.PATIFALLX, PL.EINSENDERX
+Having Count(*) > 1 
+
+-- select * from #P1
+
+set nocount off
+select Script='mehrfach:', PF.PATIFALLNR, E.EINSCODE, PE.PERSONID, PL.ERFASSDAT
+from #P1 temp1, PATIFALL PF, EINSENDER E, PERSON PE, PATILISTE PL
+where PF.PATIFALLX=temp1.PATIFALLX and
+PL.PATILISTEX=temp1.PATILISTEX and
+(PL.AKTIVBIS is null or PL.AKTIVBIS > getdate()) and
+E.EINSENDERX=PL.EINSENDERX and
+PE.PERSONX=PL.ERFASSPERS
+order by PF.PATIFALLNR, PL.ERFASSDAT
+
+print ''
+print ''
+print 'Diese Patientenfälle verbleiben in der PATILISTE'
+set nocount on
+Select Min(PL.PATILISTEX) As Id_soll_dableiben 
+  into #P2
+from PATILISTE PL, #P1 temp1 
+where temp1.PATIFALLX = PL.PATIFALLX and
+(PL.AKTIVBIS is null or PL.AKTIVBIS > getdate())
+Group by PL.PATIFALLX
+
+-- select * from #P2
+
+set nocount off
+select Script='bleibt  :', PF.PATIFALLNR, E.EINSCODE, PE.PERSONID, PL.ERFASSDAT
+from #P2 temp2, PATIFALL PF, EINSENDER E, PERSON PE, PATILISTE PL
+where 
+PL.PATILISTEX=temp2.Id_soll_dableiben and
+E.EINSENDERX=PL.EINSENDERX and
+PF.PATIFALLX=PL.PATIFALLX and
+(PL.AKTIVBIS is null or PL.AKTIVBIS > getdate()) and
+PE.PERSONX=PL.ERFASSPERS
+order by PF.PATIFALLNR, PL.ERFASSDAT
+
+print ''
+print ''
+print 'Diese doppelten Patientenfälle werden gelöscht in der PATILISTE'
+select Script='loeschen:', F.PATIFALLNR, E.EINSCODE, PE.PERSONID, PL.ERFASSDAT 
+from PATILISTE PL, #P1 temp1, PATIFALL F, EINSENDER E, PERSON PE
+where temp1.PATILISTEX not in (select Id_soll_dableiben from #P2) 
+  and PL.PATILISTEX=temp1.PATILISTEX
+  and F.PATIFALLX=PL.PATIFALLX
+  and (PL.AKTIVBIS is null or PL.AKTIVBIS > getdate())
+  and E.EINSENDERX=PL.EINSENDERX
+  and PE.PERSONX=PL.ERFASSPERS
+
+-- print ''
+-- print ''
+-- print 'hier die Aktion: update PATILISTE set  AKTIVBIS=dateadd(hour,-1,getdate())'
+-- update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+-- from PATILISTE PL, #P1 temp1
+-- where temp1.PATILISTEX not in (select Id_soll_dableiben from #P2) 
+--   and PL.PATILISTEX=temp1.PATILISTEX
+--   and (PL.AKTIVBIS is null or PL.AKTIVBIS > getdate())
+
+go

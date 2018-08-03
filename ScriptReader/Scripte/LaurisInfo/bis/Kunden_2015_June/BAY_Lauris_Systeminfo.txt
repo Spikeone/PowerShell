@@ -1,0 +1,99 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BAY, ausgeführt am: 09.06.2015 11:55
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           BAY              Bayreuth, Klinikum G SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 543     Anzahl User: 565     Anzahl Auftraege Lauris: 24702   Anzahl Auftraege ohne Lauris: 1451   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           7 v9.05.27¹#       
+         536 v13.03.22.4      
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Antoine de Saint-Exupéry                                                         2013.01    NULL                                     08.04.13  00:00                 
+ letztes Swisspro                                                                 2013.01    NULL                                     04.06.13  14:44                 
+ swissup3.tab                                                                      2.14 $    NULL                                     04.06.13  14:06                 
+ swissup3.tab                                                                      2.14 $    NULL                                     04.06.13  14:06                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     04.06.13  14:34                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     04.06.13  14:31                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     04.06.13  14:35                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     04.06.13  14:31                 
+                                                                                             NULL                                                                     
+ neu:PR_ARCHBEFUNDAUFTRAG                                                          6.98 $    NULL                                     12.12.13  14:56 SWISSLAB        
+ neu:PR_BEFUNDAUFTRAG                                                              6.98 $    NULL                                     12.12.13  14:56 SWISSLAB        
+ neu:PR_BEFUNDAUFTRAG2                                                             6.98 $    NULL                                     12.12.13  14:56 SWISSLAB        
+ neu:PR_BEFUNDAUFTRAG2X                                                            6.98 $    NULL                                     12.12.13  14:56 SWISSLAB        
+ neu:PR_BEFUNDAUFTRAGTEST                                                          6.98 $    NULL                                     12.12.13  14:56 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       21648      1 ZL               Bayreuth gesamt                                                                                                                                                                                                                                                 
+        3054      4 MB               Mikrobiologie                                                                                                                                                                                                                                                   
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       19497 Routine-/Notfalldiagnostik                                       
+        2098 Mikrobiologie-Basisdiagnostik                                    
+        1994 Molekularbiologie (PCR)                                          
+         947 Mikrobiologie-Einzelerregernachweis/Screening                    
+          68 Programm Atemwegsinfektionen                                     
+          45 Monitoring neue AC                                               
+          29 Allergiediagnostik                                               
+          15 ROTEM                                                            
+           9 Mikrobiologie-Multi-Sampling/PJI (Test)                          
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BAY, beendet am: 09.06.2015 11:56 
+SQL-Abfrage-Dauer: 68  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.1.25.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_01 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.3.22.4 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2013_01 

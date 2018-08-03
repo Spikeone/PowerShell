@@ -1,0 +1,50 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                labor-srv            Klinikum Ibbenb?ren  Adaptive Server Enterprise/12.5.3/EBF 12599 ESD#3/P/NT (IX86)/OS 4.0/ase1253/1912/32-bit/OPT/Fri Jul 08 18:58:47 2005                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       1380            1114           6 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                Blutkultur       Blutkultur                                                                15         183 MB           Mikrobiologie                        12                       NULL 
+                                EDTA             EDTA                                                                       3         175 Edta         EDTA-Blut                             4                       NULL 
+                                EDTA             EDTA - Monovette                                                           7         175 Edta         EDTA-Blut                             4        Dec  9 2005  1:36PM 
+
+(3 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Routine          Routine                                                                 Dec  7 2005 12:13PM                       NULL       30500000        38999999         31021104          8499999                521104                7978895     6.1306 %     274.55 Nummern           29061.27 Tage              39000000               39999999         NULL 
+                                Blutdepot        Blutdepot                                                               Feb 16 2007  3:04PM                       NULL       60000001        69999999         60021406          9999998                 21405                9978593     0.2141 %      14.64 Nummern          681555.85 Tage                  NULL                   NULL         NULL 
+
+(2 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

@@ -1,0 +1,175 @@
+print ''
+print '--- Patienten mehrfach mit verschiedenen Fällen auf Station ---'
+print ''
+go
+set dateformat dmy
+go
+/* Parameter deklarieren         */
+
+declare
+  @QUIET                         tinyint,
+  @REPORT                        tinyint, 
+  @CHECKONLY                     tinyint,
+  @found                         int,
+  @cnt                           int
+  
+  
+
+create table #pltemp(
+  cnt             numeric       identity not null,
+  Patilistex      int null, 
+  Einsenderx      int null,    
+  Patistammx      int null,
+  EinsStamm       char(20),
+  EinsFall        char(20),
+  Patifallx       int null,
+  Aufnahmedat     smalldatetime null,
+  Entldatverw     smalldatetime null,
+  PF_Erfassdat    smalldatetime null,
+  Aktivbis        smalldatetime null, 
+  Erfasspers      smallint null,
+  Loeschen        char(4)      
+  )
+
+set nocount on
+
+/* #pltemp mit PATILISTE füllen */
+insert into #pltemp select
+  PL.PATILISTEX,    /* Patilistex   */
+  PL.EINSENDERX,    /* Einsenderx   */
+  PF.PATISTAMMX,    /* Art          */
+  convert(char(5),PL.EINSENDERX)+"_"+convert(char(16),PF.PATISTAMMX),
+  convert(varchar,PL.EINSENDERX)+"_"+space(8-char_length(convert(varchar,PF.PATIFALLX)))+convert(varchar,PF.PATIFALLX), -- char_length substring
+  PL.PATIFALLX,       /* Analytx      */
+  PF.AUFNDAT,
+  PF.ENTLDATVERW,     /* Ergebnisd    */
+  PF.ERFASSDAT,     /* Ergebnisd    */
+  PL.AKTIVBIS,
+  PL.ERFASSPERS,      /* Ergebnist    */
+  'no'
+from
+   PATILISTE PL, PATIFALL PF
+where 
+      PL.EINSENDERX is not null
+  and PL.EINSENDERX in(1635)
+  and PF.PATIFALLX=PL.PATIFALLX
+  and (PL.AKTIVBIS is null or PL.AKTIVBIS > getdate())
+order by EINSENDERX, PATISTAMMX
+select @found = @@identity  
+
+
+/* mehrfache Patienteneinträge (Stamm,Einsender) ermitteln */
+select * into #pldopp 
+from #pltemp 
+where   
+  EinsStamm in (select EinsStamm from #pltemp group by EinsStamm having count(*)>1)
+
+set nocount off
+print ''
+print 'doppelte Eintraege in der Lauris Patientenliste'
+print ''
+
+-- select count(*) from #pldopp
+select 
+  Name=substring(PS.NAME,1,16),
+  Vorname=substring(PS.VORNAME,1,10),
+  Patistamm=substring(PS.PATISTAMMNR,1,11),
+  Patifall=substring(PF.PATIFALLNR,1,8),
+  E.EINSCODE,
+  ErfassdatPatifall=convert(char(11),PF.ERFASSDAT,104)+convert(char(8),PF.ERFASSDAT,108)+' ',
+  Aufahmedat=convert(char(11),PF.AUFNDAT,104)+convert(char(8),PF.AUFNDAT,108)+' ',
+  EntldatVerw=convert(char(11),PF.ENTLDATVERW,104)+convert(char(8),PF.ENTLDATVERW,108)+' ',
+  ErfassdatPatiliste=convert(char(11),PL.ERFASSDAT,104)+convert(char(8),PL.ERFASSDAT,108)+' ',
+  PatilisteAktivbis=convert(char(11),PL.AKTIVBIS,104)+convert(char(8),PL.AKTIVBIS,108)+' ',
+  PE.PERSONID,
+  PL.PATILISTEX
+
+from #pldopp dopp, PATILISTE PL, PATIFALL PF, PATISTAMM PS, EINSENDER E, PERSON PE
+where 
+      PL.PATILISTEX=dopp.Patilistex
+  and PF.PATIFALLX=PL.PATIFALLX
+  and PS.PATISTAMMX=PF.PATISTAMMX
+  and E.EINSENDERX=PL.EINSENDERX
+  and PE.PERSONX=PL.ERFASSPERS
+order by EINSCODE, Name, Vorname
+
+
+set nocount on
+select 
+  Max(dopp.EinsFall) as EinsPFxbleibt
+into #P2 
+from #pldopp dopp
+Group by dopp.EinsStamm
+-- select * from #P2
+
+
+print ''
+print 'Diese Patientenfälle verbleiben in der PATILISTE'
+print ''
+
+set nocount off
+select 
+  Name=substring(PS.NAME,1,16),
+  Vorname=substring(PS.VORNAME,1,10),
+  Patistamm=substring(PS.PATISTAMMNR,1,11),
+  Patifall=substring(PF.PATIFALLNR,1,8),
+  E.EINSCODE,
+  ErfassdatPatifall=convert(char(11),PF.ERFASSDAT,104)+convert(char(8),PF.ERFASSDAT,108)+' ',
+  Aufahmedat=convert(char(11),PF.AUFNDAT,104)+convert(char(8),PF.AUFNDAT,108)+' ',
+  EntldatVerw=convert(char(11),PF.ENTLDATVERW,104)+convert(char(8),PF.ENTLDATVERW,108)+' ',
+  ErfassdatPatiliste=convert(char(11),PL.ERFASSDAT,104)+convert(char(8),PL.ERFASSDAT,108)+' ',
+  PatilisteAktivbis=convert(char(11),PL.AKTIVBIS,104)+convert(char(8),PL.AKTIVBIS,108)+' ',
+  PE.PERSONID,
+  PL.PATILISTEX
+
+from #P2 p2, #pldopp dopp, PATILISTE PL, PATIFALL PF, PATISTAMM PS, EINSENDER E, PERSON PE
+where 
+      dopp.EinsFall=p2.EinsPFxbleibt
+  and PL.PATILISTEX=dopp.Patilistex
+  and PF.PATIFALLX=PL.PATIFALLX
+  and PS.PATISTAMMX=PF.PATISTAMMX
+  and E.EINSENDERX=PL.EINSENDERX
+  and PE.PERSONX=PL.ERFASSPERS
+order by EINSCODE, Name, Vorname
+
+print ''
+print ''
+print 'Diese Einteage werden geloescht in der PATILISTE'
+print ''
+select distinct
+  Name=substring(PS.NAME,1,16),
+  Vorname=substring(PS.VORNAME,1,10),
+  Patistamm=substring(PS.PATISTAMMNR,1,11),
+  Patifall=substring(PF.PATIFALLNR,1,8),
+  E.EINSCODE,
+  ErfassdatPatifall=convert(char(11),PF.ERFASSDAT,104)+convert(char(8),PF.ERFASSDAT,108)+' ',
+  Aufahmedat=convert(char(11),PF.AUFNDAT,104)+convert(char(8),PF.AUFNDAT,108)+' ',
+  EntldatVerw=convert(char(11),PF.ENTLDATVERW,104)+convert(char(8),PF.ENTLDATVERW,108)+' ',
+  ErfassdatPatiliste=convert(char(11),PL.ERFASSDAT,104)+convert(char(8),PL.ERFASSDAT,108)+' ',
+  PatilisteAktivbis=convert(char(11),PL.AKTIVBIS,104)+convert(char(8),PL.AKTIVBIS,108)+' ',
+  PE.PERSONID,
+  PL.PATILISTEX
+into #P3
+from #P2 p2, #pldopp dopp, PATILISTE PL, PATIFALL PF, PATISTAMM PS, EINSENDER E, PERSON PE
+where dopp.EinsFall not in (select EinsPFxbleibt from #P2) 
+  and PL.PATILISTEX=dopp.Patilistex
+  and PF.PATIFALLX=PL.PATIFALLX
+  and PS.PATISTAMMX=PF.PATISTAMMX
+  and E.EINSENDERX=PL.EINSENDERX
+  and PE.PERSONX=PL.ERFASSPERS
+order by EINSCODE, Name, Vorname
+
+select * from #P3
+
+print ''
+print ''
+print 'update PATILISTE set  AKTIVBIS=dateadd(hour,-1,getdate())'
+
+--select PL.PATILISTEX
+update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+from PATILISTE PL, #P3 p3
+where PL.PATILISTEX = p3.PATILISTEX 
+
+
+go
+

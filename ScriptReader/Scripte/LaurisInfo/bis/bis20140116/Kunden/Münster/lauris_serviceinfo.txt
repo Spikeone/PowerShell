@@ -1,0 +1,38 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLROUTINE           St. Franziskus       Adaptive Server Enterprise/12.5.3/EBF 12338 ESD#1/P/NT (IX86)/OS 4.0/ase1253/1900/32-bit/OPT/Mon Jan 24 23:52:28 2005                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                      11317            4662         240 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                LT_MIBI          Fremdlabor Mikrobiologie                                         
+                                LT_MIBI_SFM      Fremdlabor Mikrobiologie                                         
+
+(2 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                EDTA             EDTA-Blut / Fremdlabor                                                    62          61 102          EDTA-Blut                           102                       NULL 
+                                EDTA             EDTA                                                                      13           2 EDTA         EDTA                                  2                       NULL 
+
+(2 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Routine          Routine-Antrag                                                                         NULL                       NULL       11000000        11999999         11265150           999999                265150                 734849    26.5150 % NULL                NULL                                    NULL                   NULL            1 
+                                Notfall          Notfall-Antrag                                                                         NULL                       NULL       91000000        91999999         91002944           999999                  2944                 997055     0.2944 % NULL                NULL                                    NULL                   NULL            1 
+Divide by zero occurred.

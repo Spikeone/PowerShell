@@ -1,0 +1,87 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\Nachfordern\auftragsaktivierung.isq        */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [100210.2030]                                                  */
+/*KURZINFO : SWL-II: Nachfordern, Auftrag- und Probenaktivierung            */
+/*MODULE   : Lauris, Hilfsscript für Nachfordrungen                         */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20060130.2030>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[100210] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+/* Parameter deklarieren         */
+
+declare
+  @labeindat                      smalldatetime,
+  @auftragnr                      varchar(16)
+
+set nocount on
+
+/**********************************************************************************************************/
+select @auftragnr      = '85000134'           /* !!!!!! Auftragsnummer                            !!!!!!! */
+select @labeindat      = '15.02.2010 15:05'   /* !!!!!! Aktivierungszeitpunkt                     !!!!!!! */
+/**********************************************************************************************************/
+
+print ''
+print ' Auftrag vorher '
+print ''
+select 
+  PR.PROBEEXTID,
+  PR.PSTATUS,
+  A.AUFTRAGNR,
+  T.TSTATUS,
+  A.SQLERFASSDAT, 
+  A.LABEINDAT,
+  A.AUFTRAGDAT,
+  E.EINSCODE,
+  PE.PERSONID
+from PROBE PR, AUFTRAG A, TASKFLAG T, EINSENDER E, PERSON PE
+where
+  A.AUFTRAGNR=@auftragnr and
+  T.XREF=A.AUFTRAGX and
+  T.TSTATUS > 0 and
+  PR.AUFTRAGX = A.AUFTRAGX and
+  E.EINSENDERX = A.EINSENDERX and
+  PE.PERSONX = A.ERFASSPERS
+
+update TASKFLAG set TSTATUS = 1 from TASKFLAG T, AUFTRAG A 
+where 
+  A.AUFTRAGNR=@auftragnr and
+  T.XREF=A.AUFTRAGX and
+  T.TSTATUS = 0 
+
+update AUFTRAG set LABEINDAT = @labeindat, AUFTRAGDAT = @labeindat
+where AUFTRAGNR=@auftragnr
+
+update PROBE set PSTATUS = 1 from PROBE PR, AUFTRAG A
+where 
+  A.AUFTRAGNR=@auftragnr and
+  PR.AUFTRAGX = A.AUFTRAGX and
+  PR.PSTATUS = 0 
+  
+print ''
+print ' Auftrag nachher '
+print ''
+select 
+  PR.PROBEEXTID,
+  PR.PSTATUS,
+  A.AUFTRAGNR,
+  T.TSTATUS,
+  A.SQLERFASSDAT, 
+  A.LABEINDAT,
+  A.AUFTRAGDAT,
+  E.EINSCODE,
+  PE.PERSONID
+from PROBE PR, AUFTRAG A, TASKFLAG T, EINSENDER E, PERSON PE
+where
+  A.AUFTRAGNR=@auftragnr and
+  T.XREF=A.AUFTRAGX and
+  T.TSTATUS > 0 and
+  PR.AUFTRAGX = A.AUFTRAGX and
+  E.EINSENDERX = A.EINSENDERX and
+  PE.PERSONX = A.ERFASSPERS  
+
+go

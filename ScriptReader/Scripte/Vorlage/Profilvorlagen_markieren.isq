@@ -1,0 +1,477 @@
+/*****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\Profilvorlagen_markieren.isq        */
+/*AUTOR    : lis                                                             */
+/*ERSTELLT : [20121218]                                                      */
+/*INFO     : Welche benutzerdefinierten Profilvorlagen werden benutzt?       */
+/*INFO     : Info in Hilfsanalyten schreiben                                 */
+/*****************************************************************************/
+/*BESCHR.  : Hilfsanalyten im Swisslab einrichten (Reorganisation immer).    */
+/*BESCHR.  : In den Formularen als Einzeltext-Anfo und unsichtbar einrichten.*/
+/*BESCHR.  : Den Hilfsanalyten hier im Script eintragen (@hilfs_analytcode). */
+/*BESCHR.  : Nach dem Script-Lauf den Cache Reset nicht vergessen.           */
+/*****************************************************************************/
+
+set dateformat dmy
+go
+set nocount on
+
+declare
+  @update                        tinyint,
+  @debug                         tinyint,
+  @hilfs_analytcode              varchar(16)
+
+/*|||||||||||||||||||||||!!!!!!!||||               |||||||||||||||||||||||||||||||||||||||||||||||||*/
+/*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv hier anpassen vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
+select @hilfs_analytcode   = 'Lauris_Vorlage'  /* hier den Hilfs-Analytcode eintragen               */
+select @update             = 0                 /* @update = 0 -> nichts machen, nur dokumentieren   */                                    
+                                               /* @update = 1 -> Hilfsanalyt einfügen               */
+select @debug              = 1                 /* @DEBUG  = 1 -> Debug-Ausgaben                     */
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ hier anpassen ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+/*||||||||||||||||||!!!!!!!|||||||||               |||||||||||||||||||||||||||||||||||||||||||||||||*/
+
+declare
+  @startdat                      smalldatetime,
+  @enddat                        smalldatetime,
+  @aktdat                        varchar(21),
+  @hilfs_analytx                 int,
+  @message                       varchar(255),
+  @akt_userx                     int,
+  @akt_user                      varchar(16),
+
+  @found_pv                      int,                    -- Anzahl gefundene Profilvorlagen
+  @found_pv2                      int,                   -- Anzahl gefundene Profilvorlagen (schon markiert)
+  @found_pv3                      int,                   -- Anzahl gefundene Profilvorlagen (nicht zu markieren)
+  @cntva                         int,
+  
+  @user                          smallint,
+  @EINSENDERX                    int,
+  @FACHVORLAGENAME               varchar(64),
+  @FACHVORLAGEX                  int,
+  @FACHABTEILUNG                 varchar(16),
+  @IDENTCODE                     varchar(16),
+  @CLIENTCODE                    varchar(16),
+  @FILTER                        varchar(16),
+  @IDENTX                        int,
+  @CLIENTX                       int,
+  @NUTZER                        int,
+  @PATIART                       char(8),
+  @KOSTTRTYP                     char(6),
+  @PZIMMERNR                     varchar(8),
+  @AKTIVBIS                      smalldatetime,
+  @STORNO                        tinyint,
+  @REPORT                        tinyint,
+  @TABELLE                       varchar(30),  -- Geltung-Tabellenname
+  @strTextSQLCall                varchar(255),
+  
+/*   Parameter für Aufruf PI_VORLAGEANF  */
+  @PSPRACHID            int,
+  @USER                 smallint,
+  @LAURIS               int,
+  @VORLAGEX             int,
+  @ART                  char(1),
+  @ANALYTX              int,
+  @MFAANALYTX           int,
+  @PANALYTX             int,
+  @ERGEBNIST            varchar(255),
+  @ERGEBNISD            int, 
+  @BEHAELTERX           int,
+  @PROBENR              int,
+  @ABNAHMEORT           varchar(64)
+
+
+print ' '
+select @message = ' Benutzerdefinierte Profilvorlagen um den Markieranalyten "' + @hilfs_analytcode + '" erweitern,'
+print @message
+print ' um so eine Statistik ueber die Vorlagenbenutzung zu ermöglichen.'
+print ' Aufruf: isql -S<server> -U<user> -w32000 -iProfilvorlagen_markieren.isq -oProfilvorlagen_markieren.txt'
+print ' '
+
+select @hilfs_analytx = ANALYTX from ANALYT where CODE = @hilfs_analytcode
+if @hilfs_analytx is null 
+begin
+  select @message = ' Fehler: Der Hilfsanalyt "' + @hilfs_analytcode + '" ist unbekannt!!!! --> so geht nichts... Abbruch...'
+  print @message
+  goto finito
+end
+select @akt_userx=PERSONX from LOGIN where LOGINID=suser_name() and STORNODAT is null
+select @akt_user=PERSONID from PERSON where PERSONX=@akt_userx
+select @aktdat=getdate()
+
+/*   Parameter für Aufruf PI_VORLAGEANF  vorbesetzen */  
+select @PSPRACHID=10
+select @MFAANALYTX=-1 
+select @PANALYTX=-1 
+select @ERGEBNISD=-1 
+select @BEHAELTERX=-1 
+select @PROBENR=0 
+select @ABNAHMEORT=''
+select @ART = 'T'
+
+select @message = ' durchgeführt am ' + @aktdat + ' durch ' + @akt_user
+print @message
+if (@update=0) 
+  begin
+    select @message = '!!!! --  Testmodus - es werden keine Änderungen durchgeführt    -- !!!!'
+    print @message
+  end
+
+if (@update=1) 
+  begin
+    select @message = '!!!! --  Updatemodus - alle Profil-Vorlagen werden um den Markierungsanalyten ' + @hilfs_analytcode + ' erweitert   -- !!!!'
+    print @message
+  end
+
+-- Temp-Table für Profil-Vorlagen
+create table #tempv(
+  cnt_vorlage     numeric                identity not null,
+  vorlagex        int                    null,
+  clientx         int                    null,
+  identx          int                    null,
+  einsenderx      int                    null,
+  vorlagename     varchar(64)            null,
+  eigner          int                    null,
+  nutzer          int                    null,
+  vorlagetyp      smallint               null,
+  formularx       int                    null,
+  ismaster        tinyint                null,
+  filter          varchar(16)            null,
+  sort            int                    null,
+  ebene           int                    null,
+  dring           int                    null,
+  zimmernr        varchar(8)             null,
+  dispicon        int                    null,
+  dispformat      int                    null,
+  pfad            varchar(64)            null,
+  abnahmedat      smalldatetime          null,
+  plandat         smalldatetime          null,
+  lauf            smallint               null,
+  vorlagecode     varchar(16)            null,
+  erfassdat       smalldatetime          null,
+  erfasspers      int                    null,
+  mark_vorlage    char(4)                null,
+  vanf_anz        int                    null
+ )
+
+insert into #tempv
+select distinct 
+  vorlagex          =    VO.VORLAGEX,    
+  clientx           =    VO.CLIENTX,     
+  identx            =    VO.IDENTX,      
+  einsenderx        =    VO.EINSENDERX,  
+  vorlagename       =    VO.VORLAGENAME, 
+  eigner            =    VO.EIGNER,      
+  nutzer            =    VO.NUTZER,      
+  vorlagetyp        =    VO.VORLAGETYP,  
+  formularx         =    VO.FORMULARX,   
+  ismaster          =    VO.ISMASTER,    
+  filter            =    VO.FILTER,      
+  sort              =    VO.SORT,        
+  ebene             =    VO.EBENE,       
+  dring             =    VO.DRING,       
+  zimmernr          =    VO.ZIMMERNR,    
+  dispicon          =    VO.DISPICON,    
+  dispformat        =    VO.DISPFORMAT,  
+  pfad              =    VO.PFAD,        
+  abnahmedat        =    VO.ABNAHMEDAT,  
+  plandat           =    VO.PLANDAT,     
+  lauf              =    VO.LAUF,        
+  vorlagecode       =    VO.VORLAGECODE,
+  erfassdat         =    VO.ERFASSDAT,
+  erfasspers        =    VO.ERFASSPERS,
+  mark_vorlage      =    'yes',
+  vanf_anz          =    0           
+from VORLAGE VO, VORLAGEANF VANF, FORMULAR FO
+where
+   VO.STORNODAT is null
+   and FO.FORMULARX = VO.FORMULARX
+   and FO.STORNODAT is null
+   and (@NUTZER & isnull(VO.NUTZER,-1)) <> 0
+   and VO.FORMULARX is not null        -- Ueberschriften haben kein Formular, Ueberschriften brauchen wir nicht
+   and VANF.VORLAGEX = VO.VORLAGEX
+   and VANF.STORNODAT is null
+-- Hilfsanalyt im Formular eingetragen?
+   and @hilfs_analytx in (select ANALYTX from ANFORDERUNG ANF where ANF.FORMULARX=VO.FORMULARX and ANF.STORNODAT is null and ANF.ART = 'T' and ANF.ANFORDERUNGTYP = 4)
+-- Hilfsanalyt noch nicht in der Vorlage eingetragen?
+   and @hilfs_analytx not in (select ANALYTX from VORLAGEANF VOANF where VOANF.VORLAGEX=VO.VORLAGEX and VOANF.STORNODAT is null)
+order by
+   vorlagex
+select @found_pv = @@identity
+
+print ' '
+print '--- diese benutzerdefinierte Vorlagen werden markiert         ---'
+print ' '
+
+set nocount on
+select
+  Markierung = "wird markiert", 
+  Formular = FO.FORMULARCODE,
+  Vorlagename=substring(vt.vorlagename,1,48),
+  Erfassdat=convert(char(11),vt.erfassdat,104)+convert(char(8),vt.erfassdat,108)+' ',
+  ErfassPers=P.PERSONID,
+  Vo_Abteilung=E.EINSCODE,
+  Vo_Client=C.CLIENTCODE,
+  Vo_Ident=I.IDENTCODE
+  
+from
+  #tempv vt,
+  PERSON P,
+  EINSENDER E,
+  CLIENT C,
+  IDENT I,
+  FORMULAR FO
+
+where
+  vt.erfasspers *= P.PERSONX and
+  vt.einsenderx *= E.EINSENDERX and
+  vt.clientx *= C.CLIENTX and
+  vt.identx *= I.IDENTX and
+  FO.FORMULARX = vt.formularx
+/*-----zu markiernde Vorlagen Ende -------------------------------------*/
+
+-- Temp-Table für bereits markierte Profil-Vorlagen
+create table #tempv2(
+  cnt_vorlage2    numeric                identity not null,
+  vorlagex        int                    null,
+  clientx         int                    null,
+  identx          int                    null,
+  einsenderx      int                    null,
+  vorlagename     varchar(64)            null,
+  eigner          int                    null,
+  nutzer          int                    null,
+  vorlagetyp      smallint               null,
+  formularx       int                    null,
+  ismaster        tinyint                null,
+  filter          varchar(16)            null,
+  sort            int                    null,
+  ebene           int                    null,
+  dring           int                    null,
+  zimmernr        varchar(8)             null,
+  dispicon        int                    null,
+  dispformat      int                    null,
+  pfad            varchar(64)            null,
+  abnahmedat      smalldatetime          null,
+  plandat         smalldatetime          null,
+  lauf            smallint               null,
+  vorlagecode     varchar(16)            null,
+  erfassdat       smalldatetime          null,
+  erfasspers      int                    null,
+  mark_vorlage    char(4)                null,
+  vanf_anz        int                    null
+ )
+
+insert into #tempv2
+select distinct 
+  vorlagex          =    VO.VORLAGEX,    
+  clientx           =    VO.CLIENTX,     
+  identx            =    VO.IDENTX,      
+  einsenderx        =    VO.EINSENDERX,  
+  vorlagename       =    VO.VORLAGENAME, 
+  eigner            =    VO.EIGNER,      
+  nutzer            =    VO.NUTZER,      
+  vorlagetyp        =    VO.VORLAGETYP,  
+  formularx         =    VO.FORMULARX,   
+  ismaster          =    VO.ISMASTER,    
+  filter            =    VO.FILTER,      
+  sort              =    VO.SORT,        
+  ebene             =    VO.EBENE,       
+  dring             =    VO.DRING,       
+  zimmernr          =    VO.ZIMMERNR,    
+  dispicon          =    VO.DISPICON,    
+  dispformat        =    VO.DISPFORMAT,  
+  pfad              =    VO.PFAD,        
+  abnahmedat        =    VO.ABNAHMEDAT,  
+  plandat           =    VO.PLANDAT,     
+  lauf              =    VO.LAUF,        
+  vorlagecode       =    VO.VORLAGECODE,
+  erfassdat         =    VO.ERFASSDAT,
+  erfasspers        =    VO.ERFASSPERS, 
+  mark_vorlage      =    'yes',
+  vanf_anz          =    0           
+from VORLAGE VO, VORLAGEANF VANF, FORMULAR FO
+where
+   VO.STORNODAT is null
+   and FO.FORMULARX = VO.FORMULARX
+   and FO.STORNODAT is null
+   and (@NUTZER & isnull(VO.NUTZER,-1)) <> 0
+   and VO.FORMULARX is not null        -- Ueberschriften haben kein Formular, Ueberschriften brauchen wir nicht
+   and VANF.VORLAGEX = VO.VORLAGEX
+   and VANF.STORNODAT is null
+-- Hilfsanalyt im Formular eingetragen?
+   and @hilfs_analytx in (select ANALYTX from ANFORDERUNG ANF where ANF.FORMULARX=VO.FORMULARX and ANF.STORNODAT is null and ANF.ART = 'T' and ANF.ANFORDERUNGTYP = 4)
+-- Hilfsanalyt noch nicht in der Vorlage eingetragen?
+   and @hilfs_analytx in (select ANALYTX from VORLAGEANF VOANF where VOANF.VORLAGEX=VO.VORLAGEX and VOANF.STORNODAT is null)
+order by
+   vorlagex
+select @found_pv2 = @@identity
+
+print ' '
+print '--- folgende benutzerdefinierte Vorlagen waren schon markiert         ---'
+print ' '
+
+set nocount on
+select 
+  Markierung = "bereits markiert",
+  Formular = FO.FORMULARCODE,
+  Vorlagename=substring(vt2.vorlagename,1,48),
+  Erfassdat=convert(char(11),vt2.erfassdat,104)+convert(char(8),vt2.erfassdat,108)+' ',
+  ErfassPers=P.PERSONID,
+  Vo_Abteilung=E.EINSCODE,
+  Vo_Client=C.CLIENTCODE,
+  Vo_Ident=I.IDENTCODE
+  
+from
+  #tempv2 vt2,
+  PERSON P,
+  EINSENDER E,
+  CLIENT C,
+  IDENT I,
+  FORMULAR FO
+
+where
+  vt2.erfasspers *= P.PERSONX and
+  vt2.einsenderx *= E.EINSENDERX and
+  vt2.clientx *= C.CLIENTX and
+  vt2.identx *= I.IDENTX and
+  FO.FORMULARX = vt2.formularx
+
+/*-----bereits markierte Vorlagen Ende -------------------------------------*/
+
+-- Temp-Table für Profil-Vorlagen
+create table #tempv3(
+  cnt_vorlage3    numeric                identity not null,
+  vorlagex        int                    null,
+  clientx         int                    null,
+  identx          int                    null,
+  einsenderx      int                    null,
+  vorlagename     varchar(64)            null,
+  eigner          int                    null,
+  nutzer          int                    null,
+  vorlagetyp      smallint               null,
+  formularx       int                    null,
+  ismaster        tinyint                null,
+  filter          varchar(16)            null,
+  sort            int                    null,
+  ebene           int                    null,
+  dring           int                    null,
+  zimmernr        varchar(8)             null,
+  dispicon        int                    null,
+  dispformat      int                    null,
+  pfad            varchar(64)            null,
+  abnahmedat      smalldatetime          null,
+  plandat         smalldatetime          null,
+  lauf            smallint               null,
+  vorlagecode     varchar(16)            null,
+  erfassdat       smalldatetime          null,
+  erfasspers      int                    null,
+  mark_vorlage    char(4)                null,
+  vanf_anz        int                    null
+ )
+
+insert into #tempv3
+select distinct 
+  vorlagex          =    VO.VORLAGEX,    
+  clientx           =    VO.CLIENTX,     
+  identx            =    VO.IDENTX,      
+  einsenderx        =    VO.EINSENDERX,  
+  vorlagename       =    VO.VORLAGENAME, 
+  eigner            =    VO.EIGNER,      
+  nutzer            =    VO.NUTZER,      
+  vorlagetyp        =    VO.VORLAGETYP,  
+  formularx         =    VO.FORMULARX,   
+  ismaster          =    VO.ISMASTER,    
+  filter            =    VO.FILTER,      
+  sort              =    VO.SORT,        
+  ebene             =    VO.EBENE,       
+  dring             =    VO.DRING,       
+  zimmernr          =    VO.ZIMMERNR,    
+  dispicon          =    VO.DISPICON,    
+  dispformat        =    VO.DISPFORMAT,  
+  pfad              =    VO.PFAD,        
+  abnahmedat        =    VO.ABNAHMEDAT,  
+  plandat           =    VO.PLANDAT,     
+  lauf              =    VO.LAUF,        
+  vorlagecode       =    VO.VORLAGECODE,
+  erfassdat         =    VO.ERFASSDAT,
+  erfasspers        =    VO.ERFASSPERS, 
+  mark_vorlage      =    'yes',
+  vanf_anz          =    0           
+from VORLAGE VO, VORLAGEANF VANF, FORMULAR FO
+where
+   VO.STORNODAT is null
+   and FO.FORMULARX = VO.FORMULARX
+   and FO.STORNODAT is null
+   and (@NUTZER & isnull(VO.NUTZER,-1)) <> 0
+   and VO.FORMULARX is not null        -- Ueberschriften haben kein Formular, Ueberschriften brauchen wir nicht
+   and VANF.VORLAGEX = VO.VORLAGEX
+   and VANF.STORNODAT is null
+   and @hilfs_analytx not in (select ANALYTX from ANFORDERUNG ANF where ANF.FORMULARX=VO.FORMULARX and ANF.STORNODAT is null and ANF.ART = 'T' and ANF.ANFORDERUNGTYP = 4)
+   and @hilfs_analytx not in (select ANALYTX from VORLAGEANF VOANF where VOANF.VORLAGEX=VO.VORLAGEX and VOANF.STORNODAT is null)
+order by
+   vorlagex
+select @found_pv3 = @@identity
+
+print ' '
+print '--- folgende benutzerdefinierte Vorlagen werden nicht markiert weil der Markieranalyt im Formular fehlt      ---'
+print ' '
+
+set nocount on
+select 
+  Markierung = "bleibt ohne Markierung",
+  Formular = FO.FORMULARCODE,
+  Vorlagename=substring(vt3.vorlagename,1,48),
+  Erfassdat=convert(char(11),vt3.erfassdat,104)+convert(char(8),vt3.erfassdat,108)+' ',
+  ErfassPers=P.PERSONID,
+  Vo_Abteilung=E.EINSCODE,
+  Vo_Client=C.CLIENTCODE,
+  Vo_Ident=I.IDENTCODE
+  
+from
+  #tempv3 vt3,
+  PERSON P,
+  EINSENDER E,
+  CLIENT C,
+  IDENT I,
+  FORMULAR FO
+
+where
+  vt3.erfasspers *= P.PERSONX and
+  vt3.einsenderx *= E.EINSENDERX and
+  vt3.clientx *= C.CLIENTX and
+  vt3.identx *= I.IDENTX and
+  FO.FORMULARX = vt3.formularx
+
+/*----nicht zu markierende Vorlagen Ende --------------------------------------*/
+
+set nocount on
+select @cntva = 0
+print ' '
+while @cntva < @found_pv
+begin
+  select @cntva           = @cntva+1
+  select @PSPRACHID       = null, 
+         @USER            = @akt_userx,
+         @LAURIS          = 1, 
+         @VORLAGEX        = vt.vorlagex,
+         @ERGEBNIST       = vt.vorlagename + '(VX=' + convert(char(6),vt.vorlagex) + ')',
+         @ART             = @ART,
+         @ANALYTX         = @hilfs_analytx,
+         @MFAANALYTX      = @MFAANALYTX,
+         @PANALYTX        = @PANALYTX,
+         @ERGEBNISD       = @ERGEBNISD,
+         @BEHAELTERX      = @BEHAELTERX,
+         @PROBENR         = @PROBENR,
+         @ABNAHMEORT      = @ABNAHMEORT
+  from #tempv vt
+  where     
+        vt.cnt_vorlage=@cntva    
+  if @debug=1
+  begin        
+    print 'PI_VORLAGEANF @PSPRACHID=%1!, @USER=%2!, @LAURIS=%3!, @VORLAGEX=%4!, @ERGEBNIST=%5!, @ART=%6!, @ANALYTX=%7!, @MFAANALYTX=%8!, @PANALYTX=%9!, @ERGEBNISD=%10!, @BEHAELTERX=%11!, @PROBENR=%12!, @ABNAHMEORT=%13!', @PSPRACHID, @USER, @LAURIS, @VORLAGEX, @ERGEBNIST, @ART, @ANALYTX, @MFAANALYTX, @PANALYTX, @ERGEBNISD, @BEHAELTERX, @PROBENR, @ABNAHMEORT    
+  end 
+  if @update=1
+  begin
+    exec PI_VORLAGEANF @PSPRACHID=@PSPRACHID, @USER=@USER, @LAURIS=@LAURIS, @VORLAGEX=@VORLAGEX, @ERGEBNIST=@ERGEBNIST, @ART=@ART,@ANALYTX=@ANALYTX, @MFAANALYTX=@MFAANALYTX, @PANALYTX=@PANALYTX, @ERGEBNISD=@ERGEBNISD, @BEHAELTERX=@BEHAELTERX, @PROBENR=@PROBENR, @ABNAHMEORT=@ABNAHMEORT
+  end
+end
+finito:
+go

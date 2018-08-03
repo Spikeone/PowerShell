@@ -1,0 +1,47 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\sqlscript\diverses\inaktive_Analytik_und_Proben.isq */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: Versandliste für bestimmte Einsender                   */
+/*MODULE   : Lauris, Erlangen                                               */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20100122.07:45>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[100122] 1.00 lis erstellt                                                */
+/****************************************************************************/
+declare
+  @TageRueck                    int
+
+select @TageRueck    =  3               /* !!!!!! Anzahl Tage, für die gesucht wird  !!!!!!! */
+set dateformat dmy
+
+select
+ Einsender=E.EINSCODE+' / '+E.EINSNREXT+' / '+E.EINSKURZ,
+ AuftragsNr= A.AUFTRAGNR,
+ ProbenNr = P.PROBEEXTID,
+ Material = M.MATCODE,
+ Anforderung=AN.CODE,
+ AnforderungsDat=convert(char(11),R.ANFORDDAT ,104)+convert(char(8),R.ANFORDDAT ,108)+' '
+
+from
+ RESULTAT R,
+ PROBE P,
+ AUFTRAG A,
+ ANALYT AN,
+ EINSENDER E,
+ MATERIAL M
+where
+ R.PROBEX=P.PROBEX
+ and P.PKENNUNG=3
+ and P.PSTATUS=0
+ and R.AUFTRAGX=P.AUFTRAGX
+ and A.AUFTRAGX=R.AUFTRAGX
+ and (dateadd(day,@TageRueck,R.ANFORDDAT) > getdate()) 
+ and AN.ANALYTX=R.ANALYTX
+ and E.EINSENDERX=A.EINSENDERX
+ and M.MATERIALX=P.MATERIALX
+
+order by Einsender, AnforderungsDat
+go 

@@ -1,0 +1,103 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: ELST, ausgeführt am: 09.06.2015 14:21
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           ELST             Medizinisches Labor  SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/15.7/EBF 22232 SMP SP121 /P/X64/Windows Server/ase157sp12x/3660/64-bit/OPT/Thu Mar 20 03:16:27 2014                                                                                                                                  
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 222     Anzahl User: 220     Anzahl Auftraege Lauris: 9174    Anzahl Auftraege ohne Lauris: 71388  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           1 v9.10.20# F      
+         219 v12.12.06.2      
+           2 v12.09.14#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Neil Armstrong                                                                   2012.02    NULL                                     17.09.12  00:00                 
+ letztes Swisspro                                                                 2012.02    NULL                                     17.04.13  14:07                 
+ swissup3.tab                                                                      2.14 $    NULL                                     12.12.12  07:44                 
+ swissup3.tab                                                                      2.14 $    NULL                                     12.12.12  07:44                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     12.12.12  07:57                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     12.12.12  07:55                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     14.10.13  08:48                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     14.10.13  08:48                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     12.12.12  07:55                 
+                                                                                             NULL                                                                     
+ neu:PD_DELFALLOHNETST                                                             1.12 $    NULL                                     26.03.15  16:07 SWISSLAB        
+ neu:PR_LOGINTRIGGER                                                               1.03 $    NULL                                     24.03.15  22:36 SWISSLAB        
+ neu:PI_DUMPSTART                                                                  1.23 $    NULL                                     05.06.14  19:43 SWISSLAB        
+ neu:sp__dumpdb                                                                    1.36 $    NULL                                     05.06.14  19:43 sybsystemprocs  
+ neu:sp__trunclog                                                                  1.19 $    NULL                                     05.05.14  12:06 sybsystemprocs  
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        2881      1 Elsterwerda      Elsterwerda                                                                                                                                                                                                                                                     
+        2931      2 Herzberg         Herzberg                                                                                                                                                                                                                                                        
+        3362      4 Finsterwalde     Finsterwalde                                                                                                                                                                                                                                                    
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        3401 Basisdiagnostik                                                  
+        1518 Basisdiagnostik + Spezialdiagnostik                              
+        1248 Kapilarblut Anforderungen - Plandatum - neues Etikett            
+        1068 Kapilarblut Anforderungen Herzberg                               
+         915 Kapilarblut Anforderungen Elsterwerda                            
+         718 Spezialdiagnostik                                                
+         187 Blutdepot                                                        
+          70 Blutgruppenserologie                                             
+          49 Kapiarblut Anforderungen - Plandatum                             
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     1 NULL       NULL       NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: ELST, beendet am: 09.06.2015 14:22 
+SQL-Abfrage-Dauer: 2   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 12.10.24.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2.0.0.1 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 12.12.6.2 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2012_02 

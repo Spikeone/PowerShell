@@ -1,0 +1,54 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\tain\Aunu_Praefix_zum_Jahreswechsel*/
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [160607]                                                       */
+/*KURZINFO : SWL-II: UNINUMBER Jahrespräfix setzen                          */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[20160607] 1.00 lis erstellt                                              */
+/****************************************************************************/
+
+set dateformat dmy
+set nocount on
+declare
+  @aktDatum          smalldatetime,
+  @aktyear           int,
+  @akt_praefix_year  int,
+  @numstep           int,
+  @akt_praefix       nvarchar(4),
+  @uninumbercode     nvarchar(16),
+  @message           nvarchar(128)
+
+/******************************************************************************/
+select @uninumbercode = 'MROUTINE'  /*hier den Auftragsnummernkreis eintragen */
+/******************************************************************************/
+
+select @aktDatum = getdate()
+select @aktyear = datepart(year,@aktDatum)
+select @akt_praefix = PRAEFIX, @numstep = NUMSTEP from UNINUMBER where UNINUMBERCODE = @uninumbercode and STORNODAT is null
+select @akt_praefix_year = case when @akt_praefix like "%[^0-9]%" then 0 else convert(int,@akt_praefix) end 
+if @numstep > 1
+begin
+  select @message = 'Warnung: UNINUMBER-Schrittweite ist nicht auf 1 gestellt für UNINUMBERCODE ' + @uninumbercode 
+  print @message
+end
+if @akt_praefix_year > 0
+begin
+  if @aktyear > @akt_praefix_year
+  begin
+  	update UNINUMBER set PRAEFIX = convert(char, @aktyear) where UNINUMBERCODE = @uninumbercode and STORNODAT is null
+	select @message = 'Update: UNINUMBER-Jahrespräfix von ' + @akt_praefix + ' auf ' +  convert(char(4),@aktyear) + ' geändert für UNINUMBERCODE ' + @uninumbercode 
+    print @message
+  end
+end  
+if @aktyear <= @akt_praefix_year
+begin
+  select @message = 'Nichts zu tun, UNINUMBER-Jahrespräfix ' + @akt_praefix + ' für UNINUMBERCODE ' + @uninumbercode + ' ist bereits aktuell'
+  print @message
+end
+if @akt_praefix_year = 0
+begin
+  select @message = 'Fehler: UNINUMBER-Jahrespräfix ' + @akt_praefix + ' für UNINUMBERCODE ' + @uninumbercode + ' ist nicht numerisch'
+  print @message
+end
+go

@@ -1,0 +1,115 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BDRK, ausgeführt am: 11.06.2015 13:46
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           BDRK             DRK Kliniken Berlin  SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/15.7/EBF 23465 SMP SP131 /P/X64/Windows Server/ase157sp131x/3896/64-bit/OPT/Mon Nov 03 17:27:09 2014                                                                                                                                 
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 489     Anzahl User: 1078    Anzahl Auftraege Lauris: 18217   Anzahl Auftraege ohne Lauris: 41094  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         489 v12.12.06#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Neil Armstrong                                                                   2012.02    NULL                                     17.09.12  00:00                 
+ letztes Swisspro                                                                 2012.02    NULL                                     11.03.13  11:10                 
+ swissup3.tab                                                                      2.14 $    NULL                                     12.02.13  11:06                 
+ swissup3.tab                                                                      2.14 $    NULL                                     12.02.13  11:06                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     12.02.13  11:16                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     12.02.13  11:14                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     11.03.13  11:14                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     12.02.13  11:14                 
+                                                                                             NULL                                                                     
+ neu:PR_DUMPDB                                                                     1.16 $    NULL                                     14.04.15  14:12 SWISSLAB        
+ neu:PR_DUMPTRAN                                                                   1.06 $    NULL                                     14.04.15  14:12 SWISSLAB        
+ neu:PI_DUMPSTART                                                                  1.23 $    NULL                                     14.04.15  14:12 SWISSLAB        
+ neu:PR_MAKELOADDB                                                                 1.04 $    NULL                                     14.04.15  14:12 SWISSLAB        
+ neu:PI_DUMPDELFILES                                                               1.14 $    NULL                                     14.04.15  14:12 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        7361      1 Westend          Westend (Lauf 1)                                                                                                                                                                                                                                                
+        6114      2 Köpenick         Köpenick (Lauf 2)                                                                                                                                                                                                                                               
+        4269      3 Dronth.          Drontheimer (Lauf 3)                                                                                                                                                                                                                                            
+           1      7 7                MVZ Laufnummer                                                                                                                                                                                                                                                  
+         472      8 Lauf 8           Lauf 8   -- by PI_Tain                                                                                                                                                                                                                                          
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       11322 Labor Routine Version 3 (2011)   aktuell                         
+        5548 Labor Cito Version 2 (2011)   aktuell                            
+        1026 Labor Blutbank Version 1 (2011)   aktuell                        
+         261 Versand-Analyte nach Alphabet Version 1 (2012) aktuell           
+          36 Labor Liquor-Untersuchungen Version 1 (2014) aktuell             
+          11 Neuropädiatrie AED (2015) aktuell                                
+          10 Labor Cito Profile Version 2 (2014) aktuell                      
+           3 Labor Liquor-Untersuchungen Kinder (2015) aktuell                
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ CLIENT   POCTQC           NULL       NULL       WNEO       
+ CLIENT   POCTQC           NULL       NULL       Z_alt_P2   
+ CLIENT   POCTQC           NULL       czicb      NULL       
+ CLIENT   POCTQC           NULL       edvtest    NULL       
+ CLIENT   POCTQC           NULL       heymg      NULL       
+ CLIENT   POCTQC           NULL       hoeckm     NULL       
+ CLIENT   POCTQC           NULL       kriev      NULL       
+ CLIENT   POCTQC           NULL       marlies    NULL       
+ CLIENT   POCTQC           NULL       neitzke    NULL       
+ CLIENT   POCTQC           NULL       ostab      NULL       
+ CLIENT   POCTQC           NULL       pista      NULL       
+ CLIENT   POCTQC           NULL       schmk      NULL       
+ CLIENT   POCTQC           NULL       SCHRKL     NULL       
+ CLIENT   POCTQC           NULL       wendda     NULL       
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     1 NULL       NULL       NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BDRK, beendet am: 11.06.2015 13:46 
+SQL-Abfrage-Dauer: 1   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 12.10.24.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2.0.0.1 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 12.12.6.1 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.0.0.1 

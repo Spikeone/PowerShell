@@ -1,0 +1,42 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: DHM, ausgeführt am: 26.07.2012 
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           DHMKC            M?nchen  (80836)     sqlserver            Deutsches Herzzentru Adaptive Server Enterprise/12.5.3/EBF 12599 ESD#3/P/NT (IX86)/OS 4.0/ase1253/1912/32-bit/OPT/Fri Jul 08 18:58:47 2005                                                                                                                                           
+                           DHM              Muenchen             sqlserver            DHM - KC und BB      Adaptive Server Enterprise/12.5.3/EBF 12599 ESD#3/P/NT (IX86)/OS 4.0/ase1253/1912/32-bit/OPT/Fri Jul 08 18:58:47 2005                                                                                                                                           
+ 
+ 
+ Anmeldungen (in 30 Tagen):                                            
+ --------------------------------------------------------------------- 
+ Anzahl Clients: 46      Anzahl User: 20      Anzahl Auftraege: 7107   
+ 
+ 
+aktive Lauris-Versionen:
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+          46 v11.02.18#       
+ 
+ 
+Swisslab-Revision:
+ Name                              Revision   FileName                                 CrDate          DB              
+ --------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+ Wikileaks                         2010.03    NULL                                     22.12.10  00:00                 
+ letztes Swisspro                  2010.03    NULL                                     04.05.11  10:24                 
+ swissup3.tab                       2.14 $    NULL                                     04.05.11  10:09                 
+ swlupgrade.tab                     2.20.1 $  NULL                                     04.05.10  12:42                 
+ Lauris (via lauris.ini)            1.04 $    NULL                                     04.05.11  10:20                 
+ Blutbank (via barkasse.pro)        1.09 $    NULL                                     04.05.11  10:18                 
+ Statistik (via statistik.pro)      5.79 $    NULL                                     04.05.11  10:21                 
+ BB-Statistik (via spendestat.pro)  1.24 $    NULL                                     04.05.11  10:19                 
+                                              NULL                                                                     
+ neu:PR_RECHNUNGKOPFEXPORT          1.17 $    NULL                                     09.05.12  10:20 SWISSLAB        
+ neu:PI_ARCHSAVEAUFTRAGVIADATUM     1.98.1    NULL                                     16.09.11  11:29 SWISSLAB        
+ neu:PI_AUFTRAGFALLSTAMM            4.14.2    NULL                                     17.05.11  12:40 SWISSLAB        
+ neu:PI_AUFTRAGFALLSTAMM_ARCH       4.14.2    NULL                                     17.05.11  12:40 SWISSLAB        
+ neu:PI_HUNTERSUCHUNG               1.31 $    NULL                                     17.05.11  12:40 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                 NULL                                                                     
+(return status = 0)

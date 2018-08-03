@@ -1,0 +1,38 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BOEB, ausgeführt am: 06.09.2012 
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           BOEB             boeblingen           sqlserver            sQLRoutineserver boe Adaptive Server Enterprise/15.5/EBF 18374 SMP ESD#3/P/X64/Windows Server/asear155/2531/64-bit/OPT/Fri Jan 14 02:06:35 2011                                                                                                                                      
+ 
+ 
+ Anmeldungen (in 30 Tagen):                                            
+ --------------------------------------------------------------------- 
+ Anzahl Clients: 920     Anzahl User: 1866    Anzahl Auftraege: 38788  
+ 
+ 
+aktive Lauris-Versionen:
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         751 v11.12.09.7      
+         169 v10.06.07#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Forrest Gump                                                                     2011.03    NULL                                     01.12.11  00:00                 
+ letztes Swisspro                                                                 2011.03    NULL                                     28.08.12  13:59                 
+ swissup3.tab                                                                      2.14 $    NULL                                     28.08.12  13:35                 
+ swlupgrade.tab                                                                    2.20.1 $  NULL                                     15.12.10  15:33                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     28.08.12  14:06                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     28.08.12  13:47                 
+ Statistik (via statistik.pro)                                                     5.85 $    NULL                                     28.08.12  13:50                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     28.08.12  13:47                 
+                                                                                             NULL                                                                     
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)

@@ -1,0 +1,441 @@
+Warning: Row size (1965 bytes) could exceed row size limit, which is 1962 bytes.
+ 
+--------------------------------------------------------------
+Lauris Check für System: FREY, ausgeführt am: 27.01.2015 09:38
+--------------------------------------------------------------
+ 
+ 
+Stornierte Behälter Check:
+ BEHAELTERX  Behaelter        Material         Status                           verwendet in den Formularen                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+ ----------- ---------------- ---------------- -------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+ 
+Mehrfache Behälter Check:
+ BEHAELTERX  Behaelter        Material         Status                           verwendet in den Formularen                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+ ----------- ---------------- ---------------- -------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+ 
+Formularcheck, stornierte oder inaktive Analyte im Formular:
+ Formular         Analyt           Storno                     Aktivbis                   
+ ---------------- ---------------- -------------------------- -------------------------- 
+ 
+Formularcheck, unterschiedliche Behälter mit gleichem Materialkreis im Formular, kann zum Fehler "non unique sample id" führen:
+ BEHAELTERX  Formular         Behaelter        Mat. Kreis       Analyte                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+ ----------- ---------------- ---------------- ---------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+          16 zMASTER          cp2              22               cDDIM, zA2AP, zAPCRAT, zCITTHRA, zF10, zF11, zF12, zF13, zF2, zF5, zF7, zF8, zF9, zFISP, zFMTE, zPFLUTE, zPFVW, zPLSM, zPROC, zPRSF, zREPZ                                                                                                                                                                                                                                                                                                                                                                                       
+          44 zMASTER          pai              22               zPAI                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          43 zMASTER          pfa              22               zPFPFA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          27 zMASTER          glu0             51               zGNUL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          35 zMASTER          gluIH-10         51               zIHM10                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          28 zMASTER          glu30            52               zG30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          36 zMASTER          gluIH0           52               zIHNL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          29 zMASTER          glu60            53               zG60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          37 zMASTER          gluIH15          53               zIH15                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          30 zMASTER          glu90            54               zG90                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          38 zMASTER          gluIH30          54               zIH30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          32 zMASTER          glu180           56               zG180                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          40 zMASTER          gluIH60          56               zIH60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          33 zMASTER          glu240           57               zG240                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          41 zMASTER          gluIH90          57               zIH90                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          34 zMASTER          glu300           58               zG300                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          42 zMASTER          gluIH120         58               zIH120                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          16 zMASTER2         cp2              22               cDDIM, zA2AP, zAPCRAT, zF10, zF11, zF12, zF13, zF2, zF5, zF7, zF8, zF9, zFISP, zFMTE, zPFLUTE, zPFVW, zPLSM, zPROC, zPRSF, zREPZ                                                                                                                                                                                                                                                                                                                                                                                                 
+          44 zMASTER2         pai              22               zPAI                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          43 zMASTER2         pfa              22               zPFPFA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          27 zMASTER2         glu0             51               zGNUL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          35 zMASTER2         gluIH-10         51               zIHM10                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          28 zMASTER2         glu30            52               zG30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          36 zMASTER2         gluIH0           52               zIHNL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          29 zMASTER2         glu60            53               zG60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          37 zMASTER2         gluIH15          53               zIH15                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          30 zMASTER2         glu90            54               zG90                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          38 zMASTER2         gluIH30          54               zIH30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          31 zMASTER2         glu120           55               zG120                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          39 zMASTER2         gluIH45          55               zIH45                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          32 zMASTER2         glu180           56               zG180                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          40 zMASTER2         gluIH60          56               zIH60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          33 zMASTER2         glu240           57               zG240                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          41 zMASTER2         gluIH90          57               zIH90                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          34 zMASTER2         glu300           58               zG300                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          42 zMASTER2         gluIH120         58               zIH120                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          16 zMASTERsort      cp2              22               cDDIM, zA2AP, zAPCRAT, zF10, zF11, zF12, zF13, zF2, zF5, zF7, zF8, zF9, zFISP, zFMTE, zPFLUTE, zPFVW, zPLSM, zPROC, zPRSF, zREPZ                                                                                                                                                                                                                                                                                                                                                                                                 
+          44 zMASTERsort      pai              22               zPAI                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          43 zMASTERsort      pfa              22               zPFPFA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+         130 zROUTINE         lautestCon       01               zAPOA, zAPOB, zCK, zCKMB, zCRP, zFE, zHDL, zLDL, zLPA, zMYO, zNA                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+         129 zROUTINE         Serum            01               zALB, zAMYL, zAP, zBILI, zCA, zCHE, zCHOL, zCRP, zDBIL, zGALL, zGE, zGGT, zGLDH, zGLUS, zGOT, zGPT, zHS, zHSTN, zK, zKREA, zLDH, zLIP, zMG, zNA, zP, zTRIG                                                                                                                                                                                                                                                                                                                                                                       
+          16 zROUTINE         cp2              22               zA2AP, zAPCRAT, zF10, zF11, zF12, zF13, zF2, zF5, zF7, zF8, zF9, zFISP, zFMTE, zPFLUTE, zPFVW, zPLSM, zPROC, zPRSF, zREPZ                                                                                                                                                                                                                                                                                                                                                                                                        
+          44 zROUTINE         pai              22               zPAI                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          43 zROUTINE         pfa              22               zPFPFA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          27 zROUTINE         glu0             51               zGNUL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          35 zROUTINE         gluIH-10         51               zIHM10                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          28 zROUTINE         glu30            52               zG30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          36 zROUTINE         gluIH0           52               zIHNL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          29 zROUTINE         glu60            53               zG60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          37 zROUTINE         gluIH15          53               zIH15                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          30 zROUTINE         glu90            54               zG90                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          38 zROUTINE         gluIH30          54               zIH30                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          31 zROUTINE         glu120           55               zG120                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          39 zROUTINE         gluIH45          55               zIH45                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          32 zROUTINE         glu180           56               zG180                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          40 zROUTINE         gluIH60          56               zIH60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          33 zROUTINE         glu240           57               zG240                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          41 zROUTINE         gluIH90          57               zIH90                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          34 zROUTINE         glu300           58               zG300                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+          42 zROUTINE         gluIH120         58               zIH120                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+ 
+Formularcheck, Materialprüfung:
+ Formular         anacode          ana_material     beh_material     behaeltercode    beh_matext       
+ ---------------- ---------------- ---------------- ---------------- ---------------- ---------------- 
+ eKC              ezelec           ohne Material    s                Serum            NULL             
+ lautestform      tET              ohne Material    s                lautestCon       NULL             
+ lautestform      tTE              ohne Material    s                lautestCon       NULL             
+ MB-BAK           mpk              MB               MBANFO           MBANFO           NULL             
+ MB-BAK           mCAMP            MBDIREKT         MBANFO           MBANFO           NULL             
+ MB-BAK           manv             ohne Material    MBALLG           MBALLG           NULL             
+ MB-BAK           mdia             ohne Material    MBALLG           MBALLG           NULL             
+ MB-BAK           mmat             ohne Material    MBALLG           MBALLG           NULL             
+ MB-BAK           mPCR             ohne Material    MBANFO           MBANFO           NULL             
+ MB-TB            manv             ohne Material    MBALLG           MBALLG           NULL             
+ MB-TB            mdia             ohne Material    MBALLG           MBALLG           NULL             
+ MB-TB            mmat             ohne Material    MBALLG           MBALLG           NULL             
+ MB-VIRO          manv             ohne Material    MBALLG           MBALLG           NULL             
+ MB-VIRO          mBOR             ohne Material    s                Serum            NULL             
+ MB-VIRO          mdia             ohne Material    MBALLG           MBALLG           NULL             
+ MB-VIRO-RESP     vada             s                MBANFO           MBANFO           NULL             
+ MB-VIRO-RESP     vadm             s                MBANFO           MBANFO           NULL             
+ mBAKT            mMRSA            MBANFO           MB               mBAKT            NULL             
+ mBAKT            mVRE             MBANFO           MB               mBAKT            NULL             
+ mBAKT            mCAMP            MBDIREKT         MB               mBAKT            NULL             
+ mBAKT            mCHEK            MBDIREKT         MB               mBAKT            NULL             
+ mBAKT            mTOX             MBDIREKT         MB               mBAKT            NULL             
+ TRANSFUSION      AEKBdummy        ohne Material    EKB              EKB              NULL             
+ TRANSFUSION      AEKdummy         ohne Material    EK               EK               NULL             
+ TRANSFUSION      AGFPdummy        ohne Material    GFP              GFP              NULL             
+ TRANSFUSION      ALYPdummy        ohne Material    LYP              LYP              NULL             
+ TRANSFUSION      ATHKdummy        ohne Material    THK              THK              NULL             
+ TRANSFUSION      ATKPdummy        ohne Material    TKP              TKP              NULL             
+ vROUTINE         vxinab           ohne Material    s                vs               01               
+ vROUTINE         vxinab           ohne Material    s                vs               01               
+ vROUTINE         vcg              s                li               li               NULL             
+ vROUTINE         vcm              s                li               li               NULL             
+ vROUTINE         vhm              s                li               li               NULL             
+ vROUTINE         vhm              s                li               li               NULL             
+ vROUTINE         vmam             s                li               li               NULL             
+ vROUTINE         vmam             s                li               li               NULL             
+ vROUTINE         vrm              s                li               li               NULL             
+ vROUTINE         vrm              s                li               li               NULL             
+ vROUTINE         vvm              s                li               li               NULL             
+ vROUTINE         vvm              s                li               li               NULL             
+ zENDO            z24HSTP          ohne Material    u                u                NULL             
+ zENDO            zPFSD            ohne Material    s                Serum            NULL             
+ zMASTER          zASCITES         ap               SOMATZL          soz              NULL             
+ zMASTER          zASCITES         ap               SOMATZL          soz              NULL             
+ zMASTER          zMONU            e3               e2               e2               NULL             
+ zMASTER          zMONU            e3               e2               e2               NULL             
+ zMASTER          zNTBNP           h                s2               s2               NULL             
+ zMASTER          zNTBNP           h                s2               s2               NULL             
+ zMASTER          z24HSTP          ohne Material    u                u                NULL             
+ zMASTER          zPFAC            ohne Material    u2               u2               NULL             
+ zMASTER          zPFFLK           ohne Material    s3               s3               NULL             
+ zMASTER          zPFIFIX          ohne Material    s3               s3               NULL             
+ zMASTER          zPFIGGSUB        ohne Material    s3               s3               NULL             
+ zMASTER          zPFIGLS          ohne Material    s3               s3               NULL             
+ zMASTER          zPFLDIFF         ohne Material    li               li               NULL             
+ zMASTER          zPFLUTE          ohne Material    cp2              cp2              NULL             
+ zMASTER          zPFPDBB          ohne Material    SOMATZL          soz              NULL             
+ zMASTER          zPFPDBB          ohne Material    SOMATZL          soz              NULL             
+ zMASTER          zPFPDKC          ohne Material    SOMATZL          soz              NULL             
+ zMASTER          zPFPDKC          ohne Material    SOMATZL          soz              NULL             
+ zMASTER          zPFSD            ohne Material    s                Serum            NULL             
+ zMASTER          zPFUFLK          ohne Material    u2               u2               NULL             
+ zMASTER          zPFUIFIX         ohne Material    u2               u2               NULL             
+ zMASTER          zPFUPROT         ohne Material    u2               u2               NULL             
+ zMASTER          zPFURIN1         ohne Material    u                u                NULL             
+ zMASTER          zPFURIN1         ohne Material    u                u                NULL             
+ zMASTER          zPFURIN1         ohne Material    u                u                NULL             
+ zMASTER          zPFVW            ohne Material    cp2              cp2              NULL             
+ zMASTER          zQIG             ohne Material    s3               s3               NULL             
+ zMASTER          zQIG             ohne Material    s3               s3               NULL             
+ zMASTER          zHBFREI          s2               s3               s3               NULL             
+ zMASTER          zHBFREI          s2               s3               s3               NULL             
+ zMASTER          zLDHISO          s3               s2               s2               NULL             
+ zMASTER          zABE             SOMATZL          bga              bga              67               
+ zMASTER          zABE             SOMATZL          bga              bga              67               
+ zMASTER          zAHCO3           SOMATZL          bga              bga              67               
+ zMASTER          zAHCO3           SOMATZL          bga              bga              67               
+ zMASTER          zASCZZ           SOMATZL          e                e                NULL             
+ zMASTER          zBGAA            SOMATZL          bga              bga              67               
+ zMASTER          zBGAA            SOMATZL          bga              bga              67               
+ zMASTER          zBSG             SOMATZL          cp               CitrPlasma       NULL             
+ zMASTER          zPCO2            SOMATZL          bga              bga              67               
+ zMASTER          zPCO2            SOMATZL          bga              bga              67               
+ zMASTER          zPH              SOMATZL          bga              bga              67               
+ zMASTER          zPH              SOMATZL          bga              bga              67               
+ zMASTER          zPLPALB          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPAMYL         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPAP           SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPBILI         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPCHOL         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPGE           SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPGLU          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPKREA         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPLAC          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPLDH          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPLIP          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPTRIG         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPLPZZ           SOMATZL          pleupu           pleupu           NULL             
+ zMASTER          zPO2TE           SOMATZL          bga              bga              67               
+ zMASTER          zPO2TE           SOMATZL          bga              bga              67               
+ zMASTER          zSBE             SOMATZL          bga              bga              67               
+ zMASTER          zSBE             SOMATZL          bga              bga              67               
+ zMASTER          zSHCO3           SOMATZL          bga              bga              67               
+ zMASTER          zSHCO3           SOMATZL          bga              bga              67               
+ zMASTER          zSO2             SOMATZL          bga              bga              67               
+ zMASTER          zSO2             SOMATZL          bga              bga              67               
+ zMASTER          zVISKOSI         SOMATZL          s3               s3               NULL             
+ zMASTER          zVISKOSI         SOMATZL          s3               s3               NULL             
+ zMASTER          zUALB            u                u2               u2               NULL             
+ zMASTER          zUKR             u                u2               u2               NULL             
+ zMASTER          zUKR             u                u2               u2               NULL             
+ zMASTER          zUKR             u                u2               u2               NULL             
+ zMASTER          zUKR             u                u2               u2               NULL             
+ zMASTER          zUSCHWA          u                u2               u2               NULL             
+ zMASTER          zUSCHWA          u                u2               u2               NULL             
+ zMASTER          zUSCHWA          u                u2               u2               NULL             
+ zMASTER          zUSCHWA          u                u2               u2               NULL             
+ zMASTER          zUSCHWA          u                u2               u2               NULL             
+ zMASTER2         zASCITES         ap               SOMATZL          soz              NULL             
+ zMASTER2         zASCITES         ap               SOMATZL          soz              NULL             
+ zMASTER2         zHOMOC           e                e2               e2               NULL             
+ zMASTER2         zMONU            e3               e2               e2               NULL             
+ zMASTER2         z24HSTP          ohne Material    u                u                NULL             
+ zMASTER2         zPFAC            ohne Material    u2               u2               NULL             
+ zMASTER2         zPFFLK           ohne Material    s3               s3               NULL             
+ zMASTER2         zPFIFIX          ohne Material    s3               s3               NULL             
+ zMASTER2         zPFIGGSUB        ohne Material    s3               s3               NULL             
+ zMASTER2         zPFIGLS          ohne Material    s3               s3               NULL             
+ zMASTER2         zPFLDIFF         ohne Material    li               li               NULL             
+ zMASTER2         zPFLUTE          ohne Material    cp2              cp2              NULL             
+ zMASTER2         zPFPDBB          ohne Material    SOMATZL          soz              NULL             
+ zMASTER2         zPFPDBB          ohne Material    SOMATZL          soz              NULL             
+ zMASTER2         zPFPDKC          ohne Material    SOMATZL          soz              NULL             
+ zMASTER2         zPFPDKC          ohne Material    SOMATZL          soz              NULL             
+ zMASTER2         zPFSD            ohne Material    s                Serum            NULL             
+ zMASTER2         zPFUFLK          ohne Material    u2               u2               NULL             
+ zMASTER2         zPFUIFIX         ohne Material    u2               u2               NULL             
+ zMASTER2         zPFUPROT         ohne Material    u2               u2               NULL             
+ zMASTER2         zPFURIN1         ohne Material    u                u                NULL             
+ zMASTER2         zPFURIN1         ohne Material    u                u                NULL             
+ zMASTER2         zPFURIN1         ohne Material    u                u                NULL             
+ zMASTER2         zPFVW            ohne Material    cp2              cp2              NULL             
+ zMASTER2         zQIG             ohne Material    s3               s3               NULL             
+ zMASTER2         zQIG             ohne Material    s3               s3               NULL             
+ zMASTER2         zABE             SOMATZL          bga              bga              67               
+ zMASTER2         zABE             SOMATZL          bga              bga              67               
+ zMASTER2         zAHCO3           SOMATZL          bga              bga              67               
+ zMASTER2         zAHCO3           SOMATZL          bga              bga              67               
+ zMASTER2         zASCZZ           SOMATZL          e                e                NULL             
+ zMASTER2         zBGAA            SOMATZL          bga              bga              67               
+ zMASTER2         zBGAA            SOMATZL          bga              bga              67               
+ zMASTER2         zBSG             SOMATZL          cp               CitrPlasma       NULL             
+ zMASTER2         zPCO2            SOMATZL          bga              bga              67               
+ zMASTER2         zPCO2            SOMATZL          bga              bga              67               
+ zMASTER2         zPH              SOMATZL          bga              bga              67               
+ zMASTER2         zPH              SOMATZL          bga              bga              67               
+ zMASTER2         zPLPALB          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPAMYL         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPAP           SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPBILI         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPCHOL         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPGE           SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPGLU          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPKREA         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPLAC          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPLDH          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPLIP          SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPTRIG         SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPLPZZ           SOMATZL          pleupu           pleupu           NULL             
+ zMASTER2         zPO2TE           SOMATZL          bga              bga              67               
+ zMASTER2         zPO2TE           SOMATZL          bga              bga              67               
+ zMASTER2         zSBE             SOMATZL          bga              bga              67               
+ zMASTER2         zSBE             SOMATZL          bga              bga              67               
+ zMASTER2         zSHCO3           SOMATZL          bga              bga              67               
+ zMASTER2         zSHCO3           SOMATZL          bga              bga              67               
+ zMASTER2         zSO2             SOMATZL          bga              bga              67               
+ zMASTER2         zSO2             SOMATZL          bga              bga              67               
+ zMASTER2         zUALB            u                u2               u2               NULL             
+ zMASTER2         zUKR             u                u2               u2               NULL             
+ zMASTER2         zUKR             u                u2               u2               NULL             
+ zMASTER2         zUKR             u                u2               u2               NULL             
+ zMASTER2         zUKR             u                u2               u2               NULL             
+ zMASTER2         zUSCHWA          u                u2               u2               NULL             
+ zMASTER2         zUSCHWA          u                u2               u2               NULL             
+ zMASTER2         zUSCHWA          u                u2               u2               NULL             
+ zMASTER2         zUSCHWA          u                u2               u2               NULL             
+ zMASTER2         zUSCHWA          u                u2               u2               NULL             
+ zMASTERsort      zASCITES         ap               SOMATZL          soz              NULL             
+ zMASTERsort      zHOMOC           e                e2               e2               NULL             
+ zMASTERsort      z24HSTP          ohne Material    u                u                NULL             
+ zMASTERsort      zPFLUTE          ohne Material    cp2              cp2              NULL             
+ zMASTERsort      zPFPDBB          ohne Material    SOMATZL          soz              NULL             
+ zMASTERsort      zPFPDKC          ohne Material    SOMATZL          soz              NULL             
+ zMASTERsort      zPFSD            ohne Material    s                Serum            NULL             
+ zMASTERsort      zPFURIN1         ohne Material    u                u                NULL             
+ zMASTERsort      zPFVW            ohne Material    cp2              cp2              NULL             
+ zMASTERsort      zQIG             ohne Material    s3               s3               NULL             
+ zMASTERsort      zASCZZ           SOMATZL          e                e                NULL             
+ zMASTERsort      zBGAA            SOMATZL          bga              bga              67               
+ zMASTERsort      zPLPALB          SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPAMYL         SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPAP           SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPBILI         SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPCHOL         SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPGE           SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPGLU          SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPKREA         SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPLAC          SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPLDH          SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPLIP          SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPTRIG         SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zPLPZZ           SOMATZL          pleupu           pleupu           NULL             
+ zMASTERsort      zUKR             u                u2               u2               NULL             
+ zMASTERsort      zUSCHWA          u                u2               u2               NULL             
+ zNOTFALL         zMONU            e3               e2               e2               NULL             
+ zNOTFALL         zPFLDIFF         ohne Material    li               li               NULL             
+ zNOTFALL         zPFPDBB          ohne Material    SOMATZL          soz              NULL             
+ zNOTFALL         zPFPDKC          ohne Material    SOMATZL          soz              NULL             
+ zNOTFALL         zABE             SOMATZL          bga              bga              67               
+ zNOTFALL         zAHCO3           SOMATZL          bga              bga              67               
+ zNOTFALL         zPCO2            SOMATZL          bga              bga              67               
+ zNOTFALL         zPH              SOMATZL          bga              bga              67               
+ zNOTFALL         zPO2TE           SOMATZL          bga              bga              67               
+ zNOTFALL         zSBE             SOMATZL          bga              bga              67               
+ zNOTFALL         zSHCO3           SOMATZL          bga              bga              67               
+ zNOTFALL         zSO2             SOMATZL          bga              bga              67               
+ zNOTFALL         zUKR             u                u2               u2               NULL             
+ zNOTFALL         zUSCHWA          u                u2               u2               NULL             
+ zNOTFALL         zUSCHWA          u                u2               u2               NULL             
+ zNOTFALL-NCIT    zMONU            e3               e2               e2               NULL             
+ zNOTFALL-NCIT    zLCYTO           li               e                e                NULL             
+ zNOTFALL-NCIT    zLZZM            li               e                e                NULL             
+ zNOTFALL-NCIT    zPFLDIFF         ohne Material    e                e                NULL             
+ zNOTFALL-NCIT    zPFPDBB          ohne Material    SOMATZL          soz              NULL             
+ zNOTFALL-NCIT    zPFPDKC          ohne Material    SOMATZL          soz              NULL             
+ zNOTFALL-NCIT    zABE             SOMATZL          bga              bga              67               
+ zNOTFALL-NCIT    zAHCO3           SOMATZL          bga              bga              67               
+ zNOTFALL-NCIT    zPCO2            SOMATZL          bga              bga              67               
+ zNOTFALL-NCIT    zPH              SOMATZL          bga              bga              67               
+ zNOTFALL-NCIT    zPO2TE           SOMATZL          bga              bga              67               
+ zNOTFALL-NCIT    zSBE             SOMATZL          bga              bga              67               
+ zNOTFALL-NCIT    zSHCO3           SOMATZL          bga              bga              67               
+ zNOTFALL-NCIT    zSO2             SOMATZL          bga              bga              67               
+ zNOTFALL-NCIT    zUKR             u                u2               u2               NULL             
+ zNOTFALL-NCIT    zUSCHWA          u                u2               u2               NULL             
+ zNOTFALL-NCIT    zUSCHWA          u                u2               u2               NULL             
+ zROUTINE         zHOMOC           e                e2               e2               NULL             
+ zROUTINE         zMONU            e3               e2               e2               NULL             
+ zROUTINE         zPFFLK           ohne Material    s3               s3               NULL             
+ zROUTINE         zPFIFIX          ohne Material    s3               s3               NULL             
+ zROUTINE         zPFIGGSUB        ohne Material    s3               s3               NULL             
+ zROUTINE         zPFIGLS          ohne Material    s3               s3               NULL             
+ zROUTINE         zPFLUTE          ohne Material    cp2              cp2              NULL             
+ zROUTINE         zPFPDBB          ohne Material    SOMATZL          soz              NULL             
+ zROUTINE         zPFPDKC          ohne Material    SOMATZL          soz              NULL             
+ zROUTINE         zPFUFLK          ohne Material    u2               u2               NULL             
+ zROUTINE         zPFUIFIX         ohne Material    u2               u2               NULL             
+ zROUTINE         zPFUPROT         ohne Material    u2               u2               NULL             
+ zROUTINE         zPFURIN1         ohne Material    u                u                NULL             
+ zROUTINE         zPFVW            ohne Material    cp2              cp2              NULL             
+ zROUTINE         zCA              s                so               so               NULL             
+ zROUTINE         zCL              s                so               so               NULL             
+ zROUTINE         zGE              s                so               so               NULL             
+ zROUTINE         zK               s                so               so               NULL             
+ zROUTINE         zNA              s                so               so               NULL             
+ zROUTINE         zP               s                so               so               NULL             
+ zROUTINE         zABE             SOMATZL          bga              bga              67               
+ zROUTINE         zAHCO3           SOMATZL          bga              bga              67               
+ zROUTINE         zASCZZ           SOMATZL          e                e                NULL             
+ zROUTINE         zPCO2            SOMATZL          bga              bga              67               
+ zROUTINE         zPH              SOMATZL          bga              bga              67               
+ zROUTINE         zPLPALB          SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPAMYL         SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPAP           SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPBILI         SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPCHOL         SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPGE           SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPGLU          SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPKREA         SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPLAC          SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPLDH          SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPLIP          SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPTRIG         SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPLPZZ           SOMATZL          pleupu           pleupu           NULL             
+ zROUTINE         zPO2TE           SOMATZL          bga              bga              67               
+ zROUTINE         zSBE             SOMATZL          bga              bga              67               
+ zROUTINE         zSHCO3           SOMATZL          bga              bga              67               
+ zROUTINE         zSO2             SOMATZL          bga              bga              67               
+ zROUTINE         zUALB            u                u2               u2               NULL             
+ zROUTINE         zUKR             u                u2               u2               NULL             
+ zROUTINE         zUKR             u                u2               u2               NULL             
+ zROUTINE         zUSCHWA          u                u2               u2               NULL             
+ zROUTINE         zUSCHWA          u                u2               u2               NULL             
+ zTUMORFORSCHUNG  zASCITES         ap               SOMATZL          soz              NULL             
+ zTUMORFORSCHUNG  zPFURIN1         ohne Material    u                u                NULL             
+ zTUMORFORSCHUNG  zQIG             ohne Material    s3               s3               NULL             
+ zTUMORFORSCHUNG  zBGAA            SOMATZL          bga              bga              67               
+ zTUMORKLINIK     zASCITES         ap               SOMATZL          soz              NULL             
+ zTUMORKLINIK     zPFURIN1         ohne Material    u                u                NULL             
+ zTUMORKLINIK     zQIG             ohne Material    s3               s3               NULL             
+ zTUMORKLINIK     zBGAA            SOMATZL          bga              bga              67               
+ zTUMORKLINIK     zUKR             u                u2               u2               NULL             
+ zTUMORKLINIK     zUSCHWA          u                u2               u2               NULL             
+ 
+Formularcheck, Anforderungstypen und -arten:
+ Formular         anacode          behaeltercode    AnalytTyp_Swiss      AnfoTyp_Lauris                     AnalytTypOK      Art              ArtOk            anforderungx 
+ ---------------- ---------------- ---------------- -------------------- ---------------------------------- ---------------- ---------------- ---------------- ------------ 
+ Bakteriologie    mMRSA            MBANFO           Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       8900 
+ Bakteriologie    mMRSA            MBANFO           Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       8905 
+ MB-BAK-RESP      mMRSA            MBANFO           Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       9059 
+ mBAKT            mMRSA            mBAKT            Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       8723 
+ PATHOLOGIE       pFRAGE           NULL             Einzelanalyse        Text-Eingabe                       ok                                bitte pruefen!           8992 
+ PATHOLOGIE       pKLINDIAG        NULL             Funktionstest        Text-Eingabe                       ok                                bitte pruefen!           8994 
+ PATHOLOGIE       pMATANZ          PATHO            Einzelanalyse        Resultat-Eingabe                   ok                                bitte pruefen!           8990 
+ PATHOLOGIE       pORGAN           PATHO            Funktionstest        Text-Eingabe                       ok                                bitte pruefen!           8996 
+ PATHOLOGIE       pTELEFON         NULL             Einzelanalyse        Text-Eingabe                       ok                                bitte pruefen!           8993 
+ vROUTINE         vxpag            vs               Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       1581 
+ vROUTINE         vxpo             vs               Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       1787 
+ vROUTINE2alt     vxpaag08         bal              Anford.-Block        Einzel-Anforderung mit Abnahmeort  bitte pruefen!     R              ok                       1419 
+ vROUTINE2alt     vxpo             Serum            Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       1396 
+ vROUTINE2alt     vxrsag08         bal              Anford.-Block        Einzel-Anforderung mit Abnahmeort  bitte pruefen!     R              ok                       1420 
+ zAUTO            zANAPROF         NULL             Einzelanalyse        MFA-Anforderung                    bitte pruefen!     R              ok                        602 
+ zMASTER          zANAPROF         NULL             Einzelanalyse        MFA-Anforderung                    bitte pruefen!     R              ok                       3608 
+ zMASTER          zBGAA            bga              MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       3227 
+ zMASTER          zBGAA            bga              MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       3577 
+ zMASTER          zKRYOGLO         s3               Einzelanalyse        Text-Eingabe                       ok                 R              bitte pruefen!           2985 
+ zMASTER          zPFAPC           NULL             MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       2974 
+ zMASTER          zPFIGLS          s3               Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       2631 
+ zMASTER          zUCREACL         u2               MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       3361 
+ zMASTER          zUCREACL         u2               MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       3014 
+ zMASTER2         zBGAA            bga              MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       4744 
+ zMASTER2         zBGAA            bga              MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       5089 
+ zMASTER2         zKRYOGLO         s3               Einzelanalyse        Text-Eingabe                       ok                 R              bitte pruefen!           4502 
+ zMASTER2         zPFAPC           NULL             MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       4491 
+ zMASTER2         zPFIGLS          s3               Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       4157 
+ zMASTER2         zPFZIMM          e2               Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       8701 
+ zMASTER2         zUCREACL         u2               MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       4873 
+ zMASTER2         zUCREACL         u2               MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       4531 
+ zMASTERsort      zBGAA            bga              MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       8086 
+ zMASTERsort      zKRYOGLO         s3               Einzelanalyse        Text-Eingabe                       ok                 R              bitte pruefen!           7844 
+ zMASTERsort      zPFZIMM          e2               Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       8702 
+ zMASTERsort      zUCREACL         u2               MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       7873 
+ zROUTINE         zKLINANGERIN     NULL             Einzelanalyse        Text-Gruppenauswahl                ok                 R              bitte pruefen!            673 
+ zROUTINE         zNA              lautestCon       Einzelanalyse        Text-Gruppenauswahl                ok                 R              bitte pruefen!           9285 
+ zROUTINE         zPFIGLS          s3               Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                        109 
+ zROUTINE         zPFZIMM          e2               Anford.-Block        Einzel-Anforderung                 bitte pruefen!     R              ok                       8700 
+ zTUMORFORSCHUNG  zBGAA            bga              MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       2368 
+ zTUMORFORSCHUNG  zUCREACL         u2               MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       2155 
+ zTUMORKLINIK     zBGAA            bga              MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       1273 
+ zTUMORKLINIK     zKRYOGLO         s3               Einzelanalyse        Text-Eingabe                       ok                 R              bitte pruefen!           1945 
+ zTUMORKLINIK     zPFAPC           NULL             MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                        953 
+ zTUMORKLINIK     zUCREACL         u2               MFA-Block            Einzel-Anforderung                 bitte pruefen!     R              ok                       1155 
+ 
+Start: 27.01.15 09:38:13 
+Ende : 27.01.15 09:38:14 

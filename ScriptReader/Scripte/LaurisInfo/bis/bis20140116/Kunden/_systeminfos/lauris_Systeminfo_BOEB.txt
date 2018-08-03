@@ -1,0 +1,41 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BOEB, ausgeführt am: 26.07.2012 
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           BOEB             boeblingen           sqlserver            sQLRoutineserver boe Adaptive Server Enterprise/15.5/EBF 18374 SMP ESD#3/P/X64/Windows Server/asear155/2531/64-bit/OPT/Fri Jan 14 02:06:35 2011                                                                                                                                      
+ 
+ 
+ Anmeldungen (in 30 Tagen):                                            
+ --------------------------------------------------------------------- 
+ Anzahl Clients: 978     Anzahl User: 1955    Anzahl Auftraege: 40640  
+ 
+ 
+aktive Lauris-Versionen:
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         978 v10.06.07#       
+ 
+ 
+Swisslab-Revision:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    15.12.10  16:01                 
+ swissup3.tab                       2.08 $    15.12.10  15:33                 
+ swlupgrade.tab                     2.20.1 $  15.12.10  15:33                 
+ Lauris (via lauris.ini)            1.04 $    15.12.10  15:53                 
+ Blutbank (via barkasse.pro)        1.06 $    15.12.10  15:49                 
+ Statistik (via statistik.pro)      5.51 $    15.12.10  15:55                 
+ BB-Statistik (via spendestat.pro)  1.21 $    15.12.10  15:50                 
+                                                                              
+ neu:PI_SYBREORG                    0.01 $    27.03.12  18:18 SWISSLAB        
+ neu:sp__space15                    1.33 $    27.03.12  18:02 sybsystemprocs  
+ neu:PR_FESTWERT                    1.09.1    31.01.12  11:02 SWISSLAB        
+ neu:PR_SUCHEWERTE                  12.21.    31.01.12  11:02 SWISSLAB        
+ neu:PR_AFSEA                       3.53.1    31.01.12  11:01 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)

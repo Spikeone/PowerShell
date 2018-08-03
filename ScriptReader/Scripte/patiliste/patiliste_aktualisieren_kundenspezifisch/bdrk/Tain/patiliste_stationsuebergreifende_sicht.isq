@@ -1,0 +1,348 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_amb_plandat.isq          */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [091005.1100]                                                  */
+/*KURZINFO : SWL-II: Aufnahme ambulanter Fälle mit zukuenftigem Auftrag     */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20091005.1100>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[091005] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy  
+
+/* Parameter deklarieren         */
+
+declare
+  @startdat                      smalldatetime,
+  @enddat                        smalldatetime,
+  @datumtxt                      varchar(23),
+  @aufruftxt                     varchar(23),
+  @plandays                      tinyint,
+  @einsender                     varchar(16),
+  
+  @USER                          smallint,
+  @EINSENDERX                    int,
+  @MODUS                         tinyint,
+  @IDENTX                        int,
+--  @CLIENTX                       int,
+  @PATIFALLX                     int,
+  @PATIART                       char(8),
+  @KOSTTRTYP                     char(6),
+  @PZIMMERNR                     varchar(8),
+  @AKTIVBIS                      smalldatetime,
+  @STORNO                        tinyint,
+  @QUIET                         tinyint,
+  @REPORT                        tinyint,
+  @DEBUG                         tinyint,
+  @UPDATE                        tinyint,
+  @TABELLE                       varchar(30),  -- Geltung-Tabellenname
+
+  @patifallx                     int,
+  @einsenderx                    int,
+  @patiart                       char(8),
+  @kosttrtyp                     char(6),
+  @pzimmernr                     varchar(8),
+  @aktivbis                      smalldatetime,
+                                 
+  @found                         int,
+  @found_fach                    int,
+  @cnt                           int,
+  @cnt_fach                      int,
+  @insertpf                      char(4)
+
+set nocount on
+
+/* -------- Aufrufparameter Beginn -------- */
+select @REPORT         =     1   -- REPORT-Modus
+select @DEBUG          =     0   -- DEBUG-Modus
+select @UPDATE         =     1   -- 1 -> insert into PATILISTE,  0 -> keine Änderungen an PATILISTE
+/* -------- Aufrufparameter Ende   -------- */
+
+/* ------------ Voreinstellungen PI_PATILISTE Beginn -------------------*/
+select @STORNO         =     0
+select @QUIET          =     1
+select @MODUS          =     3           -- XREF ist 1=EINSENDERX, 2=CLIENTX, 3=IDENTX  
+select @TABELLE        =     'FACHEINS'  -- temporärer Geltung-Tabellenname
+
+/* -------------Voreinstellungen PI_PATILISTE Ende ---------------------*/    
+
+print '+-----------------------------------------------------------------------+'
+print '|Lauris, PATILISTE: Aufbau der fachbezogenen Patientenliste             |'
+print '+-----------------------------------------------------------------------+'
+print ''
+select @USER = null
+if (@USER is null) select @USER = PERSONX from LOGIN where LOGINID = suser_name() and STORNODAT is null
+if @UPDATE = 0
+begin
+  if @REPORT = 1 
+  begin
+    print '+-----------------------------------------------------------------------+'
+    print '| ==========  Demo-Modus, keine Aenderungen an PATILISTE  ============  |'
+    print '+-----------------------------------------------------------------------+'
+    print ''
+    select Aufruf_durch=PERSONID from PERSON where PERSONX=@USER
+    print ''
+  end
+end
+
+-- Alle bereits für Facheinsender existierenden Einträge
+create table #ptemp_fach(
+  cnt_fach         numeric       identity not null,
+  patifallx        int           null,
+  patifallnr       char(16)      null,
+  FachEinsFall     char(23)      null,
+  pfeinsenderx     int           null,
+  pffacheinsenderx int           null,
+  patiart          char(8)       null,
+  kosttrtyp        char(6)       null,
+  pzimmernr        varchar(8)    null,
+  entldatverw      smalldatetime null,
+  patilistex       int           null,
+  pleinsenderx     int           null,
+  ListeEinsFall    char(23)      null,
+  aktivbis         smalldatetime null,
+  patifalleins     char(16)      null,
+  patifallfacheins char(16)      null,
+--  patilisteeins    char(16)      null,
+  insertpf         char(4)       null
+ )
+
+insert into #ptemp_fach
+select
+  patifallx             =     PF.PATIFALLX,
+  patifallnr            =     PF.PATIFALLNR,
+  convert(char(6),PF.FACHEINSENDERX)+"_"+convert(char(16),PF.PATIFALLX),
+  pfeinsenderx          =     PF.EINSENDERX,
+  pffacheinsenderx      =     PF.FACHEINSENDERX,
+  patiart               =     PF.PATIART,
+  kosttrtyp             =     PF.KOSTTRTYP,
+  pzimmernr             =     PF.PZIMMERNR,
+  entldatverw           =     PF.ENTLDATVERW,
+  patilistex            =     PL.PATILISTEX,
+  pleinsenderx          =     PL.EINSENDERX,
+  convert(char(6),PL.EINSENDERX)+"_"+convert(char(16),PF.PATIFALLX),
+  aktivbis              =     PL.AKTIVBIS,
+  patifalleins          =     P1.EINSCODE,
+  patifallfacheins      =     P2.EINSCODE,
+--  patilisteeins         =     P3.EINSCODE,
+  insertpf              =     'no'
+ 
+from PATIFALL PF, PATILISTE PL, EINSENDER P1, EINSENDER P2 -- ,  EINSENDER P3
+
+where
+      PL.TABELLE = 'EINSENDER'
+  and PL.IDENTX is not null      -- Hier steht FACHEINSENDERX, wenn es ein stationsübergreifender Eintrag ist.
+  and PF.PATIFALLX = PL.PATIFALLX
+  and P1.EINSENDERX = PF.EINSENDERX
+  and P2.EINSENDERX =* PF.FACHEINSENDERX
+--  and P3.EINSENDERX = PL.EINSENDERX
+select @found_fach = @@identity
+
+if @DEBUG = 1
+begin
+  print ''
+  print ''
+  print 'Alle bereits für Facheinsender existierenden Einträge'
+  print ''
+  select * from #ptemp_fach
+  print ''
+end
+
+
+create table #ptemp(
+  cnt              numeric       identity not null,
+  patifallx        int           null,
+  patifallnr       char(16)      null,
+  FachEinsFall     char(23)      null,
+  pfeinsenderx     int           null,
+  pffacheinsenderx int           null,
+  patiart          char(8)       null,
+  kosttrtyp        char(6)       null,
+  pzimmernr        varchar(8)    null,
+  entldatverw      smalldatetime null,
+  patilistex       int           null,
+  pleinsenderx     int           null,
+  ListeEinsFall    char(23)      null,
+  aktivbis         smalldatetime null,
+  patifalleins     char(16)      null,
+  patifallfacheins char(16)      null,
+  patilisteeins    char(16)      null,
+  insertpf         char(4)       null
+ )
+
+insert into #ptemp
+select 
+  patifallx             =     PF.PATIFALLX,
+  patifallnr            =     PF.PATIFALLNR,
+  convert(char(6),PF.FACHEINSENDERX)+"_"+convert(char(16),PF.PATIFALLX),
+  pfeinsenderx          =     PF.EINSENDERX,
+  pffacheinsenderx      =     PF.FACHEINSENDERX,
+  patiart               =     PF.PATIART,
+  kosttrtyp             =     PF.KOSTTRTYP,
+  pzimmernr             =     PF.PZIMMERNR,
+  entldatverw           =     PF.ENTLDATVERW,
+  patilistex            =     PL.PATILISTEX,
+  pleinsenderx          =     PL.EINSENDERX,
+  convert(char(6),PL.EINSENDERX)+"_"+convert(char(16),PF.PATIFALLX),
+  aktivbis              =     PL.AKTIVBIS,
+  patifalleins          =     P1.EINSCODE,
+  patifallfacheins      =     P2.EINSCODE,
+  patilisteeins         =     P3.EINSCODE,
+  insertpf              =     'no'
+ 
+from PATIFALL PF, PATILISTE PL, EINSENDER P1, EINSENDER P2,  EINSENDER P3
+
+where
+      (PL.AKTIVBIS is null or PL.AKTIVBIS > dateadd(minute,-1,getdate()))
+  and PL.TABELLE = 'EINSENDER'
+  and PL.IDENTX is null
+  and PF.PATIFALLX = PL.PATIFALLX
+  and PF.FACHEINSENDERX is not null
+--  and PF.FACHEINSENDERX in (314,432,437,421,422,564,429,31,479) /* lis 28.03.2012 nun für alle Facheinsender! */
+  and PF.FACHEINSENDERX <> PF.EINSENDERX   -- Wenn Einsender = Facheinsender dann brauchen wir ihn nicht!
+  and PF.FACHEINSENDERX <> PL.EINSENDERX   -- Der ist schon in der Liste
+  and P1.EINSENDERX = PF.EINSENDERX
+  and P2.EINSENDERX = PF.FACHEINSENDERX
+  and P3.EINSENDERX = PL.EINSENDERX
+ select @found = @@identity
+
+
+select @cnt = 0
+while @cnt < @found
+begin
+  select @cnt        = @cnt+1  
+  update #ptemp set insertpf = 'yes'
+  from #ptemp 
+  where 
+        cnt=@cnt
+    and insertpf = 'no' 
+    and (entldatverw is null or entldatverw > getdate())
+    and FachEinsFall not in (select FachEinsFall from #ptemp_fach)
+    and ListeEinsFall not in (select ListeEinsFall from #ptemp_fach)
+end
+
+
+
+-- nun noch doppelte Einträge raus
+select
+  cnt, patifallx, patilistex
+into #P1
+from
+  #ptemp
+group by
+  FachEinsFall
+Having Count(*) > 1 
+-- select * from #P1
+
+select min(xP1.patilistex) as bleibt
+into #P2
+from #P1 xP1, #ptemp xptemp
+where 
+  xptemp.patifallx = xP1.patifallx 
+group by xptemp.patifallx
+-- select * from #P2
+
+update #ptemp set insertpf='no'
+from #ptemp xptemp, #P1 xP1
+where xptemp.patilistex not in (select bleibt from #P2) 
+  and xptemp.patilistex=xP1.patilistex
+
+
+
+
+
+if @REPORT=1 
+begin
+  print ''
+  print ' Patientenfaelle fuer Facheinsender eintragen'
+  print ''
+
+  set nocount off
+  select       
+--         patilistex,
+--         patifallx,
+         patifallnr, 
+--         patilisteeins,
+         patifalleins,
+         patifallfacheins,
+         patiart,
+         entldatverw, 
+--         insertpf,  
+         aktivbis
+  from #ptemp
+  where insertpf='yes'
+  order by patifallfacheins
+  set nocount on
+end  
+  
+select @cnt = 0
+while @cnt < @found
+begin
+
+  select @cnt        = @cnt+1  
+  select @insertpf   = 'no'
+  select @EINSENDERX = pt.pffacheinsenderx,
+         @IDENTX     = pt.pffacheinsenderx,
+--         @CLIENTX    = pt.patilistex,
+         @PATIFALLX  = pt.patifallx ,
+         @PATIART    = pt.patiart   ,
+         @KOSTTRTYP  = pt.kosttrtyp ,
+         @PZIMMERNR  = pt.pzimmernr ,
+         @AKTIVBIS   = case 
+                            when (pt.aktivbis is null and pt.entldatverw is not null) then pt.entldatverw
+                            when pt.aktivbis is not null then pt.aktivbis
+                       end,
+         @insertpf   = pt.insertpf
+  from #ptemp pt  
+  where     
+        pt.cnt=@cnt    
+    and pt.insertpf = 'yes'   
+       
+  if @insertpf = 'yes'
+  begin
+--   select 'exec PI_PATILISTE: @cnt,'        = @cnt, 
+--                            ' @MODUS,'      = @MODUS,
+--                            ' @TABELLE,'    = @TABELLE,
+--                            ' @IDENTX,'     = @IDENTX,
+-- --                           ' @CLIENTX,'    = @CLIENTX,
+--                            ' @EINSENDERX,' = @EINSENDERX, 
+--                            ' @PATIFALLX,'  = @PATIFALLX, 
+--                            ' @PATIART,'    = @PATIART, 
+--                            ' @KOSTTRYP,'   = @KOSTTRTYP, 
+--                            ' @PZIMMERNR,'  = @PZIMMERNR, 
+--                            ' @AKTIVBIS,'   = @AKTIVBIS,  
+--                            ' @STORNO,'     = @STORNO,
+--                            ' @QUIET'       = @QUIET
+    if @UPDATE=1
+    begin
+      exec PI_PATILISTE
+             @USER       = @USER      ,
+             @EINSENDERX = @EINSENDERX,
+             @MODUS      = @MODUS     ,
+             @TABELLE    = @TABELLE   ,
+             @IDENTX     = @IDENTX    ,
+--             @CLIENTX    = @CLIENTX   ,
+             @PATIFALLX  = @PATIFALLX ,
+             @PATIART    = @PATIART   ,
+             @KOSTTRTYP  = @KOSTTRTYP ,
+             @PZIMMERNR  = @PZIMMERNR ,
+             @AKTIVBIS   = @AKTIVBIS  ,
+             @STORNO     = @STORNO    ,
+             @QUIET      = @QUIET      
+    end
+    
+  end
+end
+if @UPDATE=1
+begin
+  update PATILISTE
+  set 
+    TABELLE='EINSENDER',
+    EINSENDERX=IDENTX
+  where TABELLE='FACHEINS' 
+end
+go

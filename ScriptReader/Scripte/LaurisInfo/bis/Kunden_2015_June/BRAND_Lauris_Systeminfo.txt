@@ -1,0 +1,98 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BRAND, ausgeführt am: 04.06.2015 09:53
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           BRAND            MVZ Brandenburg      SQLROUTINE           Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 19896 SMP ESD#5.1/P/X64/Windows Server/asear155/2594/64-bit/OPT/Tue Jun 05 20:55:01 2012                                                                                                                                    
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 276     Anzahl User: 590     Anzahl Auftraege Lauris: 10517   Anzahl Auftraege ohne Lauris: 29622  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+          20 v14.02.13.4      
+         256 v14.02.13.2      
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Falcon 2.14.1                                                                    2.14       NULL                                     16.04.14  00:00                 
+ letztes Swisspro                                                                 2.14       NULL                                     27.05.14  18:08                 
+ swissup3.tab                                                                      2.14 $    NULL                                     10.12.12  12:17                 
+ swissup3.tab                                                                      2.14 $    NULL                                     10.12.12  12:17                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     27.05.14  18:01                 
+ Blutbank (via barkasse.pro)                                                       1.10 $    NULL                                     27.05.14  18:00                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     27.05.14  18:02                 
+ BB-Statistik (via spendestat.pro)                                                 1.25 $    NULL                                     27.05.14  18:00                 
+                                                                                             NULL                                                                     
+ neu:PR_TASKWHY                                                                    1.33.1    NULL                                     23.10.14  12:04 SWISSLAB        
+ neu:PI_TASKFLAGREORG                                                              2.63 $    NULL                                     23.10.14  12:04 SWISSLAB        
+ neu:PR_BBQKSTATISTIK                                                              1.19 $    NULL                                     23.10.14  12:04 SWISSLAB        
+ neu:PR_STATISTIKFALL                                                              5.47.1    NULL                                     23.10.14  12:04 SWISSLAB        
+ neu:PR_STATISTIKPATI                                                              5.49.2    NULL                                     23.10.14  12:04 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         
+ ----------- ------ ---------------- 
+        7620     10 Kernlabor        
+         672     30 Blutdepot        
+        2225     60 Mibio            
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        6572 Zentrallabor Routine                                             
+        1185 Screening                                                        
+        1048 Zentrallabor Notfall                                             
+        1038 Mikrobiologie                                                    
+         672 Transfusionsmedizin                                              
+           2 TBC-Aufträge                                                     
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     0 NULL       NULL       NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BRAND, beendet am: 04.06.2015 09:53 
+SQL-Abfrage-Dauer: 1   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.11.5.1 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_02 
+. 
+. 
+Lauris-Versionsinfo: 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 14.2.13.4 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.14.3.002337 

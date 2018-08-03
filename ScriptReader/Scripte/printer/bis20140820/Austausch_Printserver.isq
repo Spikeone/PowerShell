@@ -1,0 +1,133 @@
+declare
+  @REPORT                        tinyint,
+  @UPDATE                        tinyint,
+  @PrintServerAlt                varchar(30),
+  @PrintServerNeu                varchar(30)
+
+set nocount on
+
+/* -------- Aufrufparameter Beginn -------- */
+select @REPORT         =     2   -- REPORT-Modus 0 = aus, 1 = Netzdrucker, 2 = auch lokale Drucker
+select @UPDATE         =     0   -- 0 -> keine Änderungen, 1 -> Update
+select @PrintServerAlt = '\\swb1haus'   
+select @PrintServerNeu = '\\swb2haus'   
+
+select
+ ModulID=substring(SP.MODULID,1,10),
+ ParamID=SP.PARAMID,
+ Layoutname=substring(SP.PARAMNAME,1,16),
+ strDruckerAlt = SP.TXTVALUE,
+ strDruckerNeu = STR_REPLACE(SP.TXTVALUE, @PrintServerAlt, @PrintServerNeu),
+ strUpdate = case when (SP.TXTVALUE = STR_REPLACE(SP.TXTVALUE, @PrintServerAlt, @PrintServerNeu)) then 'Nein'
+                  when (SP.TXTVALUE <> STR_REPLACE(SP.TXTVALUE, @PrintServerAlt, @PrintServerNeu)) then 'Ja'
+             end,
+ Einsender=substring(E.EINSCODE,1,16),
+ Clientcode=substring(C.CLIENTCODE,1,24),
+ Ident=I.IDENTCODE,
+ Rolle=R.CODE,
+ Erfassdat=convert(char(11),SP.ERFASSDAT,104)+convert(char(8),SP.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ Mutdat=convert(char(11),SP.MUTDAT,104)+convert(char(8),SP.MUTDAT,108)+' ',
+ MutPers=P2.PERSONID,
+ SP.SYSTEMPARAMX,
+ SP.EIGNER,
+ SP.NUTZER,
+ Produkt=substring(SP.PRODUKT,1,8),
+ SP.IDENTX,
+ SP.PRIORI,
+ SP.PARAMTYP,
+ SP.INTVALUE
+into #netztemp
+from SYSTEMPARAM SP, CLIENT C, IDENT I, EINSENDER E, ROLLE R, PERSON P, PERSON P2
+where 
+ SP.STORNODAT is null and
+ SP.MODULID='DRUCK' and
+ SP.PARAMID='DRUCKER' and
+ substring(SP.TXTVALUE,1,1) = '\' and
+ SP.CLIENTX *= C.CLIENTX and 
+ SP.IDENTX *= I.IDENTX and 
+ SP.EINSENDERX *= E.EINSENDERX and
+ SP.ROLLEX *= R.ROLLEX and
+ SP.ERFASSPERS *= P.PERSONX and
+ SP.MUTPERS *= P2.PERSONX
+order by Layoutname, strDruckerAlt
+
+if @REPORT > 0
+begin
+	set nocount off
+	print '--- Alle Netzdrucker (SYSTEMPARAM) ---'
+	select
+	  Layoutname,
+    DruckerAlt=substring(strDruckerAlt,1,48),
+    DruckerNeu=substring(strDruckerNeu,1,48),
+    Upd = strUpdate,
+    Einsender,
+    Clientcode,
+    Ident
+  from #netztemp
+end
+
+if @REPORT > 1
+begin
+  set nocount on
+  select
+   ModulID=substring(SP.MODULID,1,10),
+   ParamID=SP.PARAMID,
+   Layoutname=substring(SP.PARAMNAME,1,16),
+   Drucker=substring(SP.TXTVALUE,1,64),
+   Einsender=substring(E.EINSCODE,1,16),
+   Clientcode=substring(C.CLIENTCODE,1,24),
+   Ident=I.IDENTCODE,
+   Rolle=R.CODE,
+   Erfassdat=convert(char(11),SP.ERFASSDAT,104)+convert(char(8),SP.ERFASSDAT,108)+' ',
+   ErfassPers=P.PERSONID,
+   Mutdat=convert(char(11),SP.MUTDAT,104)+convert(char(8),SP.MUTDAT,108)+' ',
+   MutPers=P2.PERSONID,
+   SP.SYSTEMPARAMX,
+   SP.EIGNER,
+   SP.NUTZER,
+   Produkt=substring(SP.PRODUKT,1,8),
+   SP.IDENTX,
+   SP.PRIORI,
+   SP.PARAMTYP,
+   SP.INTVALUE
+  into #lokaltemp
+  from SYSTEMPARAM SP, CLIENT C, IDENT I, EINSENDER E, ROLLE R, PERSON P, PERSON P2
+  where 
+   SP.STORNODAT is null and
+   SP.MODULID='DRUCK' and
+   SP.PARAMID='DRUCKER' and
+   substring(SP.TXTVALUE,1,1) <> '\' and
+   SP.CLIENTX *= C.CLIENTX and 
+   SP.IDENTX *= I.IDENTX and 
+   SP.EINSENDERX *= E.EINSENDERX and
+   SP.ROLLEX *= R.ROLLEX and
+   SP.ERFASSPERS *= P.PERSONX and
+   SP.MUTPERS *= P2.PERSONX
+  order by Layoutname, Drucker
+
+  set nocount off
+  print ''
+	print '--- Alle lokalen Drucker (SYSTEMPARAM) ---'
+	select
+	  Layoutname,
+    Drucker,
+    Einsender,
+    Clientcode,
+    Ident
+  from #lokaltemp
+end
+
+if @UPDATE = 1 
+begin
+	print ''
+  print '--- Update der Netzdrucker ---'
+	update SYSTEMPARAM
+	set SP.TXTVALUE = t.strDruckerNeu
+  from SYSTEMPARAM SP, #netztemp t
+  where
+    t.strUpdate = 'Ja' and
+    SP.SYSTEMPARAMX = t.SYSTEMPARAMX
+end
+
+go

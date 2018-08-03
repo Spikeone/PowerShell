@@ -1,0 +1,37 @@
+print '--- Tabelle  VORLAGEANF (Lauris) ---'
+go
+select
+ F.FORMULARX,
+ FormularCode=F.FORMULARCODE,
+ Vorlagenname=substring(VO.VORLAGENAME,1,20),
+ Analyt=AN1.CODE,
+ Behälter=BE.BEHAELTERCODE,
+ BehStorno=convert(char(11),BE.STORNODAT,104)+convert(char(8),BE.STORNODAT,108)+' ',
+ ErgebnisD=VA.ERGEBNISD,
+ ErgebnisT=substring(VA.ERGEBNIST,1,12),
+ ErgebnisF=VA.ERGEBNISF,
+ Art=VA.ART,
+ MFA_Analyt=AN2.CODE,
+ PAnalyt=AN3.CODE,
+ Erfassdat=convert(char(11),VA.ERFASSDAT,104)+convert(char(8),VA.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ Mutdat=convert(char(11),VA.MUTDAT,104)+convert(char(8),VA.MUTDAT,108)+' ',
+ Mutpers=P2.PERSONID,
+ Stornodat=convert(char(11),VA.STORNODAT,104)+convert(char(8),VA.STORNODAT,108)+' ',
+ Stornopers=P3.PERSONID,
+ VorlageAnfX=VA.VORLAGEANFX
+
+from VORLAGEANF VA, PERSON P, PERSON P2, PERSON P3, VORLAGE VO, ANALYT AN1, ANALYT AN2, ANALYT AN3, BEHAELTER BE, FORMULAR F
+where
+ VA.VORLAGEX *= VO.VORLAGEX and
+ VA.ERFASSPERS *= P.PERSONX and
+ VA.MUTPERS *= P2.PERSONX and
+ VA.STORNOPERS *= P3.PERSONX and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ VO.FORMULARX*=F.FORMULARX and
+ BE.STORNODAT is not null
+order by VA.VORLAGEANFX
+go

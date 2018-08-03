@@ -1,0 +1,36 @@
+select AUFTRAGX into #temp from AUFTRAG
+where
+  ERFASSDAT > '01.08.2014 00:00' and
+  PLANDAT is not null and
+--  ARCHIVDAT is not null and
+--  PLANDAT > ARCHIVDAT and
+  datediff(dd,ERFASSDAT,PLANDAT) > 7
+
+select
+  AU.AUFTRAGNR,
+  TF.TSTATUS,
+  AuftErf = convert(char(11),AU.ERFASSDAT,104)+substring(convert(char(8),AU.ERFASSDAT,108),1,5)+' ',
+  AuftPlan = convert(char(11),AU.PLANDAT,104)+substring(convert(char(8),AU.PLANDAT,108),1,5)+' ',
+  AuftArch = convert(char(11),AU.ARCHIVDAT,104)+substring(convert(char(8),AU.ARCHIVDAT,108),1,5)+' ',
+  PR.PROBEEXTID,
+  PR.PSTATUS,
+  AuftStorno = convert(char(11),AU.STORNODAT,104)+substring(convert(char(8),AU.STORNODAT,108),1,5)+' ',
+  TFH = convert(char(11),TH.THERFASSDAT,104)+substring(convert(char(8),TH.THERFASSDAT,108),1,5)+' ',
+  Task = case when TH.TASKFLAGREORGX = 15 then 'Erledigte Auftraege (Befund gedruckt) '
+              when TH.TASKFLAGREORGX = 16 then 'Wenn Auftrgaege delayed werden muessen'
+              when TH.TASKFLAGREORGX = 17 then 'Zu alte Auftraege Status 1  (28 Tage) '
+              when TH.TASKFLAGREORGX = 18 then 'Inaktive Auftraege Status 0  (7 Tage) '
+              when TH.TASKFLAGREORGX = 19 then 'Leistungsdaten uebertragen 90 -> 99   '
+              when TH.TASKFLAGREORGX = 20 then 'Zu alte Auftraege Status 90  (2 Tage) '
+              when TH.TASKFLAGREORGX = 21 then 'Aus Taskflag löschen                  '
+         end
+from
+  PROBE PR (index PROBE_FK2), AUFTRAG AU, #temp t, TASKHISTORIE TH , TASKFLAGREORG TR, TASKFLAG TF
+where
+  AU.AUFTRAGX = t.AUFTRAGX and
+  PR.AUFTRAGX = t.AUFTRAGX and
+  TH.AUFTRAGX = AU.AUFTRAGX and
+  TR.TASKFLAGREORGX = TH.TASKFLAGREORGX and
+  TF.XREF =* AU.AUFTRAGX
+order by AUFTRAGNR, THERFASSDAT
+go

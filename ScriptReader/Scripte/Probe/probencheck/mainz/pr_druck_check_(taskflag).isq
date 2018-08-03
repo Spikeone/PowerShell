@@ -1,0 +1,66 @@
+set dateformat dmy
+go
+set nocount on
+select
+  ProbeEXtID=substring(PR.PROBEEXTID,1,10),
+  B.BEHAELTERCODE,
+  Etikinfo=substring(PR.ETIKINFO,1,12),
+  EtikDruck=substring(PR.ETIKDRUCK,1,12),
+  Etikdruckdat=convert(char(9),PR.ETIKDRUCKDAT,112)+convert(char(5),PR.ETIKDRUCKDAT,108)+' ',
+  Probenstatus = case when (PR.PSTATUS = 0) then "inaktive Probe"
+                      when (PR.PSTATUS = 1) then "von PI_PROBE aktivierte Probe"             
+                      when (PR.PSTATUS = 2) then "von PI_RESULTAT aktivierte Probe"          
+                      when (PR.PSTATUS = 3) then "von PI_STORNOLAURISANFO aktivierte Probe"  
+                      when (PR.PSTATUS = 4) then "von PI_STORNOLAURISANFO aktivierte Probe"  
+                      when (PR.PSTATUS = 5) then "von PI_TASKFLAGREORG aktivierte Probe"     
+                      when (PR.PSTATUS = 6) then "von PR_ABLIRESULTATANALYT aktivierte Probe"
+                      when (PR.PSTATUS > 6) then "unbekannter Probenstatus > 6"
+                 end,
+  PR.AUFTRAGX,
+  EinsCode=substring(E.EINSCODE,1,8),
+  LabEinDat=convert(char(9),AU.LABEINDAT,112)+convert(char(5),AU.LABEINDAT,108)+' ',
+  SQLErfassdat=convert(char(9),AU.SQLERFASSDAT,112)+convert(char(5),AU.SQLERFASSDAT,108)+' ',
+  PR.PROBEX
+into #temp1
+from PROBE PR (index PROBE_FK2), AUFTRAG AU, TASKFLAG T, EINSENDER E, BEHAELTER B
+where
+      T.XREF=AU.AUFTRAGX
+  and PR.AUFTRAGX=AU.AUFTRAGX
+  and PR.PSTATUS > 0
+  and PR.PKENNUNG = 3
+  and PR.ETIKDRUCK is null
+  and B.BEHAELTERX=PR.BEHAELTERX
+  and E.EINSENDERX=AU.EINSENDERX
+order by PR.PROBEX
+-- select * from #temp1
+
+set nocount off
+select distinct
+  t1.EinsCode,
+  ProbeEXtID=substring(PR.PROBEEXTID,1,10),
+  Behaelt=substring(B.BEHAELTERCODE,1,7),
+  EtikInfo=substring(PR.ETIKINFO,1,8), 
+  EtikDruck=substring(PR.ETIKDRUCK,1,8), 
+  Etikdruckdat=convert(char(9),PR.ETIKDRUCKDAT,112)+convert(char(5),PR.ETIKDRUCKDAT,108)+' ',
+  Probenstatus = case when (PR.PSTATUS = 0) then "inaktive Probe"
+                      when (PR.PSTATUS = 1) then "von PI_PROBE aktivierte Probe"             
+                      when (PR.PSTATUS = 2) then "von PI_RESULTAT aktivierte Probe"          
+                      when (PR.PSTATUS = 3) then "von PI_STORNOLAURISANFO aktivierte Probe"  
+                      when (PR.PSTATUS = 4) then "von PI_STORNOLAURISANFO aktivierte Probe"  
+                      when (PR.PSTATUS = 5) then "von PI_TASKFLAGREORG aktivierte Probe"     
+                      when (PR.PSTATUS = 6) then "von PR_ABLIRESULTATANALYT aktivierte Probe"
+                      when (PR.PSTATUS > 6) then "unbekannter Probenstatus > 6"
+                 end,
+  t1.LabEinDat,
+  SQLErfassdat=convert(char(9),PR.SQLERFASSDAT,112)+convert(char(5),PR.SQLERFASSDAT,108)+' ',
+  Erfassdat=convert(char(9),PR.ERFASSDAT,112)+convert(char(5),PR.ERFASSDAT,108)+' ',
+  VertErst=convert(char(9),PR.VERTEILDATERST,112)+convert(char(5),PR.VERTEILDATERST,108)+' ',
+  AktivBis=convert(char(9),PR.AKTIVBIS,112)+convert(char(5),PR.AKTIVBIS,108)+' ',
+  PRStorno=convert(char(9),PR.STORNODAT,112)+convert(char(5),PR.STORNODAT,108)+' ',
+  PR.PROBEX 
+from PROBE PR, #temp1 t1, BEHAELTER B
+where 
+  PR.AUFTRAGX=t1.AUFTRAGX
+  and B.BEHAELTERX=PR.BEHAELTERX
+order by ProbeEXtID
+go

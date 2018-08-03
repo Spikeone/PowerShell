@@ -1,0 +1,29 @@
+set dateformat dmy
+go
+select 
+ TABELLE, 
+ KEYVALUE, 
+ KEYIDENT, 
+ SPALTE, 
+ Wertalt=substring(WERTALT,1,16), 
+ Wertneu=Substring(WERTNEU,1,16), 
+ Erfassdat=convert(char(11),ERFASSDAT,104)+convert(char(8),ERFASSDAT,108)+' ', 
+ ERFASSPERS, 
+ HOSTNAME
+from UPDATEDOC
+where ERFASSDAT between '15.02.2010 04:00' and '18.02.2010 18:00' and ERFASSPERS=166
+go
+
+-- select 
+--  TABELLE, 
+--  KEYVALUE, 
+--  KEYIDENT, 
+--  SPALTE, 
+--  Wertalt=substring(WERTALT,1,16), 
+--  Wertneu=Substring(WERTNEU,1,16), 
+--  Erfassdat=convert(char(11),ERFASSDAT,104)+convert(char(8),ERFASSDAT,108)+' ', 
+--  ERFASSPERS, 
+--  HOSTNAME
+--  from SWISSARCH..UPDATEDOC_ARCH
+-- where TABELLE = 'PATIFALL'
+-- go  

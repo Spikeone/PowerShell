@@ -1,0 +1,42 @@
+print '--- aktive Behaelter (Lauris)  ---'
+select 
+  Behälter=B.BEHAELTERCODE,
+  Behältername=B.BEHAELTERNAME,
+  B.BEHAELTERX,
+  AnalytCode=A.CODE,
+  Material_Analyt=M1.MATERIALNAME,
+  KreisA=M1.MATERIALKREISNR,
+  Material_Behaelter=M2.MATERIALNAME,
+  Kreis_B=M2.MATERIALKREISNR,  
+  Formular=F.FORMULARCODE,
+  B.STORNODAT
+into
+  #temp1
+from 
+  ANFORDERUNG ANF,
+  ANALYT A,
+  BEHAELTER B,
+  MATERIAL M1,
+  MATERIAL M2,
+  FORMULAR F
+where 
+  ANF.STORNODAT is null and 
+  ANF.ANALYTX is not null and
+  A.ANALYTX=ANF.ANALYTX and
+  F.FORMULARX=ANF.FORMULARX and
+  B.BEHAELTERX=ANF.BEHAELTERX and
+  M1.MATERIALX=A.DEFMATERIALX and
+  M2.MATERIALX=B.MATERIALX and
+  M2.MATERIALX<>M1.MATERIALX
+order by
+  Behälter, Material_Behaelter
+
+select * from #temp1
+
+select distinct   
+  Behälter,
+  Behältername,
+  BEHAELTERX
+from #temp1
+
+go

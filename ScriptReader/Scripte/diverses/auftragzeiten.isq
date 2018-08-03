@@ -1,0 +1,40 @@
+set dateformat dmy
+go
+
+select 
+  AUFTRAGNR, 
+  Erfassdat         =convert(char(11),ERFASSDAT        ,104)+convert(char(8),ERFASSDAT        ,108)+' ',
+  Labeindat         =convert(char(11),LABEINDAT        ,104)+convert(char(8),LABEINDAT        ,108)+' ',
+  Auftragdat        =convert(char(11),AUFTRAGDAT       ,104)+convert(char(8),AUFTRAGDAT       ,108)+' ',
+  Abnahmedat        =convert(char(11),ABNAHMEDAT       ,104)+convert(char(8),ABNAHMEDAT       ,108)+' ',
+  Plandat           =convert(char(11),PLANDAT          ,104)+convert(char(8),PLANDAT          ,108)+' ',
+  ERFASSPERS
+from
+  AUFTRAG
+where 
+  ERFASSPERS > 158
+                 
+order by ERFASSDAT
+
+go               
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 

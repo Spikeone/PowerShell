@@ -1,0 +1,100 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BNC, ausgeführt am: 04.06.2015 09:46
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           BNC              Bonn                 swdntbnc             Uniklinikum Bonn - B Adaptive Server Enterprise/15.5/EBF 19895 SMP ESD#5.1/P/NT (IX86)/Windows 2003/asear155/2594/32-bit/OPT/Tue Jun 05 20:46:49 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 943     Anzahl User: 1761    Anzahl Auftraege Lauris: 32505   Anzahl Auftraege ohne Lauris: 39261  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           1 v9.02.25# F      
+          16 v5.11.14# F      
+         924 v12.12.06.3      
+           1 v12.09.14#       
+           1 v11.04.14#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Neil Armstrong                                                                   2012.02    NULL                                     17.09.12  00:00                 
+ letztes Swisspro                                                                 2012.02    NULL                                     19.03.13  09:34                 
+ swissup3.tab                                                                      2.14 $    NULL                                     05.12.12  08:40                 
+ swissup3.tab                                                                      2.14 $    NULL                                     05.12.12  08:40                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     05.12.12  08:55                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     05.12.12  08:52                 
+ Statistik (via statistik.pro)                                                     5.88 $    NULL                                     27.01.15  08:03                 
+ Statistik (via statistik.pro)                                                     5.88 $    NULL                                     27.01.15  08:03                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     05.12.12  08:53                 
+                                                                                             NULL                                                                     
+ neu:PI_RECHLEGER                                                                  2.53 $    NULL                                     18.03.15  08:42 SWISSLAB        
+ neu:PR_RECHLEGER                                                                  2.79 $    NULL                                     18.03.15  08:42 SWISSLAB        
+ neu:PR_RECHNUNG                                                                   2.95 $    NULL                                     18.03.15  08:42 SWISSLAB        
+ neu:PR_ABREAUFTRAGLISTE                                                           2.90 $    NULL                                     18.03.15  08:41 SWISSLAB        
+ neu:PR_ABREAUFTRAGRESULTATE                                                       2.88 $    NULL                                     18.03.15  08:41 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         
+ ----------- ------ ---------------- 
+       32505      1 1                
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       30593 Zentrallabor                                                     
+         854 Routine 1.9                                                      
+         384 Autoimmun-Diagnostik                                             
+         237 Urin 1.11                                                        
+         227 Allergie-Diagnostik                                              
+         111 Urin 1.10                                                        
+          99 Routine 1.8                                                      
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BNC, beendet am: 04.06.2015 09:47 
+SQL-Abfrage-Dauer: 100 Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 12.7.3.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2.0.0.1 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 12.12.6.3 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.11.10.002349 

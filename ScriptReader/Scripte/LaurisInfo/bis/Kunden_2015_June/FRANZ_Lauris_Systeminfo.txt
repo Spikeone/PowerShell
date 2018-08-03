@@ -1,0 +1,142 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: FRANZ, ausgeführt am: 09.06.2015 10:08
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           FRANZ            St. Franziskus Hospi SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 20630 SMP ESD#5.2/P/X64/Windows Server/asear155/2602/64-bit/OPT/Sun Dec 09 10:57:45 2012                                                                                                                                    
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 958     Anzahl User: 421     Anzahl Auftraege Lauris: 29027   Anzahl Auftraege ohne Lauris: 53278  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+          12 v7.04.26²#       
+         782 v14.06.06.6      
+         133 v14.06.06.3      
+          21 v13.03.22.6      
+           3 v13.03.22#       
+           3 v11.04.14#       
+           2 v11.01.07#       
+           2 v10.11.05¹#      
+ 
+ 
+Swisslab-Revision:
+ Name                                                                                                                                                                                                                                                            Revision                                           FileName                                                                                                                                                                                                                                                        CrDate          DB              SVN Version SVN Extended Version 
+ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------------------------------------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- --------------- --------------- ----------- -------------------- 
+                                                                                                                                                                                                                                                                                                                    NULL                                                                                                                                                                                                                                                                                                   NULL                 NULL 
+ Wembley                                                                                                                                                                                                                                                         2.15.0.0                                           NULL                                                                                                                                                                                                                                                                            NULL                   NULL                 NULL 
+ letztes Swisspro                                                                                                                                                                                                                                                NULL                                               NULL                                                                                                                                                                                                                                                                                                   NULL                 NULL 
+ swissup3.tab                                                                                                                                                                                                                                                     2.14 $                                            NULL                                                                                                                                                                                                                                                            17.07.13  14:45                        NULL                 NULL 
+ swissup3.tab                                                                                                                                                                                                                                                     2.14 $                                            NULL                                                                                                                                                                                                                                                            17.07.13  14:45                        NULL                 NULL 
+                                                                                                                                                                                                                                                                                                                    NULL                                                                                                                                                                                                                                                                                                   NULL                 NULL 
+ neu:sp__who2                                                                                                                                                                                                                                                     1.07 $                                            NULL                                                                                                                                                                                                                                                            27.05.15  14:53 sybsystemprocs         NULL                 NULL 
+ neu:PI_DEFI                                                                                                                                                                                                                                                      2.48.1 $                                          NULL                                                                                                                                                                                                                                                            12.05.15  14:33 SWISSLAB               NULL                 NULL 
+ neu:PR_DEFI                                                                                                                                                                                                                                                      2.43.1 $                                          NULL                                                                                                                                                                                                                                                            12.05.15  14:33 SWISSLAB               NULL                 NULL 
+ neu:PR_TATTESTSPERDAY                                                                                                                                                                                                                                                                                              NULL                                                                                                                                                                                                                                                            12.05.15  14:33 SWISSLAB               NULL                 NULL 
+ neu:PI_DOKUMENT                                                                                                                                                                                                                                                  1.83.1 $                                          NULL                                                                                                                                                                                                                                                            12.05.15  14:33 SWISSLAB               NULL                 NULL 
+ mehr mit: PR_REVISION A(LLE)                                                                                                                                                                                                                                                                                       NULL                                                                                                                                                                                                                                                                                                   NULL                 NULL 
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       13669      1 1                Lauf 1 - St. Franziskus                                                                                                                                                                                                                                         
+        2008      3 3                Lauf 3 - EVK                                                                                                                                                                                                                                                    
+        4492      4 4                Lauf 4 - Recklinghausen                                                                                                                                                                                                                                         
+         275      5 Lauf 5           Lauf 5 - St. Barbara Hamm/Heesen                                                                                                                                                                                                                                
+        1614      6 6                Lauf 6 - SRT Telgte                                                                                                                                                                                                                                             
+         141      7 Lauf 7           Lauf 7   -- Beckum                                                                                                                                                                                                                                              
+         175      8 Lauf 8           Lauf 8   --  Ahlen                                                                                                                                                                                                                                              
+         393      9 Lauf 9           Lauf 9 - Externe Einsender                                                                                                                                                                                                                                      
+         271     10 Lauf 10          Lauf 10  - SBK/SEM                                                                                                                                                                                                                                              
+        5917     20 Lauf 20          Lauf 20   -- Bakteriologie                                                                                                                                                                                                                                      
+          72     88 Lauf 88          Lauf 88 -- Aufträge aus Ahlen für Beckum                                                                                                                                                                                                                        
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       11921 Routine-Laborantrag SFH Münster                                  
+        5108 SFM-Mikrobiologie                                                
+        4039 Routine-Laborantrag ERS                                          
+        1940 Routine-Laborantrag EVK Münster                                  
+        1324 Routinelabor SRT                                                 
+         872 Blutgruppen- / Kreuzprobenanforderung                            
+         582 Mikrobiologie Franziskus MS                                      
+         404 kapilläre Blutabnahmen SFH Münster                               
+         392 Laborantrag Urine ERS                                            
+         344 Untersuchungsantrag SFH-Labor                                    
+         301 Fremdlabor klinische Chemie                                      
+         290 Speziallabor SRT                                                 
+         275 Laborantragsformular St. Barbaraklinik                           
+         235 SBK-Immunhämatologie                                             
+         180 Immunhämatologie SFA                                             
+         107 Immunhämatologie SEB                                             
+          92 Fremdlabor Mikrobiologie                                         
+          69 SFM-Mikrobiologie Screening 1                                    
+          69 SFM-Mikrobiologie Screening 2                                    
+          67 kapilläre Blutabnahmen EVK Münster                               
+          67 Blutgruppen-/Kreuzprobenanforderung                              
+          61 Notfall-Laborantrag SFH Münster                                  
+          52 Routinelabor SEB                                                 
+          48 Mikrobiologie Franziskus MS_1                                    
+          46 Immunhämatologie SFA in Beckum                                   
+          40 kapilläre BGA-Anforderung                                        
+          29 SEM-Immunhämatologie                                             
+          21 SFM-Mikrobiologie-Screening 1                                    
+          19 Laborantrag Liquor ERS                                           
+          16 Mikrobiologie Franziskus MS_2                                    
+           7 SBK Routinelabor                                                 
+           3 Notfalllabor SFA                                                 
+           3 Mikrobiologie Franziskus MS_3                                    
+           1 Mikrobiologie Franziskus MS_4                                    
+           1 Laborantrag Aszitespunktat ERS                                   
+           1 Notfall-Laborantrag EVK Münster                                  
+           1 hämatologisch-onkologisches Labor                                
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ CLIENT   POCTQC           NULL       sbh-iaz    NULL       
+ CLIENT   POCTQC           NULL       sbh-krs    NULL       
+ CLIENT   POCTQC           NULL       st01       NULL       
+ CLIENT   POCTQC           NULL       usw        NULL       
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: FRANZ, beendet am: 09.06.2015 10:08 
+SQL-Abfrage-Dauer: 1   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.11.5.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_02 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 14.6.6.6 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.15.8.002437 

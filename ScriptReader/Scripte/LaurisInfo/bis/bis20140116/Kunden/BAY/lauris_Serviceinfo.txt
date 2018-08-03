@@ -1,0 +1,54 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16791 ESD#10/P/NT (IX86)/OS 4.0/ase1254/2159/32-bit/OPT/Mon Nov 02 05:01:55 2009                                                                                                                                          
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       2530            2530           0 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                FORM3            Mikrobiologie                                                    
+                                FORM3B           Mikrobiologie B                                                  
+                                FORM3C           Test Mikrobiologie (Screening)                                   
+                                BEREITMIBI       Bereitschaftsdienst (Mikrobiologie)                              
+
+(4 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                                 NULL                                                                      53          53 USAMGES      Sammelurin gesäuert                  26        Sep  1 2005  9:25AM 
+                                EDTA             EDTA                                                                      65           2 EDTA         EDTA                                  2                       NULL 
+                                EDTA             EDTA Vollblut (BB)                                                        29           2 EDTA         EDTA                                  2        Sep 15 2005  3:02PM 
+
+(3 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                BAYREUTH         Klinikum Bayreuth / Hohe Warte                                          Jun 24 2005 10:54AM                       NULL       10000000        19999999         11080825          9999999               1080825                8919174    10.8083 %     518.63 Nummern           17197.57 Tage                  NULL                   NULL         NULL 
+                                MIKRO            Mikrobiologie Klinikum Bayreuth                                         Dec 13 2005  8:45AM                       NULL       42000000        42999999         42074260           999999                 74260                 925739     7.4260 %      38.84 Nummern           23835.35 Tage                  NULL                   NULL         NULL 
+
+(2 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

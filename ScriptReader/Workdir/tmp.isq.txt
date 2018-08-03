@@ -1,0 +1,2297 @@
+/*************************************/
+  /*  Sicheres Loeschen aus Datenbank  */
+ /*        f?r KC und Patho           */
+/*************************************/
+
+--Die Versionshistorie befindet sich am Ende der Datei.
+
+--Zeitpunkt des Starts
+select 'Start: ' + convert(varchar(32),getdate())
+print 'Sicheres Loeschen aus Datenbank fuer KC und Patho'
+
+--Ueberfluessige Logeintraege unterbinden
+SET nocount on
+
+--Loeschen der eventuell noch vorhandenen Zwischentabellen
+if exists (select so.name from tempdb..sysobjects so where so.name like '#LAUFTRAGARCH%')
+   begin drop table #LAUFTRAGARCH end
+if exists (select so.name from tempdb..sysobjects so where so.name like '#LAUFTRAG%')
+   begin drop table #LAUFTRAG end
+go
+--Loeschen Ende
+
+--Parameter-Deklarationen
+declare @Ebene int, @Arch int, @Logging int, @Loeschen int, @User varchar(16), @Lauf int, @EStart datetime, @EEnde datetime
+declare @AStart datetime, @AEnde datetime, @Anzahl int, @Wartezeit int, @Plausi int
+declare @ResuA bit, @ProbA bit, @TubeA bit, @AuftA bit, @FallA bit, @PatiA bit, @DokuA bit, @Doktyp bit
+declare @ResuS bit, @ProbS bit, @TubeS bit, @AuftS bit, @FallS bit, @PatiS bit, @DokuS bit
+--Parameter-Deklarationen Ende
+
+----~=######################################################################################################=~--
+---~=##  Parameterzuweisungen                                                                            ##=~--
+--~=######################################################################################################=~--
+----@Ebene: Gibt in auftragshierarchischer Folge die zu loeschenden Daten an.
+----        Sollen Dokumente geloescht werden, muss dies vorher bei abgeschalteter Ebenenfunktion geschehen.
+----         0 = nur Resultatdaten
+----         1 = Resultat- und Probendaten
+----         2 = von Resultat- bis Tube-Daten
+----         3 = von Resultat- bis Auftragsdaten
+----         4 = von Resultat- bis Falldaten
+----         5 = von Resultat- bis Patientendaten
+----        -1 = Ebenenfunktion nicht benutzen, stattdessen werden die untenstehenden Tabellen-Parameter
+----             verwendet
+SET @Ebene = 0 -- asd
+----Tabellen, aus denen Datensaetze geloescht werden sollen. Nur wenn @Ebene -1 ist.
+----0 = nicht aus Tabelle loeschen
+----1 = aus Tabelle loeschen
+----SWISSARCH-Tabellen
+SET @ResuA = 0 -- @ResuA: RESULTAT_ARCH mit Bezug zu AUFTRAG_ARCH
+SET @ProbA = 0 -- @ProbA: PROBE_ARCH mit Bezug zu AUFTRAG_ARCH
+SET @TubeA = 0 -- @TubeA: TUBE_ARCH mit Bezug zu AUFTRAG_ARCH
+SET @AuftA = 0 -- @AuftA: AUFTRAG_ARCH
+SET @FallA = 0 -- @FallA: PATIFALL mit Bezug zu AUFTRAG_ARCH
+SET @PatiA = 0 -- @PatiA: PATISTAMM mit Bezug zu AUFTRAG_ARCH
+----@DokuA: DOKUMENT mit Bezug zu AUFTRAG_ARCH - @Ebene muss -1 sein
+SET @DokuA = 0
+----SWISSLAB-Tabellen
+----@ResuS: RESULTAT mit Bezug zu AUFTRAG
+SET @ResuS = 0
+----@ProbS: PROBE mit Bezug zu AUFTRAG
+SET @ProbS = 0
+----@TubeS: TUBE mit Bezug zu AUFTRAG
+SET @TubeS = 0
+----@AuftS: AUFTRAG
+SET @AuftS = 0
+----@FallS: PATIFALL mit Bezug zu AUFTRAG
+SET @FallS = 0
+----@PatiS: PATISTAMM mit Bezug zu AUFTRAG
+SET @PatiS = 0
+----@DokuS: DOKUMENT mit Bezug zu AUFTRAG - @Ebene muss -1 sein
+SET @DokuS = 0
+----Tabellen Ende
+----@Doktyp: DOKUMENTTYPX - zu loeschende Dokumente auf einen Dokumenttyp einschraenken
+SET @Doktyp = 0
+----@Arch: 2 = Daten werden aus SWISSLAB und SWISSARCH geloescht.
+----       1 = Daten werden nur aus SWISSARCH geloescht, nicht aus SWISSLAB.
+----       0 = Daten werden nur aus SWISSLAB geloescht.
+----       Sollen Patienten- und/oder Falldaten geloescht werden, muss @Arch 1 oder 2 sein.
+SET @Arch = 0
+----@Logging: 4 = alle zu loeschenden Datensaetze werden in die Ausgabedatei geschrieben, Datensaetze werden
+----              nicht geloescht. Header leerer Tabellen werden ausgegeben. Dies kann sehr zeitintensiv sein
+----              und die Groe?e der Ausgabedatei sprengen.
+----          3 = die ersten 10 zu loeschenden Datensaetze werden in die Ausgabedatei geschrieben, Datensaetze
+----              werden nicht geloescht.
+----              Header leerer Tabellen werden ausgegeben.
+----              Diese Einstellung wird hauptsaechlich zu Testzwecken verwendet.
+----          2 = die ersten 1000 zu loeschenden Datensaetze werden in die Ausgabedatei geschrieben.
+----              Datensaetze werden nicht geloescht.
+----              Header leerer Tabellen werden nicht ausgegeben.
+----          1 = nur die Anzahl der zu loeschenden Datensaetze wird in die Ausgabedatei geschrieben.
+----              Datensaetze werden nicht geloescht.
+----          0 = Datensaetze werden geloescht, sofern @Loeschen 42 ist. Nur die Gesamtzahlen der zu loeschenden
+----              und tatsaechlich geloeschten
+----              Datensaetze werden in die Ausgabedatei geschrieben.
+SET @Logging = 0
+----@Loeschen: 41 = Es wird aus jeder Tabelle ein einziger Datensatz geloescht und dieser Dokumentiert.
+----                Dient zu Testzwecken. Kann zu Abbruch durch Trigger fuehren.
+----           42 = Datensaetze werden geloescht
+----           alle anderen Werte: Es findet keine Loeschung statt.
+----           @Logging muss in beiden Faellen 0 sein.
+SET @Loeschen = 42
+----@User: Anmeldename (PERSONID) des Importbenutzers
+SET @User = 'asdf' --'Rennbanane'
+----@Lauf: beim Loeschen zu beruecksichtigender einzelner Lauf
+----       -1 = alle Laeufe
+SET @Lauf = -1
+----@EStart: Importzeitpunkt (SQLERFASSDAT), ab dem die Daten zu loeschen sind
+SET @EStart = '01.01.1900 00:00:00'
+----@EEnde: Importzeitpunkt (SQLERFASSDAT), bis zu dem die Daten zu loeschen sind
+SET @EEnde = '31.12.2050 00:00:00'
+----@AStart: Auftragzeitpunkt (AUFTRAGDAT), ab dem die Daten zu loeschen sind
+SET @AStart = '01.01.1900 00:00:00'
+----@AEnde: Auftragszeitpunkt (AUFTRAGDAT), bis zu dem die Daten zu loeschen sind
+SET @AEnde = '31.12.2050 00:00:00'
+----@Anzahl: Anzahl geloeschter Datensaetze, nach der ein neuer Schleifendurchlauf gestartet wird
+----         ein niedriger Wert fuehrt zu hoeherer Abbruchsicherheit aber erhoehter Ausfuehrungsdauer.
+SET @Anzahl = 0 -- asd
+----@Wartezeit: die Wartezeit in Sekunden, nachdem @Anzahl Datensaetze geloescht wurden.
+SET @Wartezeit = 60
+----@Plausi: Plausibilitaetspruefung abschalten. Dieser Parameter ist mit gro?er Vorsicht zu behandeln, da bei
+----         vermeintlich inkonsistenter Loeschung (z. B. Auftraege ohne Resultate) kein Abbruch erfolgt.
+----         !42 = aktiv
+----          42 = inaktiv
+----               Kann zu Abbruch durch Trigger und zu Datenleichen fuehren. 
+SET @Plausi = 0
+----~=######################################################################################################=~--
+---~=##  Parameterzuweisungen Ende                                                                       ##=~--
+--~=######################################################################################################=~--
+
+--Variablen und Konstanten
+declare @Message varchar(5000), @KeineGeloescht varchar(100)
+SET @KeineGeloescht = 'Es wurden keine Datensaetze geloescht.'
+declare @UserX int, @LaufStr varchar(10)
+declare @WartezeitS varchar(8)
+declare @LResuA varchar(100), @LResuS varchar(100), @LProbA varchar(100), @LProbS varchar(100), @LTubeA varchar(100), @LTubeS varchar(100)
+declare @LAuftA varchar(100), @LAuftS varchar(100), @LFallA varchar(100), @LFallS varchar(100), @LPatiA varchar(100), @LPatiS varchar(100)
+declare @LDokuA varchar(100), @LDokuS varchar(100)
+declare @DSToGo int, @SQL varchar(500), @cr varchar(10), @Ausg varchar(1000), @SWLab bit, @SWArch bit
+SET @cr = char(13)
+if (@Arch in (0,2))
+begin
+   SET @SWLab = 1
+end
+if (@Arch in (1,2))
+begin
+   SET @SWArch = 1
+end
+--Variablen und Konstanten Ende
+
+--Parameterausgabe
+SET @Ausg = '------------------------------------------------------------' 
+            + @cr +
+            'Parameter' + @cr +
+            'Ebene  : ' + convert(varchar(2 ), @Ebene  ) + @cr +
+            'ResuA  : ' + convert(varchar(1 ), @ResuA  ) + '     ProbA: ' + convert(varchar(1), @ProbA) + '     TubeA: ' + convert(varchar(1), @TubeA) + @cr +
+            'AuftA  : ' + convert(varchar(1 ), @AuftA  ) + '     FallA: ' + convert(varchar(1), @FallA) + '     PatiA: ' + convert(varchar(1), @PatiA) + @cr +
+            'DokuA  : ' + convert(varchar(1 ), @DokuA  ) + @cr +
+            'ResuS  : ' + convert(varchar(1 ), @ResuS  ) + '     ProbS: ' + convert(varchar(1), @ProbS) + '     TubeS: ' + convert(varchar(1), @TubeS) + @cr +
+            'AuftS  : ' + convert(varchar(1 ), @AuftS  ) + '     FallS: ' + convert(varchar(1), @FallS) + '     PatiS: ' + convert(varchar(1), @PatiS) + @cr +
+            'DokuS  : ' + convert(varchar(1 ), @DokuS  ) + @cr +
+            'Doktyp : ' + convert(varchar(16), @Doktyp ) + @cr +
+            'Arch   : ' + convert(varchar(1 ), @Arch   ) + @cr +
+            'Logging: ' + convert(varchar(1 ), @Logging) + '     Loeschen: ' + convert(varchar(2), @Loeschen) + @cr +
+            'User   : ''' + convert(varchar(20), @User   ) + '''' + @cr +
+            'Lauf   : ' + convert(varchar(16), @Lauf   ) + @cr +
+            'EStart : ' + convert(varchar(20), @EStart ) + '     EEnde: ' + convert(varchar(20), @EEnde) + @cr +
+            'AStart : ' + convert(varchar(20), @AStart ) + '     AEnde: ' + convert(varchar(20), @AEnde) + @cr +
+            'Anzahl : ' + convert(varchar(10), @Anzahl ) + '     Wartezeit: ' + convert(varchar(5), @Wartezeit) + @cr +
+            'Plausi : ' + convert(varchar(2 ), @Plausi ) + @cr +
+            '------------------------------------------------------------'
+print @Ausg
+--Parameterausgabe Ende
+
+--Plausibilitaetspruefungen
+if @Plausi <> 42 and @Logging = 0 and @Loeschen = 42
+begin
+   declare @PlausiFail bit
+   SET @PlausiFail = 0
+   declare @Err1 varchar(32), @Err2 varchar(32)
+   declare @i int
+   SET @i = -1
+
+   if (@ProbA = 1 and @ResuA = 0 and @SWArch = 1) or (@ProbS = 1 and @ResuS = 0 and @SWLab = 1)
+   begin SET @PlausiFail = 1, @Err1 = 'Proben', @Err2 = 'Resultate' end
+
+   if (@TubeA = 1 and @ProbA = 0 and @SWArch = 1) or (@TubeS = 1 and @ProbS = 0 and @SWLab = 1)
+   begin SET @PlausiFail = 1, @Err1 = 'Tubes', @Err2 = 'Proben' end
+
+   if (@AuftA = 1 and @ResuA = 0 and @SWArch = 1) or (@ResuS = 1 and @ResuS = 0 and @SWLab = 1)
+   begin SET @PlausiFail = 1, @Err1 = 'Auftraege', @Err2 = 'Resultate' end
+
+   if (@AuftA = 1 and @ProbA = 0 and @SWArch = 1) or (@AuftS = 1 and @ProbS = 0 and @SWLab = 1)
+   begin SET @PlausiFail = 1, @Err1 = 'Auftraege', @Err2 = 'Proben' end
+
+   if (@AuftA = 1 and @TubeA = 0 and @SWArch = 1) or (@AuftS = 1 and @TubeS = 0 and @SWLab = 1)
+   begin SET @PlausiFail = 1, @Err1 = 'Auftraege', @Err2 = 'Tubes' end
+
+   if (@AuftA = 1 and @DokuA = 0 and @SWArch = 1) or (@AuftS = 1 and @DokuS = 0 and @SWLab = 1)
+   begin SET @PlausiFail = 1, @Err1 = 'Auftraege', @Err2 = 'Dokumente' end
+
+   if (@FallA = 1 and @AuftA = 0 and @SWArch = 1) or (@FallS = 1 and @AuftS = 0 and @SWLab = 1)
+   begin SET @PlausiFail = 1, @Err1 = 'Faelle', @Err2 = 'Auftraege' end
+
+   if (@PatiA = 1 and @FallA = 0 and @SWArch = 1) or (@PatiS = 1 and @FallS = 0 and @SWLab = 1)
+   begin SET @PlausiFail = 1, @Err1 = 'Patienten', @Err2 = 'Faelle' end
+
+   --Abbruch
+   if @PlausiFail = 1
+   begin
+      SET @Message = 'ABBRUCH: Es sollen ' + @Err1 + ' ohne bezugnehmende ' + @Err2 + ' geloescht werden!' + @cr +
+                     '         Korrigieren oder Pruefungen abschalten.'
+      print @Message
+      goto Beenden
+   end
+end
+--Plausibilitaetspruefungen Ende
+
+--Parameteranpassungen
+SET @UserX =
+   (select PE.PERSONX
+      from SWISSLAB..PERSON PE
+     where PE.PERSONID = @User)
+
+if @Lauf = -1 begin SET @LaufStr = '%' end
+else begin SET @LaufStr = convert(varchar(10), @Lauf) end
+
+if @Ebene > -1
+begin
+   SET @ResuA = 0, @ResuS = 0, @ProbA = 0, @ProbS = 0, @TubeA = 0, @TubeS = 0
+   SET @AuftA = 0, @AuftS = 0, @FallA = 0, @FallS = 0, @PatiA = 0, @PatiS = 0
+
+   if @SWLab = 1
+   begin
+      if @Ebene = 0 begin SET @ResuS = 0 end
+      else if @Ebene = 1 begin SET @ResuS = 1, @ProbS = 1 end
+      else if @Ebene = 2 begin SET @ResuS = 1, @ProbS = 1, @TubeS = 1 end
+      else if @Ebene = 3 begin SET @ResuS = 1, @ProbS = 1, @TubeS = 1, @AuftS = 1 end
+      else if @Ebene = 4 begin SET @ResuS = 1, @ProbS = 1, @TubeS = 1, @AuftS = 1, @FallS = 1 end
+      else if @Ebene = 5 begin SET @ResuS = 1, @ProbS = 1, @TubeS = 1, @AuftS = 1, @FallS = 1, @PatiS = 1 end
+   end
+
+   if @SWArch = 1
+   begin
+      if @Ebene = 0 begin SET @ResuA = 0 end
+      else if @Ebene = 1 begin SET @ResuA = 1, @ProbA = 1 end
+      else if @Ebene = 2 begin SET @ResuA = 1, @ProbA = 1, @TubeA = 1 end
+      else if @Ebene = 3 begin SET @ResuA = 1, @ProbA = 1, @TubeA = 1, @AuftA = 1 end
+      else if @Ebene = 4 begin SET @ResuA = 1, @ProbA = 1, @TubeA = 1, @AuftA = 1, @FallA = 1 end
+      else if @Ebene = 5 begin SET @ResuA = 1, @ProbA = 1, @TubeA = 1, @AuftA = 1, @FallA = 1, @PatiA = 1 end
+   end
+end
+
+if @Arch = 0
+begin SET @ResuA = 0, @ProbA = 0, @TubeA = 0, @AuftA = 0, @FallA = 0, @PatiA =0, @DokuA = 0 end
+
+if @Arch = 1
+begin SET @ResuS = 0, @ProbS = 0, @TubeS = 0, @AuftS = 0, @FallS = 0, @PatiS =0, @DokuS = 0 end
+
+SET @Ausg = 'Tabellen' + @cr
+SET @Ausg = @Ausg + 'SWISSARCH' + @cr
+if @ResuA = 1 SET @Ausg = @Ausg + '   RESULTAT_ARCH'
+if @ProbA = 1 SET @Ausg = @Ausg + '   PROBE_ARCH'
+if @TubeA = 1 SET @Ausg = @Ausg + '   TUBE_ARCH'
+if @AuftA = 1 SET @Ausg = @Ausg + '   AUFTRAG_ARCH'
+if @FallA = 1 SET @Ausg = @Ausg + '   PATIFALL (Arch)'
+if @PatiA = 1 SET @Ausg = @Ausg + '   PATISTAMM (Arch)'
+SET @Ausg = @Ausg + @cr + 'SWISSLAB' + @cr
+if @ResuS = 1 SET @Ausg = @Ausg + '   RESULTAT'
+if @ProbS = 1 SET @Ausg = @Ausg + '   PROBE'
+if @TubeS = 1 SET @Ausg = @Ausg + '   TUBE'
+if @AuftS = 1 SET @Ausg = @Ausg + '   AUFTRAG'
+if @FallS = 1 SET @Ausg = @Ausg + '   PATIFALL'
+if @PatiS = 1 SET @Ausg = @Ausg + '   PATISTAMM'
+SET @Ausg = @Ausg + @cr + '------------------------------------------------------------'
+print @Ausg
+
+if @Wartezeit >= 3600
+begin
+   SET @WartezeitS = right('0' + convert(varchar(2), @Wartezeit / 3600),2)
+   SET @Wartezeit = @Wartezeit - 3600 * (@Wartezeit / 3600)
+end
+else
+begin
+   SET @WartezeitS = '00'
+end
+SET @WartezeitS = @WartezeitS + ':'
+
+if @Wartezeit >= 60
+begin
+   SET @WartezeitS = @WartezeitS + right('0' + convert(varchar(2), @Wartezeit / 60),2)
+   SET @Wartezeit = @Wartezeit - 60 * (@Wartezeit / 60)
+end
+else
+begin
+   SET @WartezeitS = @WartezeitS + '00'
+end
+SET @WartezeitS = @WartezeitS + ':'
+SET @WartezeitS = @WartezeitS + right('0' + convert(varchar(2),@Wartezeit),2)
+
+SET @Ausg = 'Wartezeit: ' + @WartezeitS + @cr +
+            '------------------------------------------------------------'
+print @Ausg
+--Parameteranpassungen Ende
+
+--Auftraege sammeln
+--AUFTRAG_ARCH
+if @SWArch = 1
+begin
+   --Zwischentabelle erstellen
+   create table #LAUFTRAGARCH (AUFTRAGX int)
+   --Zwischentabelle fuellen
+   insert into #LAUFTRAGARCH
+   select AU.AUFTRAGX
+     from SWISSARCH..AUFTRAG_ARCH AU
+    where AU.ERFASSPERS                 =       @UserX
+      and convert(varchar(10), AU.LAUF) like    @LaufStr
+      and AU.SQLERFASSDAT               between @EStart and @EEnde
+      and AU.AUFTRAGDAT                 between @AStart and @AEnde
+
+   SET @LAuftA = convert(varchar(100), (select count(LA.AUFTRAGX) from #LAUFTRAGARCH LA))
+   SET @Ausg = 'Gefundene Auftraege in SWISSARCH..AUFTRAG_ARCH: ' + @LAuftA + @cr +
+               '------------------------------------------------------------'
+   print @Ausg
+end
+--AUFTRAG_ARCH Ende
+
+--AUFTRAG
+if @SWLab = 1
+begin
+   --Zwischentabelle erstellen
+   create table #LAUFTRAG (AUFTRAGX int)
+   --Zwischentabelle fuellen
+   insert into #LAUFTRAG
+   select AU.AUFTRAGX
+     from SWISSLAB..AUFTRAG AU
+    where AU.ERFASSPERS                 =       @UserX
+      and convert(varchar(10), AU.LAUF) like    @LaufStr
+      and AU.SQLERFASSDAT               between @EStart and @EEnde
+      and AU.AUFTRAGDAT                 between @AStart and @AEnde
+
+   SET @LAuftS = convert(varchar(100), (select count(LA.AUFTRAGX) from #LAUFTRAG LA))
+   SET @Ausg = 'Gefundene Auftraege in SWISSLAB..AUFTRAG: ' + @LAuftS + @cr +
+               '------------------------------------------------------------'
+   print @Ausg
+end
+--AUFTRAG Ende
+--Auftraege sammeln Ende
+
+--RESULTAT_ARCH
+if @ResuA = 1
+begin
+   SET @LResuA = convert(varchar(100), (select count(RE.RESULTATX)
+                                          from SWISSARCH..RESULTAT_ARCH RE
+                                              ,#LAUFTRAGARCH            LA
+                                         where RE.AUFTRAGX = LA.AUFTRAGX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSARCH..RESULTAT_ARCH: ' + @LResuA
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LResuA <> '0'
+   begin
+      select top 1000
+             'SWISSARCH..RESULTAT_ARCH' Tabelle
+            ,RE.RESULTATX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..RESULTAT_ARCH RE
+            ,SWISSARCH..AUFTRAG_ARCH  AU
+            ,SWISSLAB..PATIFALL       PF
+            ,SWISSLAB..PATISTAMM      PS
+            ,#LAUFTRAGARCH            LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and RE.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSARCH..RESULTAT_ARCH' Tabelle
+            ,RE.RESULTATX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..RESULTAT_ARCH RE
+            ,SWISSARCH..AUFTRAG_ARCH  AU
+            ,SWISSLAB..PATIFALL       PF
+            ,SWISSLAB..PATISTAMM      PS
+            ,#LAUFTRAGARCH            LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and RE.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSARCH..RESULTAT_ARCH' Tabelle
+            ,RE.RESULTATX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..RESULTAT_ARCH RE
+            ,SWISSARCH..AUFTRAG_ARCH  AU
+            ,SWISSLAB..PATIFALL       PF
+            ,SWISSLAB..PATISTAMM      PS
+            ,#LAUFTRAGARCH            LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and RE.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSARCH..RESULTAT_ARCH' + @cr +
+                 'from SWISSARCH..RESULTAT_ARCH RE' + @cr +
+                 ',#LAUFTRAGARCH LA' + @cr +
+                 'where RE.AUFTRAGX = LA.AUFTRAGX'
+
+      SET @DSToGo = (select count(RE.RESULTATX)
+                       from SWISSARCH..RESULTAT_ARCH RE
+                           ,#LAUFTRAGARCH            LA
+                      where RE.AUFTRAGX = LA.AUFTRAGX)
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus RESULTAT_ARCH: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(RE.RESULTATX)
+               from SWISSARCH..RESULTAT_ARCH RE
+                   ,#LAUFTRAGARCH            LA
+              where RE.AUFTRAGX = LA.AUFTRAGX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(RE.RESULTATX)
+                          from SWISSARCH..RESULTAT_ARCH RE
+                              ,#LAUFTRAGARCH            LA
+                         where RE.AUFTRAGX = LA.AUFTRAGX)
+
+         select @SQL
+         --exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSARCH..RESULTAT_ARCH RE
+            ,#LAUFTRAGARCH            LA
+       where LA.AUFTRAGX = RE.AUFTRAGX
+
+      delete top 1 from SWISSARCH..RESULTAT_ARCH
+        from SWISSARCH..RESULTAT_ARCH RE
+            ,#LAUFTRAGARCH            LA
+       where LA.AUFTRAGX = RE.AUFTRAGX
+   end
+   --Loeschen Ende
+end
+--RESULTAT_ARCH Ende
+
+--RESULTAT
+if @ResuS = 1
+begin
+   SET @LResuS = convert(varchar(100), (select count(RE.RESULTATX)
+                                          from SWISSLAB..RESULTAT RE
+                                              ,#LAUFTRAG          LA
+                                         where RE.AUFTRAGX = LA.AUFTRAGX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSLAB..RESULTAT: ' + @LResuS
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LResuS <> '0'
+   begin
+      select top 1000
+             'SWISSLAB..RESULTAT' Tabelle
+            ,RE.RESULTATX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..RESULTAT  RE
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and RE.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSLAB..RESULTAT' Tabelle
+            ,RE.RESULTATX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..RESULTAT  RE
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and RE.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSLAB..RESULTAT' Tabelle
+            ,RE.RESULTATX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..RESULTAT  RE
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and RE.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSLAB..RESULTAT' + @cr +
+                 '  from SWISSLAB..RESULTAT RE' + @cr +
+                 '      ,#LAUFTRAG            LA' + @cr +
+                 ' where RE.AUFTRAGX = LA.AUFTRAGX'
+
+      print @SQL
+
+                 
+      SET @DSToGo = (select count(RE.RESULTATX)
+                       from SWISSLAB..RESULTAT RE
+                           ,#LAUFTRAG          LA
+                      where RE.AUFTRAGX = LA.AUFTRAGX)
+
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus RESULTAT: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(RE.RESULTATX)
+               from SWISSLAB..RESULTAT RE
+                   ,#LAUFTRAG          LA
+              where RE.AUFTRAGX = LA.AUFTRAGX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(RE.RESULTATX)
+                          from SWISSLAB..RESULTAT RE
+                              ,#LAUFTRAG          LA
+                         where RE.AUFTRAGX = LA.AUFTRAGX)
+
+         --exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSLAB..RESULTAT RE
+            ,#LAUFTRAG          LA
+       where LA.AUFTRAGX = RE.AUFTRAGX
+
+      delete top 1 from SWISSLAB..RESULTAT
+        from SWISSLAB..RESULTAT RE
+            ,#LAUFTRAG          LA
+       where LA.AUFTRAGX = RE.AUFTRAGX
+   end
+   --Loeschen Ende
+end
+--RESULTAT Ende
+
+--PROBE_ARCH
+if @ProbA = 1
+begin
+   SET @LProbA = convert(varchar(100), (select count(PR.PROBEX)
+                                          from SWISSARCH..PROBE_ARCH PR
+                                              ,#LAUFTRAGARCH         LA
+                                         where PR.AUFTRAGX = LA.AUFTRAGX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSARCH..PROBE_ARCH: ' + @LProbA
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LProbA <> '0'
+   begin
+      select top 1000
+             'SWISSARCH..PROBE_ARCH' Tabelle
+            ,PR.PROBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..PROBE_ARCH   PR
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSARCH..PROBE_ARCH' Tabelle
+            ,PR.PROBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..PROBE_ARCH   PR
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSARCH..PROBE_ARCH' Tabelle
+            ,PR.PROBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..PROBE_ARCH   PR
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSARCH..PROBE_ARCH' + @cr +
+                 'from SWISSARCH..PROBE_ARCH PR' + @cr +
+                 ',#LAUFTRAGARCH LA' + @cr +
+                 'where PR.AUFTRAGX = LA.AUFTRAGX'
+
+      SET @DSToGo = (select count(PR.PROBEX)
+                       from SWISSARCH..PROBE_ARCH PR
+                           ,#LAUFTRAGARCH         LA
+                      where PR.AUFTRAGX = LA.AUFTRAGX)
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus PROBE_ARCH: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(PR.PROBEX)
+               from SWISSARCH..PROBE_ARCH PR
+                   ,#LAUFTRAGARCH         LA
+              where PR.AUFTRAGX = LA.AUFTRAGX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(PR.PROBEX)
+                          from SWISSARCH..PROBE_ARCH PR
+                              ,#LAUFTRAGARCH         LA
+                         where PR.AUFTRAGX = LA.AUFTRAGX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSARCH..PROBE_ARCH PR
+            ,#LAUFTRAGARCH         LA
+       where LA.AUFTRAGX = PR.AUFTRAGX
+
+      delete top 1 from SWISSARCH..PROBE_ARCH
+        from SWISSARCH..PROBE_ARCH PR
+            ,#LAUFTRAGARCH         LA
+       where LA.AUFTRAGX = PR.AUFTRAGX
+   end
+   --Loeschen Ende
+end
+--PROBE_ARCH Ende
+
+--PROBE
+if @ProbS = 1
+begin
+   SET @LProbS = convert(varchar(100), (select count(PR.PROBEX)
+                                          from SWISSLAB..PROBE PR
+                                              ,#LAUFTRAG       LA
+                                         where PR.AUFTRAGX = LA.AUFTRAGX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSLAB..PROBE: ' + @LProbS
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LProbS <> '0'
+   begin
+      select top 1000
+             'SWISSLAB..PROBE' Tabelle
+            ,PR.PROBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PROBE     PR
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSLAB..PROBE' Tabelle
+            ,PR.PROBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PROBE     PR
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSLAB..PROBE' Tabelle
+            ,PR.PROBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PROBE     PR
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSLAB..PROBE' + @cr +
+                 '  from SWISSLAB..PROBE PR' + @cr +
+                 '      ,#LAUFTRAG LA' + @cr +
+                 ' where PR.AUFTRAGX = LA.AUFTRAGX'
+
+      SET @DSToGo = (select count(PR.PROBEX)
+                       from SWISSLAB..PROBE PR
+                           ,#LAUFTRAG       LA
+                      where PR.AUFTRAGX = LA.AUFTRAGX)
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus PROBE: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(PR.PROBEX)
+               from SWISSLAB..PROBE PR
+                   ,#LAUFTRAG       LA
+              where PR.AUFTRAGX = LA.AUFTRAGX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(PR.PROBEX)
+                          from SWISSLAB..PROBE PR
+                              ,#LAUFTRAG       LA
+                         where PR.AUFTRAGX = LA.AUFTRAGX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSLAB..PROBE PR
+            ,#LAUFTRAG       LA
+       where LA.AUFTRAGX = PR.AUFTRAGX
+
+      delete top 1 from SWISSLAB..PROBE
+        from SWISSLAB..PROBE PR
+            ,#LAUFTRAG       LA
+       where LA.AUFTRAGX = PR.AUFTRAGX
+   end
+   --Loeschen Ende
+end
+--PROBE Ende
+
+--TUBE_ARCH
+if @TubeA = 1
+begin
+   SET @LTubeA = convert(varchar(100), (select count(TU.TUBEX)
+                                          from SWISSARCH..TUBE_ARCH  TU
+                                              ,SWISSARCH..PROBE_ARCH PR
+                                              ,#LAUFTRAGARCH         LA
+                                         where PR.AUFTRAGX = LA.AUFTRAGX
+                                           and PR.TUBEX    = TU.TUBEX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSARCH..TUBE_ARCH: ' + @LTubeA
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LTubeA <> '0'
+   begin
+      select top 1000
+             'SWISSARCH..TUBE_ARCH' Tabelle
+            ,TU.TUBEX
+            ,TU.TUBEEXTID
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..TUBE_ARCH    TU
+            ,SWISSARCH..PROBE_ARCH   PR
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and PR.TUBEX      = TU.TUBEX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSARCH..TUBE_ARCH' Tabelle
+            ,TU.TUBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..TUBE_ARCH    TU
+            ,SWISSARCH..PROBE_ARCH   PR
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and PR.TUBEX      = TU.TUBEX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSARCH..TUBE_ARCH' Tabelle
+            ,TU.TUBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSARCH..TUBE_ARCH    TU
+            ,SWISSARCH..PROBE_ARCH   PR
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and PR.TUBEX      = TU.TUBEX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSARCH..TUBE_ARCH' + @cr +
+                 'from SWISSARCH..TUBE_ARCH TU' + @cr +
+                 ',SWISSARCH..PROBE_ARCH PR' + @cr +
+                 ',#LAUFTRAGARCH LA' + @cr +
+                 'where PR.AUFTRAGX = LA.AUFTAGX' + @cr +
+                 'and PR.TUBEX = TU.TUBEX'
+
+      SET @DSToGo = (select count(TU.TUBEX)
+                       from SWISSARCH..TUBE_ARCH  TU
+                           ,SWISSARCH..PROBE_ARCH PR
+                           ,#LAUFTRAGARCH         LA
+                      where PR.AUFTRAGX = LA.AUFTRAGX
+                        and PR.TUBEX    = TU.TUBEX)
+
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus TUBE_ARCH: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(TU.TUBEX)
+               from SWISSARCH..TUBE_ARCH  TU
+                   ,SWISSARCH..PROBE_ARCH PR
+                   ,#LAUFTRAGARCH         LA
+              where PR.AUFTRAGX = LA.AUFTRAGX
+                and PR.TUBEX    = TU.TUBEX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(TU.TUBEX)
+                          from SWISSARCH..TUBE_ARCH  TU
+                              ,SWISSARCH..PROBE_ARCH PR
+                              ,#LAUFTRAGARCH         LA
+                         where PR.AUFTRAGX = LA.AUFTRAGX
+                           and PR.TUBEX    = TU.TUBEX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSARCH..TUBE_ARCH  TU
+            ,SWISSARCH..PROBE_ARCH PR
+            ,#LAUFTRAGARCH         LA
+       where LA.AUFTRAGX = PR.AUFTRAGX
+         and PR.TUBEX    = TU.TUBEX
+
+      delete top 1 from SWISSARCH..TUBE_ARCH
+        from SWISSARCH..TUBE_ARCH  TU
+            ,SWISSARCH..PROBE_ARCH PR
+            ,#LAUFTRAGARCH         LA
+       where LA.AUFTRAGX = PR.AUFTRAGX
+         and PR.TUBEX    = TU.TUBEX
+   end
+   --Loeschen Ende
+end
+--TUBE_ARCH Ende
+
+--TUBE
+if @TubeS = 1
+begin
+   SET @LTubeS = convert(varchar(100), (select count(TU.TUBEX)
+                                          from SWISSLAB..TUBE  TU
+                                              ,SWISSLAB..PROBE PR
+                                              ,#LAUFTRAG       LA
+                                         where PR.AUFTRAGX = LA.AUFTRAGX
+                                           and PR.TUBEX    = TU.TUBEX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSLAB..TUBE: ' + @LTubeS
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LTubeS <> '0'
+   begin
+      select top 1000
+             'SWISSLAB..TUBE' Tabelle
+            ,TU.TUBEX
+            ,TU.TUBEEXTID
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..TUBE      TU
+            ,SWISSLAB..PROBE     PR
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and PR.TUBEX      = TU.TUBEX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSLAB..TUBE' Tabelle
+            ,TU.TUBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..TUBE      TU
+            ,SWISSLAB..PROBE     PR
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and PR.TUBEX      = TU.TUBEX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSLAB..TUBE' Tabelle
+            ,TU.TUBEX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..TUBE      TU
+            ,SWISSLAB..PROBE     PR
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and PR.AUFTRAGX   = AU.AUFTRAGX
+         and PR.TUBEX      = TU.TUBEX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSLAB..TUBE' + @cr +
+                 'from SWISSLAB..TUBE TU' + @cr +
+                 ',SWISSLAB..PROBE PR' + @cr +
+                 ',#LAUFTRAG LA' + @cr +
+                 'where PR.AUFTRAGX = LA.AUFTAGX' + @cr +
+                 'and PR.TUBEX = TU.TUBEX'
+
+      SET @DSToGo = (select count(TU.TUBEX)
+                       from SWISSLAB..TUBE  TU
+                           ,SWISSLAB..PROBE PR
+                           ,#LAUFTRAG       LA
+                      where PR.AUFTRAGX = LA.AUFTRAGX
+                        and PR.TUBEX    = TU.TUBEX)
+
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus TUBE: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(TU.TUBEX)
+               from SWISSLAB..TUBE  TU
+                   ,SWISSLAB..PROBE PR
+                   ,#LAUFTRAG       LA
+              where PR.AUFTRAGX = LA.AUFTRAGX
+                and PR.TUBEX    = TU.TUBEX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(TU.TUBEX)
+                          from SWISSLAB..TUBE  TU
+                              ,SWISSLAB..PROBE PR
+                              ,#LAUFTRAG       LA
+                         where PR.AUFTRAGX = LA.AUFTRAGX
+                           and PR.TUBEX    = TU.TUBEX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      delete top 1 from SWISSARCH..RESULTAT_ARCH
+        from SWISSARCH..RESULTAT_ARCH RE
+            ,#LAUFTRAGARCH            LA
+       where LA.AUFTRAGX = RE.AUFTRAGX
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSLAB..TUBE  TU
+            ,SWISSLAB..PROBE PR
+            ,#LAUFTRAG       LA
+       where LA.AUFTRAGX = PR.AUFTRAGX
+         and PR.TUBEX    = TU.TUBEX
+
+      delete top 1 from SWISSLAB..TUBE
+        from SWISSLAB..TUBE  TU
+            ,SWISSLAB..PROBE PR
+            ,#LAUFTRAG       LA
+       where LA.AUFTRAGX = PR.AUFTRAGX
+         and PR.TUBEX    = TU.TUBEX
+   end
+   --Loeschen Ende
+end
+--TUBE Ende
+
+--DOKUMENT (Arch)
+if @DokuA = 1
+begin
+   SET @LDokuA = convert(varchar(100), (select count(DO.DOKUMENTX)
+                                          from SWISSDOC..DOKUMENT DO
+                                              ,#LAUFTRAGARCH      LA
+                                         where LA.AUFTRAGX = DO.AUFTRAGX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSDOC..DOKUMENT (Arch): ' + @LDokuA
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LDokuA <> '0'
+   begin
+      select top 1000
+             'SWISSDOC..DOKUMENT' Tabelle
+            ,DO.DOKUMENTX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSDOC..DOKUMENT      DO
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and DO.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSDOC..DOKUMENT' Tabelle
+            ,DO.DOKUMENTX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSDOC..DOKUMENT      DO
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and DO.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSDOC..DOKUMENT' Tabelle
+            ,DO.DOKUMENTX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSDOC..DOKUMENT      DO
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and DO.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSDOC..DOKUMENT' + @cr +
+                 '  from SWISSDOC..DOKUMENT RE' + @cr +
+                 '      ,#LAUFTRAGARCH            LA' + @cr +
+                 ' where DO.AUFTRAGX = LA.AUFTRAGX'
+
+      SET @DSToGo = (select count(DO.DOKUMENTX)
+                       from SWISSDOC..DOKUMENT DO
+                           ,#LAUFTRAGARCH      LA
+                      where DO.AUFTRAGX = LA.AUFTRAGX)
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus DOKUMENT: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(DO.DOKUMENTX)
+               from SWISSDOC..DOKUMENT DO
+                   ,#LAUFTRAGARCH      LA
+              where DO.AUFTRAGX = LA.AUFTRAGX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(DO.DOKUMENTX)
+                          from SWISSDOC..DOKUMENT DO
+                              ,#LAUFTRAGARCH      LA
+                         where DO.AUFTRAGX = LA.AUFTRAGX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSDOC..DOKUMENT DO
+            ,#LAUFTRAGARCH      LA
+       where LA.AUFTRAGX = DO.AUFTRAGX
+
+      delete top 1 from SWISSDOC..DOKUMENT
+        from SWISSDOC..DOKUMENT DO
+            ,#LAUFTRAGARCH      LA
+       where LA.AUFTRAGX = DO.AUFTRAGX
+   end
+   --Loeschen Ende
+end
+--DOKUMENT (Arch) Ende
+
+--DOKUMENT
+if @DokuS = 1
+begin
+   SET @LDokuS = convert(varchar(100), (select count(DO.DOKUMENTX)
+                                          from SWISSDOC..DOKUMENT DO
+                                              ,#LAUFTRAG          LA
+                                         where LA.AUFTRAGX = DO.AUFTRAGX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSDOC..DOKUMENT: ' + @LDokuS
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LDokuS <> '0'
+   begin
+      select top 1000
+             'SWISSDOC..DOKUMENT' Tabelle
+            ,DO.DOKUMENTX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSDOC..DOKUMENT  DO
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and DO.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSDOC..DOKUMENT' Tabelle
+            ,DO.DOKUMENTX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSDOC..DOKUMENT  DO
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and DO.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSDOC..DOKUMENT' Tabelle
+            ,DO.DOKUMENTX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSDOC..DOKUMENT  DO
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and DO.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSDOC..DOKUMENT' + @cr +
+                 'from SWISSDOC..DOKUMENT RE' + @cr +
+                 ',#LAUFTRAG LA' + @cr +
+                 'where DO.AUFTRAGX = LA.AUFTRAGX'
+
+      SET @DSToGo = (select count(DO.DOKUMENTX)
+                       from SWISSDOC..DOKUMENT DO
+                           ,#LAUFTRAG          LA
+                      where DO.AUFTRAGX = LA.AUFTRAGX)
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus DOKUMENT: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(DO.DOKUMENTX)
+               from SWISSDOC..DOKUMENT DO
+                   ,#LAUFTRAG          LA
+              where DO.AUFTRAGX = LA.AUFTRAGX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(DO.DOKUMENTX)
+                          from SWISSDOC..DOKUMENT DO
+                              ,#LAUFTRAG          LA
+                         where DO.AUFTRAGX = LA.AUFTRAGX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSDOC..DOKUMENT DO
+            ,#LAUFTRAG          LA
+       where LA.AUFTRAGX = DO.AUFTRAGX
+
+      delete top 1 from SWISSDOC..DOKUMENT
+        from SWISSDOC..DOKUMENT DO
+            ,#LAUFTRAG          LA
+       where LA.AUFTRAGX = DO.AUFTRAGX
+   end
+   --Loeschen Ende
+end
+--DOKUMENT Ende
+
+--PATIFALL (Arch)
+if @FallA = 1
+begin
+   SET @LFallA = convert(varchar(100), (select count(PF.PATIFALLX)
+                                          from SWISSLAB..PATIFALL      PF
+                                              ,SWISSARCH..AUFTRAG_ARCH AU
+                                              ,#LAUFTRAGARCH           LA
+                                         where LA.AUFTRAGX  = AU.AUFTRAGX
+                                           and AU.PATIFALLX = PF.PATIFALLX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSLAB..PATIFALL (Arch): ' + @LFallA
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LFallA <> '0'
+   begin
+      select top 1000
+             'SWISSLAB..PATIFALL' Tabelle
+            ,PF.PATIFALLX
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATIFALL      PF
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSLAB..PATIFALL' Tabelle
+            ,PF.PATIFALLX
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATIFALL      PF
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSLAB..PATIFALL' Tabelle
+            ,PF.PATIFALLX
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATIFALL      PF
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATISTAMM     PS
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSLAB..PATIFALL' + @cr +
+                 'from SWISSLAB..PATIFALL PF' + @cr +
+                 ',SWISSARCH..AUFTRAG_ARCH AU' + @cr +
+                 ',#LAUFTRAGARCH LA' + @cr +
+                 'where LA.AUFTRAGX = AU.AUFTRAGX' + @cr +
+                 'and AU.PATIFALLX = PF.PATIFALLX'
+
+      SET @DSToGo = (select count(PF.PATIFALLX)
+                       from SWISSLAB..PATIFALL      PF
+                           ,SWISSARCH..AUFTRAG_ARCH AU
+                           ,#LAUFTRAGARCH           LA
+                      where LA.AUFTRAGX  = AU.AUFTRAGX
+                        and AU.PATIFALLX = PF.PATIFALLX)
+
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus PATIFALL: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(PF.PATIFALLX)
+               from SWISSLAB..PATIFALL      PF
+                   ,SWISSARCH..AUFTRAG_ARCH AU
+                   ,#LAUFTRAGARCH           LA
+              where LA.AUFTRAGX  = AU.AUFTRAGX
+                and AU.PATIFALLX = PF.PATIFALLX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(PF.PATIFALLX)
+                          from SWISSLAB..PATIFALL      PF
+                              ,SWISSARCH..AUFTRAG_ARCH AU
+                              ,#LAUFTRAGARCH           LA
+                         where LA.AUFTRAGX  = AU.AUFTRAGX
+                           and AU.PATIFALLX = PF.PATIFALLX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSLAB..PATIFALL      PF
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX  = AU.AUFTRAGX
+         and AU.PATIFALLX = PF.PATIFALLX
+
+      delete top 1 from SWISSLAB..PATIFALL
+        from SWISSLAB..PATIFALL      PF
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX  = AU.AUFTRAGX
+         and AU.PATIFALLX = PF.PATIFALLX
+   end
+   --Loeschen Ende
+end
+--PATIFALL (Arch) Ende
+
+--PATIFALL
+if @FallS = 1
+begin
+   SET @LFallS = convert(varchar(100), (select count(PF.PATIFALLX)
+                                          from SWISSLAB..PATIFALL PF
+                                              ,SWISSLAB..AUFTRAG  AU
+                                              ,#LAUFTRAG          LA
+                                         where LA.AUFTRAGX  = AU.AUFTRAGX
+                                           and AU.PATIFALLX = PF.PATIFALLX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSLAB..PATIFALL: ' + @LFallS
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LFallS <> '0'
+   begin
+      select top 1000
+             'SWISSLAB..PATIFALL' Tabelle
+            ,PF.PATIFALLX
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSLAB..PATIFALL' Tabelle
+            ,PF.PATIFALLX
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSLAB..PATIFALL' Tabelle
+            ,PF.PATIFALLX
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATISTAMM PS
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSLAB..PATIFALL' + @cr +
+                 'from SWISSLAB..PATIFALL PF' + @cr +
+                 ',SWISSLAB..AUFTRAG AU' + @cr +
+                 ',#LAUFTRAG LA' + @cr +
+                 'where LA.AUFTRAGX = AU.AUFTRAGX' + @cr +
+                 'and AU.PATIFALLX = PF.PATIFALLX'
+
+      SET @DSToGo = (select count(PF.PATIFALLX)
+                       from SWISSLAB..PATIFALL PF
+                           ,SWISSLAB..AUFTRAG  AU
+                           ,#LAUFTRAG          LA
+                      where LA.AUFTRAGX  = AU.AUFTRAGX
+                        and AU.PATIFALLX = PF.PATIFALLX)
+
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus PATIFALL: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(PF.PATIFALLX)
+               from SWISSLAB..PATIFALL PF
+                   ,SWISSLAB..AUFTRAG  AU
+                   ,#LAUFTRAG          LA
+              where LA.AUFTRAGX  = AU.AUFTRAGX
+                and AU.PATIFALLX = PF.PATIFALLX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(PF.PATIFALLX)
+                          from SWISSLAB..PATIFALL PF
+                              ,SWISSLAB..AUFTRAG  AU
+                              ,#LAUFTRAG          LA
+                         where LA.AUFTRAGX  = AU.AUFTRAGX
+                           and AU.PATIFALLX = PF.PATIFALLX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSLAB..PATIFALL PF
+            ,SWISSLAB..AUFTRAG  AU
+            ,#LAUFTRAG          LA
+       where LA.AUFTRAGX  = AU.AUFTRAGX
+         and AU.PATIFALLX = PF.PATIFALLX
+
+      delete top 1 from SWISSLAB..PATIFALL
+        from SWISSLAB..PATIFALL PF
+            ,SWISSLAB..AUFTRAG  AU
+            ,#LAUFTRAG          LA
+       where LA.AUFTRAGX  = AU.AUFTRAGX
+         and AU.PATIFALLX = PF.PATIFALLX
+   end
+   --Loeschen Ende
+end
+--PATIFALL Ende
+
+--PATISTAMM (Arch)
+if @PatiA = 1
+begin
+   SET @LPatiA = convert(varchar(100), (select count(PS.PATISTAMMX)
+                                          from SWISSLAB..PATISTAMM     PS
+                                              ,SWISSARCH..AUFTRAG_ARCH AU
+                                              ,#LAUFTRAGARCH           LA
+                                         where LA.AUFTRAGX   = AU.AUFTRAGX
+                                           and AU.PATISTAMMX = PS.PATISTAMMX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSLAB..PATISTAMM (Arch): ' + @LPatiA
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LPatiA <> '0'
+   begin
+      select top 1000
+             'SWISSLAB..PATISTAMM' Tabelle
+            ,PS.PATISTAMMX
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATISTAMM     PS
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX    = AU.AUFTRAGX
+         and AU.PATISTAMMX  = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSLAB..PATISTAMM' Tabelle
+            ,PS.PATISTAMMX
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATISTAMM     PS
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX    = AU.AUFTRAGX
+         and AU.PATISTAMMX  = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSLAB..PATISTAMM' Tabelle
+            ,PS.PATISTAMMX
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATISTAMM     PS
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX    = AU.AUFTRAGX
+         and AU.PATISTAMMX  = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSLAB..PATISTAMM' + @cr +
+                 'from SWISSLAB..PATISTAMM PS' + @cr +
+                 ',SWISSARCH..AUFTRAG_ARCH AU' + @cr +
+                 ',#LAUFTRAGARCH LA' + @cr +
+                 'where LA.AUFTRAGX = AU.AUFTRAGX' + @cr +
+                 'and AU.PATISTAMMX = PS.PATISTAMMX'
+
+      SET @DSToGo = (select count(PS.PATISTAMMX)
+                       from SWISSLAB..PATISTAMM     PS
+                           ,SWISSARCH..AUFTRAG_ARCH AU
+                           ,#LAUFTRAGARCH           LA
+                      where LA.AUFTRAGX   = AU.AUFTRAGX
+                        and AU.PATISTAMMX = PS.PATISTAMMX)
+
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus PATISTAMM: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(PS.PATISTAMMX)
+               from SWISSLAB..PATISTAMM     PS
+                   ,SWISSARCH..AUFTRAG_ARCH AU
+                   ,#LAUFTRAGARCH           LA
+              where LA.AUFTRAGX   = AU.AUFTRAGX
+                and AU.PATISTAMMX = PS.PATISTAMMX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(PS.PATISTAMMX)
+                          from SWISSLAB..PATISTAMM     PS
+                              ,SWISSARCH..AUFTRAG_ARCH AU
+                              ,#LAUFTRAGARCH           LA
+                         where LA.AUFTRAGX   = AU.AUFTRAGX
+                           and AU.PATISTAMMX = PS.PATISTAMMX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSLAB..PATISTAMM     PS
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX  = AU.AUFTRAGX
+         and AU.PATISTAMMX = PS.PATISTAMMX
+
+      delete top 1 from SWISSLAB..PATISTAMM
+        from SWISSLAB..PATISTAMM     PS
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATISTAMMX = PS.PATISTAMMX
+   end
+   --Loeschen Ende
+end
+--PATISTAMM (Arch) Ende
+
+--PATISTAMM
+if @PatiS = 1
+begin
+   SET @LPatiS = convert(varchar(100), (select count(PS.PATISTAMMX)
+                                          from SWISSLAB..PATISTAMM PS
+                                              ,SWISSLAB..AUFTRAG   AU
+                                              ,#LAUFTRAG           LA
+                                         where LA.AUFTRAGX   = AU.AUFTRAGX
+                                           and AU.PATISTAMMX = PS.PATISTAMMX))
+
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSLAB..PATISTAMM: ' + @LPatiS
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and @LPatiS <> '0'
+   begin
+      select top 1000
+             'SWISSLAB..PATISTAMM' Tabelle
+            ,PS.PATISTAMMX
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATISTAMM PS
+            ,SWISSLAB..AUFTRAG   AU
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX    = AU.AUFTRAGX
+         and AU.PATISTAMMX  = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSLAB..PATISTAMM' Tabelle
+            ,PS.PATISTAMMX
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATISTAMM PS
+            ,SWISSLAB..AUFTRAG   AU
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATISTAMMX = PS.PATISTAMMX
+         and PS.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select
+             'SWISSLAB..PATISTAMM' Tabelle
+            ,PS.PATISTAMMX
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from SWISSLAB..PATISTAMM PS
+            ,SWISSLAB..AUFTRAG   AU
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX    = AU.AUFTRAGX
+         and AU.PATISTAMMX  = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSLAB..PATISTAMM' + @cr +
+                 'from SWISSLAB..PATISTAMM PS' + @cr +
+                 ',SWISSLAB..AUFTRAG AU' + @cr +
+                 ',#LAUFTRAG LA' + @cr +
+                 'where LA.AUFTRAGX = AU.AUFTRAGX' + @cr +
+                 'and AU.PATISTAMMX = PS.PATISTAMMX'
+
+      SET @DSToGo = (select count(PS.PATISTAMMX)
+                       from SWISSLAB..PATISTAMM PS
+                           ,SWISSLAB..AUFTRAG   AU
+                           ,#LAUFTRAG           LA
+                      where LA.AUFTRAGX   = AU.AUFTRAGX
+                        and AU.PATISTAMMX = PS.PATISTAMMX)
+
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus PATISTAMM: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(PS.PATISTAMMX)
+               from SWISSLAB..PATISTAMM PS
+                   ,SWISSLAB..AUFTRAG   AU
+                   ,#LAUFTRAG           LA
+              where LA.AUFTRAGX   = AU.AUFTRAGX
+                and AU.PATISTAMMX = PS.PATISTAMMX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(PS.PATISTAMMX)
+                          from SWISSLAB..PATISTAMM PS
+                              ,SWISSLAB..AUFTRAG   AU
+                              ,#LAUFTRAG           LA
+                         where LA.AUFTRAGX   = AU.AUFTRAGX
+                           and AU.PATISTAMMX = PS.PATISTAMMX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSLAB..PATISTAMM PS
+            ,SWISSLAB..AUFTRAG   AU
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATISTAMMX = PS.PATISTAMMX
+
+      delete top 1 from SWISSLAB..PATISTAMM
+        from SWISSLAB..PATISTAMM PS
+            ,SWISSLAB..AUFTRAG   AU
+            ,#LAUFTRAG           LA
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATISTAMMX = PS.PATISTAMMX
+   end
+   --Loeschen Ende
+end
+--PATISTAMM Ende
+
+--AUFTRAG_ARCH
+if @AuftA = 1
+begin
+   SET @LAuftA = convert(varchar(100), (select count(LA.AUFTRAGX) from #LAUFTRAGARCH LA))
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSARCH..AUFTRAG_ARCH: ' + @LAuftA
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and (select count(*) from #LAUFTRAGARCH) > 0
+   begin
+      select top 1000
+            'SWISSARCH..AUFTRAG_ARCH' Tabelle
+            ,AU.AUFTRAGX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from #LAUFTRAGARCH           LA
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSARCH..AUFTRAG_ARCH' Tabelle
+            ,AU.AUFTRAGX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from #LAUFTRAGARCH           LA
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select 'SWISSARCH..AUFTRAG_ARCH' Tabelle
+            ,AU.AUFTRAGX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from #LAUFTRAGARCH           LA
+            ,SWISSARCH..AUFTRAG_ARCH AU
+            ,SWISSLAB..PATIFALL      PF
+            ,SWISSLAB..PATISTAMM     PS
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSARCH..AUFTRAG_ARCH' + @cr +
+                 '  from SWISSARCH..AUFTRAG_ARCH AU' + @cr +
+                 '      ,#LAUFTRAGARCH LA' + @cr +
+                 ' where LA.AUFTRAGX = AU.AUFTRAGX'
+
+      SET @DSToGo = (select count(AU.AUFTRAGX)
+                       from SWISSARCH..AUFTRAG_ARCH AU
+                           ,#LAUFTRAGARCH           LA
+                      where LA.AUFTRAGX = AU.AUFTRAGX)
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus AUFTRAG_ARCH: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(AU.AUFTRAGX)
+               from SWISSARCH..AUFTRAG_ARCH AU
+                   ,#LAUFTRAGARCH           LA
+              where LA.AUFTRAGX = AU.AUFTRAGX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(AU.AUFTRAGX)
+                          from SWISSARCH..AUFTRAG_ARCH AU
+                              ,#LAUFTRAGARCH           LA
+                         where LA.AUFTRAGX = AU.AUFTRAGX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX = AU.AUFTRAGX
+
+      delete top 1 from SWISSARCH..AUFTRAG_ARCH
+        from SWISSARCH..AUFTRAG_ARCH AU
+            ,#LAUFTRAGARCH           LA
+       where LA.AUFTRAGX = AU.AUFTRAGX
+   end
+   --Loeschen Ende
+end
+--AUFTRAG_ARCH Ende
+
+--AUFTRAG
+if @AuftS = 1
+begin
+   SET @LAuftS = convert(varchar(100), (select count(LA.AUFTRAGX) from #LAUFTRAG LA))
+   SET @Ausg = 'Zu loeschende Datensaetze aus SWISSLAB..AUFTRAG: ' + @LAuftS
+   print @Ausg
+
+   --Logging der zu loeschenden Datensaetze
+   if @Logging = 2 and (select count(*) from #LAUFTRAG) > 0
+   begin
+      select top 1000
+            'SWISSLAB..AUFTRAG' Tabelle
+            ,AU.AUFTRAGX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from #LAUFTRAG           LA
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 3
+   begin
+      select top 10
+             'SWISSLAB..AUFTRAG' Tabelle
+            ,AU.AUFTRAGX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from #LAUFTRAG           LA
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+
+   if @Logging = 4
+   begin
+      select 'SWISSLAB..AUFTRAG' Tabelle
+            ,AU.AUFTRAGX
+            ,AU.AUFTRAGNR
+            ,AU.AUFTRAGDAT
+            ,PF.PATIFALLNR
+            ,PS.PATISTAMMNR
+            ,convert(varchar(32), PS.VORNAME) VORNAME
+            ,convert(varchar(32), PS.NAME)    NAME
+        from #LAUFTRAG           LA
+            ,SWISSLAB..AUFTRAG   AU
+            ,SWISSLAB..PATIFALL  PF
+            ,SWISSLAB..PATISTAMM PS
+       where LA.AUFTRAGX   = AU.AUFTRAGX
+         and AU.PATIFALLX  = PF.PATIFALLX
+         and PF.PATISTAMMX = PS.PATISTAMMX
+      print @cr
+   end
+   --Logging Ende
+
+   --Loeschen
+   if @Logging = 0 and @Loeschen = 42
+   begin
+      SET @SQL = 'delete top ' + convert(varchar(10),@Anzahl) + ' from SWISSLAB..AUFTRAG' + @cr +
+                 '  from SWISSLAB..AUFTRAG AU' + @cr +
+                 '      ,#LAUFTRAG LA' + @cr +
+                 ' where LA.AUFTRAGX = AU.AUFTRAGX'
+
+      SET @DSToGo = (select count(AU.AUFTRAGX)
+                       from SWISSLAB..AUFTRAG AU
+                           ,#LAUFTRAG         LA
+                      where LA.AUFTRAGX = AU.AUFTRAGX)
+      while @DSToGo > 0
+      begin
+         SET @Ausg = 'Noch zu loeschende Datensaetze aus AUFTRAG: ' + convert(varchar(10), @DSToGo)
+         print @Ausg
+
+         if (select count(AU.AUFTRAGX)
+               from SWISSLAB..AUFTRAG AU
+                   ,#LAUFTRAG         LA
+              where LA.AUFTRAGX = AU.AUFTRAGX) = @DSToGo
+         begin
+            SET @Message = @KeineGeloescht
+            goto Beenden
+         end
+
+         SET @DSToGo = (select count(AU.AUFTRAGX)
+                          from SWISSLAB..AUFTRAG AU
+                              ,#LAUFTRAG         LA
+                         where LA.AUFTRAGX = AU.AUFTRAGX)
+
+         --select @SQL
+         exec (@SQL)
+         waitfor delay @WartezeitS
+      end
+   end
+
+   if @Logging = 0 and @Loeschen = 41
+   begin
+      select top 1 *
+        from SWISSLAB..AUFTRAG AU
+            ,#LAUFTRAG         LA
+       where LA.AUFTRAGX = AU.AUFTRAGX
+
+      delete top 1 from SWISSLAB..AUFTRAG
+        from SWISSLAB..AUFTRAG AU
+            ,#LAUFTRAG         LA
+       where LA.AUFTRAGX = AU.AUFTRAGX
+   end
+   --Loeschen Ende
+end
+--AUFTRAG Ende
+
+Beenden:
+print @Message
+
+--Loeschen der Zwischentabellen
+if exists (select so.name from tempdb..sysobjects so where so.name like '#LAUFTRAGARCH%')
+   begin
+      drop table #LAUFTRAGARCH
+   end
+if exists (select so.name from tempdb..sysobjects so where so.name like '#LAUFTRAG%')
+   begin
+      drop table #LAUFTRAG
+   end
+go
+
+select 'Ende: ' + convert(varchar(32),getdate())
+go
+
+/*  Versionshistorie - neue Eintraege unten
+18-Apr-2016 RAB Erstellung begonnen
+29-Nov-2016 RAB Logging von zwei auf vier Stufen erweitert
+30-Nov-2016 RAB Serologie-Tabellen hinzugefuegt
+                Deutlichere Trennung von SWISSLAB- und SWISSARCH-Tabellen
+                Logging auf ausgewaehlte Felder eingeschraenkt
+01-Dez-2016 RAB Weitere Tabellen hinzugefuegt
+                Loggingstufe 3 -> 4, neue Loggingstufe 3 hinzugefuegt
+20-Dez-2016 RAB Nur noch je eine lokale Tabelle fuer SWISSARCH und SWISSLAB (#LAUFTRAGARCH und #LAUFTRAG)
+21-Dez-2016 RAB Logging innerhalb der Loeschvorgaenge hinzugefuegt
+22-Dez-2016 RAB Logging innerhalb der Loeschvorgaenge vervollstaendigt
+                Logging und Loeschung von Dokumenten hinzugefuegt
+23-Dez-2016 RAB Testloeschung von jeweils einem Datensatz hinzugefuegt
+Versionshistorie Ende  */
+

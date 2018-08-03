@@ -1,0 +1,12 @@
+-- Auftragzeit
+--ABC
+
+declare @NR   char(16)
+declare @NR2   char(16)
+SELECT  @NR = '12345678'  -- zu füllen mit einer AUFTRAGSNUMMER
+SELECT  @NR2   =  12345678  -- zu füllen mit einer AUFTRAGSNUMMER
+
+select * from AUFTRAG where AUFTRAGNR=@NR
+
+--PR_AUFTRAGZEIT @AUFTRAGNR='12345678'
+go

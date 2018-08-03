@@ -1,0 +1,116 @@
+set dateformat dmy
+go
+/* Parameter deklarieren         */
+
+declare
+  @auftrag       varchar(16),
+  @auftragx      int
+set nocount on
+
+
+/* ----------------------------------------------------------------------------------- */
+select @auftrag = '80021717'   /* !!!!!! hier die Auftragsnummer eintragen          !! */
+/* ----------------------------------------------------------------------------------- */
+
+
+set nocount off
+
+print ''
+print '--- Proben und zugehoerige Resultatrecords ---'
+print ''
+
+set nocount on
+select
+  A.AUFTRAGNR,
+  A.AUFTRAGX,
+  Einscode=E.EINSCODE,
+  A.ERFASSPERS,
+  AuftSQLErfassdat=A.SQLERFASSDAT,
+  ErfPersAuft=PE1.PERSONID,
+  P.PROBEEXTID,
+  P.PROBEX,
+  ErfPersProbe=PE2.PERSONID,
+  ProbeSQLErfassdat=P.SQLERFASSDAT,
+  ProbeErfassdat=P.ERFASSDAT,
+  ProbeVerteildatErst=P.VERTEILDATERST,
+  ProbeVerteildatLetzt=P.VERTEILDATLETZT, 
+  ProbeStornodat=P.STORNODAT,
+  ProbeAktivbis=P.AKTIVBIS,
+  EtikDruckdat=P.ETIKDRUCKDAT,
+  P.PSTATUS,
+  P.PKENNUNG,
+  ProbeMaterialX=M1.MATERIALX,
+  ProbeMaterial=M1.MATCODE,
+  B.BEHAELTERX,
+  BehaelterMaterialX=B.MATERIALX,
+  B.BEHAELTERCODE,
+  BehaelterMaterial=M2.MATCODE
+
+
+into #temp1
+from AUFTRAG A (index AUFTRAG_PK2), PROBE P (index PROBE_FK2), PERSON PE1, PERSON PE2, EINSENDER E, BEHAELTER B, MATERIAL M1, MATERIAL M2
+where
+      A.AUFTRAGNR=@auftrag
+  and P.AUFTRAGX=A.AUFTRAGX
+  and PE1.PERSONX=A.ERFASSPERS
+  and PE2.PERSONX=P.ERFASSPERS
+  and E.EINSENDERX=*A.EINSENDERX
+  and B.BEHAELTERX=*P.BEHAELTERX
+  and M1.MATERIALX=*P.MATERIALX
+  and M2.MATERIALX=*B.MATERIALX
+set nocount off
+
+-- select * from #temp1
+select 
+  AUFTRAGNR, 
+  Einscode,
+  AuftSQLErfassdat,
+  ErfPersAuft,
+  PROBEEXTID,
+  ErfPersProbe,
+  PSTATUS,
+  PKENNUNG,
+  ProbeMaterial,
+  BEHAELTERCODE,
+  BehaelterMaterial,
+  ProbeSQLErfassdat,
+  ProbeErfassdat,
+  ProbeVerteildatErst,
+  ProbeVerteildatLetzt, 
+  ProbeStornodat,
+  ProbeAktivbis,
+  EtikDruckdat
+  
+from #temp1  
+
+select distinct
+  t1.AUFTRAGNR,
+  AN.CODE,
+  ProbeMaterial=M1.MATCODE,
+  BehaelterMaterial=M2.MATCODE,
+  AnalytMaterial=M3.MATCODE,
+  PR.PROBEEXTID,
+  Resultatstatus=R.STATUS,
+  Grund=R.GRUND,
+  AnfordPers=P1.PERSONID,
+  ErfassPers=P2.PERSONID,
+  Anforddat=convert(char(11),R.ANFORDDAT ,104)+convert(char(8),R.ANFORDDAT ,108)+' ',
+  Erfassdat=convert(char(11),R.ERFASSDAT ,104)+convert(char(8),R.ERFASSDAT ,108)+' ',
+  AktivBis=convert(char(11),R.AKTIVBIS ,104)+convert(char(8),R.AKTIVBIS ,108)+' ',
+  Stornodat=convert(char(11),R.STORNODAT ,104)+convert(char(8),R.STORNODAT ,108)+' ',
+  Resultat=substring(R.ERGEBNIST,1,24)
+from #temp1 t1, ANALYT AN (index ANALYT_PK) , PERSON P1, PERSON P2, RESULTAT R, PROBE PR, BEHAELTER B, MATERIAL M1, MATERIAL M2, MATERIAL M3
+where
+  R.AUFTRAGX = t1.AUFTRAGX
+  and P1.PERSONX=*R.ANFORDPERS
+  and P2.PERSONX=*R.ERFASSPERS
+  and AN.ANALYTX=R.ANALYTX
+  and PR.PROBEX=*R.PROBEX
+  and B.BEHAELTERX=*PR.BEHAELTERX
+  and M1.MATERIALX=*PR.MATERIALX
+  and M2.MATERIALX=*B.MATERIALX
+  and M3.MATERIALX=*AN.DEFMATERIALX
+
+order by R.ANFORDDAT  
+
+go

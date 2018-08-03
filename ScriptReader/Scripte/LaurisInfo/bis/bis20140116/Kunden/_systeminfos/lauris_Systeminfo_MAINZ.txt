@@ -1,0 +1,45 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: UKMainz, ausgeführt am: 26.07.2012
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           UKMainz          Mainz                sqlserver            Routine SQLServer Ma Adaptive Server Enterprise/15.5/EBF 19393 SMP ESD#5/P/X64/Windows Server/asear155/2568/64-bit/OPT/Thu Dec 08 22:09:47 2011                                                                                                                                      
+ 
+ 
+ Anmeldungen (in 30 Tagen):                                            
+ --------------------------------------------------------------------- 
+ Anzahl Clients: 1645    Anzahl User: 315     Anzahl Auftraege: 38477  
+ 
+ 
+aktive Lauris-Versionen:
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           4 v8.08.15¹#       
+           5 v8.08.15# F      
+           1 v8.02.28²#       
+           1 v7.02.09# F      
+           9 v6.04.07# F      
+        1600 v11.04.14#       
+          21 v10.11.05¹#      
+           1 v10.05.12¹#      
+           3 v10.05.12#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Release 2011.01                                                                  2011.01    NULL                                     06.04.11  00:00                 
+ letztes Swisspro                                                                 2011.01    NULL                                     22.07.12  18:02                 
+ swissup3.tab                                                                      2.14 $    NULL                                     22.07.12  17:53                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     22.07.12  17:59                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     22.07.12  17:58                 
+ Statistik (via statistik.pro)                                                     5.82 $    NULL                                     22.07.12  17:59                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     22.07.12  17:58                 
+                                                                                             NULL                                                                     
+ neu:PR_DEPOTMONITOR2                                                              2.21 $    NULL                                     26.07.12  11:47 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)

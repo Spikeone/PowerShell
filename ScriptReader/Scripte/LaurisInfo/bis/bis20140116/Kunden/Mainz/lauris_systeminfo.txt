@@ -1,0 +1,66 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 17.02.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLCLUSTER           Uni Mainz - ...      Adaptive Server Enterprise/12.5.0.3/EBF 11450 ESD#4/P/Linux Intel/Linux 2.4.18-18.7.xsmp i686/rel12503/1940/32-bit/OPT/Sun Sep 21 03:10:00 2003                                                                                                                 
+                            SQLCLUSTER           Mainz - sqlcluster   Adaptive Server Enterprise/12.5.0.3/EBF 11450 ESD#4/P/Linux Intel/Linux 2.4.18-18.7.xsmp i686/rel12503/1940/32-bit/OPT/Sun Sep 21 03:10:00 2003                                                                                                                 
+                            sqlcluster           Mainz - Labor        Adaptive Server Enterprise/12.5.0.3/EBF 11450 ESD#4/P/Linux Intel/Linux 2.4.18-18.7.xsmp i686/rel12503/1940/32-bit/OPT/Sun Sep 21 03:10:00 2003                                                                                                                 
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    07.07.09  08:41                 
+ swissup3.tab                       2.08 $    07.07.09  08:26                 
+ swlupgrade.tab                     2.20.1 $  11.03.10  15:13                 
+ Lauris (via lauris.ini)            1.04 $    18.05.10  08:24                 
+ Blutbank (via barkasse.pro)        1.06 $    11.03.10  15:12                 
+ Statistik (via statistik.pro)      5.51 $    11.03.10  15:14                 
+ BB-Statistik (via spendestat.pro)  1.21 $    07.07.09  08:37                 
+                                                                              
+ neu:sp_most_cleanup                          17.01.11  15:30 sybsystemprocs  
+ neu:sp_most                                  17.01.11  11:32 sybsystemprocs  
+ neu:sp_most_init                             17.01.11  10:27 sybsystemprocs  
+ neu:PR_MDA_DELTAWAITEVENTS         1.00 $    13.01.11  09:03 SWISSLAB        
+ neu:PR_MDA_WAITEVENTS              1.00 $    13.01.11  09:02 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                        1512 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#8.08.15¹# FW=#2.0.50727.3607# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                   
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#10.05.12# FW=#2.0.50727.1433# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                   
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                 55863           18588          87 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             NULL       NULL     27.10.2010 09:38:00  Erbes                                 NULL                     1888          -1          -1 LAURIS          NULL      0        0           4 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       IRV              NULL       NULL     25.08.2010 15:40:00  Erbes            19.10.2010 09:32:00  Erbes                    1878          -1          -1 LAURIS           425      0        0           4 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 

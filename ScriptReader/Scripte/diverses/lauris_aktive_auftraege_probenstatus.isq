@@ -1,0 +1,49 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\proben_check.isq                   */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: teilaktive Laurisaufträge ermitteln                    */
+/*MODULE   :                                                                */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20070828.07:45>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy
+
+select
+  AuftragNr=A.AUFTRAGNR,
+  Tstatus=T.TSTATUS,
+  Pstatus=PR.PSTATUS,
+  ProbeExtid=PR.PROBEEXTID,
+  Einsender=E.EINSCODE,
+  ProbeErfassDat=convert(char(11),PR.ERFASSDAT ,104)+convert(char(8),PR.ERFASSDAT ,108)+' ',
+  ProbeErfassPers=P1.PERSONID,
+  AuftragErfassDat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  AuftragErfassPers=P2.PERSONID,
+  EtikDruckDat=convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' '
+
+from
+  PROBE PR,
+  AUFTRAG A,
+  PERSON P1,
+  PERSON P2,
+  TASKFLAG T,
+  EINSENDER E
+
+where
+  A.AUFTRAGX=T.XREF and
+  T.TSTATUS > 0 and
+  A.FORMULARX is not null and
+  A.AUFTRAGX=PR.AUFTRAGX and
+  PR.STORNODAT is null and
+  PR.AKTIVBIS is null and
+  E.EINSENDERX=A.EINSENDERX and
+  P1.PERSONX=PR.ERFASSPERS and
+  P2.PERSONX=A.ERFASSPERS
+order by
+  A.AUFTRAGNR, Pstatus
+go

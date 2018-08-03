@@ -1,0 +1,86 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                sybsunr              Routinesystem Sun    Adaptive Server Enterprise/12.5.3/EBF 13057 ESD#5/P/RS6000/AIX 5.1/ase1253/1939/64-bit/FBO/Tue Dec  6 03:37:19 2005                                                                                                                                             
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       1636            1609           0 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                Ins-Hyp-T-E 120  Ins.Hypoglyk.Test:120 min                                                138          25 FTE120       EDTA: 120 min                        64                       NULL 
+                                Test -15 min     TEST-15                                                                   61          20 FTE-15       EDTA:  -15 min                       59        Nov  3 2003  3:45PM 
+                                Test -15 min     TEST-15                                                                   90          19 FTS-15       Serum: -15 min                       49        Nov  3 2003  3:45PM 
+                                Test 0 min       TEST0                                                                     62          21 FTE0         EDTA: 0 min                          60        Nov  3 2003  3:45PM 
+                                Test 0 min       TEST0                                                                     91          33 FTP0         Plasma: 0 min                        70        Nov  3 2003  3:45PM 
+                                Test 0 min       TEST0                                                                     54          26 FTS0         Serum: 0 min                         50        Nov  3 2003  3:45PM 
+                                Test 0 min       TEST0                                                                     84          47 FVE0         EDTA: 0 min                          90        Nov  3 2003  3:45PM 
+                                Test 0 min       TEST0                                                                     72          42 FVS0         Serum: 0 min                         80        Nov  3 2003  3:45PM 
+                                Test 120 min     TEST120                                                                   66          25 FTE120       EDTA: 120 min                        64        Nov  3 2003  3:45PM 
+                                Test 120 min     TEST120                                                                   82          53 FTP120       Plasma: 120 min                      74        Nov  3 2003  3:45PM 
+                                Test 120 min     TEST120                                                                   58          30 FTS120       Serum: 120 min                       54        Nov  3 2003  3:45PM 
+                                Test 120 min     TEST120                                                                   88          49 FVE120       EDTA: 120 min                        94        Nov  3 2003  3:45PM 
+                                Test 120 min     TEST120                                                                   76          46 FVS120       Serum: 120 min                       84        Nov  3 2003  3:45PM 
+                                Test 180 min     TEST180                                                                   67          54 FTE180       EDTA: 180 min                        65        Nov  3 2003  3:45PM 
+                                Test 180 min     TEST180                                                                   83          34 FTP180       Plasma: 180 min                      75        Nov  3 2003  3:45PM 
+                                Test 30 min      TEST30                                                                    63          22 FTE30        EDTA: 30 min                         61        Nov  3 2003  3:45PM 
+                                Test 30 min      TEST30                                                                    79          50 FTP30        Plasma: 30 min                       71        Nov  3 2003  3:45PM 
+                                Test 30 min      TEST30                                                                    55          27 FTS30        Serum: 30 min                        51        Nov  3 2003  3:45PM 
+                                Test 30 min      TEST30                                                                    73          43 FVS30        Serum: 30 min                        81        Nov  3 2003  3:45PM 
+                                Test 60 min      TEST60                                                                    64          23 FTE60        EDTA: 60 min                         62        Nov  3 2003  3:45PM 
+                                Test 60 min      TEST60                                                                    80          51 FTP60        Plasma: 60 min                       72        Nov  3 2003  3:45PM 
+                                Test 60 min      TEST60                                                                    56          28 FTS60        Serum: 60 min                        52        Nov  3 2003  3:45PM 
+                                Test 60 min      TEST60                                                                    86          48 FVE60        EDTA: 60 min                         92        Nov  3 2003  3:45PM 
+                                Test 60 min      TEST60                                                                    74          44 FVS60        Serum: 60 min                        82        Nov  3 2003  3:45PM 
+                                Test 90 min      TEST90                                                                    65          24 FTE90        EDTA: 90 min                         63        Nov  3 2003  3:45PM 
+                                Test 90 min      TEST90                                                                    81          52 FTP90        Plasma: 90 min                       73        Nov  3 2003  3:45PM 
+                                Test 90 min      TEST90                                                                    57          29 FTS90        Serum: 90 min                        53        Nov  3 2003  3:45PM 
+                                Test 90 min      TEST90                                                                    75          45 FVS90        Serum: 90 min                        83        Nov  3 2003  3:45PM 
+
+(28 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                ROUTINE          Routine LAS                                                                            NULL                       NULL       19000000        19999999         19033200           999999                 33200                 966799     3.3200 % NULL                NULL                                    NULL                   NULL         NULL 
+                                NOTFALL          Notfall LAS                                                                            NULL                       NULL       25000000        25999999         25056101           999999                 56101                 943898     5.6101 % NULL                NULL                                    NULL                   NULL         NULL 
+                                SONDER           Sondermaterial LAS                                                                     NULL                       NULL       35000000        35999999         35005700           999999                  5700                 994299     0.5700 % NULL                NULL                                    NULL                   NULL         NULL 
+                                ENDOKRIN         Endokrinologische Diagnostik LAS                                                       NULL                       NULL       45000000        45999999         45005210           999999                  5210                 994789     0.5210 % NULL                NULL                                    NULL                   NULL         NULL 
+                                KINDERROUT       KinderRoutineformular                                                                  NULL        Oct 22 2004 11:54AM       56000000        56999999         56000000           999999                     0                 999999     0.0000 % NULL                NULL                                    NULL                   NULL         NULL 
+                                KINDERNOT        KinderNotfallformular                                                                  NULL        Oct 22 2004 11:54AM       66000000        66999999         66000000           999999                     0                 999999     0.0000 % NULL                NULL                                    NULL                   NULL         NULL 
+                                TEST             test                                                                    Sep 15 2004  9:58AM                       NULL       17000000        17999999         17000244           999999                   244                 999755     0.0244 %       0.13 Nummern         7481773.07 Tage                  NULL                   NULL         NULL 
+                                ROUT             Routine Lauris                                                          Sep 17 2004 10:43AM                       NULL       16000000        16999999         16183517           999999                183517                 816482    18.3517 %     100.61 Nummern            8115.12 Tage                  NULL                   NULL         NULL 
+                                TEST2            NULL                                                                    Sep 20 2004 12:02PM        Sep 20 2004 12:02PM       26000000        26999999         26000000           999999                     0                 999999     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL         NULL 
+                                NOT              Notfall Lauris                                                          Oct 22 2004 11:47AM                       NULL       26000000        26999999         26287662           999999                287662                 712337    28.7662 %     160.79 Nummern            4430.10 Tage                  NULL                   NULL         NULL 
+                                SOND             Sondermaterial Lauris                                                   Oct 22 2004 11:48AM                       NULL       46000000        46999999         46002031           999999                  2031                 997968     0.2031 %       1.14 Nummern          879056.99 Tage                  NULL                   NULL         NULL 
+                                NEURO            Neurologie Lauris                                                       Aug 27 2007 10:32AM                       NULL       66000000        66999999         66000104           999999                   104                 999895     0.0104 %       0.14 Nummern         7210781.25 Tage                  NULL                   NULL         NULL 
+                                KINDR            Kinder Routine Lauris                                                   Aug 20 2008  8:42AM                       NULL       36001500        36999999         36001500           998499                     0                 998499     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL         NULL 
+
+(13 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

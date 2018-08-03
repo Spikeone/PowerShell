@@ -1,0 +1,98 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: SIGM, ausgeführt am: 09.06.2015 10:41
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           SIGM             Sigmaringen          SQLROUTINE           Routine Sybase Serve Adaptive Server Enterprise/15.7.0/EBF 20951 SMP ESD#4.2 /P/X64/Windows Server/ase157x/3262/64-bit/OPT/Fri Mar 22 02:59:01 2013                                                                                                                                  
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 304     Anzahl User: 277     Anzahl Auftraege Lauris: 9858    Anzahl Auftraege ohne Lauris: 2501   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         304 v13.03.22#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Antoine de Saint-Exupéry                                                         2013.01    NULL                                     08.04.13  00:00                 
+ letztes Swisspro                                                                 2013.01    NULL                                     17.06.13  18:28                 
+ swissup3.tab                                                                      2.14 $    NULL                                     17.06.13  18:20                 
+ swissup3.tab                                                                      2.14 $    NULL                                     17.06.13  18:20                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     17.06.13  18:24                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     17.06.13  18:23                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     17.06.13  18:24                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     17.06.13  18:23                 
+                                                                                             NULL                                                                     
+ neu:PD_DELETEVIELEAUFT                                                            1.01 $    NULL                                     05.08.13  16:22 SWISSLAB        
+ neu:PR_KONSERVEVERBRAUCH                                                          2.29 $    NULL                                     18.06.13  16:23 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        7227      1 Sig              Sigmaringen                                                                                                                                                                                                                                                     
+        1247      2 Pfu              Pfullendorf                                                                                                                                                                                                                                                     
+         817      3 Slg              Saulgau                                                                                                                                                                                                                                                         
+           1      6 Mib              Lauf 6   -- by swlupgrade                                                                                                                                                                                                                                       
+         331     12 Pfu-Sig          Pfullendorf -> Sigmaringen                                                                                                                                                                                                                                      
+         193     13 Slg-Sig          Saulgau -> Sigmaringen                                                                                                                                                                                                                                          
+           6     21 Sig-Pfu          Sigmaringen -> Pfullendorf                                                                                                                                                                                                                                      
+           9     29 Depot_PFU        Lauf Depot Pfullendorf                                                                                                                                                                                                                                          
+          27     31 Sig-Slg          Sigmaringen -> Saulgau                                                                                                                                                                                                                                          
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        7260 Zentrallabor Sigmaringen                                         
+        1578 Labor Pfullendorf                                                
+        1010 Labor Bad Saulgau                                                
+           9 Transfusions-Anforderungen                                       
+           1 Bakteriologie Screening                                          
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: SIGM, beendet am: 09.06.2015 10:41 
+SQL-Abfrage-Dauer: 0   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.1.25.1 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_01 
+. 
+. 
+Lauris-Versionsinfo: 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.3.22.1 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2013_01 

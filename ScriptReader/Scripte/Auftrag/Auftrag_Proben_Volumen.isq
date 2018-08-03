@@ -1,0 +1,63 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\proben_check.isq                   */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: Welcher Analyt ist in welcher Probe (Volumenmanagement)*/
+/*MODULE   : Lauris, BRHV, ssc#72268                                        */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20070828.07:45>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+declare
+  @auftragnr                      varchar(16)
+
+set nocount on
+
+/**********************************************************************************************************/
+select @auftragnr      = '12345678'           /* !!!!!! Auftragsnummer                            !!!!!!! */
+/**********************************************************************************************************/
+
+
+print ''
+print '+------------------------------------------------------------------------------+'
+print '|Lauris, Welcher Analyt ist in welcher Probe (Volumenmanagement)               |'
+print '+------------------------------------------------------------------------------+'
+print ''
+
+select 
+  Auftrag=AU.AUFTRAGNR,
+  Analyt=AN1.CODE,
+  Mfa=AN2.CODE,
+  Profil=AN3.CODE,
+  AnalytVolumen=AN1.VOLUMEN,
+  Behaelter=B.BEHAELTERCODE,
+  Behaeltervolumen=B.VOLUMEN,
+  ProbenNr=PR.PROBEEXTID,
+  ProbenMatKreis=M1.MATERIALKREISNR,
+  MatNrVon=M1.MATNRVON,
+  MatNrBis=M1.MATNRBIS,
+  ProbenMatName=M1.MATERIALNAME,
+  AnalytDefMatKreis=M2.MATERIALKREISNR,
+  AnalytDefMatName=M2.MATERIALNAME
+  
+from PROBE PR, AUFTRAG AU, EINSENDER E, PERSON PE, RESULTAT R, MATERIAL M1, MATERIAL M2, ANALYT AN1, ANALYT AN2, ANALYT AN3, BEHAELTER B
+where
+      AU.AUFTRAGNR=@auftragnr
+  and R.AUFTRAGX = AU.AUFTRAGX
+  and PR.PROBEX = R.PROBEX
+  and B.BEHAELTERX =* PR.BEHAELTERX
+  and AN1.ANALYTX = R.ANALYTX
+  and M1.MATERIALX =* PR.MATERIALX
+  and M2.MATERIALX =* AN1.DEFMATERIALX  
+  and E.EINSENDERX = AU.EINSENDERX
+  and PE.PERSONX = AU.ERFASSPERS
+  and AN2.ANALYTX =* R.MFAANALYTX
+  and AN3.ANALYTX =* R.PANALYTX
+  
+order by Behaelter, ProbenNr
+
+go

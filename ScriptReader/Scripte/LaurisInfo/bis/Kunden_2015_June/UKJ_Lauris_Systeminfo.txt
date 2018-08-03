@@ -1,0 +1,126 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: UKJ, ausgeführt am: 11.06.2015 14:17
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           UKJ              Universitaetskliniku SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 18374 SMP ESD#3/P/X64/Windows Server/asear155/2531/64-bit/OPT/Fri Jan 14 02:06:35 2011                                                                                                                                      
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 1528    Anzahl User: 1262    Anzahl Auftraege Lauris: 56354   Anzahl Auftraege ohne Lauris: 43857  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+        1494 v13.03.22.6      
+          34 v11.08.19#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Antoine de Saint-Exupéry                                                         2013.01    NULL                                     08.04.13  00:00                 
+ letztes Swisspro                                                                 2013.01    NULL                                     12.12.13  15:55                 
+ swissup3.tab                                                                      2.14 $    NULL                                     12.12.13  15:15                 
+ swissup3.tab                                                                      2.14 $    NULL                                     12.12.13  15:15                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     12.12.13  15:44                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     12.12.13  15:41                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     29.07.14  12:54                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     29.07.14  12:54                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     12.12.13  15:42                 
+                                                                                             NULL                                                                     
+ neu:PR_RESULTATUNPLAU                                                             2.74.1    NULL                                     27.04.15  21:19 SWISSLAB        
+ neu:PR_RESULTATUNPLAU_TEST                                                        2.74 $    NULL                                     27.04.15  20:55 SWISSLAB        
+ neu:sp__dumpdb                                                                    1.39 $    NULL                                     10.02.15  15:36 sybsystemprocs  
+ neu:PI_ABLIPOSALLE                                                                4.71.1    NULL                                     28.08.14  17:40 SWISSLAB        
+ neu:PR_ABLIAUFTPATIEINS                                                           4.33 $    NULL                                     29.07.14  12:57 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       39539      1 Lauf 1           IKCL                                                                                                                                                                                                                                                            
+       11853      2 Lauf 2           IMMIK                                                                                                                                                                                                                                                           
+        3016      3 Lauf 3           ITM                                                                                                                                                                                                                                                             
+         212      5 Lauf 5           HLA                                                                                                                                                                                                                                                             
+        1040      8 Lauf 8           IMMIK MVZ                                                                                                                                                                                                                                                       
+          38      9 Lauf 9           IKCL + IMMIK                                                                                                                                                                                                                                                    
+         655     10 Lauf10           IKCL Privat                                                                                                                                                                                                                                                     
+           1     54 Lauf54           Aufträge der BLK die in der Bakteriologie von Jena bearbeitet werden                                                                                                                                                                                            
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       25841 Basis-/Spezialdiagnostik                                         
+        9794 Präsenzdiagnostik                                                
+        6798 bakteriologische Untersuchungen und Parasiten                    
+        3649 Notfalldiagnostik                                                
+        3016 Transfusion                                                      
+        2291 Formular für die MRSA Anforderung                                
+        1516 serologische Untersuchungen                                      
+         961 virologische Untersuchungen                                      
+         666 Kapilläre Abnahme im Labor                                       
+         624 Studien                                                          
+         365 Kapilläre Abnahme auf Station                                    
+         340 Vorlage MRGN - Screening                                         
+         197 Transplantationsimmunologie                                      
+         115 Funktionsdiagnostik                                              
+          59 Studien2                                                         
+          39 IKCL-ITM-Anforderungen                                           
+          38 Nadelstichverletzung (cito)                                      
+          13 Immunthrombozytopenie                                            
+          13 HIV-Spezialsprechstunde                                          
+           8 Neo II-Screening- rektal                                         
+           5 Heparinantikörper Wochenende (Schnelltest-Cito)                  
+           2 Formular Aufnahmescreening                                       
+           2 Formular für ESBL-Screening                                      
+           1 B-Streptokokken                                                  
+           1 Thrombozytopathie                                                
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     1 NULL       NULL       NULL       
+ AUFTRAG  NACHFORDERN                     4 LEIH102    NULL       NULL       
+ AUFTRAG  NACHFORDERN                     4 M2-484     NULL       NULL       
+ AUFTRAG  NACHFORDERN                     4 P8238      NULL       NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: UKJ, beendet am: 11.06.2015 14:17 
+SQL-Abfrage-Dauer: 2   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+W:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.1.25.1 
+W:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_01 
+. 
+. 
+Lauris-Versionsinfo: 
+W:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.3.22.6 
+W:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2013_01 

@@ -1,0 +1,34 @@
+set dateformat dmy
+go
+select 
+ T.LAUF,
+ A.AUFTRAGNR,
+ T.TSTATUS,
+ PR.PROBEEXTID,
+ PR.PSTATUS,
+ E.EINSCODE,
+ Au_SQLErfassdat=convert(char(11),A.SQLERFASSDAT ,104)+convert(char(8),A.SQLERFASSDAT ,108)+' ',
+ Au_Abnahmedat=convert(char(11),A.ABNAHMEDAT ,104)+convert(char(8),A.ABNAHMEDAT ,108)+' ',
+ Au_Labeindat=convert(char(11),A.LABEINDAT ,104)+convert(char(8),A.LABEINDAT ,108)+' ',
+ Au_Auftragdat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+ PE.PERSONID,
+ F.FORMULARCODE,
+ Auftragstorno=A.STORNODAT,
+ Probenstorno=PR.STORNODAT
+from 
+ AUFTRAG A,
+ PERSON PE,
+ PROBE PR,
+ TASKFLAG T,
+ EINSENDER E,
+ FORMULAR F
+where
+ A.AUFTRAGX=T.XREF 
+ and A.ABNAHMEDAT > A.AUFTRAGDAT
+ and PE.PERSONX = A.ERFASSPERS 
+ and E.EINSENDERX = A.EINSENDERX
+ and PR.AUFTRAGX = A.AUFTRAGX
+ and F.FORMULARX =* A.FORMULARX
+order by A.ERFASSDAT 
+go 
+

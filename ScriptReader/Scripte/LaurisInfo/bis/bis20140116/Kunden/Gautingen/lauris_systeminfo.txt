@@ -1,0 +1,62 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 16.02.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16822 ESD#9.1/P/NT (IX86)/OS 4.0/ase1254/2146/32-bit/OPT/Wed Apr 15 04:05:47 2009                                                                                                                                         
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    17.11.09  13:54                 
+ swissup3.tab                       2.08 $    17.11.09  12:52                 
+ swlupgrade.tab                     2.20.1 $  03.05.10  11:07                 
+ Lauris (via lauris.ini)            1.03 $    17.11.09  13:14                 
+ Blutbank (via barkasse.pro)        1.06 $    03.05.10  11:06                 
+ Statistik (via statistik.pro)      5.51 $    03.05.10  11:08                 
+ BB-Statistik (via spendestat.pro)  1.21 $    17.11.09  13:09                 
+                                                                              
+ neu:PR_ABRETARIF                   2.77.1    20.07.10  15:18 SWISSLAB        
+ neu:PI_TARIF                       2.31.1    20.07.10  15:17 SWISSLAB        
+ neu:PR_TARIF                       2.23.1    20.07.10  15:17 SWISSLAB        
+ neu:PR_TARIFSTAMMDATEN             1.05.1    20.07.10  15:17 SWISSLAB        
+ neu:PR_BEFUNDDOKUMENT              1.28 $    03.05.10  11:09 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                           0 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    NULL                                                                                                                                                                                                                                                            
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    NULL                                                                                                                                                                                                                                                            
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                     0               0           0 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 

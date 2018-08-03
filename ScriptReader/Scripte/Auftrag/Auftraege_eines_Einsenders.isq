@@ -1,0 +1,31 @@
+-- set showplan on
+-- go
+-- set statistics time,io on
+-- go
+set dateformat dmy
+go
+
+set nocount on
+
+select 
+  AuftragX=A.AUFTRAGX,
+  AuftragNr=A.AUFTRAGNR,
+  SQLErfassdat=A.SQLERFASSDAT,
+  Taindat=A.ARCHIVDAT,
+  Pstatus=PR.PSTATUS
+into
+  #temp1
+  
+from
+  PROBE PR (index PROBE_FK2),
+  AUFTRAG A (index auftrag_ED)
+
+where
+  A.SQLERFASSDAT between '12.07.2010' and '29.07.2010' and
+  A.EINSENDERX=4275 and
+  PR.AUFTRAGX = A.AUFTRAGX
+order by SQLErfassdat
+
+select * from #temp1
+
+go

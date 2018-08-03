@@ -1,0 +1,122 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: SWL, ausgeführt am: 04.06.2015 15:19
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           SWL              Berlin               SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/15.7/EBF 21985 SMP SP110 /P/X64/Windows Server/ase157sp11x/3546/64-bit/OPT/Fri Nov 08 01:38:31 2013                                                                                                                                  
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 4       Anzahl User: 4       Anzahl Auftraege Lauris: 16      Anzahl Auftraege ohne Lauris: 3      
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           1 v14.06.06.6      
+           2 v14.06.06.3      
+           1 v14.06.06#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Falcon 2.14.1                                                                    2.14       NULL                                     16.04.14  00:00                 
+ letztes Swisspro                                                                 2.14       NULL                                     17.05.14  13:27                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     17.05.14  13:21                 
+ Blutbank (via barkasse.pro)                                                       1.10 $    NULL                                     17.05.14  13:21                 
+ Statistik (via statistik.pro)                                                     5.94 $    NULL                                     21.05.14  14:19                 
+ BB-Statistik (via spendestat.pro)                                                 1.25 $    NULL                                     17.05.14  13:21                 
+                                                                                             NULL                                                                     
+ neu:PR_DBVERSION                                                                  2.19 $    NULL                                     19.02.15  14:53 SWISSLAB        
+ neu:PR_RECHNUNGSEXPORTX                                                           1.30 $    NULL                                     20.01.15  16:37 SWISSLAB        
+ neu:PR_RECHNUNGSEXPORTXX                                                          1.29 $    NULL                                     20.01.15  16:23 SWISSLAB        
+ neu:PR_STATISTIKDOPPELBEST                                                        1.10.1    NULL                                     15.12.14  13:26 SWISSLAB        
+ neu:PR_STATISTIKFALL                                                              5.47.2    NULL                                     15.12.14  13:25 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+          16      1 Laufcode Eins                                                                                                                                                                                                                                                                    
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+           7 Routine                                                          
+           6 Versand                                                          
+           2 Mikrobiologie                                                    
+           1 POCT-Auftragsaktivierung                                         
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  POCTFORMULAR     1                                POCT             NULL       NULL       NULL       
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ CLIENT   POCTQC           NULL       NULL       SWISS      
+ CLIENT   POCTQC           NULL       boj        NULL       
+ CLIENT   POCTQC           NULL       dag        NULL       
+ CLIENT   POCTQC           NULL       dag dag    NULL       
+ CLIENT   POCTQC           NULL       dfs        NULL       
+ CLIENT   POCTQC           NULL       gfk        NULL       
+ CLIENT   POCTQC           NULL       kth        NULL       
+ CLIENT   POCTQC           NULL       lis        NULL       
+ CLIENT   POCTQC           NULL       lwz        NULL       
+ CLIENT   POCTQC           NULL       muy        NULL       
+ CLIENT   POCTQC           NULL       stz        NULL       
+ CLIENT   POCTQC           NULL       tb         NULL       
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     4 NULL       NULL       NULL       
+ AUFTRAG  NACHFORDERN                   365 NULL       dag        NULL       
+ AUFTRAG  NACHFORDERN                   365 NULL       dag dag    NULL       
+ AUFTRAG  NACHFORDERN                   365 NULL       dfs        NULL       
+ AUFTRAG  NACHFORDERN                     1 NULL       fbo        NULL       
+ AUFTRAG  NACHFORDERN                     1 NULL       fbo2       NULL       
+ AUFTRAG  NACHFORDERN                     4 NULL       job        NULL       
+ AUFTRAG  NACHFORDERN                    10 NULL       lautest    NULL       
+ AUFTRAG  NACHFORDERN                    10 NULL       lautest_bk NULL       
+ AUFTRAG  NACHFORDERN                     4 NULL       lis        NULL       
+ AUFTRAG  NACHFORDERN                   365 NULL       muy        NULL       
+ AUFTRAG  NACHFORDERN                    14 NULL       praesi     NULL       
+ AUFTRAG  NACHFORDERN                   365 NULL       pze        NULL       
+ AUFTRAG  NACHFORDERN                     2 NULL       rsa        NULL       
+ AUFTRAG  NACHFORDERN                     0 NULL       scf        NULL       
+ AUFTRAG  NACHFORDERN                     4 NULL       snm        NULL       
+ AUFTRAG  NACHFORDERN                    10 NULL       ut         NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: SWL, beendet am: 04.06.2015 15:19 
+SQL-Abfrage-Dauer: 0   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.11.5.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_02 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 14.6.6.3 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.15.5.002358 

@@ -1,0 +1,65 @@
+ 
+  Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  ------------------------------ -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                                 sqlserver            Routine SQLServer    Adaptive Server Enterprise/12.5.4/EBF 14344 ESD#5/P/HP9000-879/HP-UX B.11.11/ase1254/2061/64-bit/FBO/Fri Apr 13 05:50:52 2007                                                                                                                                    
+   
+   
+  Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------------ ----------- --------------- -----------  
+                                        4691            4691           0  
+   
+   
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+                                 MBBakt           Mibio Bakteriologie                                               
+                                 MBVirologie      MibioVirologie                                                    
+                                 MBSero           Mibio Serologie (Serumuntersuchung, Urin, u. a.)                  
+                                 MBMyko           Mibio Mykologie (Pilzkultur)                                      
+                                 MBSchulung1      Schulungsformular Mikrobiologie                                   
+                                 MBPCR            Mibio PCR                                                         
+                                 MBSeroLi         Mibio Serologie (Liquoruntersuchung)                              
+                                 MBSeroMyko       Mibio Pilzserologie (Serum)                                       
+                                 MBSeroMykoLi     Mibio Pilzserologie/(Liquor-Cryptococcus)                         
+                                 MBBakt           Mibio Bakteriologie NEU                                           
+                                 MBVirologie_Frey MBVirologie_Frey                                                  
+   
+   
+  Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                   
+  ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ --------------------------  
+                                 BAL              BAL                                                                       64          60 BAL          MB BAL                               21                       NULL  
+                                 BAL              BAL                                                                       63          60 BAL          MB BAL                               21        Aug  1 2007 12:18PM  
+                                 BGA-PROFIL       Funktionstest 3                                                           45          45 f10          Funktion10                           60                       NULL  
+                                 BGA-PROFIL       Funktionstest 4                                                           46          46 f11          Funktion11                           61                       NULL  
+                                 BGA-PROFIL       Funktionstest 5                                                           47          47 f12          Funktion12                           62                       NULL  
+                                 BGA-PROFIL       Funktionstest 1                                                           26          26 f8           Funktion8                            58                       NULL  
+                                 BGA-PROFIL       Funktionstest 2                                                           34          34 f9           Funktion9                            59                       NULL  
+                                 BZ-PROFIL        Funktionstest 1                                                           19          19 f1           Funktion1                            51                       NULL  
+                                 BZ-PROFIL        Funktionstest 2                                                           20          20 f2           Funktion2                            52                       NULL  
+                                 BZ-PROFIL        Funktionstest 3                                                           21          21 f3           Funktion3                            53                       NULL  
+                                 BZ-PROFIL        Funktionstest 4                                                           22          22 f4           Funktion4                            54                       NULL  
+                                 BZ-PROFIL        Funktionstest 5                                                           23          23 f5           Funktion5                            55                       NULL  
+                                 BZ-PROFIL        Funktionstest 6                                                           24          24 f6           Funktion6                            56                       NULL  
+                                 BZ-PROFIL        Funktionstest 7                                                           25          25 f7           Funktion7                            57                       NULL  
+                                 CORTISOL         Funktionstest 1                                                           69          19 f1           Funktion1                            51                       NULL  
+                                 CORTISOL         Funktionstest 2                                                           70          20 f2           Funktion2                            52                       NULL  
+                                 CORTISOL         Funktionstest 3                                                           71          21 f3           Funktion3                            53                       NULL  
+                                 SO_VIRO          Virologie sonst. Material                                                 59          59 VIROSO       Sonstiges                            22                       NULL  
+                                 SO_VIRO          Sonstiges Viro Material                                                   58          59 VIROSO       Sonstiges                            22        Aug  1 2007  9:21AM  
+   
+   
+  Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------  
+                                 IKCPB Routine    IKCPB Routine                                                                          NULL        Jul  2 2010 12:22PM       35000000        35999999         36000000           999999               1000000                     -1   100.0001 % NULL                NULL                                    NULL                   NULL         NULL  
+                                 IKCPB Notfall    IKCPB Notfall                                                                          NULL                       NULL       25000000        25999999         25744800           999999                744800                 255199    74.4801 % NULL                NULL                                    NULL                   NULL         NULL  
+                                 BB               Depot                                                                   May 30 2007 10:26AM                       NULL       81000000        81999999         81000400           999999                   400                 999599     0.0400 %       0.35 Nummern         2863851.14 Tage                  NULL                   NULL            0  
+                                 MiBio            Mikrobiologie                                                           Jul 31 2007 10:45AM                       NULL       61000000        61999999         61114250           999999                114250                 885749    11.4250 %     105.40 Nummern            8403.96 Tage                  NULL                   NULL            1  
+                                 IKCPB Routine    IKCPB Routine                                                           Jul  2 2010 12:22PM                       NULL       35000000        35999999         35031400           999999                 31400                 968599     3.1400 %    1847.06 Nummern             524.40 Tage                  NULL                   NULL            0  
+   
+   
+  Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- ---------  
+   
+   
+  Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)    
+  ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- --------------------------  
+                                                    5 IKCPB Routine    IKCPB Routine                                                                         1 IKCPB Routine    IKCPB Routine                                                           Jul  2 2010 12:22PM  

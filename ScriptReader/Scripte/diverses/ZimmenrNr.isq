@@ -1,0 +1,25 @@
+/* Aufträge mit vom Fall abweichenden Zimmernummern  */
+set dateformat dmy
+go
+select
+  Auftragnr       = A.AUFTRAGNR,
+  AuftZimmNr      = A.ZIMMERNR,
+  AuftErfDat      = convert(char(11),A.ERFASSDAT ,104)+convert(char(8),A.ERFASSDAT ,108)+' ',
+  AuftErfPers     = PE.PERSONID,
+  AuftFormularx   = A.FORMULARX,
+  FallNr          = substring(PF.PATIFALLNR,1,18),
+  FallZimmNr      = PF.PZIMMERNR,
+  ListeZimmNr     = PL.PZIMMERNR
+from
+  PATIFALL PF, 
+  PATILISTE PL,
+  PERSON PE,
+  AUFTRAG A
+where
+  A.ERFASSDAT > '01.08.2008 00:00' and
+  A.ZIMMERNR is not null and
+  PF.PATIFALLX = A.PATIFALLX and
+  PL.PATIFALLX =* A.PATIFALLX and
+  (PF.PZIMMERNR <> A.ZIMMERNR) and
+  PE.PERSONX=A.ERFASSPERS
+go  

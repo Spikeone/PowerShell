@@ -1,0 +1,25 @@
+set dateformat dmy
+go
+select 
+  Patifall = substring(P.PATIFALLNR,1,10), 
+  Auftragnr = substring(A.AUFTRAGNR,1,10),
+  E.EINSCODE, 
+  D2.DOKTYPCODE, 
+  DokTypBeschreibung = substring(D2.DOKBESCHREIBUNG,1,24),
+  DokBeschreibung = substring(D.DOBESCHREIBUNG,1,24),
+  D.DATEIGROESSE,
+  Erfassdat=convert(char(11),D.ERFASSDAT ,104)+convert(char(8),D.ERFASSDAT ,108)+' ',
+  Erfasspers=PE.PERSONID
+
+
+from AUFTRAG A, EINSENDER E, PATIFALL P, SWISSDOC..DOKUMENT D, SWISSDOC..DOKUMENTTYP D2, PERSON PE
+where 
+--  D.DATEIGROESSE is not null and 
+  D.ERFASSDAT > '25.11.2010 00:00' and
+  A.AUFTRAGX = D.AUFTRAGX and
+  D2.DOKUMENTTYPX = D.DOKUMENTTYPX and
+  P.PATIFALLX = A.PATIFALLX and
+  E.EINSENDERX = A.EINSENDERX and
+  PE.PERSONX = D.ERFASSPERS
+order by D.ERFASSDAT
+go

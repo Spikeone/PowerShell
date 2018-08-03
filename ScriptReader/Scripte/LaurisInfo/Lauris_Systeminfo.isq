@@ -1,0 +1,200 @@
+-- Klinische Chemie	Mikrobiologie	Transfusionsmedizin	POCT Nachfordern
+
+
+declare
+  @startdat                       datetime,
+  @enddat                         datetime,
+  @datum                          varchar(33),
+  @anz_clients                    int,
+  @anz_user                       int,
+  @anz_oe_lauris                  int,
+  @anz_oe_nichtlauris             int,
+  @sys_kurz                       varchar(36),
+  @text_message                   varchar(64),
+  @dauer                          varchar(32)
+
+set nocount on
+
+select @startdat=getdate()
+select @datum=', ausgeführt am: ' + convert(char(11),@startdat ,104)+convert(char(5),@startdat ,108)+' '
+select @sys_kurz = 'Lauris Systeminfo fuer: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+select @text_message = @sys_kurz + @datum
+
+print ''
+print '-------------------------------------------------------------'
+print @text_message 
+print '-------------------------------------------------------------'
+print ''
+print ''
+
+/* Ausgabe einiger Systeminfos */
+select '' as 'SQL-Systeminformationen: ',
+       substring(KUERZEL, 1, 20) as 'Kuerzel',
+       substring(ORT, 1, 20) as 'Ort',
+       substring(SERVERNAME, 1, 20) as 'Servername',
+       substring(BESCHREIBUNG, 1, 20) as 'Beschreibung',
+       @@version as 'Sybase-Version'
+  from master..SYSTEMINFO
+
+
+/* Lauris Nutzung */
+
+create table #auft(
+  cntauft           numeric       identity not null,
+  FORMULARX         int           null             ,
+  AUFTRAGX          int           null             , 
+  AUFTRAGNRSX       int           null             , 
+  LAUF              smallint      null             , 
+  LAUFCODE          varchar(16)   null             ,
+  LBESCHREIBUNG     varchar(255)  null             ,
+  FORMULARNAME      varchar(64)   null              )
+insert into #auft
+select
+  A.FORMULARX         ,
+  A.AUFTRAGX          ,
+  A.AUFTRAGNRSX       ,
+  A.LAUF              ,
+  L.LAUFCODE          ,
+  L.LBESCHREIBUNG     ,
+  F.FORMULARNAME
+from AUFTRAG A (index auftrag_ED), LAUF L , FORMULAR F where A.ERFASSDAT > dateadd(day,-30,getdate()) and A.STORNODAT is null and L.LAUF = A.LAUF and F.FORMULARX =* A.FORMULARX
+
+select @anz_clients        = count(*) from CLIENT where STORNODAT is null and LOGINDATLETZT > dateadd(day,-30,getdate())
+select @anz_user           = count(*) from IDENT where STORNODAT is null and LOGINDATLETZT > dateadd(day,-30,getdate()) 
+select @anz_oe_lauris      = count(*) from #auft where FORMULARX is not null
+select @anz_oe_nichtlauris = count(*) from #auft where FORMULARX is null
+
+print ''
+print ''
+select 'Anzahl Clients: ' + convert(char(6),@anz_clients) + '  Anzahl User: ' + convert(char(6),@anz_user) + '  Anzahl Auftraege Lauris: ' + convert(char(6),@anz_oe_lauris) + '  Anzahl Auftraege ohne Lauris: ' + convert(char(6),@anz_oe_nichtlauris) as 'Statistik über 30 Tage:'
+
+print ''
+print ''
+print 'aktive Lauris-Versionen (installierte Version siehe Dateiende):'
+
+select
+  Lauris_Versionen = 'v'+substring(VERSIONINFO,5,10)
+into #vertemp
+from CLIENT 
+where 
+  STORNODAT is null and LOGINDATLETZT > dateadd(day,-30,getdate())
+
+select 
+  count(*) as Anzahl,
+  Lauris_Versionen
+from #vertemp
+group by Lauris_Versionen 
+order by Lauris_Versionen desc
+
+/* Ausgabe der Swisslab-Revision */
+print ''
+print ''
+print 'Swisslab-Revision:'
+exec PR_REVISION
+
+print ''
+print ''
+print ''
+print '--------- Auftrags-Statistiken und POCT ------------'
+print ''
+print 'Laurisanforderungen nach Laborbereichen'
+select 
+  count(*) as Anzahl,
+  LAUF,
+  LAUFCODE,
+  LBESCHREIBUNG
+from #auft
+where FORMULARX is not null
+group by LAUF, LAUFCODE, LBESCHREIBUNG
+order by LAUF asc
+-- nach Formularen
+print ''
+print 'Laurisanforderungen nach Formularen'
+select 
+  count(*) as Anzahl,
+  FORMULARNAME
+from #auft
+where FORMULARX is not null
+group by FORMULARNAME
+order by Anzahl desc
+
+print''
+print''
+print '--- aktive POCT-Formulare  ---'
+print''
+select
+ ModulID=substring(SP.MODULID,1,8),
+ ParamID=SP.PARAMID,
+ ParamName=SP.PARAMNAME,
+ Formular = F.FORMULARCODE,
+ Clientcode=substring(C.CLIENTCODE,1,10),
+ Ident = substring(I.IDENTCODE,1,10),
+ Einsender=substring(E.EINSCODE,1,10)
+from SYSTEMPARAM SP, CLIENT C, IDENT I, EINSENDER E, FORMULAR F
+where 
+ SP.STORNODAT is null and
+ SP.PARAMID = 'POCTFORMULAR' and
+ SP.CLIENTX *= C.CLIENTX and 
+ SP.IDENTX *= I.IDENTX and 
+ SP.EINSENDERX *= E.EINSENDERX and
+ SP.STORNODAT is null and
+ F.FORMULARX = SP.INTVALUE and
+ F.STORNODAT is null and
+ F.FORMULARX in (select distinct FORMULARX from #auft)
+order by ModulID, ParamID, I.IDENTCODE, Clientcode, Einsender
+
+
+print''
+print''
+print '--- Zugang zu Qualitätskontrollen-Dialog?  ---'
+print''
+select
+ ModulID=substring(SP.MODULID,1,8),
+ ParamID=SP.PARAMID,
+ Clientcode=substring(C.CLIENTCODE,1,10),
+ Ident = substring(I.IDENTCODE,1,10),
+ Einsender=substring(E.EINSCODE,1,10)
+from SYSTEMPARAM SP, CLIENT C, IDENT I, EINSENDER E
+where 
+ SP.STORNODAT is null and
+ SP.PARAMID = 'POCTQC' and
+ SP.INTVALUE = 1 and
+ SP.CLIENTX *= C.CLIENTX and 
+ SP.IDENTX *= I.IDENTX and 
+ SP.EINSENDERX *= E.EINSENDERX and
+ SP.STORNODAT is null
+order by ModulID, ParamID, I.IDENTCODE, Clientcode, Einsender
+
+print''
+print''
+print '--- Nachforderungen eingeschaltet?  ---'
+print''
+select
+ ModulID=substring(SP.MODULID,1,8),
+ ParamID=SP.PARAMID,
+ Tage_Nachfordern=SP.INTVALUE,
+ Clientcode=substring(C.CLIENTCODE,1,10),
+ Ident = substring(I.IDENTCODE,1,10),
+ Einsender=substring(E.EINSCODE,1,10)
+from SYSTEMPARAM SP, CLIENT C, IDENT I, EINSENDER E
+where 
+ SP.STORNODAT is null and
+ SP.PARAMID = 'NACHFORDERN' and
+ SP.INTVALUE is not null and
+ SP.CLIENTX *= C.CLIENTX and 
+ SP.IDENTX *= I.IDENTX and 
+ SP.EINSENDERX *= E.EINSENDERX and
+ SP.STORNODAT is null
+order by ModulID, ParamID, I.IDENTCODE, Clientcode, Einsender
+
+select @enddat=getdate()
+select @datum=', beendet am: ' + convert(char(11),@enddat ,104)+convert(char(5),@enddat ,108)+' '
+select @sys_kurz = 'Lauris Systeminfo fuer: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+select @text_message = @sys_kurz + @datum
+select @dauer = 'SQL-Abfrage-Dauer: ' + convert(char(4), datediff(ss, @startdat, @enddat)) + 'Sekunden'
+print ''
+print '-------------------------------------------------------------'
+print @text_message 
+print @dauer 
+print '-------------------------------------------------------------'
+go

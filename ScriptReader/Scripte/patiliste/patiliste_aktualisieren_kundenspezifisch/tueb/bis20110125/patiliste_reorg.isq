@@ -1,0 +1,500 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_aktualisieren.isq        */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [060130.2030]                                                  */
+/*KURZINFO : SWL-II: Pflege der Lauris-Patientenliste im TAIN               */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20060130.2030>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+/* Parameter deklarieren         */
+
+declare
+  @startdat                       smalldatetime,
+  @enddat                         smalldatetime,
+  @datum                          varchar(21),
+  @sqi                            varchar(16),
+  @sqi1                           varchar(16),
+  @sqix                           int,
+  @sqix1                          int,
+  @TageAbEntl                     int,
+  @TageManuell                    int,
+  @TageInaktiv                    int,
+  @PatilisteFaelleGesamt          int,
+  @PatilisteFaelleOhneAktivBis    int,
+  @PatilisteFaelleInaktiv         int,
+  @PatilisteFaelleAktiv           int,
+  @PatilisteFaelleZukunft         int,
+  @TageAmbAufn                    int,
+  @TageAmbErfasst                 int,
+  @EINSVEKTORCODE                 char(16),
+  @EINSVEKTORX                    int,
+  @EINSTYPMAX                     int,
+  @MITEINZEL                      tinyint,
+  @AKTIV                          tinyint,
+  @max_minutes                    int,
+  @REPORT                         tinyint, 
+  @UPDATE                         tinyint
+
+
+set nocount on
+
+/**********************************************************************************************************/
+select @max_minutes    = 1440             /* !!!!!! max. Alter der Neueintraege in Minuten (1 Tag)!!!!!!! */
+select @TageAbEntl     =  3               /* !!!!!! soviel Tage nach EntlVerw aufheben            !!!!!!! */
+select @TageManuell    =  3               /* !!!!!! soviel Tage nach manueller Aufnahme aufheben  !!!!!!! */
+select @TageInaktiv    = 28               /* !!!!!! soviel Tage kann der Fall inaktiv bleiben     !!!!!!! */
+select @TageAmbAufn    =  999             /* !!!!!! ambulante Fälle 7 Tage nach AUFNAHMEDAT weg   !!!!!!! */
+select @TageAmbErfasst =  60              /* !!!!!! ambulante Fälle 60 Tage nach ERFASSDAT weg    !!!!!!! */
+select @sqi            = 'SQImport'       /* !!!!!! hier den PATI-SQImport-Login eintragen        !!!!!!! */
+select @sqi1           = 'SQImportPati'   /* !!!!!! hier den PATI-SQImport-Login eintragen        !!!!!!! */
+select @EINSVEKTORCODE = 'MANUENTL'       /* !!!!!! diese Einsendergruppe nicht bearbeiten        !!!!!!! */
+select @REPORT         =  1               /* !!!!!! 1 = Änderungen an PATILISTE berichten         !!!!!!! */
+select @UPDATE         =  1               /* !!!!!! 0 = keine Änderungen an PATILISTE durchführen !!!!!!! */
+/**********************************************************************************************************/
+
+
+/* Auflösung der Einsendergruppen PL_MANUELL        */
+select @EINSVEKTORX = EINSENDERX from EINSENDER where EINSCODE = @EINSVEKTORCODE and AKTIVBIS is null
+if @EINSVEKTORX  is null select @EINSVEKTORX = 0
+
+select @EINSTYPMAX = 2147483647   -- 2 hoch 31 -1
+-- select @EINSTYPMAX = 1            -- nur Typ 1 liefern
+select @MITEINZEL  = 0            -- 1: auch Einzeleinsender liefernselect @EINSVEKTORX = EINSENDERX from EINSENDER where EINSCODE = @EINSVEKTORCODE and AKTIVBIS is null
+if @EINSVEKTORX  is null select @EINSVEKTORX = 0
+
+select EINSVEKTORX,     /* Einsender des Vektors   */
+       V.EINSENDERX,    /* Einsenderx der Vektorzeile  */
+       SORT,            /* Nummer der Vektorzeile  */
+       EINSCODE,EINSKURZ, EINSTYP
+into  #temp_pl_manuell      
+from EINSVEKTOR V, EINSENDER E
+where EINSVEKTORX  = @EINSVEKTORX
+   and V.EINSENDERX  = E.EINSENDERX
+   and isnull(EINSTYP,1)<=@EINSTYPMAX
+   and (V.SORT>0 or @MITEINZEL=1)
+   and (E.AKTIVBIS is null or @AKTIV<>1)
+order by SORT
+
+if @EINSVEKTORX <> 0
+begin
+  print ''
+  print ' Diese Einsender werden nicht reorganisiert: '
+  select * from #temp_pl_manuell 
+end
+
+select @sqix  = 0
+select @sqix1 = 0
+select @sqix =PERSONX from PERSON where PERSONID=@sqi and STORNODAT is null
+select @sqix1=PERSONX from PERSON where PERSONID=@sqi1 and STORNODAT is null
+/* select PERSONX, PERSONID from PERSON where PERSONID=@sqi and STORNODAT is null        */
+
+set dateformat dmy
+select @startdat=getdate()
+select @datum='Start: ' + convert(char(9),@startdat,4)+convert(char(5),@startdat,8)
+if @REPORT = 1 
+begin
+  print @datum
+  print '+--------------------------------------------------------------+'
+  print '|Lauris, PATILISTE aktualisieren                               |'
+  print '+--------------------------------------------------------------+'
+  print ''
+  print ''
+  print ''
+  select @PatilisteFaelleGesamt=count(*) from PATILISTE
+  select @PatilisteFaelleOhneAktivBis=count(*) from PATILISTE where AKTIVBIS is NULL
+  select @PatilisteFaelleInaktiv=count (*) from PATILISTE where AKTIVBIS is not NULL and AKTIVBIS <= getdate()
+  select @PatilisteFaelleAktiv=count (*) from PATILISTE where AKTIVBIS is not NULL and AKTIVBIS > getdate()
+  -- select @PatilisteFaelleZukunft=count (*) from PATILISTE where AUFNAHMEDAT is not NULL and AUFNAHMEDAT > getdate()
+  select '' as 'Anzahl Fälle vorher:',
+         @PatilisteFaelleGesamt as 'Gesamt  ',
+         @PatilisteFaelleOhneAktivBis as 'ohne AKTIVBIS  ',
+         @PatilisteFaelleInaktiv as 'AKTIVBIS abgelaufen  ',
+         @PatilisteFaelleAktiv as 'AKTIVBIS zukünftig  '
+  --       @PatilisteFaelleZukunft as 'AUFNAHMEDAT zukünftig  '
+end
+set nocount off
+if @REPORT = 1 
+begin
+  print ''
+  print ''
+  print ''
+  print '=========================================================================='
+  print 'PATILISTE: falscher Einsender, die Verwaltung ist Master, nur SQImport    '
+  print '=========================================================================='
+  
+  select 
+    PatiFall=substring(F.PATIFALLNR,1,10),
+    PatArt=substring(F.PATIART,1,2) +' / '+ substring(P.PATIART,1,2),
+    ErfassdatPatiliste=convert(char(11),P.ERFASSDAT,104)+convert(char(8),P.ERFASSDAT,108)+' ',
+    AktivbisPatiliste=convert(char(11),P.AKTIVBIS,104)+convert(char(8),P.AKTIVBIS,108)+' ',
+    EntlassungdatVerw=convert(char(11),F.ENTLDATVERW,104)+convert(char(8),F.ENTLDATVERW,108)+' ',
+    Einsender_PATILISTE=E1.EINSCODE, 
+    Einsender_PATIFALL=E2.EINSCODE, 
+    PE.PERSONID, P.ERFASSPERS
+  from PATILISTE P, PATIFALL F, EINSENDER E1, EINSENDER E2, PERSON PE
+  where 
+        F.PATIFALLX=P.PATIFALLX
+    and F.EINSENDERX <> P.EINSENDERX
+    and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+    and (P.AKTIVBIS is null or P.AKTIVBIS > dateadd(minute,-1,getdate()))
+    and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+    and P.EINSENDERX*=E1.EINSENDERX
+    and F.EINSENDERX*=E2.EINSENDERX
+    and PE.PERSONX=P.ERFASSPERS
+    order by F.PATIFALLNR
+end
+
+if @UPDATE = 1 
+begin
+ update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+   from PATILISTE P, PATIFALL F
+   where 
+        F.PATIFALLX=P.PATIFALLX
+   and  F.EINSENDERX <> P.EINSENDERX
+   and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+   and  (P.AKTIVBIS is null or P.AKTIVBIS > dateadd(minute,-1,getdate()))
+   and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+end   
+
+
+-- if @REPORT = 1 
+-- begin
+--   print ''
+--   print ''
+--   print ''
+--   print '=========================================================================='
+--   print 'PATILISTE: falscher Einsender, die Verwaltung ist Master, nur manuell     '
+--   print '=========================================================================='
+--   
+--   select 
+--     PatiFall=substring(F.PATIFALLNR,1,10),
+--     PatArt=substring(F.PATIART,1,2) +' / '+ substring(P.PATIART,1,2),
+--     ErfassdatPatiliste=convert(char(11),P.ERFASSDAT,104)+convert(char(8),P.ERFASSDAT,108)+' ',
+--     AktivbisPatiliste=convert(char(11),P.AKTIVBIS,104)+convert(char(8),P.AKTIVBIS,108)+' ',
+--     EntlassungdatVerw=convert(char(11),F.ENTLDATVERW,104)+convert(char(8),F.ENTLDATVERW,108)+' ',
+--     Einsender_PATILISTE=E1.EINSCODE, 
+--     Einsender_PATIFALL=E2.EINSCODE, 
+--     PE.PERSONID, P.ERFASSPERS
+--   from PATILISTE P, PATIFALL F, EINSENDER E1, EINSENDER E2, PERSON PE
+--   where 
+--         F.PATIFALLX=P.PATIFALLX
+--     and F.EINSENDERX <> P.EINSENDERX
+--     and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+--     and (dateadd(day,@TageManuell,P.ERFASSDAT) < getdate())
+--     and (P.AKTIVBIS is null or P.AKTIVBIS > dateadd(minute,-1,getdate()))
+--     and (P.ERFASSPERS<>@sqix and P.ERFASSPERS<>@sqix1)
+--     and P.EINSENDERX*=E1.EINSENDERX
+--     and F.EINSENDERX*=E2.EINSENDERX
+--     and PE.PERSONX=P.ERFASSPERS
+--     order by F.PATIFALLNR
+-- end
+-- 
+-- if @UPDATE = 1 
+-- begin
+--  update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+--    from PATILISTE P, PATIFALL F
+--    where 
+--         F.PATIFALLX=P.PATIFALLX
+--    and  F.EINSENDERX <> P.EINSENDERX
+--    and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+--    and (dateadd(day,@TageManuell,P.ERFASSDAT) < getdate())
+--    and (P.AKTIVBIS is null or P.AKTIVBIS > dateadd(minute,-1,getdate()))
+--    and (P.ERFASSPERS<>@sqix and P.ERFASSPERS<>@sqix1)
+-- end   
+
+/* -----------------------------------------------------------------------------------------------------------------------------------*/
+
+if @REPORT = 1 
+begin
+  print ''
+  print ''
+  print ''
+  print '============================================================'
+  print 'PATILISTE: Bearbeiten der AUTOENTLASS Einträge              '
+  print '============================================================'
+  select
+    PatiFall=substring(F.PATIFALLNR,1,10),
+    PatArt=substring(F.PATIART,1,2) +' / '+ substring(P.PATIART,1,2),
+    Einsender=E.EINSCODE,
+    ErfassdatPatiliste=convert(char(11),P.ERFASSDAT,104)+convert(char(8),P.ERFASSDAT,108)+' ',
+    Aufnahmedat=convert(char(11),F.AUFNDAT,104)+convert(char(8),F.AUFNDAT,108)+' ',
+    EntlassungdatVerw=convert(char(11),F.ENTLDATVERW,104)+convert(char(8),F.ENTLDATVERW,108)+' ',
+    Aktivbis_neu = case when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is not null and F.AUFTRAGLETZT > F.ENTLDATVERW) then convert(char(11),dateadd(day,S.INTVALUE,F.AUFTRAGLETZT),104)+convert(char(8),dateadd(day,S.INTVALUE,F.AUFTRAGLETZT),108)+' '
+                        when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is not null and F.ENTLDATVERW >= F.AUFTRAGLETZT) then convert(char(11),dateadd(day,S.INTVALUE,F.ENTLDATVERW),104)+convert(char(8),dateadd(day,S.INTVALUE,F.ENTLDATVERW),108)+' '
+                        when (F.ENTLDATVERW is null and F.AUFTRAGLETZT is not null) then convert(char(11),dateadd(day,S.INTVALUE,F.AUFTRAGLETZT),104)+convert(char(8),dateadd(day,S.INTVALUE,F.AUFTRAGLETZT),108)+' '
+                        when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is null) then convert(char(11),dateadd(day,S.INTVALUE,F.ENTLDATVERW),104)+convert(char(8),dateadd(day,S.INTVALUE,F.ENTLDATVERW),108)+' '
+                        when (F.ENTLDATVERW is null and F.AUFTRAGLETZT is null) then convert(char(11),dateadd(day,S.INTVALUE,P.ERFASSDAT),104)+convert(char(8),dateadd(day,S.INTVALUE,P.ERFASSDAT),108)+' '
+                   end,
+    Aktivbis_alt="("+convert(char(11),P.AKTIVBIS,104)+convert(char(8),P.AKTIVBIS,108)+' '+")",
+    ErfassPers=PE.PERSONID,
+    letzter_Auftrag=convert(char(11),F.AUFTRAGLETZT,104)+convert(char(8),F.AUFTRAGLETZT,108)+' ',
+    Autoentlasstage=S.INTVALUE
+  from PATILISTE P, EINSENDER E, PATIFALL F, SYSTEMPARAM S, PERSON PE
+  where F.PATIFALLX=P.PATIFALLX
+    and (P.AKTIVBIS is NULL or P.AKTIVBIS > dateadd(day,S.INTVALUE,F.ENTLDATVERW))
+    and E.EINSENDERX=P.EINSENDERX
+    and S.EINSENDERX=P.EINSENDERX
+    and S.MODULID='PATIENT'
+    and S.PARAMID='AUTOENTLASS'
+    and S.INTVALUE > 0
+    and S.STORNODAT is null
+    and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+    and PE.PERSONX=P.ERFASSPERS
+  order by P.ERFASSDAT
+end
+
+if @UPDATE = 1 
+begin
+ update PATILISTE set AKTIVBIS= case when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is not null and F.AUFTRAGLETZT > F.ENTLDATVERW) then dateadd(day,S.INTVALUE,F.AUFTRAGLETZT)
+                                     when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is not null and F.ENTLDATVERW >= F.AUFTRAGLETZT) then dateadd(day,S.INTVALUE,F.ENTLDATVERW)
+                                     when (F.ENTLDATVERW is null and F.AUFTRAGLETZT is not null) then dateadd(day,S.INTVALUE,F.AUFTRAGLETZT)
+                                     when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is null) then dateadd(day,S.INTVALUE,F.ENTLDATVERW)
+                                     when (F.ENTLDATVERW is null and F.AUFTRAGLETZT is null) then dateadd(day,S.INTVALUE,P.ERFASSDAT)
+                                end
+ from PATILISTE P, PATIFALL F, SYSTEMPARAM S
+ where F.PATIFALLX=P.PATIFALLX
+   and (P.AKTIVBIS is NULL or P.AKTIVBIS > dateadd(day,S.INTVALUE,F.ENTLDATVERW))
+   and S.EINSENDERX=P.EINSENDERX
+   and S.MODULID='PATIENT'
+   and S.PARAMID='AUTOENTLASS'
+   and S.INTVALUE > 0
+   and S.STORNODAT is null
+   and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+end
+
+
+/* -----------------------------------------------------------------------------------------------------------------------------------*/
+
+if @REPORT = 1 
+begin
+  print ''
+  print ''
+  print ''
+  print '========================================================================'
+  print 'PATILISTE: seit 3 Tagen entlassene stationaere Patienten loeschen       '
+  print '========================================================================'
+  select
+    PatiFall=substring(F.PATIFALLNR,1,10),
+    PatArt=substring(F.PATIART,1,2) +' / '+ substring(P.PATIART,1,2),
+    Einsender=E.EINSCODE,
+    ErfassdatPatiliste=convert(char(11),P.ERFASSDAT,104)+convert(char(8),P.ERFASSDAT,108)+' ',
+    Aufnahmedat=convert(char(11),F.AUFNDAT,104)+convert(char(8),F.AUFNDAT,108)+' ',
+    EntlassungdatVerw=convert(char(11),F.ENTLDATVERW,104)+convert(char(8),F.ENTLDATVERW,108)+' ',
+    Aktivbis_neu = case when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is not null and F.AUFTRAGLETZT > F.ENTLDATVERW) then convert(char(11),dateadd(day,3,F.AUFTRAGLETZT),104)+convert(char(8),dateadd(day,3,F.AUFTRAGLETZT),108)+' '
+                        when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is not null and F.ENTLDATVERW >= F.AUFTRAGLETZT) then convert(char(11),dateadd(day,3,F.ENTLDATVERW),104)+convert(char(8),dateadd(day,3,F.ENTLDATVERW),108)+' '
+                        when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is null) then convert(char(11),dateadd(day,3,F.ENTLDATVERW),104)+convert(char(8),dateadd(day,3,F.ENTLDATVERW),108)+' '
+             end,
+    Aktivbis_alt="("+convert(char(11),P.AKTIVBIS,104)+convert(char(8),P.AKTIVBIS,108)+' '+")",
+    ErfassPers=PE.PERSONID,
+    letzter_Auftrag=convert(char(11),F.AUFTRAGLETZT,104)+convert(char(8),F.AUFTRAGLETZT,108)+' '
+  from PATILISTE P, EINSENDER E, PATIFALL F, PERSON PE
+  where F.PATIFALLX=P.PATIFALLX
+    and F.ENTLDATVERW is not NULL
+    and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+    and not (F.PATIART ='A' or F.PATIART ='a')
+    and (P.AKTIVBIS is NULL or P.AKTIVBIS > dateadd(day,3,F.ENTLDATVERW))
+    and PE.PERSONX=P.ERFASSPERS
+    and E.EINSENDERX=P.EINSENDERX
+    and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+end
+
+if @UPDATE = 1 
+begin
+  update PATILISTE set AKTIVBIS = case when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is not null and F.AUFTRAGLETZT > F.ENTLDATVERW) then dateadd(day,3,F.AUFTRAGLETZT)
+                                       when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is not null and F.ENTLDATVERW >= F.AUFTRAGLETZT) then dateadd(day,3,F.ENTLDATVERW)
+                                       when (F.ENTLDATVERW is not null and F.AUFTRAGLETZT is null) then dateadd(day,3,F.ENTLDATVERW)
+             end
+    from PATILISTE P, PATIFALL F
+    where F.PATIFALLX=P.PATIFALLX
+      and F.ENTLDATVERW is not NULL
+      and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+      and not (F.PATIART ='A' or F.PATIART ='a')
+      and (P.AKTIVBIS is NULL or P.AKTIVBIS > dateadd(day,3,F.ENTLDATVERW))
+      and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+end
+
+/* -----------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+if @REPORT = 1 
+begin
+  print ''
+  print ''
+  print ''
+  print '====================================================================='
+  print 'PATILISTE: inaktive Fälle ohne Entlassungsdatum nach 60 Tagen löschen'
+  print '           (nicht für ambulante Fälle)                               '
+  print '====================================================================='
+  select
+    PatiFall=substring(F.PATIFALLNR,1,10),
+    PatArt=substring(F.PATIART,1,2) +' / '+ substring(P.PATIART,1,2),
+    Einsender=E.EINSCODE,
+    ErfassdatPatiliste=convert(char(11),P.ERFASSDAT,104)+convert(char(8),P.ERFASSDAT,108)+' ',
+    Aufnahmedat=convert(char(11),F.AUFNDAT,104)+convert(char(8),F.AUFNDAT,108)+' ',
+    EntlassungdatVerw=convert(char(11),F.ENTLDATVERW,104)+convert(char(8),F.ENTLDATVERW,108)+' ',
+    Aktivbis_neu = case when (F.AUFNDAT is not null) then convert(char(11),dateadd(day,60,F.AUFNDAT),104)+convert(char(8),dateadd(day,28,F.AUFNDAT),108)+' '
+                        when (F.AUFNDAT is null) then convert(char(11),dateadd(day,60,P.ERFASSDAT),104)+convert(char(8),dateadd(day,28,P.ERFASSDAT),108)+' '
+             end,
+    Aktivbis_alt="("+convert(char(11),P.AKTIVBIS,104)+convert(char(8),P.AKTIVBIS,108)+' '+")",
+    ErfassPers=PE.PERSONID,
+    letzter_Auftrag=convert(char(11),F.AUFTRAGLETZT,104)+convert(char(8),F.AUFTRAGLETZT,108)+' '
+  
+  from PATILISTE P, PATIFALL F, PERSON PE, EINSENDER E
+  where
+        F.PATIFALLX=P.PATIFALLX
+    and F.ENTLDATVERW is NULL
+    and not (F.PATIART ='A' or F.PATIART ='a')
+    and (F.AUFTRAGLETZT is NULL or (F.AUFTRAGLETZT is not NULL and dateadd(day,60,F.AUFTRAGLETZT) <  getdate()))
+    and P.AKTIVBIS is null
+    and (dateadd(day,60,P.ERFASSDAT) < getdate())
+    and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+    and E.EINSENDERX=P.EINSENDERX 
+    and PE.PERSONX=P.ERFASSPERS
+    and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1) 
+end
+
+if @UPDATE = 1 
+begin
+ update PATILISTE set AKTIVBIS = case when (F.AUFNDAT is not null) then dateadd(day,60,F.AUFNDAT)
+                                      when (F.AUFNDAT is null) then dateadd(day,60,P.ERFASSDAT)
+            end
+ from PATILISTE P, PATIFALL F
+ where F.PATIFALLX=P.PATIFALLX
+   and F.ENTLDATVERW is NULL
+   and not (F.PATIART ='A' or F.PATIART ='a')
+   and (F.AUFTRAGLETZT is NULL or (F.AUFTRAGLETZT is not NULL and dateadd(day,60,F.AUFTRAGLETZT) <  getdate()))
+   and P.AKTIVBIS is null
+   and (dateadd(day,60,P.ERFASSDAT) < getdate())
+   and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+   and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1) 
+end
+
+-- set nocount on
+-- select @PatilisteFaelleGesamt=count(*) from PATILISTE
+-- select @PatilisteFaelleOhneAktivBis=count(*) from PATILISTE where AKTIVBIS is NULL
+-- select @PatilisteFaelleInaktiv=count (*) from PATILISTE where AKTIVBIS is not NULL and AKTIVBIS <= getdate()
+-- select @PatilisteFaelleAktiv=count (*) from PATILISTE where AKTIVBIS is not NULL and AKTIVBIS > getdate()
+-- print ''
+-- print ''
+-- print ''
+-- select '' as 'Anzahl Fälle vorher:',
+--        @PatilisteFaelleGesamt as 'Gesamt  ',
+--        @PatilisteFaelleOhneAktivBis as 'ohne AKTIVBIS  ',
+--        @PatilisteFaelleInaktiv as 'AKTIVBIS abgelaufen  ',
+--        @PatilisteFaelleAktiv as 'AKTIVBIS zukünftig  '
+
+/* -----------------------------------------------------------------------------------------------------------------------------------*/
+
+
+if @REPORT = 1 
+begin
+  print ''
+  print ''
+  print ''
+  print '=========================================================================================='
+  print 'PATILISTE: ambulante Fälle 60 Tage nach Erfassungsdatum löschen                           '
+  print '=========================================================================================='
+  select
+    PatiFall=substring(F.PATIFALLNR,1,10),
+    PatArt=substring(F.PATIART,1,2) +' / '+ substring(P.PATIART,1,2),
+    Einsender=E.EINSCODE,
+    ErfassdatPatiliste=convert(char(11),P.ERFASSDAT,104)+convert(char(8),P.ERFASSDAT,108)+' ',
+    Aufnahmedat=convert(char(11),F.AUFNDAT,104)+convert(char(8),F.AUFNDAT,108)+' ',
+    EntlassungdatVerw=convert(char(11),F.ENTLDATVERW,104)+convert(char(8),F.ENTLDATVERW,108)+' ',
+    Aktivbis_alt="("+convert(char(11),P.AKTIVBIS,104)+convert(char(8),P.AKTIVBIS,108)+' '+")",
+    ErfassPers=PE.PERSONID,
+    letzter_Auftrag=convert(char(11),F.AUFTRAGLETZT,104)+convert(char(8),F.AUFTRAGLETZT,108)+' '
+  
+  from PATILISTE P, PATIFALL F, PERSON PE, EINSENDER E
+  where
+        F.PATIFALLX=P.PATIFALLX
+    and (dateadd(day,@TageAmbErfasst,P.ERFASSDAT) < getdate())
+    and (dateadd(day,@TageAmbErfasst,F.AUFNDAT) < getdate())
+    and ((dateadd(day,@TageAmbErfasst,F.AUFTRAGLETZT) < getdate()) or F.AUFTRAGLETZT is null)
+    and (F.PATIART ='A' or F.PATIART ='a')
+    and (P.AKTIVBIS is null) /* or (P.AKTIVBIS is not null and P.AKTIVBIS > dateadd(minute,-1,getdate()))) */
+    and E.EINSENDERX=P.EINSENDERX
+    and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell) 
+    and PE.PERSONX=P.ERFASSPERS
+    and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1) 
+end
+
+if @UPDATE = 1 
+begin
+ update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+   from PATILISTE P, PATIFALL F
+   where 
+        F.PATIFALLX=P.PATIFALLX
+    and (dateadd(day,@TageAmbErfasst,P.ERFASSDAT) < getdate())
+    and (dateadd(day,@TageAmbErfasst,F.AUFNDAT) < getdate())
+    and ((dateadd(day,@TageAmbErfasst,F.AUFTRAGLETZT) < getdate()) or F.AUFTRAGLETZT is null)
+    and (F.PATIART ='A' or F.PATIART ='a')
+    and P.EINSENDERX not in (select EINSENDERX from #temp_pl_manuell)
+    and (P.AKTIVBIS is null) /* or (P.AKTIVBIS is not null and P.AKTIVBIS > dateadd(minute,-1,getdate()))) */
+    and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+end
+
+if @REPORT = 1 
+begin
+  print ''
+  print '+---------------------------------------------------------------------------------+'
+  print '|Lauris, PATILISTE falsche_Neueintraege mit Entlassungsdatum in der Vergangenheit |'
+  print '+---------------------------------------------------------------------------------+'
+  print ''
+  print ''
+  print ''
+end
+set nocount off
+if @REPORT = 1 
+begin
+  
+  select 
+    PatiFall=substring(F.PATIFALLNR,1,10),
+    PatArt=substring(F.PATIART,1,2) +' / '+ substring(P.PATIART,1,2),
+    ErfassdatPatiliste=convert(char(11),P.ERFASSDAT,104)+convert(char(8),P.ERFASSDAT,108)+' ',
+    AktivbisPatiliste=convert(char(11),P.AKTIVBIS,104)+convert(char(8),P.AKTIVBIS,108)+' ',
+    EntlassungdatVerw=convert(char(11),F.ENTLDATVERW,104)+convert(char(8),F.ENTLDATVERW,108)+' ',
+    Einsender_PATILISTE=E1.EINSCODE, 
+    Einsender_PATIFALL=E2.EINSCODE, 
+    PE.PERSONID, P.ERFASSPERS
+  from PATILISTE P, PATIFALL F, EINSENDER E1, EINSENDER E2, PERSON PE
+  where 
+        P.ERFASSDAT > dateadd(minute,-@max_minutes,getdate())
+    and F.PATIFALLX=P.PATIFALLX
+    and F.ENTLDATVERW < P.ERFASSDAT
+    and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+    and P.EINSENDERX*=E1.EINSENDERX
+    and F.EINSENDERX*=E2.EINSENDERX
+    and PE.PERSONX=P.ERFASSPERS
+    order by F.PATIFALLNR
+end
+
+if @UPDATE = 1 
+begin
+ update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+   from PATILISTE P, PATIFALL F
+   where 
+        P.ERFASSDAT > dateadd(minute,-@max_minutes,getdate())
+     and F.PATIFALLX=P.PATIFALLX
+     and F.ENTLDATVERW < P.ERFASSDAT
+     and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+end   
+/* -----------------------------------------------------------------------------------------------------------------------------------*/
+
+set nocount on
+if @REPORT = 1 
+begin
+  select @enddat=getdate()
+  select @datum='Ende: ' + convert(char(9),@enddat,4)+convert(char(5),@enddat,8)
+  print ''
+  print @datum         
+end
+  
+go

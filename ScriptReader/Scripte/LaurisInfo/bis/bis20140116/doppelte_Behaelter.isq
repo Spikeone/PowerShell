@@ -1,0 +1,21 @@
+print '--- doppelte BehaelterCodes (Lauris)  ---'
+select 
+  Behälter=B.BEHAELTERCODE,
+  Behältername=B.BEHAELTERNAME,
+  B.BEHAELTERX,
+  MaterialCode=M1.MATCODE,
+  MaterialName=M1.MATERIALNAME,
+  Kreis=M1.MATERIALKREISNR,  
+  B.STORNODAT
+from 
+  BEHAELTER B,
+  MATERIAL M1
+where
+  BEHAELTERCODE in
+       (select BEHAELTERCODE from BEHAELTER group by BEHAELTERCODE having count(*)>1) and
+  M1.MATERIALX=B.MATERIALX     
+       
+order by
+  Behälter, MaterialCode
+
+go

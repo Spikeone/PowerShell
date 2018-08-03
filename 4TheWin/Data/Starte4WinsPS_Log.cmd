@@ -1,0 +1,1 @@
+powershell .\PSApp.ps1 >> ..\Logs\%date%_GAME.log

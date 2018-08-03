@@ -1,0 +1,43 @@
+
+
+declare
+  @EINSVEKTORCODE                 char(16),
+  @EINSVEKTORX                    int,
+  @EINSTYPMAX                     int,
+  @MITEINZEL                      tinyint,
+  @AKTIV                          tinyint
+
+set nocount on
+select @EINSVEKTORCODE       = 'LAURIS'       /* !!!!!! diese Einsendergruppe nicht bearbeiten                !!!!!!! */
+select @AKTIV                = 0              /* !!!!!! auch inaktive Einsender                               !!!!!!! */
+
+/* Auflösung der Einsendergruppen  @EINSVEKTORCODE       */
+select @EINSVEKTORX = EINSENDERX from EINSENDER where EINSCODE = @EINSVEKTORCODE and AKTIVBIS is null
+if @EINSVEKTORX  is null select @EINSVEKTORX = 0
+
+select @EINSTYPMAX = 2147483647   -- 2 hoch 31 -1
+-- select @EINSTYPMAX = 1            -- nur Typ 1 liefern
+select @MITEINZEL  = 0            -- 1: auch Einzeleinsender liefernselect @EINSVEKTORX = EINSENDERX from EINSENDER where EINSCODE = @EINSVEKTORCODE and AKTIVBIS is null
+if @EINSVEKTORX  is null select @EINSVEKTORX = 0
+
+select EINSVEKTORX,     /* Einsender des Vektors   */
+       V.EINSENDERX,    /* Einsenderx der Vektorzeile  */
+       SORT,            /* Nummer der Vektorzeile  */
+       EINSCODE, EINSNREXT, EINSKURZ, EINSTYP
+into  #temp      
+from EINSVEKTOR V, EINSENDER E
+where EINSVEKTORX  = @EINSVEKTORX
+   and V.EINSENDERX  = E.EINSENDERX
+   and isnull(EINSTYP,1)<=@EINSTYPMAX
+   and (V.SORT>0 or @MITEINZEL=1)
+   and (E.AKTIVBIS is null or @AKTIV<>1)
+order by SORT
+
+set nocount off
+if @EINSVEKTORX <> 0
+begin
+  print ''
+  print ' Einsendergruppe aufgeloest: '
+  select * from #temp 
+end
+go

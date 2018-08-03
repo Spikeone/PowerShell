@@ -1,0 +1,58 @@
+print '--- modifizierte Profile (Lauris) ---'
+go
+set dateformat dmy
+go
+
+select distinct
+ FormularCode=F.FORMULARCODE,
+ Vorlagenname=substring(VO.VORLAGENAME,1,32),
+ Station=E.EINSCODE,
+ Client=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ VorlageMutdat=VO.MUTDAT,
+ AnfoMutdat=VA.MUTDAT,
+ VorlageStorno=VO.STORNODAT,
+ AnfoStorno=VA.STORNODAT
+
+from VORLAGEANF VA, PERSON P, VORLAGE VO, FORMULAR F, EINSENDER E, CLIENT C, IDENT I
+where 
+ (VO.ERFASSDAT > '01.10.2010 00:00' or VO.MUTDAT > '01.10.2010 00:00' or VO.STORNODAT > '01.10.2010 00:00' or VA.ERFASSDAT > '01.10.2010 00:00' or VA.MUTDAT > '01.10.2010 00:00' or VA.STORNODAT > '01.10.2010 00:00')
+ and VA.VORLAGEX = VO.VORLAGEX 
+ and VO.EINSENDERX *= E.EINSENDERX 
+ and VO.CLIENTX *= C.CLIENTX 
+ and VO.IDENTX *= I.IDENTX 
+ and VA.ERFASSPERS *= P.PERSONX 
+ and VO.FORMULARX = F.FORMULARX
+order by 
+ FormularCode, Vorlagenname
+go
+
+select
+ FormularCode=F.FORMULARCODE,
+ Vorlagenname=substring(VO.VORLAGENAME,1,20),
+ Station=E.EINSCODE,
+ Client=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ VorlageMutdat=VO.MUTDAT,
+ AnfoMutdat=VA.MUTDAT,
+ VorlageStorno=VO.STORNODAT,
+ AnfoStorno=VA.STORNODAT,
+ Analyt=AN1.CODE,
+ Behältercode=BE.BEHAELTERCODE,
+ Erfassdat=convert(char(11),VA.ERFASSDAT,104)+convert(char(8),VA.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID
+
+from VORLAGEANF VA, PERSON P, VORLAGE VO, ANALYT AN1, BEHAELTER BE, FORMULAR F, EINSENDER E, CLIENT C, IDENT I
+where 
+ (VO.ERFASSDAT > '01.10.2010 00:00' or VO.MUTDAT > '01.10.2010 00:00' or VO.STORNODAT > '01.10.2010 00:00' or VA.ERFASSDAT > '01.10.2010 00:00' or VA.MUTDAT > '01.10.2010 00:00' or VA.STORNODAT > '01.10.2010 00:00')
+ and VA.VORLAGEX = VO.VORLAGEX 
+ and VO.EINSENDERX *= E.EINSENDERX 
+ and VO.CLIENTX *= C.CLIENTX 
+ and VO.IDENTX *= I.IDENTX 
+ and BE.BEHAELTERX =* VA.BEHAELTERX
+ and VA.ERFASSPERS *= P.PERSONX 
+ and VA.ANALYTX = AN1.ANALYTX 
+ and VO.FORMULARX = F.FORMULARX
+order by 
+ FormularCode, Vorlagenname
+go

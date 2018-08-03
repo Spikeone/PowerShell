@@ -1,0 +1,40 @@
+print ''
+print ' 0 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '0%'
+go
+print ''
+print ' 1 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '1%'
+go
+print ''
+print ' 2 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '2%'
+go
+print ''
+print ' 3 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '3%'
+go
+print ''
+print ' 4 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '4%'
+go
+print ''
+print ' 5 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '5%'
+go
+print ''
+print ' 6 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '6%'
+go
+print ''
+print ' 7 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '7%'
+go
+print ''
+print ' 8 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '8%'
+go
+print ''
+print ' 9 - Nummernkreis '
+select count(*) from AUFTRAG where AUFTRAGNR like '9%'
+go

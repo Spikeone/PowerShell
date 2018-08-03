@@ -1,0 +1,43 @@
+print '--- Lauris: ANFORDERUNG  ---'
+select
+  Formular=F.FORMULARCODE,
+  AnalytCode=A.CODE,
+  Behälter=B.BEHAELTERCODE,
+  Material_Swisslab=M1.MATCODE,
+  KreisSW=M1.MATERIALKREISNR,
+  MatNrvonSW=M1.MATNRVON,
+  MatNrbisSW=M1.MATNRBIS,
+  Material_Behaelter=M2.MATCODE,
+  KreisBh=M2.MATERIALKREISNR,
+  MatNrvonBh=M2.MATNRVON,
+  MatNrbisBh=M2.MATNRBIS,
+  Beh_Storno=convert(char(11),B.STORNODAT,104)+convert(char(8),B.STORNODAT,108)+' ',
+  ANF.BEHAELTERX,
+  A.DEFMATERIALX, 
+  AnfTyp=ANF.ANFORDERUNGTYP,
+  AnfArt=ANF.ART,
+  Erfassdat=convert(char(11),ANF.ERFASSDAT,104)+convert(char(8),ANF.ERFASSDAT,108)+' ',
+  ErfassPers=P.PERSONID,
+  Mutdat=convert(char(11),ANF.MUTDAT,104)+convert(char(8),ANF.MUTDAT,108)+' ',
+  MutPers=P2.PERSONID
+
+from 
+  ANFORDERUNG ANF,
+  ANALYT A,
+  BEHAELTER B,
+  MATERIAL M1,
+  MATERIAL M2,
+  FORMULAR F,
+  PERSON P,
+  PERSON P2
+where 
+  ANF.STORNODAT is null and 
+  ANF.ANALYTX is not null and
+  A.ANALYTX=ANF.ANALYTX and
+  F.FORMULARX=ANF.FORMULARX and
+  B.BEHAELTERX=ANF.BEHAELTERX and
+  M1.MATERIALX=*A.DEFMATERIALX and
+  M2.MATERIALX=B.MATERIALX and
+  ANF.ERFASSPERS=P.PERSONX and
+  ANF.MUTPERS=P2.PERSONX
+go

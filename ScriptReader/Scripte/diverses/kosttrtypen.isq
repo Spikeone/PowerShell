@@ -1,0 +1,15 @@
+set dateformat dmy
+go
+select distinct 
+  PF.KOSTTRTYP
+into #t1
+from
+  PATIFALL PF
+where
+  PF.ERFASSDAT between '01.01.2010' and '31.12.2011'
+order by KOSTTRTYP
+select
+  
+  count(*) from PATIFALL as
+
+go

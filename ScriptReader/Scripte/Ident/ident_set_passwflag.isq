@@ -1,0 +1,27 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [141009]                                                       */
+/*KURZINFO : Tabelle IDENT, setzen des Passwordflags = 1, Password = 'abc'  */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20141009.1913>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[141009] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+-- Die Benutzer erhalten ein temporäres Kennwort 'abc' und werden bei der nächsten Anmeldung aufgefordert ihr PW zu ändern.
+-- Die where - Bedingung ist natürlich an die eigenen Bedürfnisse anzupassen!
+update 
+  IDENT 
+set 
+  PASSWFLAG=1, 
+  SCHLUESSEL1 ='A9993E364706816ABA3E25717850C26C9CD0D89D', 
+  SCHLUESSEL2=null, 
+  SCHLUESSEL3=null, 
+  SCHLUESSEL4=null, 
+  SCHLUESSEL5=null 
+where
+  ERFASSDAT between '01.01.1900 00:00' and '01.01.1900 23:59'
+go

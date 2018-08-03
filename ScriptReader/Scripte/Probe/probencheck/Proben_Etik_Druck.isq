@@ -1,0 +1,45 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\proben_check.isq                   */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: Check der Probennummer, Vergleich mit Auftragsnummer   */
+/*MODULE   : Lauris, Klagenfurt, ssc#54607                                  */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20070828.07:45>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+set dateformat dmy
+go
+
+select
+  ProbeExtid=PR.PROBEEXTID,
+  AuftragNr=A.AUFTRAGNR,
+  ProbeErfassDat=convert(char(11),PR.ERFASSDAT ,104)+convert(char(8),PR.ERFASSDAT ,108)+' ',
+  ProbeErfassPers=P1.PERSONID,
+  AuftragErfassDat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  AuftragErfassPers=P2.PERSONID,
+  Pstatus=PR.PSTATUS,
+  Pkennung=PR.PKENNUNG,
+  EtikDruckDat=convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' ',
+  EtikInfo=PR.ETIKINFO,
+  EtikDruck=PR.ETIKDRUCK
+  
+from
+  PROBE PR (index PROBE_FK2),
+  AUFTRAG A (index AUFTRAG_PK1),
+  PERSON P1,
+  PERSON P2,
+  TASKFLAG T
+
+where
+  A.AUFTRAGX=PR.AUFTRAGX and
+  T.XREF = A.AUFTRAGX and
+  A.AUFTRAGDAT > '01.09.2009 00:00' and
+--  PR.ETIKINFO <> PR.ETIKDRUCK or (PR.PSTATUS = 0 and T.TSTATUS = 1) or (PR.ETIKDRUCKDAT is null and T.TSTATUS = 1)and
+  P1.PERSONX=PR.ERFASSPERS and
+  P2.PERSONX=A.ERFASSPERS
+
+go

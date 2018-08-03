@@ -1,0 +1,67 @@
+-- set showplan on
+-- go
+select 
+  A.AUFTRAGX,
+  A.AUFTRAGNR,
+  L.LAUFCODE,
+  T.TSTATUSDAT,
+  AN.CODE,
+  Resultatstatus = substring(FW2.FWTEXT1,1,24),
+  Reorgstatus = substring(FW.FWTEXT1,1,16),
+  R.BEFUNDDAT ,
+  Abli = substring(AB.BEZEICHNUNG,1,24)
+from AUFTRAG A, TASKFLAG T, RESULTAT R (index RESULTAT_FK3), LAUF L, ANALYT AN, FESTWERT FW, FESTWERT FW2, ABLIPOS ABP, ABLI AB
+where
+  T.TSTATUS = 1 and
+  T.XREF=A.AUFTRAGX and
+  L.LAUF = A.LAUF and
+  A.LAUF = 1 and
+  T.TERFASSDAT < dateadd(dd,-500,getdate()) and
+  R.AUFTRAGX = A.AUFTRAGX and
+  AN.ANALYTX = R.ANALYTX and
+  AN.REORGSTATUS > 1 and
+  FW.SPRACHID = 10 and
+  FW.TABELLE = 'ANALYT' and
+  FW.SPALTE = 'REORGSTATUS' and
+  FW.INTWERT = AN.REORGSTATUS and
+  FW2.SPRACHID = 10 and
+  FW2.TABELLE = 'RESULTAT' and
+  FW2.SPALTE = 'STATUS' and
+  FW2.INTWERT = R.STATUS and
+  ABP.AUFTRAGX = A.AUFTRAGX and
+  AB.ABLIX = ABP.ABLIX
+go
+
+-- set showplan on
+-- go
+select distinct
+  A.AUFTRAGX,
+  A.AUFTRAGNR,
+  L.LAUFCODE,
+  T.TSTATUSDAT,
+  AN.CODE,
+  Resultatstatus = substring(FW2.FWTEXT1,1,24),
+  Reorgstatus = substring(FW.FWTEXT1,1,16),
+  R.BEFUNDDAT ,
+  Abli = substring(AB.BEZEICHNUNG,1,24)
+from AUFTRAG A, TASKFLAG T, RESULTAT R (index RESULTAT_FK3), LAUF L, ANALYT AN, FESTWERT FW, FESTWERT FW2, ABLIPOS ABP, ABLI AB
+where
+  T.TSTATUS = 1 and
+  T.XREF=A.AUFTRAGX and
+  L.LAUF = A.LAUF and
+  A.LAUF = 1 and
+  T.TERFASSDAT < dateadd(dd,-500,getdate()) and
+  R.AUFTRAGX = A.AUFTRAGX and
+  AN.ANALYTX = R.ANALYTX and
+  AN.REORGSTATUS > 1 and
+  FW.SPRACHID = 10 and
+  FW.TABELLE = 'ANALYT' and
+  FW.SPALTE = 'REORGSTATUS' and
+  FW.INTWERT = AN.REORGSTATUS and
+  FW2.SPRACHID = 10 and
+  FW2.TABELLE = 'RESULTAT' and
+  FW2.SPALTE = 'STATUS' and
+  FW2.INTWERT = R.STATUS and
+  ABP.AUFTRAGX = A.AUFTRAGX and
+  AB.ABLIX = ABP.ABLIX
+go

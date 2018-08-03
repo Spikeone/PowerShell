@@ -1,0 +1,62 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                sqlserver            Deutsches Herzzentru Adaptive Server Enterprise/12.5.3/EBF 12599 ESD#3/P/NT (IX86)/OS 4.0/ase1253/1912/32-bit/OPT/Fri Jul 08 18:58:47 2005                                                                                                                                           
+                                sqlserver            DHM - KC und BB      Adaptive Server Enterprise/12.5.3/EBF 12599 ESD#3/P/NT (IX86)/OS 4.0/ase1253/1912/32-bit/OPT/Fri Jul 08 18:58:47 2005                                                                                                                                           
+
+(2 rows affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       1057             782         144 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                Citrat           Citratplasma                                                               6           5 C            Citratplasma                          4                       NULL 
+                                Citrat           Citratvollblut                                                            10          16 CVB          Citratvollblut                       16                       NULL 
+                                EDTA             EDTA Blut                                                                 14           7 E            EDTA Blut                             3                       NULL 
+                                EDTA             EDTA Versand                                                              11          13 EX           EDTA-Blut für Versand                13                       NULL 
+                                Heparin          Heparinplasma                                                             32           2 H            Heparinplasma                         2                       NULL 
+                                Heparin          Heparinvollblut                                                           36          15 HVB          Heparinvollblut                      15                       NULL 
+                                Liquor           Liquor in EDTA-Monovette                                                  68          86 LE           Liquor in EDTA-Monovette             25                       NULL 
+                                Liquor           Liquor Fluoridmonovette                                                   69          87 LF           Liquor Fluoridmonovette              26                       NULL 
+                                Liquor           Liquor in Serummonovette                                                  70          85 LS           Liquor in Serummonovette             24                       NULL 
+                                Serum            Serum                                                                     54           1 S            Serum                                 1                       NULL 
+                                Serum            Serum Versand                                                             75          88 SX           Serum für Versand                    27                       NULL 
+                                Sondermat.       Sondermaterial EDTA-Monovette                                             72          83 SME          Sondermaterial EDTA-Monovette        22                       NULL 
+                                Sondermat.       Sondermaterial Serummonovette                                             74          82 SMS          Sondermaterial Serummonovette        21                       NULL 
+                                Urin             Urin                                                                      63           8 U            Urin                                  9                       NULL 
+                                Urin             Urin Versand                                                              76          89 UX           Urin für Versand                     28                       NULL 
+
+(15 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Institut         Institut                                                                Jul 16 2008  9:51AM                       NULL       40000000        59999999         40075229         19999999                 75229               19924770     0.3761 %     176.18 Nummern          113093.05 Tage                  NULL                   NULL            0 
+
+(1 row affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

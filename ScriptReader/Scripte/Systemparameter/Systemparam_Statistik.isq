@@ -1,0 +1,71 @@
+--*-----------------------------------------------------------------------------
+--*FILEDESCR   : Statistik_Systemparameter
+--*KURZINFO    : Zählt Modulbezogen alle Systemparameter der unterschiedlichen Geltungsbereiche auf
+--               So können z.B. stark benutzerdefinierte Geltungsbereiche erkannt werden.
+--*AUTOR       : son
+--*ERSTELLT    : [2016.10.24]
+--*BEMERKUNG   : 
+--*$Revision: 1.00 $
+--*-----------------------------------------------------------------------------
+--*AENDERUNG:
+--*[20161024] 1.00   son - Erstellt
+
+
+set nocount on
+set proc_return_status off
+--Performance check
+--set statistics io, time on
+--set nocount off
+--set proc_return_status on
+
+   create table #temp(
+      SYSTEMPARAMX int null)
+
+   -- Parameter in die Tabelle einfuegen
+
+      insert into #temp select
+         SYSTEMPARAMX
+      from
+         SYSTEMPARAM (index SYSTEMPARAM_XREF)
+      where
+         PRODUKT = 'LAURIS'
+
+select
+  Case 
+  when P.CLIENTX    != Null then "Client"
+  when P.IDENTX     != Null then "Ident"
+  when P.EINSENDERX != Null then "Einsender"
+ else
+  "Global"
+ end as Geltungsbereich,
+
+ 
+ CONVERT(VARCHAR(45),
+ Case 
+  when P.CLIENTX    != Null then isnull((select CASE when C.SPERRE     != 0    then ("Gesperrt:" + RTRIM(C.CLIENTCODE)) else (RTRIM(C.CLIENTCODE)) end            from CLIENT C  where C.CLIENTX    = P.CLIENTX   ), "Nicht existierender Client:")    + "_[X:" + RTRIM (convert(char(10),P.CLIENTX    )) + "]"
+  when P.IDENTX     != Null then isnull((select CASE when I.STORNOPERS != Null then ("Stornierter Ident:" + RTRIM(I.IDENTCODE)) else (RTRIM(I.IDENTCODE)) end      from IDENT I     where I.IDENTX     = P.IDENTX    ), "Nicht existierender Ident:")     + "_[X:" + RTRIM (convert(char(10),P.IDENTX     )) + "]"
+  when P.EINSENDERX != Null then isnull((select CASE when E.STORNOPERS != Null then ("Stornierter Einsender:" + RTRIM(E.EINSCODE))  else (RTRIM(E.EINSCODE)) end    from EINSENDER E where E.EINSENDERX = P.EINSENDERX), "Nicht existierender Einsender:") + "_[X:" + RTRIM (convert(char(10),P.EINSENDERX )) + "]"
+  else
+  "Global"
+ end) as Geltungscode,
+ 
+Count(P.SYSTEMPARAMX) as "anz_Insgesamt",
+Count(case when MODULID = 'AUFTRAG'     then 1 else null end) as Auftrag,
+Count(case when MODULID = 'BASIS'       then 1 else null end) as Basis,
+Count(case when MODULID = 'BEFUND'      then 1 else null end) as Befund,
+Count(case when MODULID = 'CLIENT'      then 1 else null end) as Client,
+Count(case when MODULID = 'DRUCK'       then 1 else null end) as Druck,
+Count(case when MODULID = 'GLOBAL'      then 1 else null end) as Global,
+Count(case when MODULID = 'MONITOR'     then 1 else null end) as Monitor,
+Count(case when MODULID = 'PATIENT'     then 1 else null end) as Patient,
+Count(case when MODULID = 'TRANSFUSION' then 1 else null end) as Transfusion
+from
+   #temp T,
+   SYSTEMPARAM P
+where
+   T.SYSTEMPARAMX = P.SYSTEMPARAMX and
+   P.STORNOPERS = null 
+Group by EINSENDERX,IDENTX,CLIENTX
+Order by anz_Insgesamt desc
+
+go

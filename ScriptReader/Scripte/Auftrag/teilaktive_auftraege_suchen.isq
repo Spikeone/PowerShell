@@ -1,0 +1,82 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\proben_check.isq                   */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: Check der Probennummer, Vergleich mit Auftragsnummer   */
+/*MODULE   : Lauris, Klagenfurt, ssc#54607                                  */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20070828.07:45>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+set dateformat dmy
+go
+
+set nocount on
+
+select distinct
+--  ProbeExtid=PR.PROBEEXTID,
+  AuftragX=A.AUFTRAGX,
+  AuftragNr=A.AUFTRAGNR,
+--  ProbeErfassDat=convert(char(11),PR.ERFASSDAT ,104)+convert(char(8),PR.ERFASSDAT ,108)+' ',
+--  ProbeErfassPers=P1.PERSONID,
+--  AuftragErfassDat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+--  AuftragErfassPers=P2.PERSONID,
+  Pstatus=PR.PSTATUS
+--  Pkennung=PR.PKENNUNG,
+--  EtikDruckDat=convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' ',
+--  EtikInfo=PR.ETIKINFO,
+--  EtikDruck=PR.ETIKDRUCK
+into
+  #temp1
+  
+from
+  PROBE PR (index PROBE_FK2),
+  AUFTRAG A (index AUFTRAG_PK1),
+  TASKFLAG T (index TASKFLAG_PK1)
+
+where
+  T.TSTATUS = 1 and
+  A.AUFTRAGX = T.XREF and
+  PR.AUFTRAGX = A.AUFTRAGX and
+  PR.PKENNUNG = 3 and
+  PR.PSTATUS = 0
+
+-- select * from #temp1
+
+select 
+  t1.AuftragNr,
+  A.LAUF,
+  E.EINSCODE,
+  PR.PROBEEXTID,
+  M.MATCODE,
+  B.BEHAELTERCODE,
+  Probenstatus =  case when (PR.PSTATUS = 0) then 'inaktiv'               
+                       when (PR.PSTATUS > 0) then 'aktiviert'
+                       when (PR.STORNODAT is not null) then 'storniert'           
+                  end,                  
+  ProbeErstellt = convert(char(11),PR.SQLERFASSDAT ,104)+convert(char(8),PR.SQLERFASSDAT ,108)+' ',
+  t1.AuftragX,
+  PR.PROBEX
+
+  
+into
+  #temp2
+  
+from #temp1 t1, PROBE PR, MATERIAL M, AUFTRAG A, EINSENDER E, BEHAELTER B     
+where 
+--  t1.AuftragX in (select AuftragX from #temp1 having count(*)>1) and
+  PR.AUFTRAGX = t1.AuftragX and
+  M.MATERIALX = PR.MATERIALX and
+  A.AUFTRAGX = t1.AuftragX and
+  E.EINSENDERX = A.EINSENDERX and
+  B.BEHAELTERX = PR.BEHAELTERX
+order by AuftragX
+
+set nocount off
+
+select * from #temp2
+
+go

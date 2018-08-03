@@ -1,0 +1,44 @@
+ 
+  Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  ------------------------------ -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                                 SYBSUNR              Sybase ASE 12.5.4 au Adaptive Server Enterprise/12.5.4/EBF 14065 ESD#3/P/Sun_svr4/OS 5.8/ase1254/2030/64-bit/FBO/Sat Oct 14 07:19:31 2006                                                                                                                                             
+                                 SWDSSUNR             Sybase ASE 12.5.4 au Adaptive Server Enterprise/12.5.4/EBF 14065 ESD#3/P/Sun_svr4/OS 5.8/ase1254/2030/64-bit/FBO/Sat Oct 14 07:19:31 2006                                                                                                                                             
+   
+   
+  Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------------ ----------- --------------- -----------  
+                                       45125           24689       17923  
+   
+   
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+   
+   
+  Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                   
+  ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ --------------------------  
+                                 EDTA-Vollblut    EDTA-Vollblut                                                             10           3 EDTA         EDTA Blut                             3        May 26 2004  3:50PM  
+                                 EDTA-Vollblut    EDTA-Vollblut                                                             11           3 EDTA         EDTA Blut                             3        May 26 2004  3:50PM  
+                                 EDTA-Vollblut    EDTA-Vollblut                                                             12           3 EDTA         EDTA Blut                             3        May 26 2004  3:50PM  
+                                 EDTA-Vollblut    EDTA-Vollblut                                                             13           3 EDTA         EDTA Blut                             3        May 26 2004  3:50PM  
+                                 EDTA-Vollblut    EDTA-Vollblut                                                             14           3 EDTA         EDTA Blut                             3        May 26 2004  4:23PM  
+                                 EDTA-Vollblut    EDTA-Vollblut                                                             15           3 EDTA         EDTA Blut                             3        May 26 2004  3:50PM  
+                                 Na-Fluorid       Na-Fluorid                                                                16           6 Liquor       Liquor                                6        May 26 2004  4:25PM  
+                                 Na-Fluorid       Na-Fluorid                                                                17           6 Liquor       Liquor                                6        May 26 2004  4:25PM  
+                                 Na-Fluorid       Na-Fluorid                                                                18           6 Liquor       Liquor                                6        May 26 2004  4:25PM  
+                                 Na-Fluorid       Na-Fluorid                                                                19           6 Liquor       Liquor                                6        May 26 2004  4:25PM  
+                                 Na-Fluorid       Na-Fluorid                                                                20           6 Liquor       Liquor                                6        May 26 2004  4:25PM  
+                                 Na-Fluorid       Na-Fluorid                                                                21           6 Liquor       Liquor                                6        May 26 2004  4:25PM  
+   
+   
+  Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------  
+                                 Test             Test                                                                    Aug 11 2003  2:05PM                       NULL       12900001        14900000         13253101          1999999                353100                1646899    17.6550 %     165.93 Nummern            9925.24 Tage              14900001               16900000         NULL  
+                                 Derma            Derma                                                                   Mar  2 2004  9:06AM        Dec 29 2004 10:06AM       10010001        10020000         10016401             9999                  6400                   3599    64.0064 %       3.33 Nummern            1081.95 Tage              10090001               10100000         NULL  
+   
+   
+  Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- ---------  
+   
+   
+  Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)    
+  ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- --------------------------  

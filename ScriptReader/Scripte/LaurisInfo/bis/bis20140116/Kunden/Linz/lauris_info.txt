@@ -1,0 +1,17 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                DATALAB              Krankenhaus Linz - L Adaptive Server Enterprise/12.5.0.3/EBF 11449 ESD#4/P/NT (IX86)/OS 4.0/rel12503/1939/32-bit/OPT/Sat Sep 20 22:28:57 2003                                                                                                                                        
+
+(1 row affected)
+Msg 156, Level 15, State 2:
+Server 'DATALAB', Line 52:
+Incorrect syntax near the keyword 'select'.
+Msg 102, Level 15, State 1:
+Server 'DATALAB', Line 52:
+Incorrect syntax near ')'.
+Msg 156, Level 15, State 2:
+Server 'DATALAB', Line 118:
+Incorrect syntax near the keyword 'select'.
+Msg 102, Level 15, State 1:
+Server 'DATALAB', Line 118:
+Incorrect syntax near ')'.

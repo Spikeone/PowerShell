@@ -1,0 +1,32 @@
+ 
+  Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  ------------------------------ -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                                 SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16822 ESD#9.1/P/NT (IX86)/OS 4.0/ase1254/2146/32-bit/OPT/Wed Apr 15 04:05:47 2009                                                                                                                                          
+   
+   
+  Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------------ ----------- --------------- -----------  
+                                        2125            1503          15  
+   
+   
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+   
+   
+  Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                   
+  ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ --------------------------  
+   
+   
+  Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------  
+                                 SJU              SJU-klin. Labor                                                         Jun  4 2009 10:22AM                       NULL       19500001        19899999         19500051           399998                    50                 399948     0.0125 %       0.12 Nummern         3279573.60 Tage                  NULL                   NULL            0  
+                                 SJU_IH           SJU-Immunhämatologie                                                    Aug 18 2009  1:22PM                       NULL       19900001        19999999         19902277            99998                  2276                  97722     2.2760 %       6.79 Nummern           14383.51 Tage                  NULL                   NULL            0  
+                                 SEM_IH           SEM-Immunhämatologie                                                    Oct 28 2009  9:58AM                       NULL       39900001        39999999         39900578            99998                   577                  99421     0.5770 %       2.19 Nummern           45488.98 Tage                  NULL                   NULL            0  
+   
+   
+  Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- ---------  
+   
+   
+  Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)    
+  ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- --------------------------  

@@ -1,0 +1,94 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BNHG, ausgeführt am: 08.06.2015 11:45
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           BNH              Universitaetskliniku SW-ZIS060            File- und SQLSERVER  Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+                           BNHG             Uniklinik Bonn - Ber sqlgbnh              File - und SQLSERVER Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 482     Anzahl User: 929     Anzahl Auftraege Lauris: 3960    Anzahl Auftraege ohne Lauris: 1683   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           2 v9.02.25# F      
+         351 v14.02.13.3      
+           2 v13.11.18#       
+           1 v12.09.14#       
+         126 v11.12.09#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Falcon 2.14.1                                                                    2.14       NULL                                     16.04.14  00:00                 
+ letztes Swisspro                                                                 2.14       NULL                                     20.05.15  08:29                 
+ swissup3.tab                                                                      2.14 $    NULL                                     15.02.12  08:43                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     20.05.15  08:23                 
+ Blutbank (via barkasse.pro)                                                       1.10 $    NULL                                     20.05.15  08:23                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     20.05.15  08:24                 
+ BB-Statistik (via spendestat.pro)                                                 1.25 $    NULL                                     20.05.15  08:23                 
+                                                                                             NULL                                                                     
+ neu:PR_LOGINTRIGGER                                                               1.04 $    NULL                                     27.05.15  16:20 SWISSLAB        
+ neu:PR_KONSERVEBESTAND                                                            2.32 $    NULL                                     21.05.15  08:07 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        2333      1 1                Gerinnung                                                                                                                                                                                                                                                       
+        1627      5 5                Depot                                                                                                                                                                                                                                                           
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        2187 Indikationsbezogene gerinnungsphysiologische Anforderungen       
+        1627 Anforderung von Blutkomponenten einschließlich Empfängerserologi 
+         123 Anforderung für Hämophliepatienten der Ambulanz                  
+          23 IHIS-ANFO                                                        
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BNHG, beendet am: 08.06.2015 11:45 
+SQL-Abfrage-Dauer: 16  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.11.5.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_02 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 14.2.13.3 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.14.2.002297 

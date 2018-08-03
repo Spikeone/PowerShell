@@ -1,0 +1,90 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: KASS, ausgeführt am: 04.08.2015 12:29
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           KASS             Staedtische Kliniken SQLSERVER            Routine Datenbankser Adaptive Server Enterprise/12.5.4/EBF 16791 ESD#10/P/NT (IX86)/OS 4.0/ase1254/2159/32-bit/OPT/Mon Nov 02 05:01:55 2009                                                                                                                                          
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 595     Anzahl User: 500     Anzahl Auftraege Lauris: 26984   Anzahl Auftraege ohne Lauris: 33074  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         594 v13.11.18#       
+           1 v11.08.19#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Enrico Fermi                                                                     2013.02    NULL                                     29.09.13  00:00                 
+ letztes Swisspro                                                                 2013.02    NULL                                     01.04.14  16:10                 
+ swissup3.tab                                                                      2.14 $    NULL                                     17.01.12  15:14                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     01.04.14  16:05                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     01.04.14  16:03                 
+ Statistik (via statistik.pro)                                                     5.88 $    NULL                                     01.04.14  16:05                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     01.04.14  16:04                 
+                                                                                             NULL                                                                     
+ neu:PR_LASRESULTATVEKTOR                                                          2.051     NULL                                     03.04.14  14:42 SWISSLAB        
+ neu:PI_TAIN                                                                       1.35 $    NULL                                     02.04.14  08:57 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       24470      1 KK               Klinische Chemie Kassel                                                                                                                                                                                                                                         
+        2514      5 BA               Klinische Chemie Bad Arolsen                                                                                                                                                                                                                                    
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       24241 Routine Zentrallabor                                             
+        2541 Routine Arolsen                                                  
+         178 Spezial Kassel                                                   
+          24 Allergie Zentrallabor                                            
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: KASS, beendet am: 04.08.2015 12:29 
+SQL-Abfrage-Dauer: 4   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+W:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.11.5.1 
+W:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_02 
+. 
+. 
+Lauris-Versionsinfo: 
+W:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.11.18.1 
+W:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2013_02 

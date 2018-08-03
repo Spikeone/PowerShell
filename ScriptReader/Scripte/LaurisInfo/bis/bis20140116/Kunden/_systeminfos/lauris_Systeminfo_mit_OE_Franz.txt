@@ -1,0 +1,43 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: FRANZ, ausgeführt am: 31.07.2012 
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           FRANZ            St. Franziskus Hospi SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 18374 SMP ESD#3/P/X64/Windows Server/asear155/2531/64-bit/OPT/Fri Jan 14 02:06:35 2011                                                                                                                                      
+ 
+ 
+ Anmeldungen (in 30 Tagen):                                            
+ --------------------------------------------------------------------- 
+ Anzahl Clients: 746     Anzahl User: 350     Anzahl Auftraege: 27370  
+ 
+ 
+aktive Lauris-Versionen:
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           1 v7.04.26# F      
+         567 v11.04.14#       
+         155 v11.01.07#       
+          23 v10.11.05¹#      
+ 
+ 
+Swisslab-Revision:
+ Name                              Revision   FileName                                 CrDate          DB              
+ --------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+ Wikileaks                         2010.03    NULL                                     22.12.10  00:00                 
+ letztes Swisspro                  2010.03    NULL                                     21.03.12  15:57                 
+ swissup3.tab                       2.14 $    NULL                                     21.03.12  15:40                 
+ Lauris (via lauris.ini)            1.04 $    NULL                                     21.03.12  15:52                 
+ Blutbank (via barkasse.pro)        1.09 $    NULL                                     21.03.12  15:50                 
+ Statistik (via statistik.pro)      5.79 $    NULL                                     22.03.12  09:39                 
+ BB-Statistik (via spendestat.pro)  1.24 $    NULL                                     22.03.12  09:34                 
+                                              NULL                                                                     
+ neu:sp__space                      1.34 $    NULL                                     15.06.12  15:39 sybsystemprocs  
+ neu:PR_DUMPTRAN                    1.06 $    NULL                                     22.03.12  09:43 SWISSLAB        
+ neu:PR_FAREGE                      1.31 $    NULL                                     22.03.12  09:39 SWISSLAB        
+ neu:PR_EFESTAT                     1.30 $    NULL                                     22.03.12  09:39 SWISSLAB        
+ neu:PR_HYGSTAT                     1.00 $    NULL                                     22.03.12  09:39 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                 NULL                                                                     
+(return status = 0)

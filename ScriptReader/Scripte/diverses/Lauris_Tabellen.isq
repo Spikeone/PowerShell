@@ -1,0 +1,28 @@
+sp_help FORMULAR
+go
+sp_help VORLAGE
+go
+sp_help ANFORDERUNG
+go
+sp_help VORLAGEANF
+go
+sp_help BEHAELTER
+go
+sp_help VADEMECUM
+go
+sp_help BARCODE
+go
+sp_help SYSTEMPARAM
+go
+sp_help IDENT
+go
+sp_help CLIENT
+go
+sp_help UNINUMBER
+go
+sp_help UNINUMBERLOG
+go
+sp_help BEFUNDSICHT
+go
+sp_help BEFUNDSICHTANF
+go

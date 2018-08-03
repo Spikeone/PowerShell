@@ -1,0 +1,44 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: TUEB, ausgeführt am: 30.07.2012 
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           TUEB             T?bingen             SQLServer VMWare T?b VMWare Serversystem  Adaptive Server Enterprise/12.5.3/EBF 13331 ESD#7/P/NT (IX86)/OS 4.0/ase1253/1951/32-bit/OPT/Fri Mar 24 02:17:56 2006                                                                                                                                           
+                           TUEB             Tuebingen            LISROUTINEDB         Uni Tuebingen        Adaptive Server Enterprise/12.5.3/EBF 13331 ESD#7/P/NT (IX86)/OS 4.0/ase1253/1951/32-bit/OPT/Fri Mar 24 02:17:56 2006                                                                                                                                           
+ 
+ 
+ Anmeldungen (in 30 Tagen):                                            
+ --------------------------------------------------------------------- 
+ Anzahl Clients: 1859    Anzahl User: 246     Anzahl Auftraege: 60513  
+ 
+ 
+aktive Lauris-Versionen:
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           1 v9.01.26¹#       
+          10 v9.01.26# F      
+           2 v7.10.17²#       
+           1 v7.10.17# F      
+           1 v6.09.18# F      
+           2 v11.12.09#       
+          14 v10.05.12¹#      
+        1828 v10.05.12#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Forrest Gump                                                                     2011.03    NULL                                     01.12.11  00:00                 
+ letztes Swisspro                                                                 2011.03    NULL                                     15.05.12  13:34                 
+ swissup3.tab                                                                      2.14 $    NULL                                     15.05.12  13:11                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     15.05.12  13:26                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     15.05.12  13:24                 
+ Statistik (via statistik.pro)                                                     5.84 $    NULL                                     15.05.12  13:27                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     15.05.12  13:24                 
+                                                                                             NULL                                                                     
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)

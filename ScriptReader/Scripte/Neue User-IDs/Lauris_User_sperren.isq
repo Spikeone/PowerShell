@@ -1,0 +1,66 @@
+
+print''
+print '--- Lauris: Benutzer sperren, wenn das letzte Login > 190 Tage zurueckliegt  ---'
+print''
+
+declare
+  @Tage_seit_letztem_login int
+  
+select @Tage_seit_letztem_login = 190
+
+print 'Aktive Benutzer vorher  ---'
+select count(*) from IDENT where SPERRE=0
+
+print''
+print '--- Diese Benutzer werden gesperrt:  ---'
+print''
+
+select
+  Ident=I.IDENTCODE,
+  PersonID=P1.PERSONID,
+  LoginID=L.LOGINID,
+  Fachabteilung=E.EINSCODE, 
+  LoginLetzt=convert(char(11),I.LOGINDATLETZT,104)+convert(char(8),I.LOGINDATLETZT,108)+' ',
+  Status = case when (I.SPERRE=0) then 'aktiv'   
+                when (I.SPERRE=1) then 'geperrt'
+                when (I.SPERRE=2) then 'neu'
+                when (I.SPERRE=3) then 'automatisch gesperrt'
+           end,
+  Erfasspers=P2.PERSONID,
+  Erfassdat=convert(char(11),I.ERFASSDAT,104)+convert(char(8),I.ERFASSDAT,108)+' '
+
+from 
+  IDENT I,
+  PERSON P1,
+  PERSON P2,
+  EINSENDER E,
+  LOGIN L
+
+where 
+  I.STORNODAT is null and 
+  E.EINSENDERX=*I.EINSENDERX and
+  P1.PERSONX=*I.PERSONX and
+  L.PERSONX=*I.PERSONX and
+  I.ERFASSPERS=P2.PERSONX and
+  (dateadd(day,@Tage_seit_letztem_login,I.LOGINDATLETZT) < getdate() or 
+    (I.LOGINDATLETZT is null) and dateadd(day,@Tage_seit_letztem_login,I.ERFASSDAT) < getdate()) and
+  I.SPERRE=0 
+
+order by Fachabteilung, Ident  
+
+
+-- update 
+--   IDENT
+-- set 
+--   SPERRE=3,
+--   MUTDAT=getdate()
+-- where
+--   ((dateadd(day,@Tage_seit_letztem_login,LOGINDATLETZT) < getdate() or 
+--   (LOGINDATLETZT is null) and dateadd(day,@Tage_seit_letztem_login,ERFASSDAT) < getdate())) and
+--   SPERRE=0
+-- 
+-- print 'Aktive Benutzer nachher  ---'
+-- select count(*) from IDENT where SPERRE=0
+
+go
+

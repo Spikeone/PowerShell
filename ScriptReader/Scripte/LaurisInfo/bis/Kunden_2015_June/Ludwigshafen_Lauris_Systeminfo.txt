@@ -1,0 +1,86 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: LUH, ausgeführt am: 11.06.2015 14:44
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           LUH              Ludwigshafen         SQLCLUSTER           Routine KC und Haema Adaptive Server Enterprise/12.5.4/EBF 15438 ESD#8/P/NT (IX86)/OS 4.0/ase1254/2105/32-bit/OPT/Sat Mar 22 04:44:15 2008                                                                                                                                           
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 0       Anzahl User: 0       Anzahl Auftraege Lauris: 0       Anzahl Auftraege ohne Lauris: 35559  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Forrest Gump                                                                     2011.03    NULL                                     01.12.11  00:00                 
+ letztes Swisspro                                                                 2011.03    NULL                                     07.11.12  15:14                 
+ swissup3.tab                                                                      2.14 $    NULL                                     07.11.12  14:59                 
+ swlupgrade.tab                                                                    2.20.1 $  NULL                                     15.04.10  13:53                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     07.11.12  15:10                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     07.11.12  15:08                 
+ Statistik (via statistik.pro)                                                     5.85 $    NULL                                     07.11.12  15:10                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     07.11.12  15:08                 
+                                                                                             NULL                                                                     
+ neu:PI_DEFINITION                                                                 1.10 $    NULL                                     11.03.15  14:18 SWISSLAB        
+ neu:PI_DEFINITIONGRUPPE                                                           1.11 $    NULL                                     11.03.15  14:18 SWISSLAB        
+ neu:PR_DEFINITION                                                                 1.07 $    NULL                                     11.03.15  14:18 SWISSLAB        
+ neu:PR_DEFINITIONGRUPPE                                                           1.08 $    NULL                                     11.03.15  14:18 SWISSLAB        
+ neu:PI_ARCHSAVERECHNUNG                                                           1.15 $    NULL                                     20.01.14  12:50 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: LUH, beendet am: 11.06.2015 14:44 
+SQL-Abfrage-Dauer: 22  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 9.2.23.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2.0.0.1 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 9.2.23.1 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.0.0.1 

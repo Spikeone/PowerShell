@@ -1,0 +1,50 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 18158 SMP ESD#2/P/X64/Windows Server/asear155/2514/64-bit/OPT/Wed Aug 25 05:39:57 2010                                                                                                                                      
+                                SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 18158 SMP ESD#2/P/X64/Windows Server/asear155/2514/64-bit/OPT/Wed Aug 25 05:39:57 2010                                                                                                                                      
+
+(2 rows affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       1410             756          97 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                TEST MB_URIN     Test Mikrobiologie Urindiagnostik                                
+
+(1 row affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                FINST            Krh. Finsterwalde                                                       Mar 31 2008  2:49PM                       NULL       33400000        33499999         33409772            99999                  9772                  90227     9.7721 %       9.29 Nummern            9713.34 Tage                  NULL                   NULL            0 
+                                ELST             Elsterwerda                                                             Oct 20 2008 11:42AM                       NULL       44400000        44499999         44446404            99999                 46404                  53595    46.4045 %      54.66 Nummern             980.57 Tage                  NULL                   NULL            0 
+                                HERZ             Krh. Herzberg                                                           Jan 15 2009 11:10AM                       NULL       55500000        55599999         55584479            99999                 84479                  15520    84.4798 %     110.86 Nummern             139.99 Tage                  NULL                   NULL            0 
+
+(3 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

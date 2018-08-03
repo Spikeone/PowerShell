@@ -1,0 +1,29 @@
+print '--- Stornierte Behaelter im Formular (Lauris)  ---'
+select
+  Formular=F.FORMULARCODE,
+  AnalytCode=A.CODE, 
+  Material_Swisslab=M1.MATERIALNAME,
+  Kreis_Swisslab=M1.MATERIALKREISNR,
+  Behälter=B.BEHAELTERCODE,  
+  Material_Behaelter=M2.MATERIALNAME,
+  Kreis_Behaelter=M2.MATERIALKREISNR,  
+  Beh_Storno=convert(char(11),B.STORNODAT,104)+convert(char(8),B.STORNODAT,108)+' ',
+  ANF.BEHAELTERX,
+  A.DEFMATERIALX
+from 
+  ANFORDERUNG ANF,
+  ANALYT A,
+  BEHAELTER B,
+  MATERIAL M1,
+  MATERIAL M2,
+  FORMULAR F
+where 
+  ANF.STORNODAT is null and 
+  ANF.ANALYTX is not null and
+  A.ANALYTX=ANF.ANALYTX and
+  F.FORMULARX=ANF.FORMULARX and
+  B.BEHAELTERX=ANF.BEHAELTERX and
+  M1.MATERIALX=A.DEFMATERIALX and
+  M2.MATERIALX=B.MATERIALX
+order by Kreis_Swisslab
+go

@@ -1,0 +1,112 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: DATT, ausgeführt am: 09.06.2015 08:25
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           DATT             Vestische Caritas Kl SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 296     Anzahl User: 70      Anzahl Auftraege Lauris: 11939   Anzahl Auftraege ohne Lauris: 7039   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+          12 v8.08.15¹#       
+          17 v8.08.15# F      
+         222 v12.12.06.2      
+          32 v12.12.06#       
+          13 v10.07.15#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Neil Armstrong                                                                   2012.02    NULL                                     17.09.12  00:00                 
+ letztes Swisspro                                                                 2012.02    NULL                                     14.03.13  12:58                 
+ swissup3.tab                                                                      2.14 $    NULL                                     16.01.13  13:10                 
+ swissup3.tab                                                                      2.14 $    NULL                                     16.01.13  13:10                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     16.01.13  13:16                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     16.01.13  13:15                 
+ Statistik (via statistik.pro)                                                     5.88 $    NULL                                     30.04.15  13:07                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     16.01.13  13:15                 
+                                                                                             NULL                                                                     
+ neu:PI_TASKFLAG                                                                   2.12.3    NULL                                     30.04.15  13:09 SWISSLAB        
+ neu:PI_TASKFLAGREORG                                                              2.63 $    NULL                                     30.04.15  13:09 SWISSLAB        
+ neu:PI_DOKUMENT                                                                   1.80 $    NULL                                     30.04.15  13:07 SWISSLAB        
+ neu:PR_DOKUMENT                                                                   1.68 $    NULL                                     30.04.15  13:07 SWISSLAB        
+ neu:PR_DOKUMENT2                                                                  1.04 $    NULL                                     30.04.15  13:07 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       11399      1 1                Krh. Dattelen Labor Vincenz                                                                                                                                                                                                                                     
+         203      2 Lauf 2           Lauf 2   -- by swlupgrade                                                                                                                                                                                                                                       
+         337      4 WALTROP          Krh. Waltrop                                                                                                                                                                                                                                                    
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       10673 Labor im St. Vinzenz1                                            
+         314 LAU2                                                             
+         185 Mikrobilogie Labor MS (VKJK)                                     
+         159 Klinische Chemie Labor MS (VINC)                                 
+         146 Mikrobiologie Labor MS (VINC DA)                                 
+         144 VKJK1                                                            
+         118 Klinische Chemie Labor MS (VKJK)                                 
+          79 Mikrobiologie Labor MS (LAU)                                     
+          59 VKJK2 (DIN A5)                                                   
+          39 Klinische Chemie Labor MS (LAU)                                  
+          23 POCT-Laurentius                                                  
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ CLIENT   POCTQC           NULL       NULL       3B         
+ CLIENT   POCTQC           NULL       NULL       LAB        
+ CLIENT   POCTQC           NULL       3B         NULL       
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     3 NULL       NULL       NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       lab01      NULL       
+ AUFTRAG  NACHFORDERN                     2 NULL       ssc        NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       vlab       NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: DATT, beendet am: 09.06.2015 08:25 
+SQL-Abfrage-Dauer: 20  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 12.10.24.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2.0.0.1 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 12.12.6.2 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2012_02 

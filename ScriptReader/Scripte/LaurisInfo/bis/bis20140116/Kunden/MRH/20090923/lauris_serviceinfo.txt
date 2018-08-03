@@ -1,0 +1,68 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLSERVER            SQLSERVER,Fileserver Adaptive Server Enterprise/12.5.4/EBF 13738 ESD#1/P/NT (IX86)/OS 4.0/ase1254/2015/32-bit/OPT/Mon Aug 07 23:27:55 2006                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                      59620           59513          10 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                Citrat           Citrat                                                                    32          33 Citrat       Citrat                               25                       NULL 
+                                Citrat           Citrat                                                                     3          17 Citrat       Citrat                                4        Dec  8 2006  9:07AM 
+                                EDTA             EDTA                                                                      33          32 EDTA         EDTA                                 20                       NULL 
+                                EDTA             EDTA                                                                       4          16 EDTA         EDTA                                  3        Dec  8 2006  9:07AM 
+                                Fluorid          Fluorid                                                                   34          37 Fluorid      Fluorid                              50                       NULL 
+                                Fluorid          Fluoridplasma                                                             12          30 Fluorid      Fluoridplasma                        12        Dec  8 2006  9:07AM 
+                                Heparin          Heparin                                                                   35          34 Heparin      Heparin                              22                       NULL 
+                                Heparin          Heparin                                                                   13          14 Heparin      Heparin                               1        Dec  8 2006  9:07AM 
+                                Liquor           Liquor                                                                    36          38 Liquor       Liquor                               55                       NULL 
+                                Liquor           Liquor                                                                    20          19 Liquor       Liquor                                6        Dec  8 2006  9:07AM 
+                                Punktat          Punktat                                                                   37          39 Punktat      Punktat                              57                       NULL 
+                                Punktat          Punktat                                                                   21          21 Punktat      Punktat                               8        Dec  8 2006  9:07AM 
+                                Serum            Serum                                                                     38          31 Serum        Serum                                10                       NULL 
+                                Serum            Serum                                                                     22          15 Serum        Serum                                 2        Dec  8 2006  9:07AM 
+                                Stuhl            Stuhl                                                                     44          57 Stuhl        Stuhl                                58                       NULL 
+                                Stuhl            Stuhl                                                                     23          20 Stuhl        Stuhl                                 7        Dec  8 2006  9:07AM 
+                                Urin             Urin                                                                      39          35 Urin         Urin                                 70                       NULL 
+                                Urin             Urin                                                                      28          18 Urin         Urin                                  5        Dec  8 2006  9:07AM 
+
+(18 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Routine1 Labor   Routine Nummernkreis Labor                                              Oct 24 2006  1:29PM                       NULL        7000000         7999999          7000992           999999                   992                 999007     0.0992 %       0.93 Nummern         1072522.64 Tage                  NULL                   NULL         NULL 
+                                Routine1 Boppard Routine1 Nummernkreis Boppard                                           Jan 16 2007  1:38PM                       NULL        5000000         5999999          5040365           999999                 40365                 959634     4.0365 %      41.15 Nummern           23322.21 Tage                  NULL                   NULL         NULL 
+                                Routine 1 Koblen Routine 1 Koblenz                                                       Jan 16 2007  2:40PM                       NULL        8000000         8999999          8108436           999999                108436                 891563    10.8436 %     110.54 Nummern            8065.80 Tage                  NULL                   NULL         NULL 
+                                Routine 1 Nastät Routine 1 Nastätten                                                     Jan 16 2007  2:41PM                       NULL        9000000         9999999          9024192           999999                 24192                 975807     2.4192 %      24.66 Nummern           39569.55 Tage                  NULL                   NULL         NULL 
+                                BG u. Prod.      BG und Blutprodukte                                                     Jan 19 2007 12:36PM                       NULL        6000000         6999999          6016278           999999                 16278                 983721     1.6278 %      16.64 Nummern           59103.03 Tage                  NULL                   NULL         NULL 
+
+(5 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

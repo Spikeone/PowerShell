@@ -1,0 +1,1 @@
+powershell .\PS_Strategy.ps1

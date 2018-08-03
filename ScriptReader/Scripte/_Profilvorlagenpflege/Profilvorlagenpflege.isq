@@ -1,0 +1,742 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\Profilvorlagenpflege.isq           */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : 20160420                                                       */
+/*INFO     : Script zum Pflegen von Profilvorlagen                          */
+/****************************************************************************/
+-- Beschreibung: Macht da weiter, wo der Ersetzen-Assistent im Lauris Admin Dialog "Formular bearbeiten" aufhört.
+-- Es können Analytgruppen getauscht werden und/oder der Anforderungstyp und/oder der Behälter.
+-- Die Tabelle BARCODEANF wird nicht berücksichtigt! Bei der (seltenen) Verwendung von 2D-Barcodes nicht einsetzen!!!
+-- Vorsichtig vorgehen, erstmal mit @update = 0 und @debug = 1 prüfen, ob die Änderungen sinnvoll aussehen.
+
+set nocount on
+
+declare
+  @update               int,
+  @debug                int,
+  @analytcode_alt       varchar(16),
+  @analytcode_neu       varchar(16),
+  @formularcode         varchar(16),
+  @behaelter_alt        varchar(16),
+  @behaelter_neu        varchar(16),
+  @anforderungtyp_alt   varchar(32),
+  @anforderungtyp_neu   varchar(32),
+  @language             int
+
+/*|||||||||||||||||||||||||||                 ||||||||||||||||||!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!|||||||||||||||!!!!!!!!|||!!!!!!!!!!!!!!!!!!!!!!!!!!!||||!!!!|*/
+/*vvvvvvvvvvvvvvvvvvvvvvvvvvv Aufrufparameter vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
+select @update               = 0                                              /* @update = 0 -> nix machen, nur dokumentieren  @update = 1 -> Profilvorlagen updaten         */
+select @formularcode         = 'zMASTERRK'                                    /* hier den Formularcode eintragen                                                             */
+select @analytcode_alt       = 'zPFURIN1'                                     /* hier den alten Grupprn-Analytcode eintragen                                                 */
+select @analytcode_neu       = 'zPFUSTATUS2 '                                 /* hier den neuen Gruppen-Analytcode eintragen - keine Angabe: Analytgruppe bleibt unverändert */
+select @anforderungtyp_alt   = 'MFA-Anforderung'                              /* hier den alten Anforderungstyp eintragen (Block-, MFA-, oder Ketten-Anforderung             */
+select @anforderungtyp_neu   = 'MFA-Anforderung'                              /* hier den neuen Anforderungstyp eintragen (Block-, MFA-, oder Ketten-Anforderung             */
+select @behaelter_alt        = 'ui'                                           /* hier ggf. den alten Behälter eintragenn                                                     */
+select @behaelter_neu        = 'ui'                                           /* hier den neuen Behälter eintragenn                                                          */
+select @language             = 10                                             /* !!!!!! SPRACHID:  2 = english, 10 = deutsch                                                 */
+select @debug                = 1                                              /* @debug = 1 -> Debug-Output einschalten                                                      */
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^ Aufrufparameter ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+/*|||||||||||||||||||||||||||                  ||||||||||||||||||||||||||||!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!|||||||||||!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!!||*/
+
+declare
+  @va_anz               int,
+  @va_cnt               int,
+  @startdat             smalldatetime,
+  @enddat               smalldatetime,
+  @aktdat               varchar(21),
+  @analytx_alt          int,
+  @analytx_neu          int,
+  @anforderungtypn_alt  int,
+  @anforderungtypn_neu  int,
+  @behaelterx_neu       int,
+  @behaelter_alt2        varchar(16),
+  @behaelterx_alt       int,
+  @message              varchar(255),
+  @akt_userx            int,
+  @akt_user             varchar(16),
+  @mfa_analytcode_neu   varchar(16),
+  @mfa_analytx_neu      int,
+  @anakurz_alt          varchar(16),
+  @anakurz_neu          varchar(16),
+  @anabeschr_alt        varchar(32),
+  @anabeschr_neu        varchar(32),
+  @anakenn_alt          tinyint,
+  @anakenn_neu          tinyint,
+  @anakenntext_alt      varchar(12),
+  @anakenntext_neu      varchar(12),
+  @formularx            int,
+  @material_alt         varchar(8),
+  @material_neu         varchar(8),
+  @block                varchar(32),
+  @mfa                  varchar(32),
+  @kette                varchar(32),
+  @gruppenwechsel       int,
+/*   Parameter für Aufruf PI_VORLAGEANF  */
+  @USER                 int,
+  @LAURIS               int,
+  @VORLAGEX             int,
+  @ANALYTX              int,
+  @PANALYTX             int,
+  @MFAANALYTX           int,
+  @ART_Print            char(3),
+  @ART                  char(1),
+  @BEHAELTERX           int,
+  @VORLAGEANFX          int,
+  @STORNO               int,
+  @found                int
+
+create table #vorlageanf_temp(
+  cnt               numeric       identity not null, -- Counter
+  VORLAGEANFX       int           null,
+  VORLAGEX          int           null,
+  Vorlagenname      varchar(64)   null,
+  Gruppe_Alt        varchar(16)   null,
+  Analyt_alt        varchar(16)   null,
+  BEHAELTERX        int           null,
+  ART               char(1)       null,
+  ANALYTX           int           null,
+  MFAANALYTX        int           null,
+  PANALYTX          int           null,
+  Vo_Abteilung      varchar(16)   null,
+  Vo_Client         varchar(16)   null,
+  Vo_Ident          varchar(128)  null )
+
+
+select @akt_userx=PERSONX from LOGIN where LOGINID=suser_name() and STORNODAT is null
+select @akt_user=PERSONID from PERSON where PERSONX=@akt_userx
+select @aktdat=convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)
+print ' '
+print '--- Lauris: Analytgruppen in Profilvorlagen ersetzen ---'
+print ' '
+select @message = ' durchgeführt am ' + @aktdat + ' durch User ' + @akt_user + ' auf System: ' + substring(KUERZEL, 1, 20) + ', Ort: ' + substring(ORT, 1, 20) + ', Beschreibung: ' + substring(BESCHREIBUNG, 1, 20) from master..SYSTEMINFO
+print @message
+
+if (@update=0)
+  begin
+    print ' '
+    print ' '
+    select @message = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    print @message
+    select @message = '!!!! --  Testmodus - es werden keine Änderungen durchgeführt    -- !!!!'
+    print @message
+    select @message = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    print @message
+    print ' '
+  end
+
+if (@update=1)
+  begin
+    select @message = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    print @message
+    select @message = '!!!!   --  Updatemodus - Änderungen werden durchgeführt     --     !!!!'
+    print @message
+    select @message = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    print @message
+  end
+
+-- Die Namen der Anforderungstypen ermitteln (sprachabhängig)
+select
+  @block = FW.FWTEXT1
+from
+  FESTWERT FW
+where
+  FW.TABELLE = 'ANFORDERUNG' and
+  FW.SPALTE = 'ANFORDERUNGTYP' and
+  FW.INTWERT = 6 and
+  FW.SPRACHID = @language and
+  FW.STORNODAT is null
+select
+  @mfa = FW.FWTEXT1
+from
+  FESTWERT FW
+where
+  FW.TABELLE = 'ANFORDERUNG' and
+  FW.SPALTE = 'ANFORDERUNGTYP' and
+  FW.INTWERT = 7 and
+  FW.SPRACHID = @language and
+  FW.STORNODAT is null
+select
+  @kette = FW.FWTEXT1
+from
+  FESTWERT FW
+where
+  FW.TABELLE = 'ANFORDERUNG' and
+  FW.SPALTE = 'ANFORDERUNGTYP' and
+  FW.INTWERT = 8 and
+  FW.SPRACHID = @language and
+  FW.STORNODAT is null
+
+-- Formularnamen prüfen
+select @formularx=FORMULARX from FORMULAR where FORMULARCODE=@formularcode
+if @formularx is null
+begin
+	select @message = ' Error: Formular ' + @formularcode + ' not found'
+	print ' '
+	print @message
+  goto ende
+end
+
+-- Analytnamem prüfen
+select
+  @analytx_alt=A.ANALYTX,
+  @anakurz_alt=A.ANAKURZ,
+  @anabeschr_alt=substring(A.BESCHREIBUNG,1,32),
+  @anakenn_alt=A.KENNUNG,
+  @anakenntext_alt = FW.FWTEXT1,
+  @material_alt = M.MATCODE
+from
+  ANALYT A, FESTWERT FW, MATERIAL M
+where
+  A.CODE=@analytcode_alt and
+  FW.TABELLE = 'ANALYT' and
+  FW.SPALTE = 'KENNUNG' and
+  FW.INTWERT =* A.KENNUNG and
+  FW.SPRACHID = @language and
+  FW.STORNODAT is null and
+  M.MATERIALX =* A.DEFMATERIALX and
+  M.STORNODAT is null
+if @analytx_alt is null
+begin
+	select @message = ' Error: Analyte group ' + @analytcode_alt + ' not found'
+	print ' '
+	print @message
+  goto ende
+end
+if @analytcode_neu <> ''
+begin
+  select
+    @analytx_neu=A.ANALYTX,
+    @anakurz_neu=A.ANAKURZ,
+    @anabeschr_neu=substring(A.BESCHREIBUNG,1,32),
+    @anakenn_neu=A.KENNUNG,
+    @anakenntext_neu = FW.FWTEXT1,
+    @material_neu = M.MATCODE
+  from
+    ANALYT A, FESTWERT FW, MATERIAL M
+  where
+    A.CODE=@analytcode_neu and
+    FW.TABELLE = 'ANALYT' and
+    FW.SPALTE = 'KENNUNG' and
+    FW.INTWERT =* A.KENNUNG and
+    FW.SPRACHID = @language and
+    FW.STORNODAT is null and
+    M.MATERIALX =* A.DEFMATERIALX and
+    M.STORNODAT is null
+  if @analytx_neu is null
+  begin
+  	select @message = ' Error: Analyte group ' + @analytcode_neu + ' not found'
+  	print ' '
+  	print @message
+    goto ende
+  end
+end
+if @analytcode_neu = ''
+begin
+  select
+    @analytx_neu=@analytx_alt,
+    @anakurz_neu=@anakurz_alt,
+    @anabeschr_neu=@anabeschr_alt,
+    @anakenn_neu=@anakenn_alt,
+    @anakenntext_neu = @anakenntext_alt,
+    @material_neu = @material_neu
+end
+
+if @anforderungtyp_alt not in (@block,@mfa,@kette)
+begin
+	select @message = ' Error: request type "' + @anforderungtyp_alt + '" not found, must be "' + @block + '" or "' + @mfa + '" or "' + @kette + '"'
+	print ' '
+   print @message
+   goto ende
+end
+select @anforderungtypn_alt = case when @anforderungtyp_alt = @block then 6
+                                   when @anforderungtyp_alt = @mfa   then 7
+                                   when @anforderungtyp_alt = @kette then 8
+                              end
+if @anforderungtyp_neu = '' 
+begin 
+	select @anforderungtyp_neu = @anforderungtyp_alt 
+end
+if @anforderungtyp_neu not in (@block,@mfa,@kette)
+begin
+	select @message = ' Error: request type "' + @anforderungtyp_neu + '" not found, must be "' + @block + '" or "' + @mfa + '" or "' + @kette + '"'
+	print ' '
+   print @message
+   goto ende
+end
+select @anforderungtypn_neu = case when @anforderungtyp_neu = @block then 6
+                                   when @anforderungtyp_neu = @mfa   then 7
+                                   when @anforderungtyp_neu = @kette then 8
+                              end
+
+if @behaelter_alt = ''
+  begin
+		select @message = ' Error: "@behaelter_alt" is not specified'
+		print ' '
+    print @message
+    goto ende
+  end
+
+if @behaelter_alt <> ''
+begin
+	select
+    @behaelterx_alt = B.BEHAELTERX
+  from BEHAELTER B
+  where
+    B.BEHAELTERCODE = @behaelter_alt
+  if @behaelterx_alt is null
+  begin
+		select @message = ' Error: sample tube "' + @behaelter_alt + '" not found'
+		print ' '
+    print @message
+    goto ende
+  end
+end
+if @behaelter_neu <> ''
+begin
+	select
+    @behaelterx_neu = B.BEHAELTERX
+  from BEHAELTER B
+  where
+    B.BEHAELTERCODE = @behaelter_neu
+  if @behaelterx_neu is null
+  begin
+		select @message = ' Error: sample tube "' + @behaelter_neu + '" not found'
+		print ' '
+    print @message
+    goto ende
+  end
+end
+
+select
+  @behaelterx_neu = B.BEHAELTERX
+from BEHAELTER B
+where
+  B.BEHAELTERCODE = @behaelter_neu
+
+if @behaelterx_neu is null begin
+	select @behaelterx_neu = @behaelterx_alt
+	select @behaelter_neu = @behaelter_alt
+end
+
+print ' '
+select @message = ' Arbeitsparameter: '
+print @message
+select @message = ' @formularcode       = ' + @formularcode
+print @message
+select @message = ' @analytcode_alt     = ' + @analytcode_alt
+print @message
+select @message = ' @analytcode_neu     = ' + @analytcode_neu
+print @message
+select @message = ' @anforderungtyp_alt = ' + @anforderungtyp_alt
+print @message
+select @message = ' @anforderungtyp_neu = ' + @anforderungtyp_neu
+print @message
+select @message = ' @behaelter_alt      = ' + @behaelter_alt
+print @message
+select @message = ' @behaelter_neu      = ' + @behaelter_neu
+print @message
+print ' '
+
+
+print ' '
+select @message = '--- Gegenüberstellung: alt vs. neu ---'
+print @message
+select
+  'Type' = 'new:',
+  'Formular' = @formularcode,
+  'Analytgruppe' = @analytcode_neu,
+  'Anforderungtyp' = @anforderungtyp_neu,
+  'Behaelter' = @behaelter_neu
+union
+select
+  'Type' = 'old:',
+  'Formular' = @formularcode,
+  'Analytgruppe' = @analytcode_alt,
+  'Anforderungtyp (Lauris)' = @anforderungtyp_alt,
+  'Behaelter' = @behaelter_alt
+order by Type desc
+
+
+if (@anakenn_alt not in (6,7,8) or @anakenn_neu not in (6,7,8))
+  begin
+    select @message = '!!!! --  Bitte Analytkennungen prüfen, es müssen Analytgruppen sein   -- !!!!'
+    print @message
+    select @message = ' alte MFA ' + @analytcode_alt + ' hat Kennung ' + @anakenntext_alt + ', neue MFA ' + @analytcode_neu + ' hat Kennung ' + @anakenntext_neu + ' !!!!'
+    print @message
+    print ' '
+  end
+
+
+print ' '
+print ' '
+select @message = '--- Diese Einträge im Formular ' + @formularcode + ' werden modifiziert ---'
+print @message
+select
+  Formular=F.FORMULARCODE,
+  Analytgruppe=A.CODE,
+  Anforderungtyp=substring(FW.FWTEXT1,1,32),
+  Behälter=substring(rtrim(B.BEHAELTERCODE) + ' (' + rtrim(B.BEHAELTERNAME) + ')',1,32),
+  AnfArt=ANF.ART,
+  Anzeige = substring(isnull(ANF.BESCHREIBUNG,A.BESCHREIBUNG),1,48),
+  ANF.ANFORDERUNGX
+into #anftemp
+from
+  ANFORDERUNG ANF,
+  ANALYT A,
+  BEHAELTER B,
+  FORMULAR F,
+  PERSON P,
+  PERSON P2,
+  FESTWERT FW
+where
+  ANF.ANALYTX = @analytx_alt and
+  ANF.FORMULARX = @formularx and
+  ANF.STORNODAT is null and
+  ANF.ANFORDERUNGTYP = @anforderungtypn_alt and
+  ANF.BEHAELTERX = @behaelterx_alt and
+  A.ANALYTX=ANF.ANALYTX and
+  F.FORMULARX=ANF.FORMULARX and
+  F.STORNODAT is null and
+  B.BEHAELTERX =* ANF.BEHAELTERX and
+  ANF.BEHAELTERX = @behaelterx_alt and
+  FW.FWTEXT1 = @anforderungtyp_alt and
+  ANF.ERFASSPERS*=P.PERSONX and
+  ANF.MUTPERS*=P2.PERSONX and
+  ANF.ANFORDERUNGTYP = @anforderungtypn_alt and
+  FW.TABELLE = 'ANFORDERUNG' and
+  FW.SPALTE = 'ANFORDERUNGTYP' and
+  FW.INTWERT =* ANF.ANFORDERUNGTYP and
+  FW.SPRACHID = @language and
+  FW.STORNODAT is null
+select * from #anftemp
+
+--- Warnung: Diese Einträge im Formular werden  N I C H T  modifiziert, Anforderungstyp oder Behälter weichen ab  -  oder der Eintrag ist schon wie gewünscht       ---'
+select
+  Formular=F.FORMULARCODE,
+  Analytgruppe=A.CODE,
+  Anforderungtyp=substring(FW.FWTEXT1,1,32),
+  Behälter=substring(rtrim(B.BEHAELTERCODE) + ' (' + rtrim(B.BEHAELTERNAME) + ')',1,32),
+  AnfArt=ANF.ART,
+  Anzeige = substring(isnull(ANF.BESCHREIBUNG,A.BESCHREIBUNG),1,48),
+  ANF.ANFORDERUNGX
+into #wtemp
+from
+  ANFORDERUNG ANF,
+  ANALYT A,
+  BEHAELTER B,
+  FORMULAR F,
+  FESTWERT FW
+where
+  ANF.ANALYTX = @analytx_alt and
+  ANF.FORMULARX = @formularx and
+  ANF.STORNODAT is null and
+  A.ANALYTX=ANF.ANALYTX and
+  F.FORMULARX=ANF.FORMULARX and
+  F.STORNODAT is null and
+  B.BEHAELTERX =* ANF.BEHAELTERX and
+  ((B.BEHAELTERX <> @behaelterx_alt or FW.FWTEXT1 <> @anforderungtyp_alt) or (B.BEHAELTERX = @behaelterx_alt and FW.FWTEXT1 = @anforderungtyp_neu and @analytx_alt = @analytx_neu)) and
+  FW.TABELLE = 'ANFORDERUNG' and
+  FW.SPALTE = 'ANFORDERUNGTYP' and
+  FW.INTWERT =* ANF.ANFORDERUNGTYP and
+  FW.SPRACHID = @language and
+  FW.STORNODAT is null
+select @found = @@rowcount
+if @found > 0
+begin
+	print ' '
+	print ' '
+  select @message = '--- Warnung: Diese Einträge im Formular ' + @formularcode + ' werden  N I C H T  modifiziert, Anforderungstyp oder Behälter weichen ab  -  oder der Eintrag ist schon wie gewünscht ---'
+  print @message
+  select * from #wtemp
+end
+
+if (@update=1)
+begin
+  update ANFORDERUNG
+  set ANALYTX = @analytx_neu,
+      ANFORDERUNGTYP = @anforderungtypn_neu,
+      BEHAELTERX = @behaelterx_neu
+  from ANFORDERUNG ANF, FORMULAR FO
+  where
+    ANF.ANALYTX = @analytx_alt and
+    ANF.FORMULARX = @formularx and
+    ANF.ANFORDERUNGTYP = @anforderungtypn_alt and
+    ANF.BEHAELTERX = @behaelterx_alt and
+    ANF.STORNODAT is null and
+    FO.FORMULARX = ANF.FORMULARX and
+    FO.STORNODAT is null
+end
+
+
+select distinct
+-- VA.VORLAGEANFX,
+ VO.VORLAGEX,
+ VO.IDENTX,
+ VO.CLIENTX,
+ VO.EINSENDERX,
+ Vorlagenname=substring(VO.VORLAGENAME,1,32),
+ Gruppe_Neu=AN1.CODE,
+ VA_Analytx=VA.ANALYTX,
+ Gruppe_Alt=AN2.CODE,
+ ProfilAnalyt=AN3.CODE,
+ ProfilAnalytx=VA.PANALYTX,
+ VA_MFAAnalytx=VA.MFAANALYTX,
+-- Erfassdat=convert(char(11),VA.ERFASSDAT,104)+convert(char(8),VA.ERFASSDAT,108)+' ',
+-- ErfassPers=P.PERSONID,
+ BEHAELTERX_alt = VA.BEHAELTERX,
+ BEHAELTER_alt = BE.BEHAELTERCODE,
+ VA.ART,
+ Ersetzt=" MFA wurde ersetzt",
+ upflag=1,
+ Vo_Storno=VO.STORNODAT,
+ Va_Storno=VA.STORNODAT,
+ Vo_Abteilung=E.EINSCODE,
+ Vo_Client=C.CLIENTCODE,
+ Vo_Ident=I.IDENTCODE,
+ Formularcode=FO.FORMULARCODE,
+ ERGEBNIST_alt = VA.ERGEBNIST,
+ VA.ERGEBNISD,
+ VA.ERGEBNISF
+into
+ #vorlage_temp
+from
+ VORLAGEANF VA,
+ PERSON P,
+ VORLAGE VO,
+ ANALYT AN1,
+ ANALYT AN2,
+ ANALYT AN3,
+ EINSENDER E,
+ CLIENT C,
+ IDENT I,
+ FORMULAR FO,
+ BEHAELTER BE
+where
+ VA.VORLAGEX = VO.VORLAGEX and
+ VA.ERFASSPERS *= P.PERSONX and
+ AN1.ANALYTX = @analytx_neu and
+ VA.ANALYTX = @analytx_alt and
+ VA.ANALYTX = AN2.ANALYTX and
+ (VA.MFAANALYTX = @analytx_alt or VA.PANALYTX = @analytx_alt or VA.ANALYTX = @analytx_alt) and
+ AN3.ANALYTX =* VA.PANALYTX and
+ VA.BEHAELTERX = @behaelterx_alt and
+ BE.BEHAELTERX =* VA.BEHAELTERX and
+ VA.STORNODAT is null and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VO.FORMULARX = @formularx and
+ FO.FORMULARX = VO.FORMULARX and
+ FO.STORNODAT is null
+order by VO.VORLAGEX
+
+if (@debug = 1)
+begin
+  print ' '
+  print ' '
+  print ' '
+  print ' '
+  print '------------- Debug-Information ------------------ Debug-Information ------------------ Debug-Information ------------------ Debug-Information ------------------ Debug-Information ------------------'
+  print '--- Liste der zu berbeitenden Vorlagen         ---'
+  select
+   Vorlagenname,
+   Formularcode,
+   Gruppe_Neu,
+   Gruppe_Alt,
+   BEHAELTER_alt,
+   ERGEBNIST_alt = substring(ERGEBNIST_alt,1,8),
+   ART,
+   ProfilAnalyt,
+   Vo_Abteilung,
+   Vo_Client,
+   Vo_Ident = substring(Vo_Ident,1,12),
+   VORLAGEX --,
+--   VORLAGEANFX
+  from
+   #vorlage_temp
+end  
+insert into #vorlageanf_temp
+select
+ VA.VORLAGEANFX,
+ t.VORLAGEX,
+ Vorlagenname,
+ Gruppe_Alt,
+ Analyt_alt=AN1.CODE,
+ VA.BEHAELTERX,
+ VA.ART,
+ VA.ANALYTX,
+ VA.MFAANALYTX,
+ VA.PANALYTX,
+ t.Vo_Abteilung,
+ t.Vo_Client,
+ t.Vo_Ident
+from
+ #vorlage_temp t,
+ VORLAGEANF VA,
+ ANALYT AN1
+where
+ VA.VORLAGEX=t.VORLAGEX and
+ (VA.MFAANALYTX=@analytx_alt or VA.PANALYTX=@analytx_alt or VA.ANALYTX=@analytx_alt) and
+ VA.ANALYTX=AN1.ANALYTX and
+ VA.STORNODAT is null
+select @va_anz = @@rowcount
+
+if (@debug = 1)
+begin
+  print ' '
+  print ' '
+  print '--- Diese Analytgruppen in VORLAGEANF werden storniert  ---'
+  select distinct
+    Vorlage=V.VORLAGENAME,
+    Analyt=A1.CODE,
+    MFA_Analyt=A2.CODE,
+    Profil_Analyt=A3.CODE,
+    Behaelter = B.BEHAELTERCODE,
+    Art = tvoa.ART,
+    tvoa.Vo_Abteilung,
+    tvoa.Vo_Client,
+    Ident = substring(tvoa.Vo_Ident,1,16),
+    V.VORLAGEX,
+    VORLAGEANFX
+  from #vorlageanf_temp tvoa, ANALYT A1,  ANALYT A2, ANALYT A3, VORLAGE V, BEHAELTER B
+  where
+    V.VORLAGEX = tvoa.VORLAGEX
+    and A1.ANALYTX = tvoa.ANALYTX
+    and A2.ANALYTX =* tvoa.MFAANALYTX
+    and A3.ANALYTX =* tvoa.PANALYTX
+    and B.BEHAELTERX =* tvoa.BEHAELTERX
+  order by V.VORLAGEX, VORLAGEANFX
+end
+
+if (@debug=1)          
+begin
+  select @va_cnt=1
+  while  @va_cnt <= @va_anz
+    begin
+      select
+        @USER        =   @akt_userx,
+        @VORLAGEANFX =   VORLAGEANFX,
+        @STORNO      =   1
+      from
+        #vorlageanf_temp
+      where
+        cnt = @va_cnt
+        print 'PI_VORLAGEANF @USER=%1!, @VORLAGEANFX=%2!, @STORNO=%3!',@USER,@VORLAGEANFX,@STORNO
+      select @va_cnt=@va_cnt+1
+    end
+end
+-- Aufruf PI_VORLAGEANF @STORNO=1
+if (@update=1)          
+begin
+  select @va_cnt=1
+  while  @va_cnt <= @va_anz
+    begin
+      select
+        @USER        =   @akt_userx,
+        @VORLAGEANFX =   VORLAGEANFX,
+        @STORNO      =   1
+      from
+        #vorlageanf_temp
+      where
+        cnt = @va_cnt
+      exec PI_VORLAGEANF @USER=@akt_userx, @VORLAGEANFX=@VORLAGEANFX, @STORNO=@STORNO
+      select @va_cnt=@va_cnt+1
+    end
+end
+
+/*  insert-Tabelle für VORLAGEANF vorbereiten  (MFA) */
+select distinct
+    T_COUNT      = 0,
+    T_USER       = @akt_userx,
+    T_LAURIS     = 1,
+    t.VORLAGEX,
+    AN1.ANALYTX,
+    T_PANALYTX   = case when AN1.ANALYTX <> @analytx_neu then @analytx_neu else null end,
+    T_MFAANALYTX = case when @anforderungtypn_neu = 7 then @analytx_neu end,
+    T_ART_Print  = "'R'",
+    T_ART        = 'R',
+    BEHAELTERX = @behaelterx_neu,
+    t.Vo_Abteilung,
+    t.Vo_Client,
+    t.Vo_Ident
+into
+    #mfa_temp
+from
+    ANALYT AN1,
+    METHGRUPPE MG,
+    #vorlage_temp t
+where
+    MG.ANA_ANALYTX    = @analytx_neu and
+    (AN1.ANALYTX      = MG.ANALYTX or AN1.ANALYTX = MG.ANA_ANALYTX) and
+    t.VA_Analytx      = @analytx_alt and
+    t.upflag          = 1
+order by
+    t.VORLAGEX
+
+if (@debug = 1)
+begin
+  print ' '
+  print '--- Neue MFA-Analyte in VORLAGEANF schreiben ---'
+  select
+    Vorlage=V.VORLAGENAME,
+    Analyt=A1.CODE,
+    MFA_Analyt=A2.CODE,
+    Profil_Analyt=A3.CODE,
+    Behaelter = B.BEHAELTERCODE,
+    Art = tmfa.T_ART,
+    tmfa.Vo_Abteilung,
+    tmfa.Vo_Client,
+    Vo_Ident = substring(tmfa.Vo_Ident,1,16)
+  from #mfa_temp tmfa, ANALYT A1,  ANALYT A2, ANALYT A3, VORLAGE V, BEHAELTER B
+  where
+    V.VORLAGEX = tmfa.VORLAGEX
+    and A1.ANALYTX = tmfa.ANALYTX
+    and A2.ANALYTX =* tmfa.T_MFAANALYTX
+    and A3.ANALYTX =* tmfa.T_PANALYTX
+    and B.BEHAELTERX =* tmfa.BEHAELTERX
+end
+select @va_anz=1
+update #mfa_temp set T_COUNT=@va_anz,@va_anz=@va_anz+1
+select @va_anz=@va_anz-1
+if (@debug=1)
+begin
+  print ' '
+  print ' Anzahl neuer Einträge in VORLAGEANF = %1!',@va_anz
+  print ' '
+  print '--- Debug: Aufruf PI_ANFORDERUNG ---'
+end
+
+select @va_cnt=1
+while  @va_cnt <= @va_anz
+  begin
+    select
+      @USER        =   T_USER,
+      @LAURIS      =   T_LAURIS ,
+      @VORLAGEX    =   VORLAGEX,
+      @ANALYTX     =   ANALYTX,
+      @PANALYTX    =   isnull(@PANALYTX,T_PANALYTX),
+      @MFAANALYTX  =   T_MFAANALYTX,
+      @ART         =   T_ART,
+      @ART_Print   =   T_ART_Print,
+      @BEHAELTERX  =   BEHAELTERX
+    from
+      #mfa_temp
+    where
+      T_COUNT = @va_cnt
+    if (@debug=1)
+    begin
+      print 'PI_VORLAGEANF @USER=%1!, @LAURIS=%2!, @VORLAGEX=%3!, @ANALYTX=%4!, @PANALYTX=%5!, @MFAANALYTX=%6!, @ART=%7!, @BEHAELTERX=%8!',@USER,@LAURIS,@VORLAGEX,@ANALYTX,@PANALYTX,@MFAANALYTX,@ART_Print,@BEHAELTERX
+    end
+    if (@update=1) exec PI_VORLAGEANF @USER=@USER,@LAURIS=@LAURIS,@VORLAGEX=@VORLAGEX,@ANALYTX=@ANALYTX,@PANALYTX=@PANALYTX,@MFAANALYTX=@MFAANALYTX,@ART=@ART,@BEHAELTERX=@BEHAELTERX
+    select @va_cnt=@va_cnt+1
+  end
+-- print ' '
+-- select * from #mfa_temp
+-- print ' '
+-- select * from #vorlage_temp
+
+ende:
+
+go
+

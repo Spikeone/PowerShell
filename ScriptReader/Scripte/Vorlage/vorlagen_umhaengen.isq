@@ -1,0 +1,198 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\vorlagen_umhaengen.isq             */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [20160317]                                                     */
+/*INFO     : Lauris - Zuweisung neuer Formulare für Vorlagen                */
+/****************************************************************************/
+set nocount on
+declare
+  @update               int,
+  @retour               int,
+  @report               int,
+  @formularcode_neu     varchar(16),
+  @formularnicht_01     varchar(128),
+  @formularnicht_02     varchar(128),
+  @formularnicht_03     varchar(128),
+  @language             int
+create table #fn (formularnicht varchar(36))
+
+
+/*|||||||||||||||||||||||||||                 ||||||||||||||||||!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!|||||||||||||||!!!!!!!!|||!!!!!!!!!!!!!!!!!!!!!!!!!!!||||!!!!|*/
+/*vvvvvvvvvvvvvvvvvvvvvvvvvvv Aufrufparameter vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
+select @update               = 1                                              /* @update = 0 -> nix machen, nur dokumentieren  @update = 1 -> Profilvorlagen updaten         */
+select @formularcode_neu     = 'zMASTERRK'                                    /* hier den Formularcode eintragen                                                             */
+insert into #fn select         @formularcode_neu                              /* Vorlagen dieses Formulars nicht umstellen                                                   */
+insert into #fn select         'zVERSAND'                                     /* Vorlagen dieses Formulars nicht umstellen                                                   */
+insert into #fn select         'zRLK'                                         /* Vorlagen dieses Formulars nicht umstellen                                                   */
+insert into #fn select         ''                                             /* Vorlagen dieses Formulars nicht umstellen                                                   */
+insert into #fn select         ''                                             /* Vorlagen dieses Formulars nicht umstellen                                                   */
+select @language             = 10                                             /* !!!!!! SPRACHID:  2 = english, 10 = deutsch                                                 */
+select @retour               = 1                                              /* @retour = 1 -> Ausgabe für Wiederherstellungsskript                                         */
+select @report               = 1                                              /* @report = 1 -> Ausgabe einer Vorlagenliste                                                  */
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^ Aufrufparameter ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+/*|||||||||||||||||||||||||||                  ||||||||||||||||||||||||||||!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!|||||||||||!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!!||*/
+
+
+declare
+  @vo_anz               int,
+  @vo_cnt               int,
+  @startdat             smalldatetime,
+  @enddat               smalldatetime,
+  @aktdat               varchar(21),
+  @message              varchar(255),
+  @akt_userx            int,
+  @akt_user             varchar(16),
+  @formularx            int,
+  @formularx_neu        int,
+/*   Parameter für Aufruf PI_VORLAGE  */
+  @USER                 int,
+  @VORLAGEX             int,
+  @FORMULARX            int,
+  @SPRACHID             int
+
+
+create table #vorlage_temp(
+  cnt               numeric       identity not null, -- Counter
+  vorlagex          int           null,              -- VORLAGEX
+  identx            int           null,              -- IDENTX
+  clientx           int           null,              -- CLIENTX
+  einsenderx        int           null,              -- EINSENDERX
+  vorlagename       varchar(64)   null,              -- VORLAGENAME
+  einscode          varchar(16)   null,              -- EINSCODE
+  clientcode        varchar(16)   null,              -- CLIENTCODE
+  identcode         varchar(128)  null,              -- IDENTCODE
+  formularcodealt   varchar(16)   null,              -- FORMULARCODE
+  formularxalt      int           null )             -- FORMULARX
+
+select @akt_userx=PERSONX from LOGIN where LOGINID=suser_name() and STORNODAT is null
+select @akt_user=PERSONID from PERSON where PERSONX=@akt_userx
+select @aktdat=convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)
+print ' '
+print '--- Lauris: Vorlagen auf ein anderes Formular umsetzen ---'
+print ' '
+select @message = ' durchgeführt am ' + @aktdat + ' durch User ' + @akt_user + ' auf System: ' + substring(KUERZEL, 1, 20) + ', Ort: ' + substring(ORT, 1, 20) + ', Beschreibung: ' + substring(BESCHREIBUNG, 1, 20) from master..SYSTEMINFO
+print @message
+
+select @formularx_neu = FORMULARX from FORMULAR where FORMULARCODE = @formularcode_neu
+if @formularx_neu is null
+begin
+  select @message = ' !!!!!    Fehler: Zielformular ' + @formularcode_neu + ' nicht gefunden    !!!!!'
+  print @message
+  goto ende
+end
+
+if (@update=0)
+  begin
+    print ' '
+    select @message = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    print @message
+    select @message = '!!!! --  Testmodus - es werden keine Änderungen durchgeführt    -- !!!!'
+    print @message
+    select @message = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    print @message
+    print ' '
+  end
+
+if (@update=1)
+  begin
+    print ' '
+    select @message = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    print @message
+    select @message = '!!!!   --  Updatemodus - Änderungen werden durchgeführt     --     !!!!'
+    print @message
+    select @message = '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    print @message
+  end
+
+
+
+--- Umzuschreibende Vorlagen ermitteln
+insert into #vorlage_temp
+select
+ VO.VORLAGEX,
+ VO.IDENTX,
+ VO.CLIENTX,
+ VO.EINSENDERX,
+ VO.VORLAGENAME,
+ E.EINSCODE,
+ C.CLIENTCODE,
+ I.IDENTCODE,
+ FO.FORMULARCODE,
+ VO.FORMULARX
+from
+ VORLAGE VO,
+ EINSENDER E,
+ CLIENT C,
+ IDENT I,
+ FORMULAR FO
+where
+ VO.FORMULARX = FO.FORMULARX and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ FO.STORNODAT is null and
+ FO.FORMULARCODE not in (select formularnicht from #fn)
+order by VO.FORMULARX, VO.VORLAGEX
+select @vo_anz = @@rowcount
+
+if (@report=1)
+begin
+  select
+   formularcodealt,
+   vorlagename,
+   Vo_Abteilung = einscode,
+   Vo_Client = clientcode,
+   Vo_Ident = substring(identcode,1,16),
+   formularxalt,
+   vorlagex
+  from
+   #vorlage_temp
+end
+
+if (@update=1)
+begin
+  select @vo_cnt=1
+  while  @vo_cnt <= @vo_anz
+    begin
+      select
+        @USER        =   @akt_userx,
+        @VORLAGEX    =   vorlagex,
+        @FORMULARX   =   formularxalt,
+        @SPRACHID    =   @language
+      from
+        #vorlage_temp
+      where
+        cnt = @vo_cnt
+      exec PI_VORLAGE @USER=@USER,@VORLAGEX=@VORLAGEX,@FORMULARX=@formularx_neu,@SPRACHID=@SPRACHID
+      select @vo_cnt=@vo_cnt+1
+    end
+end    
+
+if (@retour=1)
+begin 
+	print ''
+	print '-- Anfang: Script-Schnipsel zur Wiederherstellung des ursprünglichen Zustandes, für den Fehlerfall'
+  select @vo_cnt=1
+  while  @vo_cnt <= @vo_anz
+    begin
+      select
+        @USER        =   @akt_userx,
+        @VORLAGEX    =   vorlagex,
+        @FORMULARX   =   formularxalt,
+        @SPRACHID    =   @language
+      from
+        #vorlage_temp
+      where
+        cnt = @vo_cnt
+      print 'PI_VORLAGE @USER=%1!, @VORLAGEX=%2!, @FORMULARX=%3!, @SPRACHID=%4!',@USER,@VORLAGEX,@FORMULARX,@SPRACHID
+      print 'go'
+      select @vo_cnt=@vo_cnt+1
+    end
+	print '-- Ende: Script-Schnipsel zur Wiederherstellung des ursprünglichen Zustandes, für den Fehlerfall'
+end
+
+ende:
+
+go
+

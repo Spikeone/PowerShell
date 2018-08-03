@@ -1,0 +1,67 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 17.02.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLSERVER            Sybase 12.5.3 EBF 5  Adaptive Server Enterprise/12.5.3/EBF 13061 ESD#5/P/NT (IX86)/OS 4.0/ase1253/1939/32-bit/OPT/Tue Dec 06 00:21:31 2005                                                                                                                                           
+                            SWFHETZNEU           Sybase ASE 12.5.3 EB Adaptive Server Enterprise/12.5.3/EBF 13061 ESD#5/P/NT (IX86)/OS 4.0/ase1253/1939/32-bit/OPT/Tue Dec 06 00:21:31 2005                                                                                                                                           
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    26.08.09  12:56                 
+ swissup3.tab                       2.08 $    26.08.09  12:47                 
+ swlupgrade.tab                     2.20.1 $  29.07.10  12:00                 
+ Lauris (via lauris.ini)            1.03 $    26.08.09  12:53                 
+ Blutbank (via barkasse.pro)        1.06 $    29.07.10  11:59                 
+ Statistik (via statistik.pro)      5.51 $    29.07.10  12:00                 
+ BB-Statistik (via spendestat.pro)  1.21 $    26.08.09  12:52                 
+                                                                              
+ neu:PR_BEARBMONITOR                5.26 $    29.07.10  12:01 SWISSLAB        
+ neu:PR_BEARBMONITOR2               5.25 $    29.07.10  12:01 SWISSLAB        
+ neu:PR_BEARBMONITOR3               5.24 $    29.07.10  12:01 SWISSLAB        
+ neu:PR_BEFUNDDOKUMENT              1.28 $    29.07.10  12:01 SWISSLAB        
+ neu:PR_DOKUMENT                    1.57.1    29.07.10  12:01 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                         156 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#9.08.18¹# FW=#2.0.50727.3615# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                   
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#6.12.08# FW=#2.0.50727.3615# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                    
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                 46824           46605           9 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                LLIMB            Labor Limbach                                                    
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ CLIENT   POCTGERAET       0         NULL             NULL       mlampert         NULL       NULL     27.06.2007 14:32:00  ML               27.06.2007 14:34:00  ML                        197          -1          -1 LAURIS           689      0       30          19 
+ CLIENT   POCTKOMMENT      0         NULL             NULL       mlampert         NULL       NULL     27.06.2007 14:32:00  ML                                    NULL                      199          -1          -1 LAURIS           689      0       14          68 
+ CLIENT   POCTQC           0         NULL             NULL       mlampert         NULL       NULL     27.06.2007 14:32:00  ML                                    NULL                      198          -1          -1 LAURIS           689      0        0           1 

@@ -1,0 +1,79 @@
+/* Parameter deklarieren         */
+
+declare
+  @code          varchar(16),
+  @anax          int
+set nocount on
+
+
+/* -------------------------------------------------------------------------------- */
+select @code = 'NA'   /* !!!!!! hier den zu suchenden Analytcode eintragen !!      */
+/* -------------------------------------------------------------------------------- */
+
+
+select @anax = 0
+select @anax = ANALYTX from ANALYT where CODE=@code and STORNODAT is null 
+set nocount off
+
+print ''
+print '--- Profile (Lauris), die eine bestimmte Anforderung enthalten ---'
+print ''
+
+select distinct
+  VO.VORLAGEX,
+  VO.FORMULARX
+into #temp
+from VORLAGE VO, VORLAGEANF VOANF
+where 
+      VOANF.ANALYTX = @anax
+  and VO.VORLAGEX = VOANF.VORLAGEX
+
+-- select * from #temp
+
+select
+ F.FORMULARX,
+ FormularCode=F.FORMULARCODE,
+ Vorlagenname=substring(VO.VORLAGENAME,1,32),
+ Station=E.EINSCODE,
+ Client=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Analyt=AN1.CODE,
+ Behältercode=BE.BEHAELTERCODE,
+ Behaeltername=BE.BEHAELTERNAME,
+-- Materialkreis=M.MATERIALKREISNR,
+-- Materialcode=M.MATCODE,
+-- Materialname=M.MATERIALNAME,
+ ErgebnisD=VA.ERGEBNISD,
+ ErgebnisT=substring(VA.ERGEBNIST,1,12),
+ ErgebnisF=VA.ERGEBNISF,
+ Art=VA.ART,
+ MFA_Analyt=AN2.CODE,
+ PAnalyt=AN3.CODE,
+ Erfassdat=convert(char(11),VA.ERFASSDAT,104)+convert(char(8),VA.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ VorlageAnfX=VA.VORLAGEANFX,
+ Plandat=convert(char(11),VO.PLANDAT,104)+convert(char(8),VO.PLANDAT,108)+' ',
+ Abnahmedat=convert(char(11),VO.ABNAHMEDAT,104)+convert(char(8),VO.ABNAHMEDAT,108)+' '
+
+
+from VORLAGEANF VA, PERSON P, VORLAGE VO, ANALYT AN1, ANALYT AN2, ANALYT AN3, BEHAELTER BE, FORMULAR F, EINSENDER E, CLIENT C, IDENT I, #temp t -- , MATERIAL M
+where
+ VO.VORLAGEX = t.VORLAGEX and
+ VO.STORNODAT is null and
+-- VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VA.ERFASSPERS *= P.PERSONX and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+-- M.MATERIALX *= BE.MATERIALX and
+ VO.FORMULARX*=F.FORMULARX
+order by 
+ VO.VORLAGEX 
+
+ 
+go

@@ -1,0 +1,87 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [141009]                                                       */
+/*KURZINFO : Auslisten der Tabelle CLIENT                                   */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20141009.1913>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[141009] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+-- dieses Script wurde (wie man leicht sieht) aus der PR_CLIENT erstellt, mit ein paar Änderungen
+create table #temp(
+   CLIENTX int null,
+   EINSENDERX int null)
+
+/* Clients in die Tabelle einfuegen */
+insert into #temp select
+   C.CLIENTX,
+   C.EINSENDERX
+from
+   CLIENT C
+
+/* Ergebnis aus Tempo Tabelle ausgeben */
+select
+   T.CLIENTX,
+   C.CLIENTCODE,
+   C.CLIENTNAME,
+--   C.CLIENTTYP,
+   Identtyp = substring(FW.FWTEXT1,1,16),   
+   T.EINSENDERX,
+   E.EINSCODE,
+   E.EINSNREXT,
+   E.EINSKURZ,
+   E.NAME1,
+   C.ROLLEX,
+   R.CODE as ROLLECODE,
+   C.ADRESSE,
+   C.VERSIONINFO,
+   C.KOMMENTAR,
+   C.SPERRE,
+   C.PRODUKT,
+   C.LOGINDATLETZT,
+   C.STORNODAT
+from
+   #temp T,
+   CLIENT C,
+   EINSENDER E,
+   ROLLE R,
+   FESTWERT FW
+where
+   T.CLIENTX = C.CLIENTX
+   and T.EINSENDERX *= E.EINSENDERX
+   and C.ROLLEX *= R.ROLLEX
+   and FW.SPRACHID = 10 
+   and FW.TABELLE = 'CLIENT' 
+   and FW.SPALTE = 'CLIENTTYP' 
+   and FW.INTWERT = C.CLIENTTYP 
+   
+order by
+   E.EINSCODE, C.CLIENTCODE
+
+
+go               
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 

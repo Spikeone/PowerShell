@@ -1,0 +1,40 @@
+print '--- Tabelle VORLAGE (Lauris) ---'
+go
+select
+ Vorlagenname=substring(VO.VORLAGENAME,1,20),
+ FormularCode=substring(FO.FORMULARCODE,1,16),
+ Nummernkreis=U.UNINUMBERCODE,
+ Vorlagetyp=VO.VORLAGETYP,
+ Clientcode=substring(C.CLIENTCODE,1,10),
+ I.IDENTCODE,
+ Einsender=substring(E.EINSKURZ,1,10),
+ IsMaster=VO.ISMASTER,
+ Filter=VO.FILTER,
+ Sort=VO.SORT,
+ Ebene=VO.EBENE,
+ Dring=VO.DRING,
+ Lauf=VO.LAUF,
+ DispIcon=VO.DISPICON,
+ DispFormat=VO.DISPFORMAT,
+ Erfassdat=convert(char(11),VO.ERFASSDAT,104)+convert(char(8),VO.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ Mutdat=convert(char(11),VO.MUTDAT,104)+convert(char(8),VO.MUTDAT,108)+' ',
+ Mutpers=P2.PERSONID,
+ Stornodat=convert(char(11),VO.STORNODAT,104)+convert(char(8),VO.STORNODAT,108)+' ',
+ Stornopers=P3.PERSONID,
+ ZimmerNr=VO.ZIMMERNR,
+ Eigner=VO.EIGNER,
+ Nutzer=VO.NUTZER,
+ Vorlagex=VO.VORLAGEX
+from VORLAGE VO, IDENT I, PERSON P, PERSON P2, PERSON P3, CLIENT C, EINSENDER E, FORMULAR FO, UNINUMBER U
+where
+ VO.FORMULARX *= FO.FORMULARX and
+ U.UNINUMBERX =* FO.UNINUMBERX and
+ VO.CLIENTX *= C.CLIENTX and 
+ VO.IDENTX *= I.IDENTX and 
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.ERFASSPERS *= P.PERSONX and
+ VO.MUTPERS *= P2.PERSONX and
+ VO.STORNOPERS *= P3.PERSONX
+order by VO.VORLAGEX 
+go

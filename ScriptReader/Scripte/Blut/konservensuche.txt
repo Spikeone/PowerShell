@@ -1,0 +1,13 @@
+ FallNr     StammNr    Name         Vorname    Mandant AuftragsNr ERFASSDAT                  EINSCODE         AErfassPers      Probe                KonserveNr           KErfassPers      
+ ---------- ---------- ------------ ---------- ------- ---------- -------------------------- ---------------- ---------------- -------------------- -------------------- ---------------- 
+ S00000050  00000050   Sebi         Depot      NULL    12378901          Jan 20 2010  9:48AM TEST             ssc              252                  2769991012345601     ssc              
+ S00000050  00000050   Sebi         Depot      NULL    12378901          Jan 20 2010  9:48AM TEST             ssc              1237890166           2769991012345601     ssc              
+ S00000050  00000050   Sebi         Depot      NULL    12378901          Jan 20 2010  9:48AM TEST             ssc              12378901200          2769991012345601     ssc              
+ S00000050  00000050   Sebi         Depot      NULL    12378901          Jan 20 2010  9:48AM TEST             ssc              1234567890123444     2769991012345601     ssc              
+ S00000050  00000050   Sebi         Depot      NULL    12378901          Jan 20 2010  9:48AM TEST             ssc              2769991012345601     2769991012345601     ssc              
+ S00000007  00000007   Blutbank     Tester     NULL    50000888          Sep  2 2010  3:08PM BLB              ssc              50000888200          2769990912345608     ssc              
+ S00000007  00000007   Blutbank     Tester     NULL    50000888          Sep  2 2010  3:08PM BLB              ssc              2769990912345608     2769990912345608     ssc              
+ S00000087  00000087   Test         Sebi       NULL    36987412          Sep 15 2010  1:57PM BLB              Transfusion      36987412200          1236547896321456     Transfusion      
+ S00000087  00000087   Test         Sebi       NULL    36987412          Sep 15 2010  1:57PM BLB              Transfusion      1236547896321456     1236547896321456     Transfusion      
+
+(9 rows affected)

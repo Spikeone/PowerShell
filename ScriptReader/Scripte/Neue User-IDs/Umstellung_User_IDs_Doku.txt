@@ -1,0 +1,11 @@
+Nachführung der Lauris-User ID´s nach Änderung im KIS
+
+1. Anlegen einer Hilfstabelle IDENT01 mit ident01.tab (isql -S... -Uswissdbo -iident01.tab)
+2. Anlegen und Ausführen des Scripts ident01_insert.isq mit den alten und neuen User-Id´s
+   Hierbei wird die Konsistenz der Daten des KIS überprüft und die Tabelle um fehlerhafte Einträge bereinigt.
+   Max. Länge der User-ID´s ist 16 Zeichen!
+3. Wenn die Hilfstabelle IDENT01 abgesegnet wurde kann mit folgendem Script die Umstellung 
+   der User Idents scharf geschaltet werden:
+   update_lauris_user.isq  
+   oder etwas behutsamer:   
+   update_lauris_user_nach_Fachabteilung.isq

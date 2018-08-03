@@ -1,0 +1,47 @@
+print '--- Tabelle UNINUMBER (Lauris)  ---'
+go
+select
+ U.UNINUMBERX,
+ Code=substring(U.UNINUMBERCODE,1,16),
+ Name=substring(U.UNINUMBERNAME,1,16),
+ U.NUMFIRST,
+ U.NUMLAST,
+ U.NUMNEXT,
+ U.NUMSTEP,
+ U.RESFIRST,
+ U.RESLAST,
+ Erfassdat=convert(char(11),U.ERFASSDAT,104)+convert(char(8),U.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ Mutdat=convert(char(11),U.MUTDAT,104)+convert(char(8),U.MUTDAT,108)+' ',
+ MutPers=P2.PERSONID,
+ Stornodat=convert(char(11),U.STORNODAT,104)+convert(char(8),U.STORNODAT,108)+' ',
+ StornoPers=P3.PERSONID,
+ U.EIGNER,
+ U.NUTZER,
+ U.NUMLENGTH,
+ U.PRUEFMODUS
+from UNINUMBER U, PERSON P, PERSON P2, PERSON P3  
+where 
+ U.ERFASSPERS *= P.PERSONX and
+ U.MUTPERS *= P2.PERSONX and
+ U.STORNOPERS *= P3.PERSONX
+go 
+
+print '--- Tabelle UNINUMBERLOG (Lauris)  ---'
+go
+select
+ Code=substring(U.UNINUMBERCODE,1,16),
+ Name=substring(U.UNINUMBERNAME,1,16),
+ UL.NUMFIRST,
+ UL.NUMCOUNT,
+ Clientcode=substring(C.CLIENTCODE,1,10),
+ Einsender=substring(E.EINSKURZ,1,10),
+ Ausgabedat=convert(char(11),UL.AUSGABEDAT,104)+convert(char(8),UL.AUSGABEDAT,108)+' ',
+ AusgabePers=P.PERSONID
+from UNINUMBERLOG UL, UNINUMBER U, CLIENT C, EINSENDER E, PERSON P
+where
+ UL.CLIENTX *= C.CLIENTX and
+ UL.EINSENDERX *= E.EINSENDERX and
+ UL.AUSGABEPERS *= P.PERSONX and
+ UL.UNINUMBERX *= U.UNINUMBERX
+go

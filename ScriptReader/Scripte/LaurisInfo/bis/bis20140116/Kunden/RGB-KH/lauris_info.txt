@@ -1,0 +1,60 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLCLUSTER           Routine Datenbank    Adaptive Server Enterprise/12.5.4/EBF 14656 ESD#6/P/NT (IX86)/OS 4.0/ase1254/2079/32-bit/OPT/Wed Jul 11 02:49:09 2007                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       2499            2459           0 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                Kapillarblut     Kapillarblut                                                              18          10 KB           Kapillarblut                         31                       NULL 
+                                Kapillarblut     BZ 9 Uhr                                                                  52          10 KB           Kapillarblut                         31                       NULL 
+                                Kapillarblut     BZ 14 Uhr                                                                 53          10 KB           Kapillarblut                         31                       NULL 
+                                Kapillarblut     BZ 19 Uhr                                                                 54          10 KB           Kapillarblut                         31                       NULL 
+                                Serum            Serum                                                                     29           3 S            Serum                                 3                       NULL 
+                                Serum            Hilfsmaterial                                                             30          38 Serum        Hilfsmaterial                       100                       NULL 
+
+(6 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                ROUT             Routine                                                                 Sep  3 2007  3:33PM        Sep 11 2007  2:09PM         100000          199999           100050            99999                    50                  99949     0.0500 %       0.04 Nummern         2562692.36 Tage                  NULL                   NULL         NULL 
+                                ROUT             Anforderungsbeleg Zentrallabor                                          Sep 11 2007  2:06PM                       NULL         100000          298999           168850           198999                 68850                 130149    34.5982 %      54.04 Nummern            2408.28 Tage                  NULL                   NULL            1 
+                                ROUTH            Anforderungsbeleg St. Hedwig                                            Sep 11 2007  2:07PM        Oct 22 2009  9:28AM         920000          970000           920900            50000                   900                  49100     1.8000 %       0.71 Nummern           69503.78 Tage                  NULL                   NULL            1 
+                                GLUC             Anforderungsbeleg Glucose                                               Jun 19 2008  1:48PM                       NULL         730000          799999           730000            69999                     0                  69999     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL            1 
+                                KRYO             Anforderungsbeleg für Kryoglobuline                                     Nov  6 2008 12:13PM        Jun  9 2010  1:33PM         299000          299999           299002              999                     2                    997     0.2002 %       0.00 Nummern          424722.00 Tage                  NULL                   NULL            1 
+                                ROUTH_01         Anforderungsbeleg St. Hedwig                                            Oct 22 2009  9:08AM                       NULL         920000          969999           921700            49999                  1700                  48299     3.4001 %       3.39 Nummern           14262.41 Tage                  NULL                   NULL            1 
+                                STICH            Anforderungsbeleg Stichverletzung                                       Jun  9 2010  1:53PM                       NULL         299000          299999           299094              999                    94                    905     9.4094 %       0.35 Nummern            2618.72 Tage                  NULL                   NULL            1 
+                                BLUT             Anforderungsbeleg Blutbank                                              Feb 28 2011 11:10AM                       NULL         700001          709999           700056             9998                    55                   9943     0.5501 %       6.88 Nummern            1446.25 Tage                  NULL                   NULL            1 
+
+(8 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+                                                   2 ROUT             Anforderungsbeleg Zentrallabor                                                        1 ROUT             Routine                                                                 Sep 11 2007  2:09PM 
+
+(1 row affected)

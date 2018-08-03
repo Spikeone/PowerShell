@@ -1,0 +1,87 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: AUG, ausgeführt am: 26.07.2012 
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           AUG              Augsburg             sqlcluster           Routine-Maschine     Adaptive Server Enterprise/12.5.4/EBF 14346 ESD#5/P/NT (IX86)/OS 4.0/ase1254/2061/32-bit/OPT/Thu Apr 12 21:34:18 2007                                                                                                                                           
+ 
+ 
+ Anmeldungen (in 30 Tagen):                  
+ ------------------------------------------- 
+ Anzahl Clients: 367     Anzahl User: 328    
+ 
+ 
+aktive Lauris-Versionen:
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           3 v9.08.18¹#       
+           2 v9.08.18# F      
+         357 v11.04.14#       
+           5 v10.11.05¹#      
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Release 2011.01                                                                  2011.01    NULL                                     06.04.11  00:00                 
+ letztes Swisspro                                                                 2011.01    NULL                                     15.06.11  08:21                 
+ swissup3.tab                                                                      2.14 $    NULL                                     15.06.11  08:01                 
+ swlupgrade.tab                                                                    2.20.1 $  NULL                                     29.03.10  14:37                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     15.06.11  08:14                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     15.06.11  08:12                 
+ Statistik (via statistik.pro)                                                     5.82 $    NULL                                     15.06.11  08:15                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     15.06.11  08:12                 
+                                                                                             NULL                                                                     
+ neu:PI_TASKFLAG                                                                   2.10 $    NULL                                     06.03.12  15:00 SWISSLAB        
+ neu:PR_TAGESPROFILMITRES                                                          1.06 $    NULL                                     05.03.12  13:16 SWISSLAB        
+ neu:PR_RESUSTA1                                                                   1.0 $*    NULL                                     05.01.12  14:03 SWISSLAB        
+ neu:PR_KONSERVEAUFTRAEGE                                                          2.05 $    NULL                                     03.11.11  15:05 SWISSLAB        
+ neu:PR_KONSERVE                                                                   2.13 $    NULL                                     03.11.11  15:04 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: AUG, ausgeführt am: 26.07.2012 
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           AUG              Augsburg             sqlcluster           Routine-Maschine     Adaptive Server Enterprise/12.5.4/EBF 14346 ESD#5/P/NT (IX86)/OS 4.0/ase1254/2061/32-bit/OPT/Thu Apr 12 21:34:18 2007                                                                                                                                           
+ 
+ 
+ Anmeldungen (in 30 Tagen):                  
+ ------------------------------------------- 
+ Anzahl Clients: 367     Anzahl User: 328    
+ 
+ 
+aktive Lauris-Versionen:
+Msg 2714, Level 16, State 1:
+Server 'SQLCLUSTER', Line 1:
+There is already an object named '#vertemp' in the database.
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Release 2011.01                                                                  2011.01    NULL                                     06.04.11  00:00                 
+ letztes Swisspro                                                                 2011.01    NULL                                     15.06.11  08:21                 
+ swissup3.tab                                                                      2.14 $    NULL                                     15.06.11  08:01                 
+ swlupgrade.tab                                                                    2.20.1 $  NULL                                     29.03.10  14:37                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     15.06.11  08:14                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     15.06.11  08:12                 
+ Statistik (via statistik.pro)                                                     5.82 $    NULL                                     15.06.11  08:15                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     15.06.11  08:12                 
+                                                                                             NULL                                                                     
+ neu:PI_TASKFLAG                                                                   2.10 $    NULL                                     06.03.12  15:00 SWISSLAB        
+ neu:PR_TAGESPROFILMITRES                                                          1.06 $    NULL                                     05.03.12  13:16 SWISSLAB        
+ neu:PR_RESUSTA1                                                                   1.0 $*    NULL                                     05.01.12  14:03 SWISSLAB        
+ neu:PR_KONSERVEAUFTRAEGE                                                          2.05 $    NULL                                     03.11.11  15:05 SWISSLAB        
+ neu:PR_KONSERVE                                                                   2.13 $    NULL                                     03.11.11  15:04 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)

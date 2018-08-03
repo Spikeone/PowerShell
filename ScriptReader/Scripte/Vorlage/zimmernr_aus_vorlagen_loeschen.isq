@@ -1,0 +1,51 @@
+declare
+  @update               tinyint
+set nocount on  
+
+/*vvvvvvvvvvvvvvvvvvvvvvvvvvv hier anpassen vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
+select @update         = 0              /* @update = 0 -> nix machen, nur dokumentieren      */                                    
+                                        /* @update = 1 -> Zimmernummern entfernen            */
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^ hier anpassen ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^같같같같^^^^^^^^^^^^*/
+ 
+select distinct
+ FormularCode=F.FORMULARCODE,
+ Vorlage=substring(VO.VORLAGENAME,1,32),
+ Abteilung=E.EINSCODE,
+ Arbeitsplatz=C.CLIENTCODE,
+ Benutzer=substring(I.IDENTCODE,1,16),
+ Ersteller=substring(P.PERSONID,1,16),
+ VO.ZIMMERNR,
+ VO.VORLAGEX,
+ F.FORMULARX
+into #temp 
+from PERSON P, VORLAGE VO, FORMULAR F, EINSENDER E, CLIENT C, IDENT I
+where
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VO.ERFASSPERS = P.PERSONX and
+-- P.PERSONID like '*%' and
+ VO.ZIMMERNR is not null and
+ VO.FORMULARX*=F.FORMULARX
+order by 
+ Abteilung desc, Arbeitsplatz desc,Benutzer desc
+
+set nocount off
+select 
+  FormularCode, 
+  Vorlage,                          
+  Abteilung,        
+  Arbeitsplatz,     
+  Benutzer,         
+  Ersteller,        
+  ZIMMERNR 
+from #temp
+
+if @update = 1
+begin
+	update VORLAGE set ZIMMERNR = null 
+  from VORLAGE VO, #temp t
+  where VO.VORLAGEX = t.VORLAGEX
+end	
+go

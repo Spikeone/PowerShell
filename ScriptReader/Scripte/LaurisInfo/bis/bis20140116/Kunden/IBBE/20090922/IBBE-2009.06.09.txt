@@ -1,0 +1,30 @@
+ 
+  Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  ------------------------------ -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                                 labor-srv            Klinikum Ibbenb?ren  Adaptive Server Enterprise/12.5.3/EBF 12599 ESD#3/P/NT (IX86)/OS 4.0/ase1253/1912/32-bit/OPT/Fri Jul 08 18:58:47 2005                                                                                                                                            
+   
+   
+  Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------------ ----------- --------------- -----------  
+                                        1286            1112          15  
+   
+   
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+   
+   
+  Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                   
+  ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ --------------------------  
+                                 Blutkultur       Blutkultur                                                                15         183 MB           Mikrobiologie                        12                       NULL  
+                                 EDTA             EDTA                                                                       3         175 Edta         EDTA-Blut                             4                       NULL  
+                                 EDTA             EDTA - Monovette                                                           7         175 Edta         EDTA-Blut                             4        Dec  9 2005  1:36PM  
+ Msg 207, Level 16, State 4: 
+ Server 'SQLSERVER', Line 5: 
+ Invalid column name 'RECYCLETYP'. 
+ Msg 207, Level 16, State 4: 
+ Server 'SQLSERVER', Line 5: 
+ Invalid column name 'RECYCLETYP'. 
+   
+   
+  Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)    
+  ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- --------------------------  

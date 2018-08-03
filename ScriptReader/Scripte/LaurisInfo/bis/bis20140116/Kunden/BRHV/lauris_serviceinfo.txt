@@ -1,0 +1,5 @@
+Msg 4002, Level 14, State 1:
+Server 'SQLBACKUP':
+Login failed.
+CT-LIBRARY error:
+	ct_connect(): protocol specific layer: external error: The attempt to connect to the server failed.

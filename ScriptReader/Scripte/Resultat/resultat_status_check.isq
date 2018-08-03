@@ -1,0 +1,38 @@
+set dateformat dmy
+go
+PR_REVISION PI_RESULTAT
+go
+-- set showplan on
+-- go
+-- set statistics time,io on
+-- go
+set nocount on
+select
+  A.AUFTRAGNR,
+  A.AUFTRAGX
+into #temp1
+from AUFTRAG A (index AUFTRAG_PK1)
+where
+  A.AUFTRAGDAT > '01.04.2009 00:00'
+set nocount off
+select
+  t1.AUFTRAGNR,
+  AN.CODE,
+  Resultatstatus=R.STATUS,
+  Plauflag=R.PLAUFLAG,
+  Kennung2=R.KENNUNG2,
+  FreigabePers=P.PERSONID,
+  Freigabedat=convert(char(11),R.FREIGABEDAT ,104)+convert(char(8),R.FREIGABEDAT ,108)+' ',
+  Plaudat=convert(char(11),R.VALIDIERTDAT ,104)+convert(char(8),R.VALIDIERTDAT ,108)+' ',
+  Aktivbis=convert(char(11),R.AKTIVBIS ,104)+convert(char(8),R.AKTIVBIS ,108)+' ',
+  ResultatDruckdatErst=convert(char(11),R.DRUCKDATERST ,104)+convert(char(8),R.DRUCKDATERST ,108)+' ',
+  ResultatBefunddat=convert(char(11),R.BEFUNDDAT ,104)+convert(char(8),R.BEFUNDDAT ,108)+' '
+from #temp1 t1, ANALYT AN (index ANALYT_PK) , PERSON P, RESULTAT R
+where
+  R.AUFTRAGX = t1.AUFTRAGX and
+  R.STORNODAT is null and
+  R.FREIGABEDAT is not null and
+  R.STATUS < 5 and
+  P.PERSONX=R.FREIGABEPERS and
+  AN.ANALYTX=R.ANALYTX
+go

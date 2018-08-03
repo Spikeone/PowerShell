@@ -1,0 +1,23 @@
+select distinct
+  PersonID              = P1.PERSONID,
+  IdentCode             = I.IDENTCODE,
+  LogindatLetzt         = convert(char(11),I.LOGINDATLETZT ,104)+convert(char(8),I.LOGINDATLETZT ,108)+' ',
+  IdentEignerx          = I.EIGNER,
+  IdentNutzerx          = I.NUTZER,
+  IdentErfassPers       = P2.PERSONID,
+  PPersonX              = P1.PERSONX,
+  IPersonX              = I.PERSONX 
+
+
+
+from 
+  IDENT I, 
+  PERSON P1, 
+  PERSON P2
+where
+  I.STORNODAT is null and
+  P1.PERSONX=I.PERSONX and
+  P2.PERSONX=I.ERFASSPERS
+
+go  
+

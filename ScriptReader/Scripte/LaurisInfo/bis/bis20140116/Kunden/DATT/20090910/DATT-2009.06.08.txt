@@ -1,0 +1,55 @@
+ 
+  Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  ------------------------------ -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                                 SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 15438 ESD#8/P/NT (IX86)/OS 4.0/ase1254/2105/32-bit/OPT/Sat Mar 22 04:44:15 2008                                                                                                                                            
+   
+   
+  Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------------ ----------- --------------- -----------  
+                                        4270            4206          25  
+   
+   
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+                                 EX-MIKRO(VKJK)   Mikrobilogie Labor MS (VKJK)                                      
+                                 EX-MIKRO (SML)   Mikrobiologie Labor MS (SML)                                      
+                                 EX-MIKRO (VINC)  Mikrobiologie Labor MS (VINC DA)                                  
+                                 EX-MIKRO (LAU)   Mikrobiologie Labor MS (LAU)                                      
+   
+   
+  Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                   
+  ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ --------------------------  
+                                 BKAN             Blutkulturflasche anaerob                                                104          73 _K98         Blutkulturflasche anaerob            98                       NULL  
+                                 BSG              BSG-Monovette                                                            102          19 _K06         Sonstiges Material                    6        Feb 14 2005  7:16PM  
+                                 BSG              BSG-Monovette                                                            103          25 _K07         Makro-Senkung                         7                       NULL  
+                                 Citrat           Citratblut/Gerinnung                                                       2          15 _K03         Citratblut                            3                       NULL  
+                                 Citrat           Citrat-Plasma                                                              4          25 _K07         Makro-Senkung                         7        Feb 14 2005  7:14PM  
+                                 S n. 150 Min.    Serum nach 150 Minuten                                                    95          69 _K68         150 Minuten                          68                       NULL  
+                                 S n. 150 Min.    Serum nach 150 Minuten                                                    96          69 _K68         150 Minuten                          68        Feb 14 2005  6:49PM  
+                                 Uricult          Uricult                                                                  111          78 _K94         Testbrief/Haemoccult                 94        Feb 17 2005 12:56PM  
+                                 Uricult          Uricult                                                                   77          75 _K97         Uricult                              97                       NULL  
+                                 Urinmonovette    Urin                                                                       6          16 _K04         Urin                                  4                       NULL  
+                                 Urinmonovette    Sammelurin                                                                 5          16 _K04         Urin                                  4        Feb 14 2005  6:17PM  
+   
+   
+  Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------  
+                                 BELEG 1          Beleg 1                                                                 Oct 29 2002  1:19PM                       NULL         350000          399999           358517            49999                  8517                  41482    17.0343 %       3.53 Nummern           11757.37 Tage                  NULL                   NULL            1  
+                                 BELEG 2          Beleg 2 (DIN A5)                                                        Oct 29 2002  1:22PM                       NULL         650000          699999           656560            49999                  6560                  43439    13.1203 %       2.72 Nummern           15985.02 Tage                  NULL                   NULL            1  
+                                 BELEG3           Beleg3                                                                  Nov  5 2002  2:07PM                       NULL         810000          860000           810000            50000                     0                  50000     0.0000 %       0.00 Nummern  NULL                                  860001                 899999         NULL  
+                                 VIN1             Vincenz 1                                                               Feb 16 2005  5:00PM                       NULL         700001          799999           791376            99998                 91375                   8623    91.3768 %      58.09 Nummern             148.44 Tage                  NULL                   NULL            1  
+                                 LAU1             LAU1                                                                    May 19 2005  4:30PM                       NULL         400000          449999           443690            49999                 43690                   6309    87.3817 %      29.50 Nummern             213.86 Tage                  NULL                   NULL            1  
+                                 SML              St. Marienhospital Lüdinghausen                                         Sep  2 2008  5:43PM                       NULL         900001          979999           924612            79998                 24611                  55387    30.7645 %      88.21 Nummern             627.89 Tage                  NULL                   NULL            1  
+                                 EX-VINC          Auftragnummern für Labor MS (St. Vincenz DA)                            Jan 23 2009 12:51PM                       NULL       84600000        84699999         84600008            99999                     8                  99991     0.0080 %       0.06 Nummern         1699847.00 Tage                  NULL                   NULL            1  
+                                 EX-LAU           Auftragsnummer für Labor MS (St. Laurentius WA)                         Mar 31 2009  9:02AM                       NULL       84500000        84599999         84500000            99999                     0                  99999     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL            1  
+                                 EX-VKJK          Auftragsnummern für Labor MS (VKJK DA)                                  Mar 31 2009  9:04AM                       NULL       84700000        84799999         84700001            99999                     1                  99998     0.0010 %       0.01 Nummern         6899862.00 Tage                  NULL                   NULL            1  
+                                 EX-SML           Nummernkreis für Labor MS (St. Marien LH)                               Mar 31 2009  9:06AM                       NULL       82800000        82899999         82800000            99999                     0                  99999     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL            1  
+   
+   
+  Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- ---------  
+                                 VIN1             Vincenz 1                                                               Feb 16 2005  5:00PM                 91375                   8623    91.3768 %            148.44 Tage                  NULL                   NULL ja         
+   
+   
+  Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)    
+  ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- --------------------------  

@@ -1,0 +1,33 @@
+set dateformat dmy
+go
+
+declare
+  @startdat                       smalldatetime,
+  @enddat                         smalldatetime
+
+set nocount on
+select @startdat = '01.10.2012 00:00'
+select @enddat   = getdate()
+set nocount off
+
+print ''
+print 'Lauris Aufträge'
+print ''
+
+
+select
+  Einsender = E.EINSCODE
+into #temp
+from AUFTRAG A (index AUFTRAG_PK1), EINSENDER E 
+where 
+  A.AUFTRAGDAT between @startdat and @enddat
+  and A.FORMULARX is not null
+  and E.EINSENDERX = A.EINSENDERX
+
+select 
+  count(*) as Anzahl,
+  Einsender
+from #temp
+group by Einsender 
+order by Anzahl desc
+go

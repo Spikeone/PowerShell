@@ -1,0 +1,82 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [141009]                                                       */
+/*KURZINFO : Check der Lauris Client-Versionen                              */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20141009.1913>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[141009] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+-- Um vor einem Lauris-Update den vorhandenen Softwarestand zu ermitteln
+-- Um nach einem Lauris-Update die Verteilung der neuen Lauris-Version zu prüfen
+-- Dazu bitte die Variablen @tage und @minuten anpassen
+declare
+  @tage             int,
+  @minuten          int
+set nocount on
+
+/*******************************************************************************************************************************************/
+select @tage                   = 60            /* !!!!!! Tage rückwirkend                                                         !!!!!!! */
+select @minuten                = 0             /* !!!!!! Minuten rückwirkend                                                      !!!!!!! */
+/*******************************************************************************************************************************************/
+
+declare
+  @abDatum          smalldatetime,
+  @strmessage       varchar(128),
+  @datum            varchar(64),
+  @sys_kurz         varchar(40)
+
+
+select @abDatum = dateadd(dd, -@tage, getdate())
+select @abDatum = dateadd(mi, -@minuten, @abDatum)
+
+select @datum=', ausgeführt am: ' + convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)+' '
+select @sys_kurz = ' für System: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+select @strmessage = ' Laurisversionen der aktiven Clients ' + @datum + @sys_kurz
+print @strmessage
+select @strmessage = ' Untersuchter Zeitraum ab ' + convert(char(11),@abDatum ,104)+convert(char(5),@abDatum ,108)+' '
+print @strmessage
+print ''
+
+select count(*) as Anzahl_aktiver_Lauris_Clients
+from CLIENT
+where 
+  LOGINDATLETZT > @abDatum
+print ''
+  
+select 
+  Version=substring(VERSIONINFO,1,33),
+  ClientCode=CLIENTCODE,
+  Adresse=substring(ADRESSE,1,16),
+  Clientname=substring(CLIENTNAME,1,36),
+  Logindatletzt = convert(char(11),LOGINDATLETZT,104)+convert(char(5),LOGINDATLETZT,108)
+from CLIENT
+where 
+  LOGINDATLETZT > @abDatum
+order by Version
+print ''
+
+select
+  Lauris_Version = 'v'+substring(VERSIONINFO,5,10),
+  xposition = patindex("%#%", 'v'+substring(VERSIONINFO,5,10))
+into #vertemp
+from CLIENT 
+where 
+  STORNODAT is null and LOGINDATLETZT > @abDatum
+
+update #vertemp
+set Lauris_Version = case when xposition > 0 then substring(Lauris_Version,1,xposition-1)
+                          when xposition = 0 then Lauris_Version
+                     end
+select 
+  count(*) as Anzahl,
+  Lauris_Version
+from #vertemp
+group by Lauris_Version 
+order by Lauris_Version desc
+go
+

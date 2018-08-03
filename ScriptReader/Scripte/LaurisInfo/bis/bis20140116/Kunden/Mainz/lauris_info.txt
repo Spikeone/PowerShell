@@ -1,0 +1,19 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLCLUSTER           Uni Mainz - ...      Adaptive Server Enterprise/12.5.0.3/EBF 11450 ESD#4/P/Linux Intel/Linux 2.4.18-18.7.xsmp i686/rel12503/1940/32-bit/OPT/Sun Sep 21 03:10:00 2003                                                                                                                 
+                                SQLCLUSTER           Mainz - sqlcluster   Adaptive Server Enterprise/12.5.0.3/EBF 11450 ESD#4/P/Linux Intel/Linux 2.4.18-18.7.xsmp i686/rel12503/1940/32-bit/OPT/Sun Sep 21 03:10:00 2003                                                                                                                 
+                                sqlcluster           Mainz - Labor        Adaptive Server Enterprise/12.5.0.3/EBF 11450 ESD#4/P/Linux Intel/Linux 2.4.18-18.7.xsmp i686/rel12503/1940/32-bit/OPT/Sun Sep 21 03:10:00 2003                                                                                                                 
+
+(3 rows affected)
+Msg 156, Level 15, State 2:
+Server 'sqlcluster', Line 52:
+Incorrect syntax near the keyword 'select'.
+Msg 102, Level 15, State 1:
+Server 'sqlcluster', Line 52:
+Incorrect syntax near ')'.
+Msg 156, Level 15, State 2:
+Server 'sqlcluster', Line 118:
+Incorrect syntax near the keyword 'select'.
+Msg 102, Level 15, State 1:
+Server 'sqlcluster', Line 118:
+Incorrect syntax near ')'.

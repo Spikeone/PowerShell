@@ -1,0 +1,50 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLCLUSTER           Sybase ASE 12.5.4 ES Adaptive Server Enterprise/12.5.4/EBF 14656 ESD#6/P/NT (IX86)/OS 4.0/ase1254/2079/32-bit/OPT/Wed Jul 11 02:49:09 2007                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                        213              13         200 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                MB MIKRO         Mikrobiologie                                                    
+
+(1 row affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                ROUTINE          Routine                                                                                NULL                       NULL       60000000        70000000         68571552         10000000               8571552                1428448    85.7155 % NULL                NULL                                    NULL                   NULL            0 
+                                NOTFALL          Notfall                                                                                NULL                       NULL       80000000        90000000         83376726         10000000               3376726                6623274    33.7673 % NULL                NULL                                    NULL                   NULL            0 
+                                POCT             POCT                                                                    Mar 23 2009 11:23AM                       NULL        4300000         4400000          4300025           100000                    25                  99975     0.0250 %       0.14 Nummern          731817.00 Tage                  NULL                   NULL            0 
+                                FUNKTION         Funktionsteste                                                          Jun 19 2009 10:00AM                       NULL        4400001         4500000          4400010            99999                     9                  99990     0.0090 %       0.09 Nummern         1055450.00 Tage                  NULL                   NULL            0 
+
+(4 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

@@ -1,0 +1,64 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 16.02.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            sqlroutine           RoutineSQLServer auf Adaptive Server Enterprise/12.5.4/EBF 14931 ESD#7/P/ia64/HP-UX B.11.23/ase1254/2093/64-bit/FBO/Thu Oct 11 02:31:46 2007                                                                                                                                         
+                            SQLROUTINE           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 14931 ESD#7/P/ia64/HP-UX B.11.23/ase1254/2093/64-bit/FBO/Thu Oct 11 02:31:46 2007                                                                                                                                         
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    15.12.09  16:34                 
+ swissup3.tab                       2.08 $    15.12.09  16:25                 
+ swlupgrade.tab                     2.20.1 $  25.03.10  13:27                 
+ Lauris (via lauris.ini)            1.03 $    15.12.09  16:32                 
+ Blutbank (via barkasse.pro)        1.06 $    25.03.10  13:26                 
+ Statistik (via statistik.pro)      5.51 $    25.03.10  13:28                 
+ BB-Statistik (via spendestat.pro)  1.21 $    15.12.09  16:30                 
+                                                                              
+ neu:PI_KONSERVE                    2.06.1    07.02.11  08:56 SWISSLAB        
+ neu:PR_ABLIFUELLSTAND              1.01 $    04.01.11  08:54 SWISSLAB        
+ neu:PR_LOGINTRIGGER                1.01 $    13.12.10  12:07 SWISSLAB        
+ neu:PI_KONSERVE_TEST               2.06 $    14.09.10  13:16 SWISSLAB        
+ neu:PI_STATISTIKSAVEALL            1.16 $    25.03.10  13:28 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                         573 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#9.10.20# FW=#2.0.50727.3615# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                    
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#9.03.23# FW=#2.0.50727.1433# OS=#5.2.3790.131072#Win32NT                                                                                                                                                                                                    
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                 63212           41315       18750 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                VIRO-GI          Virologische Diagnostik                                          
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 

@@ -1,0 +1,101 @@
+print ' '
+print '--- Tabelle  VORLAGEANF Check MFA Eintraege ---'
+go
+set nocount on
+select
+ VA.VORLAGEANFX,
+ Vorlagenname=substring(VO.VORLAGENAME,1,20),
+ Analyt=AN1.CODE,
+ VA_Analytx=VA.ANALYTX,
+ MFA_Analyt=AN2.CODE,
+ VA_MFAAnalytx=VA.MFAANALYTX,
+ Station=E.EINSCODE,
+ Client=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Erfassdat=convert(char(11),VA.ERFASSDAT,104)+convert(char(8),VA.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ F.FORMULARX,
+ F.FORMULARCODE
+ 
+into 
+ #vorlage_temp
+ 
+from 
+ VORLAGEANF VA,
+  PERSON P,
+  VORLAGE VO,
+  ANALYT AN1,
+  ANALYT AN2,
+  EINSENDER E,
+  CLIENT C,
+  IDENT I,
+  FORMULAR F
+  
+  
+where
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ F.FORMULARX = VO.FORMULARX and
+ VA.ERFASSPERS *= P.PERSONX and
+ VA.ANALYTX = AN1.ANALYTX and
+ AN1.KENNUNG = 7 and                /* MFA-Kennung */
+ VA.MFAANALYTX <> VA.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX
+
+ 
+order by VA.VORLAGEANFX
+set nocount off
+select 
+ FORMULARCODE,
+ VORLAGEANFX,
+ Vorlagenname,
+ Analyt,
+ MFA_Analyt,
+ Station,
+ Client,
+ Benutzer,
+ ErfassPers
+from
+ #vorlage_temp
+ 
+/* --------------- */ 
+print ' '
+print '--- Ueberblick falsche MFA´s in den Benutzervorlagen ---'  
+set nocount on
+select distinct
+ VA_Analytx,
+ VA_MFAAnalytx,
+ VA_Analyt=AN1.CODE,
+ VA_MFAAnalyt=AN2.CODE 
+into
+ #temp1
+from  
+ #vorlage_temp,
+ ANALYT AN1,
+ ANALYT AN2
+where  
+ VA_Analytx*=AN1.ANALYTX and
+ VA_MFAAnalytx*=AN2.ANALYTX
+set nocount off
+select * from #temp1 
+
+print ' '
+print '--- Mitglieder der falschen (neuen) MFAs im Swisslab---'  
+select " MFA_Swisslab " + VA_Analyt + " MFA_Mitglied " + AN1.CODE
+from  #temp1, ANALYT AN1, METHGRUPPE MG                                            
+where 
+ MG.ANA_ANALYTX = VA_Analytx and
+ AN1.ANALYTX =* MG.ANALYTX   
+
+print ' '
+print '--- Mitglieder der falschen (alten) MFA-Verweise in den Vorlagen ---' 
+select distinct " MFA_Vorlage " + VA_MFAAnalyt + " MFA_Mitglied " + AN1.CODE
+from  #temp1, ANALYT AN1, METHGRUPPE MG                                            
+where 
+ MG.ANA_ANALYTX = VA_MFAAnalytx and
+ AN1.ANALYTX =* MG.ANALYTX   
+  
+go                                                          

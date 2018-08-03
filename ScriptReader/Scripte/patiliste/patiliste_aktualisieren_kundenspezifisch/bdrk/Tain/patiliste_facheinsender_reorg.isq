@@ -1,0 +1,251 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_facheinsender_reorg.isq  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [091005.1100]                                                  */
+/*KURZINFO : SWL-II: Reorganisation der Lauris Patientenliste               */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20091005.1100>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[091005] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy  
+
+/* Parameter deklarieren         */
+
+declare
+  @startdat                      smalldatetime,
+  @enddat                        smalldatetime,
+  @datumtxt                      varchar(23),
+  @aufruftxt                     varchar(23),
+  @plandays                      tinyint,
+  @einsender                     varchar(16),
+  
+  @USER                          smallint,
+  @EINSENDERX                    int,
+  @IDENTX                        int,
+  @PATIFALLX                     int,
+  @PATIART                       char(8),
+  @KOSTTRTYP                     char(6),
+  @PZIMMERNR                     varchar(8),
+  @AKTIVBIS                      smalldatetime,
+  @REPORT                        tinyint,
+  @DEBUG                         tinyint,
+  @UPDATE                        tinyint,
+
+  @patifallx                     int,
+  @einsenderx                    int,
+  @patiart                       char(8),
+  @kosttrtyp                     char(6),
+  @pzimmernr                     varchar(8),
+  @aktivbis                      smalldatetime,
+                                 
+  @found                         int,
+  @found_fach                    int,
+  @cnt                           int,
+  @cnt_fach                      int,
+  @insertpf                      char(4)
+
+set nocount on
+
+/* -------- Aufrufparameter Beginn -------- */
+select @REPORT         =     1   -- REPORT-Modus
+select @DEBUG          =     0   -- DEBUG-Modus
+select @UPDATE         =     1   -- 1 -> PATILISTE bereinigen,  0 -> keine Änderungen an PATILISTE
+/* -------- Aufrufparameter Ende   -------- */
+
+
+select @USER = null
+if (@USER is null) select @USER = PERSONX from LOGIN where LOGINID = suser_name() and STORNODAT is null
+if @UPDATE = 0
+begin
+  if (@REPORT = 1)
+  begin
+    print '+-----------------------------------------------------------------------+'
+    print '| ==========  Demo-Modus, keine Aenderungen an PATILISTE  ============  |'
+    print '+-----------------------------------------------------------------------+'
+    print ''
+    select Aufruf_durch=PERSONID from PERSON where PERSONX=@USER
+    print ''
+  end
+end
+
+if @UPDATE = 1
+begin
+  if (@REPORT = 1)
+  begin
+    print '+-----------------------------------------------------------------------+'
+    print '| Lauris, PATILISTE: Reorganisation der fachbezogenen Patientenliste    |'
+    print '+-----------------------------------------------------------------------+'
+    print ''
+    select Aufruf_durch=PERSONID from PERSON where PERSONX=@USER
+    print ''
+  end
+end
+
+-- Alle bereits für Facheinsender existierenden Einträge
+create table #ptemp_fach(
+  cnt_fach         numeric       identity not null,
+  patifallx        int           null,
+  patifallnr       char(16)      null,
+  FachEinsFall     char(23)      null,
+  pfeinsenderx     int           null,
+  pffacheinsenderx int           null,
+  patiart          char(8)       null,
+  kosttrtyp        char(6)       null,
+  pzimmernr        varchar(8)    null,
+  entldatverw      smalldatetime null,
+  patilistex       int           null,
+  pleinsenderx     int           null,
+  ListeEinsFall    char(23)      null,
+  aktivbis         smalldatetime null,
+  patifalleins     char(24)      null,
+  patifallfacheins char(24)      null,
+  patilisteeins    char(24)      null,
+  deletepf         char(4)       null
+ )
+
+insert into #ptemp_fach
+select
+  patifallx             =     PF.PATIFALLX,
+  patifallnr            =     PF.PATIFALLNR,
+  convert(char(6),PF.FACHEINSENDERX)+"_"+convert(char(16),PF.PATIFALLX),
+  pfeinsenderx          =     PF.EINSENDERX,
+  pffacheinsenderx      =     PF.FACHEINSENDERX,
+  patiart               =     PF.PATIART,
+  kosttrtyp             =     PF.KOSTTRTYP,
+  pzimmernr             =     PF.PZIMMERNR,
+  entldatverw           =     PF.ENTLDATVERW,
+  patilistex            =     PL.PATILISTEX,
+  pleinsenderx          =     PL.EINSENDERX,
+  convert(char(6),PL.EINSENDERX)+"_"+convert(char(16),PF.PATIFALLX),
+  aktivbis              =     PL.AKTIVBIS,
+  patifalleins          =     P1.EINSCODE+" | "+P1.EINSNREXT,
+  patifallfacheins      =     P2.EINSCODE+" | "+P2.EINSNREXT,
+  patilisteeins         =     P3.EINSCODE+" | "+P3.EINSNREXT,
+  deletepf              =     'no'
+ 
+from PATIFALL PF, PATILISTE PL, EINSENDER P1, EINSENDER P2,  EINSENDER P3
+
+where
+      PL.TABELLE = 'EINSENDER'
+  and PL.IDENTX is not null      -- Hier steht FACHEINSENDERX, wenn es ein stationsübergreifender Eintrag ist.
+  and PF.PATIFALLX = PL.PATIFALLX
+  and (PL.AKTIVBIS is null or PL.AKTIVBIS > dateadd(minute,-1,getdate()))
+  and P1.EINSENDERX = PF.EINSENDERX
+  and P2.EINSENDERX =* PF.FACHEINSENDERX
+  and P3.EINSENDERX = PL.EINSENDERX
+select @found_fach = @@identity
+
+if @DEBUG = 1
+begin
+  print ''
+  print ''
+  print 'PATILISTE, Facheinsendersicht'
+  print ''
+  select patifallnr, patifalleins, patifallfacheins, patilisteeins from #ptemp_fach
+  print ''
+end
+
+
+
+create table #ptemp(
+  cnt              numeric       identity not null,
+  patifallx        int           null,
+  patifallnr       char(16)      null,
+  FachEinsFall     char(23)      null,
+  pfeinsenderx     int           null,
+  pffacheinsenderx int           null,
+  patiart          char(8)       null,
+  kosttrtyp        char(6)       null,
+  pzimmernr        varchar(8)    null,
+  entldatverw      smalldatetime null,
+  patilistex       int           null,
+  pleinsenderx     int           null,
+  ListeEinsFall    char(23)      null,
+  aktivbis         smalldatetime null,
+  patifalleins     char(24)      null,
+  patifallfacheins char(24)      null,
+  patilisteeins    char(24)      null,
+  deletepf         char(4)       null
+ )
+
+insert into #ptemp
+select 
+  patifallx             =     PF.PATIFALLX,
+  patifallnr            =     PF.PATIFALLNR,
+  convert(char(6),PF.FACHEINSENDERX)+"_"+convert(char(16),PF.PATIFALLX),
+  pfeinsenderx          =     PF.EINSENDERX,
+  pffacheinsenderx      =     PF.FACHEINSENDERX,
+  patiart               =     PF.PATIART,
+  kosttrtyp             =     PF.KOSTTRTYP,
+  pzimmernr             =     PF.PZIMMERNR,
+  entldatverw           =     PF.ENTLDATVERW,
+  patilistex            =     PL.PATILISTEX,
+  pleinsenderx          =     PL.EINSENDERX,
+  convert(char(6),PL.EINSENDERX)+"_"+convert(char(16),PF.PATIFALLX),
+  aktivbis              =     PL.AKTIVBIS,
+  patifalleins          =     P1.EINSCODE+" | "+P1.EINSNREXT,
+  patifallfacheins      =     P2.EINSCODE+" | "+P2.EINSNREXT,
+  patilisteeins         =     P3.EINSCODE+" | "+P3.EINSNREXT,
+  deletepf              =     'no'
+ 
+from PATIFALL PF, PATILISTE PL, EINSENDER P1, EINSENDER P2,  EINSENDER P3
+
+where
+      (PL.AKTIVBIS is null or PL.AKTIVBIS > dateadd(second,-1,getdate()))
+  and PL.TABELLE = 'EINSENDER'
+  and PL.IDENTX is null
+  and PF.PATIFALLX = PL.PATIFALLX
+  and PF.FACHEINSENDERX is not null
+  and P1.EINSENDERX = PF.EINSENDERX
+  and P2.EINSENDERX = PF.FACHEINSENDERX
+  and P3.EINSENDERX = PL.EINSENDERX
+ select @found = @@identity
+
+
+if @DEBUG = 1
+begin
+  print ''
+  print ''
+  print 'PATILISTE, Stationsicht '
+  print ''
+  select patifallnr, patifalleins, patifallfacheins, patilisteeins from #ptemp
+  print ''
+end
+
+update #ptemp_fach set deletepf='yes'                         
+from #ptemp_fach plf                             
+where plf.patifallx not in (select patifallx from #ptemp)
+
+update #ptemp_fach set deletepf='yes'                         
+from #ptemp_fach plf, PATIFALL PF                             
+where PF.PATIFALLX = plf.patifallx
+  and PF.FACHEINSENDERX <> plf.pleinsenderx
+ 
+
+set nocount off
+if (@DEBUG = 1 or @REPORT = 1)
+begin
+  print ''
+  print ''
+  print 'PATILISTE, zu loeschende Facheinsendereintraege '
+  print ''
+  select patifallnr, patifalleins, patifallfacheins, patilisteeins from #ptemp_fach
+  where deletepf='yes'
+  print ''
+end
+
+if (@UPDATE = 1)
+begin
+   update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+   from PATILISTE P, #ptemp_fach plf
+   where 
+         P.PATILISTEX = plf.patilistex
+     and plf.deletepf='yes'
+end
+
+go

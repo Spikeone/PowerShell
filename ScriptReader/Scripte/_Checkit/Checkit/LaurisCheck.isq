@@ -1,0 +1,491 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\LaurisCheck.isq                    */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [060130.2030]                                                  */
+/*KURZINFO : SWL-II: Lauris Core Data Check / Lauris Stammdaten Check       */
+/*MODULE   :                                                                */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20130108.11:40>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[130108] 1.00 lis erstellt                                                */
+/****************************************************************************/
+-- Stornierte Behälter Check
+-- Mehrfache Behälter Check
+-- Formularcheck, stornierte oder inaktive Analyte im Formular
+-- Formularcheck, unterschiedliche Behälter mit gleichem Materialkreis im Formular, kann zum Fehler "non unique sample id" führen
+-- Formularcheck, Materialprüfung
+-- Formularcheck, Anforderungstypen und -arten
+
+set nocount on
+
+declare
+  @Modus                          int
+  
+/*******************************************************************************************************************************************/
+select @Modus                =  0               /*  0  nur Konfigurationsfehler                                                    !!!!!!! */
+                                                /*  1  BEHAELTER und ANFORDERUNG auslisten                                         !!!!!!! */
+/*******************************************************************************************************************************************/
+
+-- BEHAELTER
+declare
+  @Behaelter                      varchar(16),
+  @Behaelterx                     varchar( 8),
+  @strMessage                     varchar(96),
+  @found_behaelter                int        ,
+  @cntbeh                         int        ,
+  @found_forms                    int        ,
+  @xcnt                           int          ,
+  @cntx                           int          ,
+  @formcx                         varchar(16),
+  @formc                          varchar(1918),
+  @startdat                       datetime,
+  @enddat                         datetime,
+  @datum                          varchar(64),
+  @sys_kurz                       varchar(40),
+  @text_message                   varchar(62),
+  @intlen                         int,
+  @found_u2                       int,
+  @cntu2                          int,
+  @found_anas                     int,
+  @anacx                          varchar(16),
+  @anac                           varchar(1918)  
+
+select @startdat=getdate()
+select @intlen = 2
+select @datum=', ausgeführt am: ' + convert(char(11),@startdat ,104)+convert(char(5),@startdat ,108)+' '
+if @Modus < 1
+begin
+  select @sys_kurz = 'Lauris Check für System: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+end  
+if @Modus = 1
+begin
+  select @sys_kurz = 'Lauris Listing für: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+end
+select @text_message = @sys_kurz + @datum
+print ''
+print '--------------------------------------------------------------'
+print @text_message 
+print '--------------------------------------------------------------'
+print ''
+print ''
+
+  
+create table #beh(
+  cntbeh            numeric       identity not null,
+  behaelterx        int           null             ,
+  behaeltercode     varchar(16)   null             ,
+  behaeltername     varchar(64)   null             ,
+  eigner            int           null             ,
+  nutzer            int           null             ,
+  materialx         int           null             ,
+  farbe             varchar(16)   null             ,
+  zusatz            varchar(16)   null             ,
+  labor             varchar(32)   null             ,
+  volumen           int           null             ,
+  layoutname        varchar(32)   null             ,
+  barcode           smallint      null             ,
+  erfassdat         smalldatetime null             ,
+  erfasspers        smallint      null             ,
+  mutdat            smalldatetime null             ,
+  mutpers           smallint      null             ,
+  stornodat         smalldatetime null             ,
+  stornopers        smallint      null             ,
+  matext            varchar(8)    null             ,
+  zeitoffset        int           null             ,
+  Status            varchar(32)   null             ,
+  Formulare         varchar(1600) null             ,
+  beh_material      varchar(16)   null             ,
+  beh_matkreis      varchar(16)   null             ,
+  beh_matext        varchar(16)   null             ,
+  mat_fktestvon     int           null             ,
+  mat_fktestbis     int           null              )
+
+insert into #beh
+select
+  B.BEHAELTERX     ,
+  B.BEHAELTERCODE  ,
+  B.BEHAELTERNAME  ,
+  B.EIGNER         ,
+  B.NUTZER         ,
+  B.MATERIALX      ,
+  B.FARBE          ,
+  B.ZUSATZ         ,
+  B.LABOR          ,
+  B.VOLUMEN        ,
+  B.LAYOUTNAME     ,
+  B.BARCODE        ,
+  B.ERFASSDAT      ,
+  B.ERFASSPERS     ,
+  B.MUTDAT         ,
+  B.MUTPERS        ,
+  B.STORNODAT      ,
+  B.STORNOPERS     ,
+  B.MATEXT         ,
+  B.ZEITOFFSET     ,
+  ''               ,  -- Status
+  ''               ,  -- Formulare
+  beh_material = case when (B.MATERIALX is not null) then M.MATCODE
+                      when (B.MATERIALX is null)     then 'ohne Material'
+                 end,
+  beh_matkreis = case when (B.MATERIALX is not null) then REPLICATE('0', @intlen - len(CONVERT(varchar(6),M.MATERIALKREISNR))) + CONVERT(varchar(6),M.MATERIALKREISNR)
+                      when (B.MATERIALX is null)     then '--'
+                 end,
+  beh_matext = B.MATEXT,
+  mat_fktestvon = M.FKTESTVON,
+  mat_fktestbis = M.FKTESTBIS
+
+from BEHAELTER B, MATERIAL M
+where M.MATERIALX =* B.MATERIALX
+order by BEHAELTERX
+select @found_behaelter = @@identity
+
+-- ANFORDERUNG
+create table #anf(
+  cntanf            numeric       identity not null,
+  anforderungx      int           null             ,
+  anforderungtyp    smallint      null             ,
+  formularx         int           null             ,
+  sort              int           null             ,
+  ebene             int           null             ,
+  art               char(1)       null             ,
+  analytx           int           null             ,
+  defix             int           null             ,
+  behaelterx        int           null             ,
+  behaelterid       varchar(8)    null             ,
+  anzahlbehaelter   int           null             ,
+  beschreibung      varchar(255)  null             ,
+  ausgabeform       varchar(64)   null             ,
+  auswahl           tinyint       null             ,
+  steuerung         smallint      null             ,
+  bisdring          int           null             ,
+  deftext           varchar(255)  null             ,
+  defwert           real          null             ,
+  labelvar          varchar(32)   null             ,
+  volumen           int           null             ,
+  dispicon          int           null             ,
+  dispformat        int           null             ,
+  erfassdat         smalldatetime null             ,
+  erfasspers        smallint      null             ,
+  mutdat            smalldatetime null             ,
+  mutpers           smallint      null             ,
+  stornodat         smalldatetime null             ,
+  stornopers        smallint      null             ,
+  panalytx          int           null             ,
+  nachfordern       smallint      null             ,
+  anforderungcode   varchar(16)   null             ,
+  kataloganfx       int           null             ,
+  synonyme          varchar(255)  null             ,
+  Status            varchar(32)   null             ,
+  Formular          varchar(16)   null             ,
+  anacode           varchar(16)   null             ,
+  anastornodat      smalldatetime null             ,
+  anaaktivbis       smalldatetime null             ,    
+  ana_material      varchar(16)   null             ,
+  ana_matkreis      varchar(16)   null             ,
+  behaeltercode     varchar(16)   null             ,
+  beh_material      varchar(16)   null             ,
+  beh_matkreis      varchar(16)   null             ,
+  beh_matext        varchar(16)   null             ,
+  anf_matkreis      varchar(16)   null             ,
+  AnalytTyp_Swiss   varchar(20)   null             ,
+  AnfoTyp_Lauris    varchar(34)   null             ,
+  AnalytTypOK       varchar(16)   null             ,
+  Art               varchar(16)   null             ,
+  ArtOk             varchar(16)   null              )
+
+insert into #anf
+select
+  ANF.ANFORDERUNGX    , 
+  ANF.ANFORDERUNGTYP  , 
+  ANF.FORMULARX       , 
+  ANF.SORT            , 
+  ANF.EBENE           , 
+  ANF.ART             , 
+  ANF.ANALYTX         , 
+  ANF.DEFIX           , 
+  ANF.BEHAELTERX      , 
+  ANF.BEHAELTERID     , 
+  ANF.ANZAHLBEHAELTER , 
+  ANF.BESCHREIBUNG    , 
+  ANF.AUSGABEFORM     , 
+  ANF.AUSWAHL         , 
+  ANF.STEUERUNG       , 
+  ANF.BISDRING        , 
+  ANF.DEFTEXT         , 
+  ANF.DEFWERT         , 
+  ANF.LABELVAR        , 
+  ANF.VOLUMEN         , 
+  ANF.DISPICON        , 
+  ANF.DISPFORMAT      , 
+  ANF.ERFASSDAT       , 
+  ANF.ERFASSPERS      , 
+  ANF.MUTDAT          , 
+  ANF.MUTPERS         , 
+  ANF.STORNODAT       , 
+  ANF.STORNOPERS      , 
+  ANF.PANALYTX        , 
+  ANF.NACHFORDERN     , 
+  ANF.ANFORDERUNGCODE , 
+  ANF.KATALOGANFX     , 
+  ''                  ,     -- ANF.SYNONYME (noch nicht in allen Systemen)
+  ''                  ,     -- Status
+  FO.FORMULARCODE     ,
+  ANA.CODE            ,
+  ANA.STORNODAT       ,
+  ANA.AKTIVBIS        ,
+  ana_material = case when (ANA.DEFMATERIALX is not null and ANA.DEFMATERIALX <> 0) then M.MATCODE
+                      when (ANA.DEFMATERIALX is null or ANA.DEFMATERIALX = 0)       then 'ohne Material'
+                 end,     
+  ana_matkreis = case when (ANA.DEFMATERIALX is not null and ANA.DEFMATERIALX <> 0) then '(' + REPLICATE('0', @intlen - len(CONVERT(varchar(6),M.MATERIALKREISNR))) + CONVERT(varchar(6),M.MATERIALKREISNR) +')'
+                      when (ANA.DEFMATERIALX is null or ANA.DEFMATERIALX = 0)     then '--'
+                 end,
+  b.behaeltercode,
+  beh_material = b.beh_material   ,     -- Material aus Behälter
+  beh_matkreis = b.beh_matkreis   ,
+  beh_matext   = b.beh_matext     ,
+  anf_matkreis = case when (b.beh_matext is not null) then b.beh_matext
+                      when (b.beh_matext is null)     then b.beh_matkreis
+                 end,
+  case when (ANA.KENNUNG =  1) then 'Einzelanalyse'
+       when (ANA.KENNUNG =  2) then 'Funktionstest'
+       when (ANA.KENNUNG =  5) then 'Individualprofil'
+       when (ANA.KENNUNG =  6) then 'Kette/Einzel'
+       when (ANA.KENNUNG =  7) then 'MFA-Block'
+       when (ANA.KENNUNG =  8) then 'Anford.-Block'
+       when (ANA.KENNUNG = 10) then 'Indikat.-Gruppe'
+       when (ANA.KENNUNG = 11) then 'Befundgruppe'
+       when (ANA.KENNUNG = 12) then 'Arb.listengruppe'
+       when (ANA.KENNUNG = 13) then 'Verteilstrategie'
+       when (ANA.KENNUNG = 14) then 'Archivstrategie'
+       when (ANA.KENNUNG = 15) then 'Vert.+Arch.str.'
+       when (ANA.KENNUNG = 16) then 'KreisArchivstr.'
+       when (ANA.KENNUNG = 17) then 'Sek.Verteilung'
+       when (ANA.KENNUNG = 18) then 'Mehrf.Archivstr.'
+       when (ANA.KENNUNG = 19) then 'Aktivierstrategie'
+       when (ANA.KENNUNG = 20) then 'Vert./Arch.str.'
+  end,
+  case when (ANF.ANFORDERUNGTYP =  3) then 'Einzel-Anforderung'
+       when (ANF.ANFORDERUNGTYP =  4) then 'Einzeltext-Anforderung'
+       when (ANF.ANFORDERUNGTYP =  5) then 'Profil-Anforderung'
+       when (ANF.ANFORDERUNGTYP =  6) then 'Block-Anforderung'
+       when (ANF.ANFORDERUNGTYP =  7) then 'MFA-Anforderung'
+       when (ANF.ANFORDERUNGTYP =  8) then 'Ketten-Anforderung'
+       when (ANF.ANFORDERUNGTYP =  9) then 'Resultat-Eingabe'
+       when (ANF.ANFORDERUNGTYP = 10) then 'Text-Eingabe'
+       when (ANF.ANFORDERUNGTYP = 11) then 'Analyt-Gruppenauswahl'
+       when (ANF.ANFORDERUNGTYP = 12) then 'Text-Gruppenauswahl'
+       when (ANF.ANFORDERUNGTYP = 26) then 'Mikrobiologie Materialauswahl'
+       when (ANF.ANFORDERUNGTYP = 27) then 'Einzel-Anforderung mit Abnahmeort'
+       when (ANF.ANFORDERUNGTYP = 33) then 'Block-Anforderung mit Abnahmeort'
+  end,
+  case when (ANF.ANFORDERUNGTYP in (3,4,10,11,12,26,27) and ANA.KENNUNG > 6) then 'bitte pruefen!'
+     when (ANF.ANFORDERUNGTYP in (6,7,8) and ANA.KENNUNG in (1,2,5)) then 'bitte pruefen!'
+     else 'ok'
+  end,
+  "  " + ANF.ART,
+  case when (ANF.ART = 'R' and ANF.ANFORDERUNGTYP in (4, 10, 12)) then 'bitte pruefen!'
+     when (ANF.ART = 'T' and ANF.ANFORDERUNGTYP not in (4, 10, 12, 26)) then 'bitte pruefen!'
+     when (ANF.ART = null ) then 'bitte pruefen!'
+     else 'ok'
+  end
+
+from ANFORDERUNG ANF, ANALYT ANA, #beh b, MATERIAL M, FORMULAR FO
+where
+  ANF.STORNODAT is null and
+  ANF.ANALYTX is not null and
+  ANA.ANALYTX=ANF.ANALYTX and
+  FO.FORMULARX=ANF.FORMULARX and
+  FO.STORNODAT is null and
+  ANF.ANFORDERUNGTYP in (3,4,5,6,7,8,9,10,11,12,26,27,33) and
+  b.behaelterx=*ANF.BEHAELTERX and
+  M.MATERIALX=*ANA.DEFMATERIALX 
+
+  
+-- in welchen Formularen werden die Behälter verwendet?
+select distinct
+  b.behaelterx,
+  F.FORMULARCODE
+into #forms
+from #beh b, FORMULAR F, #anf anf
+where
+  F.FORMULARX = anf.formularx and
+  F.STORNODAT is null and
+  anf.stornodat is null and
+  b.behaelterx = anf.behaelterx
+select @found_forms = @@identity
+
+select @cntbeh = 0
+while @cntbeh < @found_behaelter
+begin
+  create table #xtemp(
+    seqno                numeric                identity not null,
+    behaelterx           int                    null,
+    allforms             varchar(1918)          null )
+  select @formc = ""
+  select @cntbeh = @cntbeh + 1
+  insert into #xtemp
+  select behaelterx = tbeh.behaelterx, allforms = tfo.FORMULARCODE
+	from #beh tbeh, #forms tfo
+	where
+ 	  tbeh.cntbeh = @cntbeh and
+	  tfo.behaelterx = tbeh.behaelterx
+  select @xcnt = count(*) from #xtemp
+  select @cntx = 0
+  while @cntx < @xcnt
+  begin
+    select @cntx = @cntx + 1
+    select @formcx = allforms from #xtemp where seqno = @cntx
+    select @formc = @formc + ', ' + @formcx
+  end
+  update #beh set Formulare = substring(@formc,4,1918) from #beh where cntbeh = @cntbeh
+	drop table #xtemp
+end
+update #beh set Status = 'storniert!!' from #beh where stornodat is not null and Formulare is not null
+update #beh set Formulare = 'nirgends verwendet, Behälter kann gelöscht werden!' from #beh where Formulare is null and stornodat is null
+
+if @Modus < 1
+begin
+	print 'Stornierte Behälter Check:' 
+  select
+    BEHAELTERX = behaelterx,
+    Behaelter = behaeltercode,
+    Material = beh_material,
+    Status,
+    'verwendet in den Formularen' = Formulare 
+  from #beh
+  where Status = 'storniert!!'
+  order by Behaelter
+	print ''
+	print 'Mehrfache Behälter Check:'
+  select
+    BEHAELTERX = behaelterx,
+    Behaelter = behaeltercode,
+    Material = beh_material,
+    Status,
+    'verwendet in den Formularen' = Formulare 
+  from #beh
+  where Formulare <> 'keine'
+  group by behaeltercode having count(*) > 1
+  order by Behaelter
+
+  print ''
+  print 'Formularcheck, stornierte oder inaktive Analyte im Formular:' 
+  select Formular, Analyt=anacode, Storno=anastornodat, Aktivbis=anaaktivbis from #anf where anastornodat is not null or anaaktivbis is not null
+  
+  print ''
+  print 'Formularcheck, unterschiedliche Behälter mit gleichem Materialkreis im Formular, kann zum Fehler "non unique sample id" führen:' 
+  select Formular, behaeltercode, anf_matkreis, behaelterx, Anzahl=count(*) into #u1 from #anf where behaeltercode is not null and anf_matkreis is not null group by Formular, behaeltercode, anf_matkreis, behaelterx order by Formular, anf_matkreis, behaeltercode
+  create table #u2 (
+    cntu2                numeric                identity not null,
+    Formular             varchar(16)            null,
+    behaeltercode        varchar(16)            null,
+    behaelterx           int                    null,
+    anf_matkreis         varchar(16)            null,
+    allanas              varchar(1600)          null )
+  insert into #u2 select Formular, behaeltercode, behaelterx, anf_matkreis, '' from #u1 group by Formular, anf_matkreis having count(*) > 1 order by Formular, anf_matkreis, behaeltercode
+  select @found_u2 = count(*) from #u2
+  select distinct
+    u2.Formular, 
+    u2.behaeltercode, 
+    u2.behaelterx,
+    a.anf_matkreis, 
+    a.anacode
+  into #anas
+  from #anf a, #u2 u2
+  where
+    a.Formular=u2.Formular and 
+    a.anf_matkreis=u2.anf_matkreis and 
+    a.behaelterx = u2.behaelterx
+  order by Formular, anf_matkreis, behaeltercode    
+  select @found_anas = count(*) from #anas
+  
+  select @cntu2 = 0
+  while @cntu2 < @found_u2
+  begin
+    create table #xtemp2(
+      seqno                numeric                identity not null,
+      Formular             varchar(16)            null,
+      behaeltercode        varchar(16)            null,
+      behaelterx           int                    null,
+      anf_matkreis         varchar(16)            null,
+      allanas              varchar(1600)          null )
+    select @anac = ""
+    select @cntu2 = @cntu2 + 1
+    insert into #xtemp2 
+    select Formular = tu2.Formular, behaeltercode = tu2.behaeltercode, behaelterx = tu2.behaelterx, anf_matkreis = tu2.anf_matkreis, allanas = tan.anacode
+  	from #u2 tu2, #anas tan
+  	where
+   	  tu2.cntu2 = @cntu2 and
+  	  tan.Formular = tu2.Formular and
+  	  tan.behaelterx = tu2.behaelterx and
+  	  tan.anf_matkreis = tu2.anf_matkreis 
+    select @xcnt = count(*) from #xtemp2
+    select @cntx = 0
+    while @cntx < @xcnt
+    begin
+      select @cntx = @cntx + 1
+      select @anacx = allanas from #xtemp2 where seqno = @cntx
+      select @anac = @anac + ', ' + @anacx
+    end
+    update #u2 set allanas = substring(@anac,4,1918) from #u2 where cntu2 = @cntu2
+  	drop table #xtemp2
+  end  
+--  select BEHAELTERX=u2.behaelterx, u2.Formular, Behaelter=u2.behaeltercode, 'Mat. Kreis'=u2.anf_matkreis, beh.mat_fktestvon, beh.mat_fktestbis, Analyte=u2.allanas from #u2 u2, #beh beh where beh.behaelterx=u2.behaelterx order by cntu2
+  select BEHAELTERX=behaelterx, Formular, Behaelter=behaeltercode, 'Mat. Kreis'=anf_matkreis, Analyte=allanas from #u2 order by cntu2
+  
+
+  print ''
+  print 'Formularcheck, Materialprüfung:' 
+  select Formular, anacode, ana_material, beh_material, behaeltercode, beh_matext from #anf where ana_material <> beh_material
+  order by Formular, ana_material, anacode
+
+  print ''
+  print 'Formularcheck, Anforderungstypen und -arten:' 
+  select Formular, anacode, behaeltercode, AnalytTyp_Swiss, AnfoTyp_Lauris, AnalytTypOK, Art, ArtOk, anforderungx from #anf where AnalytTypOK <> 'ok' or ArtOk <> 'ok'
+  order by Formular, anacode
+end
+
+if @Modus = 1
+begin
+	print ''
+  print 'Liste der Behälter' 
+  select
+    BEHAELTERCODE = behaeltercode,
+    SW_Material = beh_material,
+    Status,
+    Formulare from #beh
+  order by BEHAELTERCODE
+
+  print ''
+  print 'Liste der Anforderungen' 
+  select    
+    Formular         ,
+    anacode          ,
+    ana_inaktiv = case when (anastornodat is null and anaaktivbis is null) then 'Analyt ok'
+                       when (anastornodat is not null or anaaktivbis is not null) then 'Analyt inaktiv!!'
+                  end,
+    ana_material      ,
+    beh_material      ,
+    behaeltercode     ,
+    anf_matkreis      ,
+    AnalytTyp_Swiss   ,
+    AnfoTyp_Lauris    ,
+    AnalytTypOK       ,
+    Art               ,
+    ArtOk             ,
+    anforderungx
+    from #anf
+  order by Formular, ana_material, anacode
+end
+
+
+select @enddat=getdate()
+select @datum='Start: ' + convert(char(9),@startdat,4)+convert(char(9),@startdat,8)
+print ''
+print @datum
+select @datum='Ende : ' + convert(char(9),@enddat,4)+convert(char(9),@enddat,8)
+print @datum
+
+go

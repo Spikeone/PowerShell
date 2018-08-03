@@ -1,0 +1,71 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [141009]                                                       */
+/*KURZINFO : Auslisten der Tabelle BEHAELTER                                */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20141009.1913>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[141009] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+-- dieses Script wurde (wie man leicht sieht) aus der PR_BEHAELTER erstellt, mit ein paar Änderungen
+
+set nocount on
+declare
+   @BEHAELTERX       int,
+   @ANALYTX          int,
+   @EIGNER           int,
+   @NUTZER           int,
+   @PSPRACHID        int,
+   @NOEXEC           tinyint,
+   @EXKLUSIV         char(1),
+   @strmessage       varchar(128),
+   @datum            varchar(64),
+   @sys_kurz         varchar(40)
+
+select @datum=', ausgeführt am: ' + convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)+' '
+select @sys_kurz = ' für System: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+select @strmessage = ' Lauris: Liste aller Behälter ' + @datum + @sys_kurz
+print @strmessage
+print ''
+
+
+
+/* Ergebnis ausgeben */
+select
+   B.BEHAELTERX,
+   B.BEHAELTERCODE,
+   BEHAELTERNAME = case when B.STORNODAT is null     then B.BEHAELTERNAME
+                        when B.STORNODAT is not null then substring(stuff(B.BEHAELTERNAME + replicate("-",64-char_length(B.BEHAELTERNAME)),53,12,' (storniert)'),1,64)
+                   end,
+   M.MATCODE,
+   M.MATERIALKREISNR,
+   M.MATERIALNAME,
+   M.FKTESTVON,
+   M.FKTESTBIS,
+   M.MATNRVON,
+   M.MATNRBIS, 
+   B.FARBE,
+   B.ZUSATZ,
+   B.LABOR,
+   B.MATEXT,
+   B.ZEITOFFSET,
+   B.VOLUMEN,
+   B.LAYOUTNAME,
+   B.EIGNER,
+   B.NUTZER,
+   B.MATERIALX,
+   B.BARCODE
+from
+   BEHAELTER B,
+   MATERIAL M
+where
+   (@BEHAELTERX is null or B.BEHAELTERX = @BEHAELTERX)
+   and B.MATERIALX *= M.MATERIALX
+order by
+   B.BEHAELTERCODE
+
+go

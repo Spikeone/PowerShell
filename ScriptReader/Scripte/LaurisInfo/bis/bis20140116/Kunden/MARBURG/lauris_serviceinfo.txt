@@ -1,0 +1,49 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                sqlroutine           RoutineSQLServer auf Adaptive Server Enterprise/12.5.4/EBF 14931 ESD#7/P/ia64/HP-UX B.11.23/ase1254/2093/64-bit/FBO/Thu Oct 11 02:31:46 2007                                                                                                                                         
+                                SQLROUTINE           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 14931 ESD#7/P/ia64/HP-UX B.11.23/ase1254/2093/64-bit/FBO/Thu Oct 11 02:31:46 2007                                                                                                                                         
+
+(2 rows affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                      43467           35776        7365 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                BASIS            Basisuntersuchungen                                                                    NULL        Jul 19 2005  3:18PM            100             999              100              899                     0                    899     0.0000 % NULL                NULL                                    NULL                   NULL         NULL 
+                                extern           Externe Auftragsnummern                                                 Jul 19 2005  3:16PM                       NULL       40560001        40599999         40560017            39998                    16                  39982     0.0400 %       0.01 Nummern         3793292.25 Tage                  NULL                   NULL         NULL 
+                                Basis            Basisuntersuchungen                                                     Feb 28 2008  2:25PM                       NULL       33000001        39999999         33000001          6999998                     0                6999998     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL            0 
+
+(3 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

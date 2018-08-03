@@ -1,0 +1,9 @@
+set dateformat dmy
+go
+select LOGDAT=convert(char(11),ERFASSDAT,104)+convert(char(8),ERFASSDAT,108)+' ',    
+       Abslu=substring(ABSLU,1,12),     
+       ERFASSPERS,                                                 
+       Fehler=substring(FEHLER,1,72)             
+from LOGDOC 
+where ERFASSDAT > '15.05.2006 09:25' and ABSMODUL='PI_PATILISTE' order by ERFASSDAT
+go

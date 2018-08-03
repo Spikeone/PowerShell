@@ -1,0 +1,169 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_amb_plandat.isq          */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [091005.1100]                                                  */
+/*KURZINFO : SWL-II: Aufnahme ambulanter Fälle mit zukuenftigem Auftrag     */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20150313.1226>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[091005] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy  
+go
+
+/* Parameter deklarieren         */
+
+declare
+  @startdat                      smalldatetime,
+  @enddat                        smalldatetime,
+  @datumtxt                      varchar(23),
+  @aufruftxt                     varchar(23),
+  @plandays                      tinyint,
+  @einsender                     varchar(16),
+  
+  @USER                          smallint,
+  @EINSENDERX                    int,
+  @MODUS                         tinyint,
+  @IDENTX                        int,
+--  @CLIENTX                       int,
+  @PATIFALLX                     int,
+  @PATIART                       char(8),
+  @KOSTTRTYP                     char(6),
+  @PZIMMERNR                     varchar(8),
+  @AKTIVBIS                      smalldatetime,
+  @STORNO                        tinyint,
+  @QUIET                         tinyint,
+  @REPORT                        tinyint,
+  @DEBUG                         tinyint,
+  @UPDATE                        tinyint,
+  @TABELLE                       varchar(30),  -- Geltung-Tabellenname
+
+  @patifallx                     int,
+  @einsenderx                    int,
+  @patiart                       char(8),
+  @kosttrtyp                     char(6),
+  @pzimmernr                     varchar(8),
+  @aktivbis                      smalldatetime,
+                                 
+  @found                         int,
+  @found_fach                    int,
+  @cnt                           int,
+  @cnt_fach                      int,
+  @insertpf                      char(4),
+  @patilistex                    int,
+  @rowcnt                        int
+
+set nocount on
+
+/* -------- Aufrufparameter Beginn -------- */
+select @REPORT         =     1   -- REPORT-Modus
+select @DEBUG          =     0   -- DEBUG-Modus
+select @UPDATE         =     1   -- 1 -> insert into PATILISTE,  0 -> keine Änderungen an PATILISTE
+/* -------- Aufrufparameter Ende   -------- */
+
+/* ------------ Voreinstellungen PI_PATILISTE Beginn -------------------*/
+select @STORNO         =     0
+select @QUIET          =     1
+select @MODUS          =     3           -- XREF ist 1=EINSENDERX, 2=CLIENTX, 3=IDENTX  
+select @TABELLE        =     'FACHEINS'  -- temporärer Geltung-Tabellenname
+
+/* -------------Voreinstellungen PI_PATILISTE Ende ---------------------*/    
+
+print '+-----------------------------------------------------------------------+'
+print '|Lauris, PATILISTE: Aufbau der fachbezogenen Patientenliste             |'
+print '+-----------------------------------------------------------------------+'
+print ''
+select @USER = null, @startdat=getdate()
+if (@USER is null) select @USER = PERSONX from LOGIN where LOGINID = suser_name() and STORNODAT is null
+if @UPDATE = 0
+begin
+  if @REPORT = 1 
+  begin
+    print '+-----------------------------------------------------------------------+'
+    print '| ==========  Demo-Modus, keine Aenderungen an PATILISTE  ============  |'
+    print '+-----------------------------------------------------------------------+'
+    print ''
+    select Aufruf_durch=PERSONID from PERSON where PERSONX=@USER
+    print ''
+  end
+end
+
+
+
+  
+  select PL.PATILISTEX, PF.FACHEINSENDERX, PF.PATIFALLX, PF.PATIART, PF.KOSTTRTYP, PF.PZIMMERNR, AKTIVBIS=isnull(PL.AKTIVBIS, PF.ENTLDATVERW)
+  into #patilisteUPD
+  from PATILISTE PL 
+   join PATIFALL PF on PL.PATIFALLX=PF.PATIFALLX 
+   
+   left join PATILISTE PLFE on PL.PATIFALLX=PLFE.PATIFALLX and PL.PATILISTEX<>PLFE.PATILISTEX and (PLFE.AKTIVBIS is null or PLFE.AKTIVBIS > dateadd(minute,-1,getdate())) and PLFE.TABELLE = 'EINSENDER' and PLFE.IDENTX is not null 
+   left join PATIFALL PFFE  on PLFE.PATIFALLX=PFFE.PATIFALLX and PFFE.FACHEINSENDERX=PF.FACHEINSENDERX  
+   
+   left join PATILISTE PLE on PL.PATIFALLX=PLE.PATIFALLX and PL.PATILISTEX<>PLE.PATILISTEX and (PLE.AKTIVBIS is null or PLE.AKTIVBIS > dateadd(minute,-1,getdate())) and PLE.TABELLE = 'EINSENDER' and PLE.IDENTX is not null 
+   left join PATIFALL PFE  on PLE.PATIFALLX=PFE.PATIFALLX and PFE.FACHEINSENDERX=PF.FACHEINSENDERX     
+where PLFE.PATILISTEX is null  
+  and PLE.PATILISTEX is null  
+  and (PL.AKTIVBIS is null or PL.AKTIVBIS > dateadd(minute,-1,getdate()))
+  and PL.TABELLE = 'EINSENDER'
+  and PL.IDENTX is null
+  and PF.PATIFALLX = PL.PATIFALLX
+  and PF.FACHEINSENDERX is not null
+  and PF.FACHEINSENDERX <> PF.EINSENDERX   -- Wenn Einsender = Facheinsender dann brauchen wir ihn nicht!
+  and PF.FACHEINSENDERX <> PL.EINSENDERX   -- Der ist schon in der Liste
+  and (PF.ENTLDATVERW is null or PF.ENTLDATVERW > @startdat)
+  select @rowcnt=@@rowcount
+  print 'Anzahl zu aendern: %1! ', @rowcnt
+
+  
+select @patilistex = null
+select @patilistex=min(PATILISTEX) from #patilisteUPD
+while @patilistex is not null 
+begin
+
+  select @EINSENDERX = FACHEINSENDERX,
+         @IDENTX     = FACHEINSENDERX,
+         @PATIFALLX  = PATIFALLX ,
+         @PATIART    = PATIART   ,
+         @KOSTTRTYP  = KOSTTRTYP ,
+         @PZIMMERNR  = PZIMMERNR ,
+         @AKTIVBIS   = AKTIVBIS
+  from #patilisteUPD p
+  where p.PATILISTEX=@patilistex
+     
+    if @UPDATE=1
+    begin
+      exec PI_PATILISTE
+             @USER       = @USER      ,
+             @EINSENDERX = @EINSENDERX,
+             @MODUS      = @MODUS     ,
+             @TABELLE    = @TABELLE   ,
+             @IDENTX     = @IDENTX    ,
+--             @CLIENTX    = @CLIENTX   ,
+             @PATIFALLX  = @PATIFALLX ,
+             @PATIART    = @PATIART   ,
+             @KOSTTRTYP  = @KOSTTRTYP ,
+             @PZIMMERNR  = @PZIMMERNR ,
+             @AKTIVBIS   = @AKTIVBIS  ,
+             @STORNO     = @STORNO    ,
+             @QUIET      = @QUIET      
+    end
+    
+    select @patilistex = null
+    delete #patilisteUPD where FACHEINSENDERX=@EINSENDERX and PATIFALLX=@PATIFALLX
+    select @patilistex=min(PATILISTEX) from #patilisteUPD
+
+end
+
+if @UPDATE=1
+begin
+  update PATILISTE
+  set 
+    TABELLE='EINSENDER',
+    EINSENDERX=IDENTX
+  where TABELLE='FACHEINS' 
+end
+go

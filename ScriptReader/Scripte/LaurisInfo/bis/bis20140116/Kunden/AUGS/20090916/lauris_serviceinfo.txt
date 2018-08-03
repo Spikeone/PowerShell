@@ -1,0 +1,50 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                sqlcluster           Routine-Maschine     Adaptive Server Enterprise/12.5.4/EBF 14346 ESD#5/P/NT (IX86)/OS 4.0/ase1254/2061/32-bit/OPT/Thu Apr 12 21:34:18 2007                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                     132494             802      131412 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                Beleg 5          Infektionsimmunologie/Virologie                                  
+
+(1 row affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Beleg1           Basisuntersuchungen                                                                    NULL                       NULL        9000000         9999999          9001201           999999                  1201                 998798     0.1201 % NULL                NULL                                    NULL                   NULL            0 
+                                Beleg2           Spezialuntersuchungen                                                                  NULL                       NULL       24000000        24999999         24000450           999999                   450                 999549     0.0450 % NULL                NULL                                    NULL                   NULL         NULL 
+                                Beleg5           Infektionsimmunologie                                                   Mar 22 2007  9:14AM                       NULL       54000000        54999999         54001050           999999                  1050                 998949     0.1050 %       1.16 Nummern          864804.42 Tage                  NULL                   NULL         NULL 
+                                Beleg8           Allergie / Biomonitoring                                                Jan 15 2008 11:24AM                       NULL       84000000        84999999         84000100           999999                   100                 999899     0.0100 %       0.16 Nummern         6099383.90 Tage                  NULL                   NULL            0 
+
+(4 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

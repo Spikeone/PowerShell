@@ -1,0 +1,47 @@
+/* Parameter deklarieren         */
+
+declare
+  @code          varchar(16),
+  @anax          int
+set nocount on
+
+
+/* -------------------------------------------------------------------------------- */
+select @code = 'NA'   /* !!!!!! hier den zu suchenden Analytcode eintragen !! */
+/* -------------------------------------------------------------------------------- */
+
+
+select @anax = 0
+select @anax = ANALYTX from ANALYT where CODE=@code and STORNODAT is null 
+set nocount off
+
+print ''
+print '--- bestimmte Anforderung aus benutzerdefinierten Vorlagen ---'
+print ''
+
+select
+ F.FORMULARX,
+ FormularCode=F.FORMULARCODE,
+ Vorlagenname=substring(VO.VORLAGENAME,1,32),
+ Analyt=AN1.CODE,
+ Behälter=BE.BEHAELTERCODE,
+ Abteilung = E.EINSCODE,
+ Client = C.CLIENTCODE,
+ Benutzer = I.IDENTCODE,
+ VorlageAnfX=VA.VORLAGEANFX
+
+from VORLAGEANF VA, VORLAGE VO, ANALYT AN1, BEHAELTER BE, FORMULAR F, EINSENDER E, CLIENT C, IDENT I
+where
+ VA.ANALYTX=@anax and
+ AN1.ANALYTX=VA.ANALYTX and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VA.STORNODAT is null and
+ VO.STORNODAT is null and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ F.FORMULARX=VO.FORMULARX and
+ F.STORNODAT is null and
+ VO.EINSENDERX*=E.EINSENDERX and
+ VO.CLIENTX*=C.CLIENTX and
+ VO.IDENTX*=I.IDENTX
+order by VA.VORLAGEANFX
+go

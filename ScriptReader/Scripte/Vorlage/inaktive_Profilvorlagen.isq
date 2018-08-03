@@ -1,0 +1,310 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\inaktive_Profilvorlagen.isq        */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [140923.1000]                                                  */
+/*KURZINFO : SWL-II: Profilvorlagen aufräumen                               */
+/*MODULE   : Lauris, Pflege der Profilvorlagen                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20090119.2200>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[140923] 1.00 lis erstellt                                                */
+/****************************************************************************/
+--
+-- Aufräumen der Profilvorlagen, indem die unbenutzten Profilvorlagen 
+-- ermittelt und auf Wunsch gleich storniert werden (@storno = 1)
+-- Inhaltlich identische Profilvorlagen weisen die gleiche Auftragszahl auf. 
+--
+-- technische Anmerkung: zu den Profilvorlagen werden Anforderungssignaturen erstellt 
+-- und mit den Anforderungssignaturen aus den Aufträgen verglichen.
+-- Findet sich keine Profilsignatur in einem Auftrag wieder, dann gilt die Vorlage als inaktiv.
+--
+-- Warnung: Eine 100%ige Treffsicherheit wird nicht garantiert. 
+-- Z.B. wenn eine ScriptOrder den Auftrag erweitert oder reduziert!
+--
+
+declare
+  @storno                        int,
+  @stornolimit                   int,
+  @zeitraum                      int
+  
+set nocount on
+/*******************************************************************************************************************************************/
+select @storno                =  0               /* !!!!!! @storno = 1 storniert unbenutzte Profilvorlagen                         !!!!!!! */
+select @stornolimit           =  0               /* !!!!!! bei weniger/gleicher Anzahl Auftraege gilt die Vorlage als inaktiv      !!!!!!! */
+select @zeitraum              = 30               /* !!!!!! untersuchter Auftrags-Zeitraum in Tagen                                 !!!!!!! */
+/*******************************************************************************************************************************************/
+
+declare
+  @found_pv                      int,
+  @cntvo                         int,
+  @xcnt                          int,
+  @cntx                          int,
+  @signum                        varchar(1928),
+  @signumx                       varchar(1928),
+  @anzauft                       int,
+  @message                       varchar(256),
+  @akt_userx                     int,
+  @akt_user                      varchar(16),
+  @vorlagex                      int
+
+
+
+select @akt_userx=PERSONX from LOGIN where LOGINID=suser_name() and STORNODAT is null
+select @akt_user=PERSONID from PERSON where PERSONX=@akt_userx
+
+
+select @message='Pflege der Lauris-Profilvorlagen am ' + convert(char(9),getdate(),4)+convert(char(5),getdate(),8) + ' '
+print @message 
+select @message='Untersuchter Zeitraum ab ' + convert(char(9),dateadd(day,-@zeitraum,getdate()),4)+convert(char(5),dateadd(day,-@zeitraum,getdate()),8) + '  (' + convert(varchar,@zeitraum) + ' Tage)'
+print @message 
+if @storno = 1
+begin
+	print '--->  unbenutzte Profilvorlagen werden storniert  <---'
+end
+
+
+select 
+ FormularCode=F.FORMULARCODE,
+ Vorlage=substring(VO.VORLAGENAME,1,32),
+ Analyt = AN1.CODE,
+ MFA_Analyt = AN2.CODE,
+ Profil_Analyt = AN3.CODE,
+ signum = AN1.CODE + "_" + AN2.CODE + "_" + AN3.CODE + ";",
+ Abteilung=E.EINSCODE,
+ Arbeitsplatz=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Ersteller=P.PERSONID,
+ Erfassdat=convert(char(11),VO.ERFASSDAT,104)+convert(char(8),VO.ERFASSDAT,108)+' ',
+ Mutdat=convert(char(11),VO.MUTDAT,104)+convert(char(8),VO.MUTDAT,108)+' ',           
+ MutPers=P2.PERSONID,
+ Formularx=F.FORMULARX,
+ Vorlagex=VO.VORLAGEX
+into #vatemp
+from 
+ VORLAGEANF VA, 
+ PERSON P, 
+ PERSON P2, 
+ VORLAGE VO, 
+ ANALYT AN1, 
+ ANALYT AN2, 
+ ANALYT AN3, 
+ BEHAELTER BE, 
+ FORMULAR F, 
+ EINSENDER E, 
+ CLIENT C, 
+ IDENT I
+ 
+where
+ VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VA.ERFASSPERS = P.PERSONX and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ VO.FORMULARX=F.FORMULARX and
+ VO.MUTPERS *= P2.PERSONX
+order by Vorlagex, signum
+
+create table #pvtemp(
+  cnt_vorlagen         numeric                identity not null,
+  vorlagex             int                    null,
+  cnt_auftraege        int                    null,
+  profil_signatur      varchar(1928)          null
+ )
+
+insert into #pvtemp
+select distinct
+  Vorlagex,
+  0,
+  "--"
+from #vatemp  
+select @found_pv = @@identity
+
+select @cntvo = 0
+while @cntvo < @found_pv
+begin
+  create table #xtemp(
+    seqno                numeric                identity not null,
+    vorlagex             int                    null,
+    profil_signatur      varchar(1928)          null )
+  select @signum = ""
+  select @cntvo = @cntvo + 1
+  insert into #xtemp
+  select vorlagex = tva.Vorlagex, profil_signatur = tva.signum
+	from #pvtemp tpv, #vatemp tva
+	where 
+ 	  tpv.cnt_vorlagen = @cntvo and
+	  tva.Vorlagex = tpv.vorlagex
+  select @xcnt = @@identity	  
+  select @cntx = 0
+  while @cntx < @xcnt
+  begin
+    select @cntx = @cntx + 1
+    select @signumx = profil_signatur from #xtemp where seqno = @cntx
+    select @signum = @signum + @signumx
+  end
+  update #pvtemp set profil_signatur = @signum from #pvtemp where cnt_vorlagen = @cntvo
+	drop table #xtemp
+end	
+
+
+-- set nocount off
+-- select * from #pvtemp order by vorlagex
+-- select * from #vatemp
+-- set nocount on
+
+declare
+  @found_au                      int,
+  @cntau                         int
+
+set nocount on
+select 
+ FormularCode=F.FORMULARCODE,
+ Auftragx=AU.AUFTRAGX,
+ Analyt = AN1.CODE,
+ MFA_Analyt = AN2.CODE,
+ Profil_Analyt = AN3.CODE,
+ signum = AN1.CODE + "_" + AN2.CODE + "_" + AN3.CODE + ";",
+ Einsender=E.EINSCODE,
+ Erfassper=PE.PERSONID
+into #autemp
+from 
+ AUFTRAG AU, 
+ RESULTAT RE,
+ PERSON PE, 
+ ANALYT AN1, 
+ ANALYT AN2, 
+ ANALYT AN3, 
+ FORMULAR F, 
+ EINSENDER E 
+ 
+where
+ AU.ERFASSDAT > dateadd(day,-@zeitraum,getdate()) and
+ AU.STORNODAT is null and
+ RE.AUFTRAGX = AU.AUFTRAGX and
+ RE.ANFORDDAT between AU.SQLERFASSDAT and dateadd(mi, 1, AU.SQLERFASSDAT) and
+ AU.EINSENDERX *= E.EINSENDERX and
+ PE.PERSONX = AU.ERFASSPERS and
+ RE.ANALYTX *= AN1.ANALYTX and
+ RE.MFAANALYTX *= AN2.ANALYTX and
+ RE.PANALYTX *= AN3.ANALYTX and
+ F.FORMULARX=AU.FORMULARX
+order by Auftragx, signum 
+
+create table #aptemp(
+  cnt_auftraege        numeric                identity not null,
+  auftragx             int                    null,
+  profil_signatur      varchar(1928)          null
+ )
+
+insert into #aptemp
+select distinct
+  Auftragx,
+  "--"
+from #autemp  
+select @found_au = @@identity
+
+
+select @cntau = 0
+while @cntau < @found_au
+begin
+  create table #atemp(
+    seqno                numeric                identity not null,
+    auftragx             int                    null,
+    profil_signatur      varchar(1928)              null )
+  select @signum = ""
+  select @cntau = @cntau + 1
+  insert into #atemp
+  select auftragx = tpa.Auftragx, profil_signatur = tpa.signum
+	from #autemp tpa, #aptemp tpv
+	where 
+ 	  tpv.cnt_auftraege = @cntau and
+	  tpa.Auftragx = tpv.auftragx
+  select @xcnt = @@identity	  
+  select @cntx = 0
+  while @cntx < @xcnt
+  begin
+    select @cntx = @cntx + 1
+    select @signumx = profil_signatur from #atemp where seqno = @cntx
+    select @signum = @signum + @signumx
+  end
+  update #aptemp set profil_signatur = @signum from #aptemp where cnt_auftraege = @cntau
+	drop table #atemp
+end	
+
+
+-- set nocount off
+-- select * from #aptemp order by auftragx
+-- select * from #autemp
+-- set nocount on
+
+select @cntvo = 0
+while @cntvo < @found_pv
+begin
+  select @cntvo = @cntvo + 1
+  select @anzauft = count(*)
+  from #pvtemp tpv, #aptemp tap
+  where 
+    tpv.cnt_vorlagen = @cntvo and
+    tpv.profil_signatur = tap.profil_signatur
+  update #pvtemp set cnt_auftraege = @anzauft from #pvtemp where cnt_vorlagen = @cntvo
+end
+
+if (@storno = 1)
+begin
+	select @cntvo = 0
+  while @cntvo < @found_pv
+  begin
+  	select @vorlagex = null
+    select @cntvo = @cntvo + 1
+    select @vorlagex = tpv.vorlagex
+    from #pvtemp tpv
+    where 
+      tpv.cnt_vorlagen = @cntvo and
+      tpv.cnt_auftraege <= @stornolimit
+    if (@vorlagex is not null)
+    begin
+      select 'PI_VORLAGE = ' + convert(varchar,@akt_userx) + ', @VORLAGEX = ' + convert(varchar,@vorlagex) + ', @STORNO = 1'
+    	exec PI_VORLAGE @USER=@akt_userx, @VORLAGEX=@vorlagex, @STORNO=1
+    end
+  end
+end
+
+set nocount off
+select 
+ FormularCode=F.FORMULARCODE,
+ Vorlage=substring(VO.VORLAGENAME,1,48),
+ AnzAuft = tpv.cnt_auftraege,
+ Abteilung=E.EINSCODE,
+ Benutzer=I.IDENTCODE,
+ Arbeitsplatz=C.CLIENTCODE,
+ Ersteller=P.PERSONID,
+ Erfassdat=convert(char(11),VO.ERFASSDAT,104)+convert(char(8),VO.ERFASSDAT,108)+' ',
+ VO.VORLAGEX,
+ Storno = case when (@storno = 1 and tpv.cnt_auftraege <= @stornolimit) then ' ja ' else 'nein' end
+from 
+ PERSON P, 
+ VORLAGE VO, 
+ FORMULAR F, 
+ EINSENDER E, 
+ CLIENT C, 
+ IDENT I,
+ #pvtemp tpv
+where
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VO.FORMULARX=F.FORMULARX and
+ P.PERSONX = VO.ERFASSPERS and
+ tpv.vorlagex = VO.VORLAGEX
+order by FormularCode, AnzAuft desc, Abteilung, Benutzer, Arbeitsplatz
+
+
+go

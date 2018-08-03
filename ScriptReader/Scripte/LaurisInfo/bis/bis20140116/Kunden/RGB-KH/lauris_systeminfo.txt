@@ -1,0 +1,64 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 08.03.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLCLUSTER           Routine Datenbank    Adaptive Server Enterprise/12.5.4/EBF 14656 ESD#6/P/NT (IX86)/OS 4.0/ase1254/2079/32-bit/OPT/Wed Jul 11 02:49:09 2007                                                                                                                                           
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    05.08.09  15:19                 
+ swissup3.tab                       2.08 $    05.08.09  15:05                 
+ swlupgrade.tab                     2.20.1 $  22.03.10  14:23                 
+ Lauris (via lauris.ini)            1.03 $    05.08.09  15:14                 
+ Blutbank (via barkasse.pro)        1.06 $    22.03.10  14:23                 
+ Statistik (via statistik.pro)      5.51 $    22.03.10  14:24                 
+ BB-Statistik (via spendestat.pro)  1.21 $    05.08.09  15:13                 
+                                                                              
+ neu:PI_ABLI                        3.37 $    22.03.10  14:24 SWISSLAB        
+ neu:PI_ANALYT                      3.10 $    22.03.10  14:24 SWISSLAB        
+ neu:PI_CFGT                        1.24 $    22.03.10  14:24 SWISSLAB        
+ neu:PI_LAUF                        1.10 $    22.03.10  14:24 SWISSLAB        
+ neu:PI_LAUFGRUPPE                  1.11 $    22.03.10  14:24 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                         167 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#7.10.17²# FW=#2.0.50727.42# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                     
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#7.10.17²# FW=#2.0.50727.190# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                    
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                  2499            2459           0 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             NULL       NULL     06.11.2007 18:07:00  ssc              27.12.2007 14:53:00  mei                        37          -1          -1 LAURIS          NULL      0        0           0 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ AUFTRAG  POCTFORMULAR     0         NULL             NULL       HANS             NULL       NULL     26.06.2008 10:56:00  MEI                                   NULL                      210          -1          -1 LAURIS             2      0       24           4 

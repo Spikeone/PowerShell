@@ -1,0 +1,55 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLCLUSTER           Sybase ASE 12.5.4 ES Adaptive Server Enterprise/12.5.4/EBF 14656 ESD#6/P/NT (IX86)/OS 4.0/ase1254/2079/32-bit/OPT/Wed Jul 11 02:49:09 2007                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                        526             480           0 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                MB MIKRO         Mikrobiologie                                                    
+
+(1 row affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+                                MATKREIS         MATKREIS                                                                  78           0 MATKREIS     MATKREIS                            100        Aug  7 2008 12:15PM 
+                                MATKREIS         MATKREIS                                                                 102           0 MATKREIS     MATKREIS                            100        Jan 27 2010  9:01AM 
+
+(2 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                ROUTINE          Routine LAS                                                                            NULL                       NULL       60000000        69999999         69449927          9999999               9449927                 550072    94.4993 % NULL                NULL                                    NULL                   NULL            0 
+                                NOTFALL          Notfall LAS                                                                            NULL                       NULL       80000000        85999999         83722401          5999999               3722401                2277598    62.0400 % NULL                NULL                                    NULL                   NULL            0 
+                                POCT             POCT                                                                    Mar 23 2009 11:23AM                       NULL        4300000         4400000          4304325           100000                  4325                  95675     4.3250 %       6.22 Nummern           15374.36 Tage                  NULL                   NULL            0 
+                                FUNKTION         Funktionsteste                                                          Jun 19 2009 10:00AM                       NULL        4400001         4500000          4401831            99999                  1830                  98169     1.8300 %       3.01 Nummern           32562.07 Tage                  NULL                   NULL            0 
+                                ROUTINE1         Routine Lauris                                                          Oct  6 2009  8:23AM                       NULL       72000000        79999999         72080341          7999999                 80341                7919658     1.0043 %     161.33 Nummern           49090.62 Tage                  NULL                   NULL            0 
+                                NOTFALL1         Notfall Lauris                                                          Oct  7 2009  8:00AM                       NULL       86000000        89999999         86051356          3999999                 51356                3948643     1.2839 %     103.33 Nummern           38213.17 Tage                  NULL                   NULL            0 
+
+(6 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+                                ROUTINE          Routine LAS                                                                            NULL               9449927                 550072    94.4993 % NULL                                    NULL                   NULL nein      
+
+(1 row affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

@@ -1,0 +1,14 @@
+set nocount on
+go
+Select 
+  Kuerzel=I.IDENTCODE, 
+  I.ERFASSDAT,
+  I.ERFASSPERS
+from  
+  IDENT I
+where  
+   I.STORNODAT is null and   
+   I.EINSENDERX is null
+order
+   by I.ERFASSDAT   
+go

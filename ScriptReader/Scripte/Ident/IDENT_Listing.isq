@@ -1,0 +1,137 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [141009]                                                       */
+/*KURZINFO : Listing der Tabelle IDENT                                      */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20141009.1913>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[141009] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+-- dieses Script wurde (wie man leicht sieht) aus der PR_IDENT erstellt, mit ein paar Erweiterungen
+-- weitere Items zum Auslisten im unteren Teil des Scripts nach Bedarf entkommentarisieren!
+set nocount on
+declare
+   @strmessage       varchar(128),
+   @datum            varchar(64),
+   @sys_kurz         varchar(40),
+   @ml_bit           int
+select @datum=', ausgeführt am: ' + convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)+' '
+select @sys_kurz = ' für System: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO
+select @strmessage = ' Lauris: Liste aller Benutzer (IDENT) ' + @datum + @sys_kurz
+print @strmessage
+print ''
+
+select
+   T.EINSCODE,
+   T.EIGNERBIT
+into #multilab
+from
+   EINSENDER T
+where
+       T.EIGNERBIT is not null
+   and T.EIGNERBIT <> 0
+   and T.STORNODAT is null
+   and T.AKTIVBIS is null
+order by
+   T.EIGNERBIT
+-- select * from #multilab
+
+/* Tempo Tabelle anlegen */
+create table #temp(
+   IDENTX int not null,
+   EINSENDERX int null,
+   ML_E_INT   int null,
+   ML_N_INT   int null,
+   ML_EIGNER  varchar(560) null,
+   ML_NUTZER  varchar(560) null)
+
+/* Benutzer in die Tabelle einfuegen */
+   insert into #temp    select
+      I.IDENTX,
+      I.EINSENDERX,
+      I.EIGNER,
+      I.NUTZER,
+      '',
+      ''
+   from
+      IDENT I
+--   where
+--      I.STORNODAT is null
+
+update #temp set ML_EIGNER = ' alle ML'  where ML_E_INT = -1
+update #temp set ML_NUTZER = ' alle ML'  where ML_N_INT = -1
+select @ml_bit=-1
+while  @ml_bit < 30
+begin
+	select @ml_bit = @ml_bit + 1 
+--	select ml_bit = @ml_bit, Wert = power(2,@ml_bit)
+	update #temp set ML_EIGNER = ML_EIGNER + m.EINSCODE + ',' from #temp t, #multilab m where t.ML_EIGNER <> ' alle ML' and t.ML_E_INT & power(2,@ml_bit) = power(2,@ml_bit) and m.EIGNERBIT = power(2,@ml_bit) 
+	update #temp set ML_NUTZER = ML_NUTZER + m.EINSCODE + ',' from #temp t, #multilab m where t.ML_NUTZER <> ' alle ML' and t.ML_N_INT & power(2,@ml_bit) = power(2,@ml_bit) and m.EIGNERBIT = power(2,@ml_bit) 
+end
+
+
+/* Ergebnis aus Tempo Tabelle ausgeben */
+set nocount off
+select
+   Fachabteilung = E.EINSCODE,
+   IDENTCODE = substring(I.IDENTCODE,1,16),
+   IDENTNAME = substring(I.IDENTNAME,1,36),
+   R.CODE as ROLLECODE,
+   Identtyp = substring(FW.FWTEXT1,1,16),   
+   'Login(letzt)' = convert(char(11),I.LOGINDATLETZT,104),
+--   I.IDENTTYP,
+--   P.TITEL,
+   Stornodat = convert(char(11),I.STORNODAT,104), 
+   Aktivab = convert(char(11),I.AKTIVAB,104),
+   Aktivbis = convert(char(11),I.AKTIVBIS,104),
+   PERSONID = substring(P.PERSONID,1,16),
+   'PID2 (altern.)' = substring(P.PERSONID2,1,16),
+--   P.NAME,
+--   P.VORNAME,
+--   P.DIENSTTEL,
+   I.EIGNER,
+   I.NUTZER,
+--   T.EINSENDERX,
+--   E.EINSNREXT,
+--   E.EINSKURZ,
+--   E.NAME1,
+   T.IDENTX,
+   I.PERSONX,
+--   I.ROLLEX,
+   I.PASSWDAT,
+   I.PASSWFLAG,
+   I.CHIPCARD,
+   Kommentar = substring(I.KOMMENTAR,1,64),
+   I.SPERRE,
+   I.CLIENTX,
+   C.CLIENTCODE,
+   'Multilab-Eigner' = substring(T.ML_EIGNER,1,128),
+   'Multilab-Nutzer' = substring(T.ML_NUTZER,1,128)
+from
+   #temp T,
+   IDENT I,
+   PERSON P,
+   EINSENDER E,
+   ROLLE R,
+   CLIENT C,
+   FESTWERT FW
+where
+   T.IDENTX = I.IDENTX
+   and I.PERSONX = P.PERSONX
+   and T.EINSENDERX *= E.EINSENDERX
+   and I.ROLLEX *= R.ROLLEX
+   and I.CLIENTX *= C.CLIENTX
+   and FW.SPRACHID = 10 
+   and FW.TABELLE = 'IDENT' 
+   and FW.SPALTE = 'IDENTTYP' 
+   and FW.INTWERT = I.IDENTTYP 
+   
+order by
+   E.EINSCODE,
+   I.IDENTCODE
+
+go

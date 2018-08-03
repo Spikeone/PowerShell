@@ -1,0 +1,49 @@
+print '--- Profile (Lauris) ---'
+go
+select
+ FormularCode=F.FORMULARCODE,
+ Vorlagenname=substring(VO.VORLAGENAME,1,20),
+ Analyt=AN1.CODE,
+ AnaVol=AN1.VOLUMEN,
+ Kennung=AN1.KENNUNG,
+ Behältercode=BE.BEHAELTERCODE,
+-- Behaeltername=BE.BEHAELTERNAME,
+ Materialkreis=M.MATERIALKREISNR,
+ Materialcode=M.MATCODE,
+ M.MATERIALX,
+ M.MATNRVON,
+ M.MATNRBIS,
+-- Materialname=M.MATERIALNAME,
+ MFA_Analyt=AN2.CODE,
+ PAnalyt=AN3.CODE,
+ Art=VA.ART,
+ Station=E.EINSCODE,
+ Client=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Erfassdat=convert(char(11),VA.ERFASSDAT,104)+convert(char(8),VA.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ VorlageAnfX=VA.VORLAGEANFX,
+ Plandat=convert(char(11),VO.PLANDAT,104)+convert(char(8),VO.PLANDAT,108)+' ',
+ Abnahmedat=convert(char(11),VO.ABNAHMEDAT,104)+convert(char(8),VO.ABNAHMEDAT,108)+' ',
+ F.FORMULARX,
+ VO.VORLAGEX
+
+
+from VORLAGEANF VA, PERSON P, VORLAGE VO, ANALYT AN1, ANALYT AN2, ANALYT AN3, BEHAELTER BE, FORMULAR F, EINSENDER E, CLIENT C, IDENT I, MATERIAL M
+where
+ VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VA.ERFASSPERS = P.PERSONX and
+ VA.ANALYTX = AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX = BE.BEHAELTERX and
+ M.MATERIALX = BE.MATERIALX and
+ VO.FORMULARX=F.FORMULARX
+order by 
+ VO.VORLAGEX 
+go

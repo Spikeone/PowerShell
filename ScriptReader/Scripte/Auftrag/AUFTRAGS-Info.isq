@@ -1,0 +1,604 @@
+--*-----------------------------------------------------------------------------
+--*FILEDESCR   : Informationen zu AUFTRÄGEN bzw. alle Informationen zu PATIENTEN
+--*KURZINFO    : Gibt gezielte Informationen zu einem Patienten aus, dazu reicht,
+--               die Angabe der AUFTRAG\FALL\!oder!\STAMM-Nummer 
+--               soll die Rechecher bei einem SSC erleichtern.
+--               außerdem können weitere Aufträge angegeben werden mit Informationen zum
+--*AUTOR       : son
+--*ERSTELLT    : [2016.10.25]
+--*BEMERKUNG   : 
+--*$Revision: 1.02 $
+--*-----------------------------------------------------------------------------
+--*AENDERUNG:
+--*[20161025] 1.00   son - Erstellt
+--*[20161028] 1.01   son - Erweitert Informationen zu 4 Aufträgen 
+--*[20161117] 1.01   son - Erweitert mit OPTION für AUFTRAGZEIT
+--                         & Anpassung der detailierten Auftragsinformationen
+--*[20161124] 1.02   son - Anpassung AUFTRAGINFORMATIONEN (Patienteninformationen hinzugefügt bei AUFTRAG 2,3,4)
+--SET statistics io, time on
+
+SET nocount on
+SET proc_return_status OFF
+
+
+-- Variablen zum messen der Laufzeit
+declare @startdat    datetime
+declare @enddat      datetime
+declare @datum       varchar(64)
+-- Variablen zum definieren der Rückgabemenge
+declare @AUFTRAGNR   char(16)
+declare @AUFTRAGX    int
+declare @PATIFALLNR  char(16)
+declare @PATISTAMMNR char(16)
+declare @PATISTAMMX  int
+-- Variable für auszuführenden Modus
+declare @TSTATUS     int
+declare @AUFTRAGZEIT int
+-- Variablen zu weiteren AUFTRÄGEN
+declare @AUFTRAGNR2  char(16)
+declare @AUFTRAGNR3  char(16)
+declare @AUFTRAGNR4  char(16)
+
+
+-- Bitte eine Variable füllen!-- EIN WERT REICHT, es muessen nicht alle 3 ausgefüllt werden 
+SELECT  @AUFTRAGNR   =  '12345678'  -- zu füllen mit einer AUFTRAGSNUMMER
+SELECT  @AUFTRAGX    =  0           -- Um Probleme bei doppelt vergebenen AUFTRAGSNUMMERN zu umgehen
+SELECT  @PATIFALLNR  =  ''          -- zu füllen mit einer PATIENTENFALLNUMMER
+SELECT  @PATISTAMMNR =  ''          -- zu füllen mit der PATISTAMMNUMMER
+--
+SELECT  @AUFTRAGNR2  =  ''          -- Optional, gibt Informationen zu diesen Aufträgen aus. (Fehlerhaft, falls AUFTRAGSNUMMERN doppelt vergeben sind)
+SELECT  @AUFTRAGNR3  =  ''          -- Optional, gibt Informationen zu diesen Aufträgen aus. (Fehlerhaft, falls AUFTRAGSNUMMERN doppelt vergeben sind)
+SELECT  @AUFTRAGNR4  =  ''          -- Optional, gibt Informationen zu diesen Aufträgen aus. (Fehlerhaft, falls AUFTRAGSNUMMERN doppelt vergeben sind)
+-- OPTIONEN --------------------------------------------------------------------------------------------------------
+SELECT  @TSTATUS     =  0   -- 0 = AUFTRAEGE die nicht mehr in der Taskflag sind werden ignoriert; 1 = Auch AUFTRAEGE die nicht mehr in der Taskflag sind werden angezeigt.
+SELECT  @AUFTRAGZEIT =  4   -- Führt die Prozedur PR_AUFTRAGZEIT aus; 1 = 1.AUFTRAG, 2 = 1. und 2.AUFTRAG usw. (4 = MAX)
+
+-- Speichert Startzeitpunkt in eine Variable
+SELECT @startdat=getdate() 
+-- Erstellen einer Temptable, in welcher alle FAELLE\AUFTRAEGE- und PATIENTENLISTEN-Eintraege gespeichert werden.
+-- Markiert die Einträge zu den Fällen mit einem
+create table #temp(
+      PATISTAMMX int not null,
+      PATIFALLX  int null,
+      AUFTRAGX   int null,
+      PATILISTEX int null,
+	  FLAG       CHAR(4) )
+
+ 
+-- Findet die PATISTAMMX und AUFTRAGX, wenn eine AUFTRAGNR mitgegeben wurde
+IF @AUFTRAGNR != null and @AUFTRAGNR != '' 
+begin
+ SELECT @PATISTAMMX = PATISTAMMX FROM AUFTRAG WHERE AUFTRAGNR=@AUFTRAGNR
+ SELECT @AUFTRAGX   = AUFTRAGX   FROM AUFTRAG WHERE AUFTRAGNR=@AUFTRAGNR
+end
+
+-- Findet die AUFTRAGX, wenn keine AUFTRAGNR mitgegeben wurde
+IF @AUFTRAGX  is not null and @AUFTRAGX > 0 
+begin
+ SELECT @AUFTRAGNR = AUFTRAGX FROM AUFTRAG WHERE AUFTRAGX=@AUFTRAGX
+end
+
+ -- Findet die PATISTAMMX, wenn eine PATIFALLNR mitgegeben wurde
+ IF @PATIFALLNR != null and @PATIFALLNR != ''
+ begin
+  SELECT @PATISTAMMX = PATISTAMMX FROM PATIFALL WHERE PATIFALLNR=@PATIFALLNR
+ end
+ 
+ -- Findet die PATISTAMMX, wenn eine PATISTAMMNR mitgegeben wurde
+ IF @PATISTAMMNR != null and @PATISTAMMNR != ''
+ begin
+  SELECT @PATISTAMMX = PATISTAMMX FROM PATISTAMM WHERE PATISTAMMNR=@PATISTAMMNR
+ end
+
+-- Warnung, falls keine Variablen gesetzt wurden
+IF @PATISTAMMX = null
+begin
+print "|--------------------------------" 	
+print "|BITTE VARIABLEN IM SCRIPT SETZEN" 	
+print "|DER PATIENTENSTAMM KONNTE NICHT " 	
+print "|          AUFGELÖST WERDEN      " 	
+print "|--------------------------------" 	
+print "|" 	
+print "|" 	
+end
+
+-- Alle Aufträge, alle Patientenfälle und alle Patientenlisten(Lauris) aufgeschlüsselt.
+-- Dazu wird die ermittelte PATISTAMMX genutzt, je nach @TSTATUS AUFTRAGE der TASKFLAG oder nicht.
+-- Tabelle wird zuerst mit Fällen gefüllt und dann mit Aufträgen->Fälle und entsprechend geflagt.
+
+	insert into #temp SELECT
+         @PATISTAMMX,
+         PF.PATIFALLX,
+         null,
+         PL.PATILISTEX,
+		 "FALL"
+      FROM
+         PATILISTE PL,
+		 PATIFALL PF,
+		 PATISTAMM PS
+      WHERE
+         PS.PATISTAMMX=@PATISTAMMX AND
+		 PF.PATISTAMMX=@PATISTAMMX AND
+		 PF.PATIFALLX*=PL.PATIFALLX 
+
+-- Falls TSTATUS = 0 nur Aufträge die in der TASKFLAG sind
+IF @TSTATUS = 0
+	 insert into #temp SELECT
+         @PATISTAMMX,
+         PF.PATIFALLX,
+         A.AUFTRAGX,
+         null,
+		 "AUFT"
+      FROM
+		 PATIFALL PF,
+		 AUFTRAG A,
+		 TASKFLAG T
+      WHERE
+         A.PATISTAMMX=@PATISTAMMX AND
+		 PF.PATIFALLX=*A.PATIFALLX AND
+		 A.AUFTRAGX = T.XREF AND
+		 T.TSTATUS != null
+-- Ansonsten alle Auftraege, auch die welche nicht in der Taskflag sind.
+		 else		 
+	 insert into #temp SELECT
+        @PATISTAMMX,
+         PF.PATIFALLX,
+         A.AUFTRAGX,
+         null,
+		 "AUFT"
+      FROM
+		 PATIFALL PF,
+		 AUFTRAG A
+      WHERE
+         A.PATISTAMMX=@PATISTAMMX AND
+		 PF.PATIFALLX=*A.PATIFALLX 
+	 
+
+-- Gibt gezielte Informationen zum Patientenstamm aus.
+print "|--------------------------------" 	
+print "|Informationen zum PATIENTENSTAMM" 	
+print "|--------------------------------" 		 
+SELECT 
+ convert(char(20),PATISTAMMNR) AS PATISTAMMNR, 
+ convert(char(30),VORNAME) AS VORNAME,
+ convert(char(30),NAME) AS NAME,
+ SEX,
+ GEBDAT,
+ convert(char(30),ADRESSE) AS ADRESSE,
+ convert(char(20),ORT) AS ORT,
+ PLZ,
+ ERFASSDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=PS.ERFASSPERS) AS ERFASSPERS,
+ SQLERFASSDAT
+FROM 
+ PATISTAMM PS
+WHERE
+ PATISTAMMX=@PATISTAMMX 
+ print "|--------------------------------" 
+ print "| "
+
+--Fehlerhafte Abfrage
+-- Gibt statistische Informationen aus. 
+print "|--------------------------------" 	
+print "|Statistische Informationen" 	
+print "|--------------------------------" 	
+select
+PF.PATIFAELLE AS PATIFAELLE,
+PFA.AKTIVFALL as 'Aktive-Faelle',
+AU.GES        AS 'Gesamt-Auftrage',
+AU.LAU        AS 'LAURIS-Auftraege',
+AU.SWL        AS 'SWL-Auftraege',
+PF.AKTPAT as 'Aktive Patilisten-Eintraege',
+PF.ALLPAT as 'Alle Patilisten-Eintraege'
+from 
+-- Subqueries im FROM zum ermitteln der Informationen
+
+(select 
+COUNT(T.PATIFALLX) as PATIFAELLE , -- zählt alle Aufträge
+COUNT(T.PATILISTEX) as ALLPAT , -- Zählt in wievielen Patientenlisten der Patient auftaucht(Aus #temp gezählt, daher zählt die Bedingung unten nicht 'left join')
+COUNT(PL.PATILISTEX) as AKTPAT -- Zählt in wievielen aktiven Patientenlisten der Patiente auftaucht. (Bedingung ist in der Where Clause enthalten (PL) )
+from #temp T, PATILISTE PL
+where T.FLAG="FALL" and T.PATILISTEX*=PL.PATILISTEX and  (PL.AKTIVBIS >= GETDATE() or PL.AKTIVBIS=null) ) as PF,
+
+(select COUNT( distinct PF.PATIFALLX) as AKTIVFALL -- Prüft wieviele Fälle aktiv sind und kein ENTLASSDAT haben.
+ from #temp T, PATIFALL PF
+ where T.PATIFALLX = PF.PATIFALLX and T.FLAG="FALL" and (PF.ENTLDATVERW >= GETDATE() or PF.ENTLDATVERW=null) ) as PFA,
+
+(select 
+COUNT(T.AUFTRAGX) as GES, -- zählt alle Aufträge des Patienten
+COUNT(case when A.FORMULARX  != null then  1 else  null end) AS LAU, -- zählt alle Aufträge die in Lauris erstellt wurden.
+COUNT(case when A.FORMULARX   = null then  1 else  null end) AS SWL  -- zählt alle Aufträge die in Swisslab erstellt wurden.
+ from #temp T, AUFTRAG A 
+ where T.FLAG="AUFT" and A.AUFTRAGX = T.AUFTRAGX ) as AU
+
+
+ 
+SET nocount OFF 
+-- Gibt gezielte Informationen zum Patientenfall aus.
+print "|--------------------------------" 	
+print "|Auflistung aller PATIENTENFAELLE" 	
+print "|--------------------------------"
+SELECT
+ convert(char(20),PATIFALLNR) AS PATIFALLNR,
+ (select COUNT(TF.AUFTRAGX) from #temp TF where T.PATIFALLX=TF.PATIFALLX) as 'Auftraege', -- zählt alle Auftrage die zum Patienten gehören (in der #temp geladen sind)
+ PATIART,
+ KOSTTRTYP, 
+ (SELECT EINSCODE FROM EINSENDER E WHERE E.EINSENDERX=PF.EINSENDERX) AS EINSCODE,
+ EINSENDERX,
+ (SELECT EINSCODE FROM EINSENDER E WHERE E.EINSENDERX=PF.FACHEINSENDERX) AS 'FACH.EINSCODE',
+ FACHEINSENDERX,
+ AUFNDAT,
+ ENTLDATVERW,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=PF.ERFASSPERS) AS ERFASSPERS,
+  ERFASSDAT
+FROM
+PATIFALL PF, #temp T
+WHERE
+ PF.PATIFALLX= T.PATIFALLX and T.FLAG="FALL"
+ Order by ENTLDATVERW asc, AUFNDAT desc
+ print "|--------------------------------" 
+ print "| "
+
+ -- Gibt alle Informationen zum Patientenfall aus. 
+ -- Nur Einträge in dieser LISTE sind auch im LAURIS-Client zu sehen.
+print "|--------------------------------" 	
+print "|Auflistung aller AKTIVEN! PATIENTENLISTEN-Eintraege" 	
+print "|--------------------------------" 	
+SELECT
+ PL.PATILISTEX,
+ (SELECT EINSCODE  FROM EINSENDER E WHERE E.EINSENDERX=PL.EINSENDERX) AS 'SWL-EINSCODE',
+ (SELECT EINSNREXT FROM EINSENDER E WHERE E.EINSENDERX=PL.EINSENDERX) AS 'EINSNREXT', 
+ PL.EINSENDERX,
+ (SELECT PF.PATIFALLNR FROM PATIFALL PF where PF.PATIFALLX=PL.PATIFALLX) AS PATIFALLNR,
+ PATIART,
+ KOSTTRTYP,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=PL.ERFASSPERS) AS ERFASSPERS,
+ ERFASSDAT,
+ MUTDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=PL.MUTPERS) AS MUTPERS,
+ AKTIVBIS, 
+ TABELLE, -- Gibt wieder welche Tabelle für die X-REF genutzt wird
+ XREF,    -- Fremdschlüssel für die TABELLE
+ convert(char(15),(Select I.IDENTCODE  from IDENT I   where I.IDENTX=PL.IDENTX)  ) as IDENTCODE,
+ convert(char(15),(Select C.CLIENTCODE from CLIENT C  where C.CLIENTX=PL.CLIENTX)) as CLIENTCODE
+FROM
+ PATILISTE PL, #temp T
+WHERE
+ PL.PATILISTEX=T.PATILISTEX and T.FLAG="FALL" and
+ (AKTIVBIS >= GETDATE() or AKTIVBIS=null)
+ORDER BY
+ 'SWL-EINSCODE', AKTIVBIS DESC
+ print "|--------------------------------" 
+ print "| " 
+ 
+-- Zeigt alle PATIENTENLISTEN-Eintraege zum Patienten auch inaktive
+print "|--------------------------------" 	
+print "|Auflistung aller PATIENTENLISTEN-Eintraege" 	
+print "|--------------------------------" 	
+SELECT 
+ PL.PATILISTEX,
+ (SELECT EINSCODE  FROM EINSENDER E WHERE E.EINSENDERX=PL.EINSENDERX) AS 'SWL-EINSCODE',
+ (SELECT EINSNREXT FROM EINSENDER E WHERE E.EINSENDERX=PL.EINSENDERX) AS 'EINSNREXT', 
+ PL.EINSENDERX,
+ (SELECT PF.PATIFALLNR FROM PATIFALL PF where PF.PATIFALLX=PL.PATIFALLX) AS PATIFALLNR,
+ PATIART,
+ KOSTTRTYP,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=PL.ERFASSPERS) AS ERFASSPERS,
+ ERFASSDAT,
+ MUTDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=PL.MUTPERS) AS MUTPERS,
+ AKTIVBIS, 
+ TABELLE,
+ XREF,
+ convert(char(15),(Select I.IDENTCODE  from IDENT I   where I.IDENTX=PL.IDENTX)  ) as IDENTCODE,
+ convert(char(15),(Select C.CLIENTCODE from CLIENT C  where C.CLIENTX=PL.CLIENTX)) as CLIENTCODE
+FROM
+ PATILISTE PL, #temp T
+WHERE
+ PL.PATILISTEX=T.PATILISTEX and T.FLAG="FALL"
+ORDER BY
+ 'SWL-EINSCODE', AKTIVBIS DESC
+ print "|--------------------------------" 
+ print "| "
+
+-- Gibt alle Informationen zu AUFTRÄGEN aus z.B. LAURIS-Auftrag, die sich IN DER TASKFLAG befinden.
+print "|--------------------------------" 	
+print "|Auflistung aller AUFTRAEGE" 	
+print "|--------------------------------"  
+SELECT
+ isnull( (SELECT RTRIM(FORMULARCODE)+'[x:'+ RTRIM(convert(char(10),FORMULARX))+"]"  FROM FORMULAR F WHERE F.FORMULARX=A.FORMULARX),".notLAURIS") AS FORMULAR,
+ A.AUFTRAGNR,
+ (SELECT TSTATUS FROM TASKFLAG T (index TASKFLAG_PK1) where A.AUFTRAGX=T.XREF) AS TSTATUS,
+ (SELECT COUNT(PROBEX) FROM PROBE P (index PROBE_FK2) where P.AUFTRAGX = A.AUFTRAGX) AS 'AnzahlProben',
+ (SELECT COUNT((case when PSTATUS > 0 then 1 else null end)) from PROBE P (index PROBE_FK2) where P.AUFTRAGX = A.AUFTRAGX) AS 'AktiveProben',
+ (SELECT COUNT(R.AUFTRAGX) from RESULTAT R (index RESULTAT_FK3) where R.AUFTRAGX=A.AUFTRAGX) AS "AnzahlAnforderungen",
+ (SELECT PF.PATIFALLNR FROM PATIFALL PF where PF.PATIFALLX=A.PATIFALLX) AS PATIFALLNR,
+ (SELECT EINSCODE FROM EINSENDER E WHERE E.EINSENDERX=A.EINSENDERX) AS EINSCODE,
+ A.LAUF,
+ A.DRING,
+ PATIART,
+ KOSTTRTYP,
+ AUFTRAGDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=A.ERFASSPERS) AS ERFASSPERS,
+ ERFASSDAT,
+ MUTDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=A.MUTPERS) AS MUTPERS,
+ PLANDAT,
+ ABNAHMEDAT,
+ LABEINDAT,
+ SQLERFASSDAT,
+ AUFTRAGNRS,
+ TAGE as 'Alter in Tagen',
+ SEX
+FROM AUFTRAG A (index AUFTRAG_PK), #temp T
+where
+A.AUFTRAGX= T.AUFTRAGX and T.FLAG="AUFT"
+Order by FORMULAR desc, TSTATUS desc, A.AUFTRAGNR desc
+  print "|--------------------------------" 
+ print "| "
+ 
+
+-- Falls die Variable @AUFTRAGNR\AUFTRAGX beschrieben wurde, dann werden auch Informationen zu diesem explizten Auftrag ausgegeben
+IF @AUFTRAGX is not null and @AUFTRAGX > 0
+begin
+print "|--------------------------------" 	
+print "|Informationen zum Auftrag:%1!",@AUFTRAGNR
+print "|--------------------------------"  
+SELECT
+distinct
+ convert(CHAR(14),T.TUBEEXTID) as TUBEEXTID,
+ P.PSTATUS,
+ convert(Char(12),P.ETIKINFO)  as ETIKINFO,
+ convert(Char(12),P.ETIKDRUCK) as ETIKDRUCK,
+ (SELECT RTRIM(BEHAELTERCODE) + "(" + RTRIM(convert(Char(10), MATEXT         )) + ")" from BEHAELTER B where B.BEHAELTERX = T.BEHAELTERX ) AS 'LAU_BEHAELTER&MATEXT',
+ (SELECT RTRIM(MATCODE      )+  "(" + RTRIM(convert(Char(10), MATERIALKREISNR)) + ")"  from MATERIAL M  where M.MATERIALX = T.MATERIALX ) AS 'SWL_MATCODE&NR',
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.ANALYTX) AS ANALAYTCODE,
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.MFAANALYTX) AS 'MFA-ANALYTCODE', 
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.PANALYTX) AS 'P-ANALAYTCODE', 
+ R.STATUS AS RSTATUS,
+ R.RESULTATX,
+ (SELECT "[" + RTRIM(convert(char(8),GERAETENR)) + "]" + convert(char(20),BEZEICHNUNG) from GERAET G where G.GERAETX = R.GERAETX) AS GERAET,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.ERFASSPERS) AS ERFASSPERS,
+ R.ERFASSDAT,
+ R.ERGEBNISD,
+ convert(char(20),R.ERGEBNIST) AS ERGEBNIST,
+ R.ERGEBNISF,
+ R.ART,
+ convert(char(20),R.BEWERTUNG) AS BEWERTUNG,
+ R.NORMFLAG,
+ R.PLAUFLAG,
+ R.ABLIX,
+ R.ALGOX,
+ R.ANFORDDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.ANFORDPERS) AS ANFORDPERS,
+ R.STORNODAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.STORNOPERS) AS STORNOPERS,
+ R.SQLERFASSDAT,
+ (SELECT convert(char(20),F.PATIFALLNR)   from PATIFALL  F where F.PATIFALLX  = A.PATIFALLX ) AS PATIFALLNR,
+ (SELECT convert(char(20),P.PATISTAMMNR)  from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS PATISTAMMNR,
+ (SELECT convert(char(30),P.VORNAME)      from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS VORNAME,
+ (SELECT convert(char(30),P.NAME)         from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS NAME,
+ A.AUFTRAGX
+FROM RESULTAT R
+left join PROBE P   on R.PROBEX = P.PROBEX
+left join TUBE T    on P.TUBEX = T.TUBEX
+left join AUFTRAG A on A.AUFTRAGX= @AUFTRAGX
+where R.AUFTRAGX = @AUFTRAGX 
+Order by T.TUBEEXTID
+ print "|--------------------------------" 
+ print "| "
+end
+
+--INFORMATIONEN zu @AUFTRAGNR2
+-- Falls die Variable @AUFTRAGNR2 beschrieben wurde, dann werden auch Informationen zu diesem explizten Auftrag ausgegeben
+IF @AUFTRAGNR2 != null and @AUFTRAGNR2 != '' 
+begin
+print "|--------------------------------" 	
+print "|Informationen zum Auftrag:%1!",@AUFTRAGNR2
+print "|--------------------------------"  
+SELECT
+distinct
+ convert(CHAR(14),T.TUBEEXTID) as TUBEEXTID,
+ P.PSTATUS,
+ convert(Char(12),P.ETIKINFO)  as ETIKINFO,
+ convert(Char(12),P.ETIKDRUCK) as ETIKDRUCK,
+ (SELECT RTRIM(BEHAELTERCODE) + "(" + RTRIM(convert(Char(10), MATEXT         )) + ")" from BEHAELTER B where B.BEHAELTERX = T.BEHAELTERX ) AS 'LAU_BEHAELTER&MATEXT',
+ (SELECT RTRIM(MATCODE      )+  "(" + RTRIM(convert(Char(10), MATERIALKREISNR)) + ")"  from MATERIAL M  where M.MATERIALX = T.MATERIALX ) AS 'SWL_MATCODE&NR',
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.ANALYTX) AS ANALAYTCODE,
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.MFAANALYTX) AS 'MFA-ANALYTCODE', 
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.PANALYTX) AS 'P-ANALAYTCODE', 
+ R.STATUS AS RSTATUS,
+ R.RESULTATX,
+ (SELECT "[" + RTRIM(convert(char(8),GERAETENR)) + "]" + convert(char(20),BEZEICHNUNG) from GERAET G where G.GERAETX = R.GERAETX) AS GERAET,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.ERFASSPERS) AS ERFASSPERS,
+ R.ERFASSDAT,
+ R.ERGEBNISD,
+ convert(char(20),R.ERGEBNIST) AS ERGEBNIST,
+ R.ERGEBNISF,
+ R.ART,
+ convert(char(20),R.BEWERTUNG) AS BEWERTUNG,
+ R.NORMFLAG,
+ R.PLAUFLAG,
+ R.ABLIX,
+ R.ALGOX,
+ R.ANFORDDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.ANFORDPERS) AS ANFORDPERS,
+ R.STORNODAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.STORNOPERS) AS STORNOPERS,
+ R.SQLERFASSDAT,
+ (SELECT convert(char(20),F.PATIFALLNR)   from PATIFALL  F where F.PATIFALLX  = A.PATIFALLX ) AS PATIFALLNR,
+ (SELECT convert(char(20),P.PATISTAMMNR)  from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS PATISTAMMNR,
+ (SELECT convert(char(30),P.VORNAME)      from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS VORNAME,
+ (SELECT convert(char(30),P.NAME)         from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS NAME,
+ A.AUFTRAGX
+FROM RESULTAT R
+left join PROBE P   on R.PROBEX = P.PROBEX
+left join TUBE T    on P.TUBEX = T.TUBEX
+left join AUFTRAG A on A.AUFTRAGX=(select A.AUFTRAGX from AUFTRAG A where A.AUFTRAGNR= @AUFTRAGNR2)
+where R.AUFTRAGX =                (select A.AUFTRAGX from AUFTRAG A where A.AUFTRAGNR= @AUFTRAGNR2)
+Order by T.TUBEEXTID
+ print "|--------------------------------" 
+ print "| "
+end
+
+ 
+--INFORMATIONEN zu @AUFTRAGNR3
+-- Falls die Variable @AUFTRAGNR3 beschrieben wurde, dann werden auch Informationen zu diesem explizten Auftrag ausgegeben
+IF @AUFTRAGNR3 != null and @AUFTRAGNR3 != '' 
+begin
+print "|--------------------------------" 	
+print "|Informationen zum Auftrag:%1!",@AUFTRAGNR3
+print "|--------------------------------"  
+SELECT
+distinct
+ convert(CHAR(14),T.TUBEEXTID) as TUBEEXTID,
+ P.PSTATUS,
+ convert(Char(12),P.ETIKINFO)  as ETIKINFO,
+ convert(Char(12),P.ETIKDRUCK) as ETIKDRUCK,
+ (SELECT RTRIM(BEHAELTERCODE) + "(" + RTRIM(convert(Char(10), MATEXT         )) + ")" from BEHAELTER B where B.BEHAELTERX = T.BEHAELTERX ) AS 'LAU_BEHAELTER&MATEXT',
+ (SELECT RTRIM(MATCODE      )+  "(" + RTRIM(convert(Char(10), MATERIALKREISNR)) + ")"  from MATERIAL M  where M.MATERIALX = T.MATERIALX ) AS 'SWL_MATCODE&NR',
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.ANALYTX) AS ANALAYTCODE,
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.MFAANALYTX) AS 'MFA-ANALYTCODE', 
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.PANALYTX) AS 'P-ANALAYTCODE', 
+ R.STATUS AS RSTATUS,
+ R.RESULTATX,
+ (SELECT "[" + RTRIM(convert(char(8),GERAETENR)) + "]" + convert(char(20),BEZEICHNUNG) from GERAET G where G.GERAETX = R.GERAETX) AS GERAET,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.ERFASSPERS) AS ERFASSPERS,
+ R.ERFASSDAT,
+ R.ERGEBNISD,
+ convert(char(20),R.ERGEBNIST) AS ERGEBNIST,
+ R.ERGEBNISF,
+ R.ART,
+ convert(char(20),R.BEWERTUNG) AS BEWERTUNG,
+ R.NORMFLAG,
+ R.PLAUFLAG,
+ R.ABLIX,
+ R.ALGOX,
+ R.ANFORDDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.ANFORDPERS) AS ANFORDPERS,
+ R.STORNODAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.STORNOPERS) AS STORNOPERS,
+ R.SQLERFASSDAT,
+ (SELECT convert(char(20),F.PATIFALLNR)   from PATIFALL  F where F.PATIFALLX  = A.PATIFALLX ) AS PATIFALLNR,
+ (SELECT convert(char(20),P.PATISTAMMNR)  from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS PATISTAMMNR,
+ (SELECT convert(char(30),P.VORNAME)      from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS VORNAME,
+ (SELECT convert(char(30),P.NAME)         from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS NAME,
+ A.AUFTRAGX
+FROM RESULTAT R
+left join PROBE P   on R.PROBEX = P.PROBEX
+left join TUBE T    on P.TUBEX = T.TUBEX
+left join AUFTRAG A on A.AUFTRAGX=(select A.AUFTRAGX from AUFTRAG A where A.AUFTRAGNR= @AUFTRAGNR3)
+where R.AUFTRAGX =                (select A.AUFTRAGX from AUFTRAG A where A.AUFTRAGNR= @AUFTRAGNR3)
+Order by T.TUBEEXTID
+ print "|--------------------------------" 
+ print "| "
+end
+
+--INFORMATIONEN zu @AUFTRAGNR4
+-- Falls die Variable @AUFTRAGNR4 beschrieben wurde, dann werden auch Informationen zu diesem explizten Auftrag ausgegeben
+IF @AUFTRAGNR4 != null and @AUFTRAGNR4 != '' 
+begin
+print "|--------------------------------" 	
+print "|Informationen zum Auftrag:%1!",@AUFTRAGNR4
+print "|--------------------------------"  
+SELECT
+distinct
+ convert(CHAR(14),T.TUBEEXTID) as TUBEEXTID,
+ P.PSTATUS,
+ convert(Char(12),P.ETIKINFO)  as ETIKINFO,
+ convert(Char(12),P.ETIKDRUCK) as ETIKDRUCK,
+ (SELECT RTRIM(BEHAELTERCODE) + "(" + RTRIM(convert(Char(10), MATEXT         )) + ")" from BEHAELTER B where B.BEHAELTERX = T.BEHAELTERX ) AS 'LAU_BEHAELTER&MATEXT',
+ (SELECT RTRIM(MATCODE      )+  "(" + RTRIM(convert(Char(10), MATERIALKREISNR)) + ")"  from MATERIAL M  where M.MATERIALX = T.MATERIALX ) AS 'SWL_MATCODE&NR',
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.ANALYTX) AS ANALAYTCODE,
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.MFAANALYTX) AS 'MFA-ANALYTCODE', 
+ (SELECT A.CODE from ANALYT A where A.ANALYTX=R.PANALYTX) AS 'P-ANALAYTCODE', 
+ R.STATUS AS RSTATUS,
+ R.RESULTATX,
+ (SELECT "[" + RTRIM(convert(char(8),GERAETENR)) + "]" + convert(char(20),BEZEICHNUNG) from GERAET G where G.GERAETX = R.GERAETX) AS GERAET,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.ERFASSPERS) AS ERFASSPERS,
+ R.ERFASSDAT,
+ R.ERGEBNISD,
+ convert(char(20),R.ERGEBNIST) AS ERGEBNIST,
+ R.ERGEBNISF,
+ R.ART,
+ convert(char(20),R.BEWERTUNG) AS BEWERTUNG,
+ R.NORMFLAG,
+ R.PLAUFLAG,
+ R.ABLIX,
+ R.ALGOX,
+ R.ANFORDDAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.ANFORDPERS) AS ANFORDPERS,
+ R.STORNODAT,
+ (SELECT convert(char(20),PERSONID) FROM PERSON P WHERE P.PERSONX=R.STORNOPERS) AS STORNOPERS,
+ R.SQLERFASSDAT,
+ (SELECT convert(char(20),F.PATIFALLNR)   from PATIFALL  F where F.PATIFALLX  = A.PATIFALLX ) AS PATIFALLNR,
+ (SELECT convert(char(20),P.PATISTAMMNR)  from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS PATISTAMMNR,
+ (SELECT convert(char(30),P.VORNAME)      from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS VORNAME,
+ (SELECT convert(char(30),P.NAME)         from PATISTAMM P where P.PATISTAMMX = A.PATISTAMMX) AS NAME,
+ A.AUFTRAGX
+FROM RESULTAT R
+left join PROBE P   on R.PROBEX = P.PROBEX
+left join TUBE T    on P.TUBEX = T.TUBEX
+left join AUFTRAG A on A.AUFTRAGX=(select A.AUFTRAGX from AUFTRAG A where A.AUFTRAGNR= @AUFTRAGNR4)
+where R.AUFTRAGX =                (select A.AUFTRAGX from AUFTRAG A where A.AUFTRAGNR= @AUFTRAGNR4)
+Order by T.TUBEEXTID
+ print "|--------------------------------" 
+ print "| "
+end
+
+-- Ausführen von AUFTRAGZEIT falls die obige OPTION gesetzt wurde.
+IF @AUFTRAGX is not null and @AUFTRAGX > 0 and @AUFTRAGZEIT > 0
+begin
+print "|--------------------------------" 	
+print "|1.AUFTRAGZEIT des Auftrags:%1!",@AUFTRAGNR
+print "|--------------------------------"  
+exec PR_AUFTRAGZEIT @AUFTRAGX = @AUFTRAGX
+ print "|--------------------------------" 
+ print "| "
+end
+
+
+IF @AUFTRAGNR2 != null and @AUFTRAGNR2 != '' and @AUFTRAGZEIT > 1
+begin
+print "|--------------------------------" 	
+print "|2.AUFTRAGZEIT des Auftrags:%1!",@AUFTRAGNR2
+print "|--------------------------------"  
+exec PR_AUFTRAGZEIT @AUFTRAGNR = @AUFTRAGNR2
+ print "|--------------------------------" 
+ print "| "
+end
+
+
+IF @AUFTRAGNR3 != null and @AUFTRAGNR3 != '' and @AUFTRAGZEIT > 2
+begin
+print "|--------------------------------" 	
+print "|3.AUFTRAGZEIT des Auftrags:%1!",@AUFTRAGNR3
+print "|--------------------------------"  
+exec PR_AUFTRAGZEIT @AUFTRAGNR = @AUFTRAGNR3
+ print "|--------------------------------" 
+ print "| "
+end
+
+
+IF @AUFTRAGNR4 != null and @AUFTRAGNR4 != '' and @AUFTRAGZEIT > 3
+begin
+print "|--------------------------------" 	
+print "|4.AUFTRAGZEIT des Auftrags:%1!",@AUFTRAGNR4
+print "|--------------------------------"  
+exec PR_AUFTRAGZEIT @AUFTRAGNR = @AUFTRAGNR4
+ print "|--------------------------------" 
+ print "| "
+end
+
+SET nocount on
+-- Setzen des Enddatums (Wann ist das Script fertig)
+select @enddat=getdate()
+--Ausgabe der Laufzeit
+select @datum='Start: ' + convert(char(9),@startdat,4)+convert(char(9),@startdat,8)
+print ''
+print @datum
+select @datum='Ende : ' + convert(char(9),@enddat,4)+convert(char(9),@enddat,8)
+print @datum
+
+go
+

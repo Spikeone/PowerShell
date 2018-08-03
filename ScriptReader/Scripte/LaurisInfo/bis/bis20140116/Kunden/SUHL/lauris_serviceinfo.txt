@@ -1,0 +1,17 @@
+ 
+  Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  ------------------------------ -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                                 SQLCLUSTER           Suhl (Zentralkliniku Adaptive Server Enterprise/12.5.0.3/EBF 10695 IR/P/NT (IX86)/OS 4.0/rel12503/1915/32-bit/OPT/Wed Jan 22 23:28:11 2003                                                                                                                                            
+                                 SQLCLUSTER           Suhl - alle Labore   Adaptive Server Enterprise/12.5.0.3/EBF 10695 IR/P/NT (IX86)/OS 4.0/rel12503/1915/32-bit/OPT/Wed Jan 22 23:28:11 2003                                                                                                                                            
+ Msg 156, Level 15, State 2: 
+ Server 'SWFSUHL', Line 52: 
+ Incorrect syntax near the keyword 'select'. 
+ Msg 102, Level 15, State 1: 
+ Server 'SWFSUHL', Line 52: 
+ Incorrect syntax near ')'. 
+ Msg 156, Level 15, State 2: 
+ Server 'SWFSUHL', Line 118: 
+ Incorrect syntax near the keyword 'select'. 
+ Msg 102, Level 15, State 1: 
+ Server 'SWFSUHL', Line 118: 
+ Incorrect syntax near ')'. 

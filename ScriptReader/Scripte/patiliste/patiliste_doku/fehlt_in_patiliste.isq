@@ -1,0 +1,27 @@
+select
+  FallNr          = substring(PF1.PATIFALLNR,1,18),
+  EinsenderFall   = E1.EINSCODE,
+  EinsenderListe  = E2.EINSCODE,
+  ErfassdatFall   = convert(char(11),PF1.ERFASSDAT ,104)+convert(char(8),PF1.ERFASSDAT ,108)+' ',
+  MutdatFall      = convert(char(11),PF1.MUTDAT ,104)+convert(char(8),PF1.MUTDAT ,108)+' ',
+  ErfassdatListe  = convert(char(11),PL.ERFASSDAT ,104)+convert(char(8),PL.ERFASSDAT ,108)+' ',
+  EntlassungVerw  = convert(char(11),PF1.ENTLDATVERW ,104)+convert(char(8),PF1.ENTLDATVERW ,108)+' ',
+  EntlassungListe = convert(char(11),PL.AKTIVBIS ,104)+convert(char(8),PL.AKTIVBIS ,108)+' ',
+  ErfassPersFall  = PE1.PERSONID,
+  ErfassPersListe = PE2.PERSONID
+from
+  PATIFALL PF1, 
+  EINSENDER E1,
+  EINSENDER E2,
+  PATILISTE PL,
+  PERSON PE1,
+  PERSON PE2
+where
+  PF1.ERFASSDAT > dateadd(year,-3,getdate()) and
+  (PF1.ENTLDATVERW > getdate() or PF1.ENTLDATVERW is null) and
+  E1.EINSENDERX=PF1.EINSENDERX and
+  PE1.PERSONX=PF1.ERFASSPERS and
+  PL.PATIFALLX=*PF1.PATIFALLX and
+  PL.EINSENDERX*=E2.EINSENDERX and
+  PE2.PERSONX=*PL.ERFASSPERS
+go  

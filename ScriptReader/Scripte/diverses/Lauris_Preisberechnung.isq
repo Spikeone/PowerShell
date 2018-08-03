@@ -1,0 +1,109 @@
+declare
+   @FORMULARX        int,
+   @ANALYTX          int,
+   @CODE             char(16),
+   @FORMULARCODE     char(16)
+   
+select @CODE = 'NA'
+select @FORMULARCODE = 'xyz'
+select @FORMULARX    = 0
+select @ANALYTX      = 0
+   
+select @FORMULARX=FORMULARX from FORMULAR where FORMULARCODE=@FORMULARCODE and STORNODAT is null
+select @ANALYTX=ANALYTX from ANALYT where CODE=@CODE and STORNODAT is null
+if (@FORMULARX = 0 or @ANALYTX = 0 )
+begin
+  print ' Abruch: Analyt bzw. Formular ist unbekannt'
+  goto finito
+end
+
+   /* Tarifwerk testen */
+   declare @tarifwerkx int
+   select @tarifwerkx = TARIFWERKX from FORMULAR where FORMULARX = @FORMULARX
+
+   if (@tarifwerkx is not null)
+   begin
+      /* Tarifwerk einbringen */
+      declare @faktor real, @punktwert money, @punktwert2 numeric(11,8)
+      select @faktor = FAKTOR, @punktwert = PUNKTWERT, @punktwert2 = PUNKTWERT2 from TARIFWERK where TARIFWERKX = @tarifwerkx
+      if (@punktwert2 is null) select @punktwert2 = @punktwert
+      if (@punktwert2 is not null and @punktwert2 > 0 and @faktor is not null and @faktor > 0)
+      begin
+         /* Normaltarife mit Faktor und Punktwert einbringen */
+         select
+            X1='PREIS = isnull(nullif(F.GPUNKTEINTERN * @punktwert2 * @faktor, 0), F.GPREISINTERN)',
+            Gpunkteintern=F.GPUNKTEINTERN,
+            Punktwert2=@punktwert2,
+            Faktor=@faktor,
+            Gpreisintern=F.GPREISINTERN,
+            PREIS = isnull(nullif(F.GPUNKTEINTERN * @punktwert2 * @faktor, 0), F.GPREISINTERN)
+         from
+            TARIF F (index TARIF_PK)
+         where
+            @ANALYTX = F.ANALYTX
+            and F.TARIFWERKX = @tarifwerkx
+            and F.STORNODAT is null
+      end
+      else begin
+         /* Normaltarife nur mit Festpreisen einbringen */
+         select
+            X1='X2',
+            Gpreisintern=F.GPREISINTERN,
+            PREIS = F.GPREISINTERN
+         from
+            TARIF F (index TARIF_PK)
+         where
+            @ANALYTX = F.ANALYTX
+            and F.TARIFWERKX = @tarifwerkx
+            and F.STORNODAT is null
+      end
+      /* Sondertarife einbringen: WERT */
+      if (@faktor is not null and @faktor > 0)
+      begin
+         select
+            X1='X3',
+            Wert=F.WERT,
+            Faktor=@faktor,
+            PREIS = F.WERT * @faktor
+         from
+            TARIF F (index TARIF_PK)
+         where
+            @ANALYTX = F.ANALYTX
+            and F.TARIFWERKX = @tarifwerkx
+            and F.WERT is not null
+            and F.WERT <> 0
+            and F.STORNODAT is null
+      end
+      /* Sondertarife einbringen: FAKTOR */
+      if (@punktwert2 is not null and @punktwert2 > 0)
+      begin
+         select
+            X1='X4',
+            Gpunkteintern=F.GPUNKTEINTERN,
+            Punktwert2=@punktwert2,
+            Faktor=F.FAKTOR,
+            PREIS = F.GPUNKTEINTERN * @punktwert2 * F.FAKTOR
+         from
+            TARIF F (index TARIF_PK)
+         where
+            @ANALYTX = F.ANALYTX
+            and F.TARIFWERKX = @tarifwerkx
+            and F.FAKTOR is not null
+            and F.FAKTOR <> 0
+            and F.STORNODAT is null
+      end
+      /* Sondertarife einbringen: PREIS */
+      select
+         X1='X5',
+         PREIS = F.PREIS
+      from
+         TARIF F (index TARIF_PK)
+      where
+        @ANALYTX = F.ANALYTX
+         and F.TARIFWERKX = @tarifwerkx
+         and F.PREIS is not null
+         and F.PREIS <> 0
+         and F.STORNODAT is null
+   end
+finito:
+go   

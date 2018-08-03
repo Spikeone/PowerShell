@@ -1,0 +1,72 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\proben_check.isq                   */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: Check der Probennummer, Vergleich mit Auftragsnummer   */
+/*MODULE   : Lauris, Klagenfurt, ssc#54607                                  */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20070828.07:45>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy
+
+declare @AUNULAENGE tinyint,
+        @PROBLAENGE tinyint
+
+select @AUNULAENGE = 8, @PROBLAENGE = 10
+
+select
+  ProbeExtid=substring(PR.PROBEEXTID,1,12),
+  AuftragNr=A.AUFTRAGNR,
+  ProbeErfassDat=convert(char(11),PR.ERFASSDAT ,104)+convert(char(8),PR.ERFASSDAT ,108)+' ',
+  ProbeErfassPers=P1.PERSONID,
+  AuftragErfassDat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  AuftragErfassPers=P2.PERSONID,
+  Pstatus=PR.PSTATUS,
+  Pkennung=PR.PKENNUNG,
+  EtikDruckDat=convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' '
+
+from
+  PROBE PR,
+  AUFTRAG A,
+  PERSON P1,
+  PERSON P2
+
+where
+  A.AUFTRAGX=PR.AUFTRAGX and
+  A.ERFASSDAT > '01.01.2008 00:00' and
+  datalength(rtrim(A.AUFTRAGNR))=@AUNULAENGE and
+  (datalength(rtrim(PR.PROBEEXTID))=@PROBLAENGE or datalength(rtrim(PR.PROBEEXTID))=@PROBLAENGE+1) and
+  substring(PR.PROBEEXTID,1,8) <> A.AUFTRAGNR and
+  P1.PERSONX=PR.ERFASSPERS and
+  P2.PERSONX=A.ERFASSPERS
+
+go
+select
+ R.RESULTATX,
+ P.PROBEX,
+ ResAuftragx=R.AUFTRAGX,
+ ProAuftragx=P.AUFTRAGX,
+ P.PKENNUNG,
+ ProbeErfassDat=convert(char(11),P.ERFASSDAT ,104)+convert(char(8),P.ERFASSDAT ,108)+' ',
+ ResuErfassDat=convert(char(11),R.ERFASSDAT ,104)+convert(char(8),R.ERFASSDAT ,108)+' ',
+ AuftErfassDat=convert(char(11),A.ERFASSDAT ,104)+convert(char(8),A.ERFASSDAT ,108)+' ',
+ P.PROBEEXTID,
+ A.AUFTRAGNR
+
+from
+ RESULTAT R,
+ PROBE P,
+ AUFTRAG A
+where
+ R.PROBEX=P.PROBEX
+ and P.PKENNUNG<>41
+ and R.AUFTRAGX<>P.AUFTRAGX
+ and A.AUFTRAGX=P.AUFTRAGX
+ and R.ERFASSDAT > '01.01.2008 00:00' 
+
+go 

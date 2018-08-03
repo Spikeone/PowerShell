@@ -1,0 +1,51 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                sqlcluster           Essen November 2009  Adaptive Server Enterprise/12.5.4/EBF 16822 ESD#9.1/P/NT (IX86)/OS 4.0/ase1254/2146/32-bit/OPT/Wed Apr 15 04:05:47 2009                                                                                                                                         
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                      11171            3033         397 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                vROUTINEalt      Virologie nach Viren alphabetisch                                
+                                vROUTINE2alt     Virologie nach Materialien                                       
+                                vROUTINE         Virologie Anforderungskatalog                                    
+
+(3 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                TEST             Test Nummernkreis                                                       Jul 18 2003 11:38AM        Oct 28 2003  2:49PM       98000000        99999999         98000660          1999999                   660                1999339     0.0330 %       0.24 Nummern         8454780.53 Tage                  NULL                   NULL         NULL 
+                                ROUTINE          Routine                                                                 Oct 28 2003  2:49PM                       NULL       36000000        36999999         36862709           999999                862709                 137290    86.2710 %     320.83 Nummern             427.92 Tage                  NULL                   NULL         NULL 
+                                vROUTINE         Virologie Nummernkreis                                                  Dec  8 2005  2:03PM                       NULL       16000000        17999999         16000002          1999999                     2                1999997     0.0001 %       0.00 Nummern      1916997124.51 Tage                  NULL                   NULL         NULL 
+
+(3 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

@@ -1,0 +1,366 @@
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ FORMULAR                       dbo                            user table                       
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ FORMULARX       int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ FORMULARCODE    char                     16 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ FORMULARNAME    varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EIGNER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ NUTZER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ UNINUMBERX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LAYOUTNAME      varchar                  32 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ REFVEKTORX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BELEGKEN        varchar                   8 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BERICHTSART     varchar                   8 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ TARIFWERKX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SORT            int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LAYOUTNAME2     varchar                  32 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LAYOUTTYP       tinyint                   1 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ index_name           index_description                                        index_keys                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       index_max_rows_per_page index_fillfactor index_reservepagegap index_created       
+ -------------------- -------------------------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------------------- ---------------- -------------------- ------------------- 
+
+ 
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ VORLAGE                        dbo                            user table                       
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ VORLAGEX        int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ CLIENTX         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ IDENTX          int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EINSENDERX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ VORLAGENAME     varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EIGNER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ NUTZER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ VORLAGETYP      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ FORMULARX       int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ISMASTER        tinyint                   1 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ FILTER          varchar                  16 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SORT            int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EBENE           int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DRING           int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LAUF_alt        tinyint                   1 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DISPICON        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DISPFORMAT      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ZIMMERNR        varchar                   8 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PFAD            varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ABNAHMEDAT      smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PLANDAT         smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LAUF            smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ VORLAGECODE     varchar                  16 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ ANFORDERUNG                    dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ ANFORDERUNGX    int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ ANFORDERUNGTYP  smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ FORMULARX       int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ SORT            int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EBENE           int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ART             char                      1 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ANALYTX         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DEFIX           int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BEHAELTERX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ANZAHLBEHAELTER int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BESCHREIBUNG    varchar                 255 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ AUSGABEFORM     varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ AUSWAHL         tinyint                   1 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STEUERUNG       smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DEFTEXT         varchar                 255 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DEFWERT         real                      4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LABELVAR        varchar                  32 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ VOLUMEN         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DISPICON        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DISPFORMAT      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BISDRING        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BEHAELTERID     varchar                   8 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PANALYTX        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ NACHFORDERN     smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ANFORDERUNGCODE varchar                  16 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ VORLAGEANF                     dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ VORLAGEANFX     int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ VORLAGEX        int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ ART             char                      1 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ ANALYTX         int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ ERGEBNISD       int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERGEBNIST       varchar                 255 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERGEBNISF       real                      4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MFAANALYTX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BEHAELTERX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PANALYTX        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PROBENR         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ABNAHMEORT      varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ VORLAGEANFCODE  varchar                  16 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ BEHAELTER                      dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ BEHAELTERX      int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ BEHAELTERCODE   char                     16 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ BEHAELTERNAME   varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EIGNER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ NUTZER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ MATERIALX       int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ FARBE           varchar                  16 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ZUSATZ          varchar                  16 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LABOR           varchar                  32 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ VOLUMEN         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LAYOUTNAME      varchar                  32 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BARCODE         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MATEXT          varchar                   8 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ZEITOFFSET      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ BARCODE                        dbo                            user table                       
+
+ Column_name                    Type                           Length      Prec Scale Nulls Default_name                   Rule_name                      Access_Rule_name               Identity 
+ ------------------------------ ------------------------------ ----------- ---- ----- ----- ------------------------------ ------------------------------ ------------------------------ -------- 
+ BARCODEX                       int                                      4 NULL  NULL     0 NULL                           NULL                           NULL                                  0 
+ BARCODEID                      tinyint                                  1 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ BARCODENAME                    varchar                                 64 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ FORMULARX                      int                                      4 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ LAUF_alt                       tinyint                                  1 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ BARCODEFORMAT                  smallint                                 2 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ LENAUFTRAGNR                   smallint                                 2 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ LENBARCODE                     smallint                                 2 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ LENPATIFALLNR_ALT              smallint                                 2 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ AKTIV                          tinyint                                  1 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ ERFASSDAT                      smalldatetime                            4 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ ERFASSPERS                     smallint                                 2 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ MUTDAT                         smalldatetime                            4 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ MUTPERS                        smallint                                 2 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ STORNODAT                      smalldatetime                            4 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ STORNOPERS                     smallint                                 2 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+ LAUF                           smallint                                 2 NULL  NULL     1 NULL                           NULL                           NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ SYSTEMPARAM                    dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ SYSTEMPARAMX    int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ EIGNER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ NUTZER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ CLIENTX         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ IDENTX          int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EINSENDERX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ROLLEX          int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PRODUKT         varchar                  16 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MODULID         char                     16 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ PARAMID         char                     16 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ PARAMNAME       varchar                  32 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ PRIORI          tinyint                   1 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ PARAMTYP        smallint                  2 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ INTVALUE        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ TXTVALUE        varchar                 255 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ XREF            int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ TABELLE         varchar                  30 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ KAPITELID       char                     64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ IDENT                          dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ IDENTX          int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ IDENTCODE       char                     16 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ IDENTNAME       varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EIGNER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ NUTZER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ IDENTTYP        smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PERSONX         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EINSENDERX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ROLLEX          int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SCHLUESSEL1     varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SCHLUESSEL2     varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SCHLUESSEL3     varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SCHLUESSEL4     varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SCHLUESSEL5     varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PASSWDAT        smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PASSWFLAG       smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ CHIPCARD        varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ KOMMENTAR       varchar                 255 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SPERRE          tinyint                   1 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ CLIENTX         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LOGINDATLETZT   smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ AKTIVAB         smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ AKTIVBIS        smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ CLIENT                         dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ CLIENTX         int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ CLIENTCODE      char                     16 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ CLIENTNAME      varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ CLIENTTYP       smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EINSENDERX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ROLLEX          int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ADRESSE         varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ KOMMENTAR       varchar                 255 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SPERRE          tinyint                   1 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ PRODUKT         varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ LOGINDATLETZT   smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ VERSIONINFO     varchar                 255 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ UNINUMBER                      dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ UNINUMBERX      int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ UNINUMBERCODE   char                     16 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ UNINUMBERNAME   varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ NUMFIRST        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ NUMLAST         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ NUMNEXT         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ NUMSTEP         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ RESFIRST        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ RESLAST         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EIGNER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ NUTZER          int                       4 NULL  NULL     1 D_MULTIBITS     NULL            NULL                                  0 
+ NUMLENGTH       int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ PRUEFMODUS      varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ RECYCLETYP      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ UNINUMBERLOG                   dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ UNINUMBERLOGX   int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ UNINUMBERX      int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ NUMFIRST        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ NUMCOUNT        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ CLIENTX         int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EINSENDERX      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ AUSGABEDAT      smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ AUSGABEPERS     smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ BEFUNDSICHT                    dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ BEFUNDSICHTX    int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ GELTUNGX        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ GELTUNGTAB      char                     16 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ BEFUNDSICHTNAME varchar                  64 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SORT            smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ISMASTER        tinyint                   1 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ DISPICON        int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DISPFORMAT      int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SICHTVEKTORX    int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ SUCHVEKTORX     int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ DOKSICHTVEKTORX int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ UEBERSICHTMODUS smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ EIGNER          int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ NUTZER          int                       4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+
+
+ Name                           Owner                          Object_type                      
+ ------------------------------ ------------------------------ -------------------------------- 
+ BEFUNDSICHTANF                 dbo                            user table                       
+
+ Column_name     Type            Length      Prec Scale Nulls Default_name    Rule_name       Access_Rule_name               Identity 
+ --------------- --------------- ----------- ---- ----- ----- --------------- --------------- ------------------------------ -------- 
+ BEFUNDSICHTANFX int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ BEFUNDSICHTX    int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ ANALYTX         int                       4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ ERFASSDAT       smalldatetime             4 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ ERFASSPERS      smallint                  2 NULL  NULL     0 NULL            NULL            NULL                                  0 
+ MUTDAT          smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ MUTPERS         smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNODAT       smalldatetime             4 NULL  NULL     1 NULL            NULL            NULL                                  0 
+ STORNOPERS      smallint                  2 NULL  NULL     1 NULL            NULL            NULL                                  0 

@@ -1,0 +1,15 @@
+Msg 208, Level 16, State 1: 
+Line 2:
+master..SYSTEMINFO not found. Specify owner.objectname or use sp_help to check whether the object exists (sp_help may produce lots of output).
+Msg 156, Level 15, State 2:
+Line 52:
+Incorrect syntax near the keyword 'select'.
+Msg 102, Level 15, State 1:
+Line 52:
+Incorrect syntax near ')'.
+Msg 156, Level 15, State 2:
+Line 118:
+Incorrect syntax near the keyword 'select'.
+Msg 102, Level 15, State 1:
+Line 118:
+Incorrect syntax near ')'.

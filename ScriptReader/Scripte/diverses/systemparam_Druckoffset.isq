@@ -1,0 +1,36 @@
+print '--- Tabelle SYSTEMPARAM (Lauris)  ---'
+go
+select
+ ModulID=substring(SP.MODULID,1,8),
+ ParamID=SP.PARAMID,
+ ParamName=substring(SP.PARAMNAME,1,8),
+ SP.INTVALUE,
+ Clientcode=substring(C.CLIENTCODE,1,10),
+ I.IDENTCODE,
+ Einsender=substring(E.EINSCODE,1,10),
+ Rolle=R.CODE,
+ Erfassdat=convert(char(11),SP.ERFASSDAT,104)+convert(char(8),SP.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ Mutdat=convert(char(11),SP.MUTDAT,104)+convert(char(8),SP.MUTDAT,108)+' ',
+ MutPers=P2.PERSONID,
+ Stornodat=convert(char(11),SP.STORNODAT,104)+convert(char(8),SP.STORNODAT,108)+' ',
+ StornoPers=P3.PERSONID,
+ SP.SYSTEMPARAMX,
+ SP.EIGNER,
+ SP.NUTZER,
+ Produkt=substring(SP.PRODUKT,1,8),
+ SP.IDENTX,
+ SP.PRIORI,
+ SP.PARAMTYP
+from SYSTEMPARAM SP, CLIENT C, IDENT I, EINSENDER E, ROLLE R, PERSON P, PERSON P2, PERSON P3
+where
+ SP.MODULID = 'DRUCK' and
+ SP.PARAMID like 'OFFSET%' and 
+ SP.CLIENTX *= C.CLIENTX and 
+ SP.IDENTX *= I.IDENTX and 
+ SP.EINSENDERX *= E.EINSENDERX and
+ SP.ROLLEX *= R.ROLLEX and
+ SP.ERFASSPERS *= P.PERSONX and
+ SP.MUTPERS *= P2.PERSONX and
+ SP.STORNOPERS *= P3.PERSONX
+go

@@ -1,0 +1,96 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: MRH, ausgeführt am: 10.06.2015 10:23
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           MRH              Stiftungsklinikum Mi SQLSERVER            SQLSERVER,Fileserver Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 306     Anzahl User: 50      Anzahl Auftraege Lauris: 9097    Anzahl Auftraege ohne Lauris: 6706   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         123 v6.12.08# F      
+           7 v13.03.22.4      
+         176 v13.03.22#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Antoine de Saint-Exupéry                                                         2013.01    NULL                                     08.04.13  00:00                 
+ letztes Swisspro                                                                 2013.01    NULL                                     11.06.13  09:56                 
+ swissup3.tab                                                                      2.14 $    NULL                                     11.06.13  09:33                 
+ swissup3.tab                                                                      2.14 $    NULL                                     11.06.13  09:33                 
+ swlupgrade.tab                                                                    2.20.1 $  NULL                                     10.05.10  11:07                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     11.06.13  09:48                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     11.06.13  09:45                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     11.06.13  09:49                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     11.06.13  09:46                 
+                                                                                             NULL                                                                     
+ neu:PI_LOGINKORR                                                                  2.13 $    NULL                                     04.02.14  14:00 SWISSLAB        
+ neu:PI_MAKELOGIN                                                                  2.20 $    NULL                                     04.02.14  14:00 SWISSLAB        
+ neu:PR_ARCHBEFUNDBEARBSTUFE                                                       1.25 $    NULL                                     04.02.14  14:00 SWISSLAB        
+ neu:PR_ARCHQKMESSWERTE                                                            2.14 $    NULL                                     04.02.14  14:00 SWISSLAB        
+ neu:PR_AUFTRAGLISTE                                                               1.05 $    NULL                                     04.02.14  14:00 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        8502      1 1                1                                                                                                                                                                                                                                                               
+         595      6 Lauf 6           Lauf 6   -- by swlupgrade                                                                                                                                                                                                                                       
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        5652 Routinebeleg Koblenz                                             
+        1497 Routinebeleg Boppard                                             
+        1079 Routinebeleg Nastätten                                           
+         595 Blutgruppe und Blutprodukte                                      
+         274 Routinebeleg Labor                                               
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: MRH, beendet am: 10.06.2015 10:23 
+SQL-Abfrage-Dauer: 26  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+13.1.25.1
+2013_01. 
+. 
+Lauris-Versionsinfo: 
+Version 13.3.22.4
+2013_01

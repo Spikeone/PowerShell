@@ -1,0 +1,78 @@
+ 
+ ----------------------------------------- 
+ Lauris Info-Script Version vom 18.08.2009 
+ ----------------------------------------- 
+   
+ Ausgeführt am: 19.07. 
+   
+   
+  SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  -------------------------- -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                             sqlserver            Routine SQLServer    Adaptive Server Enterprise/12.5.4/EBF 14344 ESD#5/P/HP9000-879/HP-UX B.11.11/ase1254/2061/64-bit/FBO/Fri Apr 13 05:50:52 2007                                                                                                                                    
+   
+ Swisslab-Information: 
+  Name                              Revision   CrDate          DB               
+  --------------------------------- ---------- --------------- ---------------  
+  Kalenderwoche                     2009.02    08.04.09  00:00                  
+  letztes Swisspro                  2009.02    13.10.09  12:36                  
+  swissup3.tab                       2.08 $    13.10.09  12:04                  
+  swlupgrade.tab                     2.20.1 $  11.03.10  14:42                  
+  Lauris (via lauris.ini)            1.04 $    12.01.10  15:33                  
+  Blutbank (via barkasse.pro)        1.06 $    11.03.10  14:42                  
+  Statistik (via statistik.pro)      5.51 $    11.03.10  14:43                  
+  BB-Statistik (via spendestat.pro)  1.21 $    13.10.09  12:30                  
+                                                                                
+  neu:PI_RESINDB                     1.00 $    17.06.10  10:39 SWISSLAB         
+  neu:PR_CHECKRESANZ                 1.00 $    17.06.10  10:39 SWISSLAB         
+  neu:PR_LASPROBEAUFTRAGPAT          1.95 $    25.03.10  14:05 SWISSLAB         
+  neu:PI_STATISTIKSAVEALL            1.16 $    11.03.10  14:43 SWISSLAB         
+  neu:PI_STATISTIKSAVEMONAT          1.19 $    11.03.10  14:43 SWISSLAB         
+  mehr mit: PR_REVISION A(LLE)                                                  
+ aktive Lauris-Versionen: 
+  Anzahl Clients:              
+  --------------- -----------  
+                          491  
+  LaurisVersion(max)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#8.06.25¹# FW=#2.0.50727.42# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                      
+  LaurisVersion(min)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#10.01.08# FW=#2.0.50727.1433# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                    
+   
+   
+  Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------- ----------- --------------- -----------  
+                                   4691            4691           0  
+   
+   
+   
+ Anforderung für die Mikrobiologie? 
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+                                 MBBakt           Mibio Bakteriologie                                               
+                                 MBVirologie      MibioVirologie                                                    
+                                 MBSero           Mibio Serologie (Serumuntersuchung, Urin, u. a.)                  
+                                 MBMyko           Mibio Mykologie (Pilzkultur)                                      
+                                 MBSchulung1      Schulungsformular Mikrobiologie                                   
+                                 MBPCR            Mibio PCR                                                         
+                                 MBSeroLi         Mibio Serologie (Liquoruntersuchung)                              
+                                 MBSeroMyko       Mibio Pilzserologie (Serum)                                       
+                                 MBSeroMykoLi     Mibio Pilzserologie/(Liquor-Cryptococcus)                         
+                                 MBBakt           Mibio Bakteriologie NEU                                           
+                                 MBVirologie_Frey MBVirologie_Frey                                                  
+   
+ --- Nachfordern  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+   
+   
+ --- POCTen  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+  CLIENT   POCTGERAET       0         NULL             IKCPB120   NULL             NULL       NULL     18.01.2005 10:29:00  kohl                                  NULL                      242          -1          -1 LAURIS          NULL      0       30          64  
+  CLIENT   POCTGRUPPE       0         NULL             NULL       kohl             NULL       NULL     24.08.2006 15:23:00  kohl                                  NULL                      476          -1          -1 LAURIS             2      0       31          93  
+  CLIENT   POCTKOMMENT      0         NULL             NULL       NULL             NULL       NULL     24.01.2005 12:48:00  kohl                                  NULL                      251          -1          -1 LAURIS          NULL      0       14        NULL  
+  CLIENT   POCTQC           0         NULL             IKCPB120   NULL             NULL       NULL     18.01.2005 10:28:00  kohl                                  NULL                      241          -1          -1 LAURIS          NULL      0        0           1  
+  CLIENT   POCTQC           0         NULL             NULL       kohl             NULL       NULL     24.08.2006 15:23:00  kohl                                  NULL                      475          -1          -1 LAURIS             2      0        0           1  

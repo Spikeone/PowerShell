@@ -1,0 +1,45 @@
+set dateformat dmy
+go
+-- set showplan on
+-- go
+-- set statistics time,io on
+-- go
+set nocount on
+select
+  A.AUFTRAGNR,
+  A.AUFTRAGX,
+  A.EINSENDERX,
+  A.ERFASSPERS
+into #temp1
+from AUFTRAG A, TASKFLAG T
+where
+  A.AUFTRAGX = T.XREF 
+set nocount off
+select
+  t1.AUFTRAGNR,
+  E.EINSCODE,
+  ErfassPersAuft=substring(P2.PERSONID,1,12),
+  AN.CODE,
+  Ergebnis=substring(R.ERGEBNIST,1,36),
+  Resultatstatus=R.STATUS,
+  AnfordPers=substring(P.PERSONID,1,12),
+  Anforddat=convert(char(11),R.ANFORDDAT ,104)+convert(char(8),R.ANFORDDAT ,108)+' ',
+  Stornodat=convert(char(11),R.STORNODAT ,104)+convert(char(8),R.STORNODAT ,108)+' '
+from #temp1 t1, ANALYT AN (index ANALYT_PK) , PERSON P, PERSON P2, RESULTAT R, EINSENDER E
+where
+  R.AUFTRAGX = t1.AUFTRAGX and
+  P2.PERSONX=t1.ERFASSPERS and
+  R.ANALYTX in (select                                       
+                      A2.ANALYTX                              
+                    from ANALYT A1, ANALYT A2, VEKTOR V
+                    where                                        
+                      A1.CODE = 'Lauris'                        
+                      and V.VEKTORX = A1.ANALYTX          
+                      and A2.ANALYTX = V.ANALYTX           
+                      and A1.ANALYTX <> A2.ANALYTX) and
+--  R.STORNODAT is null and
+--  R.FREIGABEDAT is not null and
+  P.PERSONX=R.ANFORDPERS and
+  AN.ANALYTX=R.ANALYTX and
+  E.EINSENDERX=t1.EINSENDERX
+go

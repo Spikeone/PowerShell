@@ -1,0 +1,17 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLCLUSTER           Routineserver        Adaptive Server Enterprise/12.5.0.3/EBF 10688 IR/P/Sun_svr4/OS 5.8/rel12503/1915/32-bit/FBO/Thu Jan 23 11:04:31 2003                                                                                                                                            
+
+(1 row affected)
+Msg 156, Level 15, State 2:
+Server 'SYBSUNR', Line 52:
+Incorrect syntax near the keyword 'select'.
+Msg 102, Level 15, State 1:
+Server 'SYBSUNR', Line 52:
+Incorrect syntax near ')'.
+Msg 156, Level 15, State 2:
+Server 'SYBSUNR', Line 118:
+Incorrect syntax near the keyword 'select'.
+Msg 102, Level 15, State 1:
+Server 'SYBSUNR', Line 118:
+Incorrect syntax near ')'.

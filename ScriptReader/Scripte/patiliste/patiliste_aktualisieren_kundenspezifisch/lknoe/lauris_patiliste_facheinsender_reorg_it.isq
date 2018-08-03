@@ -1,0 +1,102 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_facheinsender_reorg.isq  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [091005.1100]                                                  */
+/*KURZINFO : SWL-II: Reorganisation der Lauris Patientenliste               */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20150313.1231>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[091005] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy
+go
+set nocount on
+go
+use SWISSLAB
+go
+/* Parameter deklarieren         */
+
+declare
+
+  @USER                          smallint,
+  @REPORT                        tinyint,
+  @DEBUG                         tinyint,
+  @UPDATE                        tinyint,
+  @rowcnt                        int
+  
+
+/* -------- Aufrufparameter Beginn -------- */
+select @REPORT         =     1   -- REPORT-Modus
+select @DEBUG          =     0   -- DEBUG-Modus
+select @UPDATE         =     1   -- 1 -> PATILISTE bereinigen,  0 -> keine Änderungen an PATILISTE
+/* -------- Aufrufparameter Ende   -------- */
+
+
+select @USER = null
+if (@USER is null) select @USER = PERSONX from LOGIN where LOGINID = suser_name() and STORNODAT is null
+if @UPDATE = 0
+begin
+  if (@REPORT = 1)
+  begin
+    print '+-----------------------------------------------------------------------+'
+    print '| ==========  Demo-Modus, keine Aenderungen an PATILISTE  ============  |'
+    print '+-----------------------------------------------------------------------+'
+    print ''
+    select Aufruf_durch=PERSONID from PERSON where PERSONX=@USER
+    print ''
+  end
+end
+
+if @UPDATE = 1
+begin
+  if (@REPORT = 1)
+  begin
+    print '+-----------------------------------------------------------------------+'
+    print '| Lauris, PATILISTE: Reorganisation der fachbezogenen Patientenliste    |'
+    print '+-----------------------------------------------------------------------+'
+    print ''
+    select Aufruf_durch=PERSONID from PERSON where PERSONX=@USER
+    print ''
+  end
+end
+
+-- Loesche die Eintraeg zu denen es
+-- 1. Bei denen es zwar ein Facheinsendereintrag in der Patiliste gibt, aber keinen nicht-facheinsender-Eintrag mehr
+-- 2, Bei dem der Einsender in der Patiliste zwar ein Facheinsender ist, aber nicht mehr mit dem Facheinsender des Falls übereinstimmt
+ select PL.PATILISTEX, PF.PATIFALLX, PF.PATIFALLNR, PF.FACHEINSENDERX
+   into #patilisteDEL
+   from PATILISTE PL 
+   join PATIFALL PF on PL.PATIFALLX=PF.PATIFALLX
+   left join PATILISTE PLE on PL.PATIFALLX=PLE.PATIFALLX and PL.PATILISTEX<>PLE.PATILISTEX and (PLE.AKTIVBIS is null or PLE.AKTIVBIS > dateadd(minute,-1,getdate())) and PLE.TABELLE = 'EINSENDER' and PLE.IDENTX is null 
+  where (/*1*/ PLE.PATILISTEX is null or /*2*/ PF.FACHEINSENDERX <> PL.EINSENDERX)
+    and (PL.AKTIVBIS is null or PL.AKTIVBIS > dateadd(minute,-1,getdate()))
+    and PL.TABELLE = 'EINSENDER'
+    and PL.IDENTX is not null
+  select @rowcnt=@@rowcount
+  print 'Anzahl zu aendern: %1! ', @rowcnt
+  
+if (@DEBUG = 1 or @REPORT = 1)
+begin
+  print ''
+  print ''
+  print 'PATILISTE, zu loeschende Facheinsendereintraege '
+  print ''
+  select pd.PATILISTEX, pd.PATIFALLX, pd.PATIFALLNR, pd.FACHEINSENDERX from #patilisteDEL pd
+  print ''
+end
+
+if (@UPDATE = 1)
+begin
+   update PATILISTE 
+      set AKTIVBIS=dateadd(hour,-1,getdate())
+     from PATILISTE P, #patilisteDEL plf
+    where P.PATILISTEX = plf.PATILISTEX
+  select @rowcnt=@@rowcount
+  print 'Anzahl geaendert: %1! ', @rowcnt
+end
+
+go

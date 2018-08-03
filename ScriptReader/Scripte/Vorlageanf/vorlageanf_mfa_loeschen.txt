@@ -1,0 +1,8 @@
+--- Tabelle  VORLAGEANF (Lauris) ---
+(915 rows affected)
+(0 rows affected)
+ FORMULARX   FormularCode     Vorlagenname                     Analyt           MFA_Analyt       PAnalyt          Behälter         Erfassdat            ErfassPers       Mutdat               Mutpers          VorlageAnfX 
+ ----------- ---------------- -------------------------------- ---------------- ---------------- ---------------- ---------------- -------------------- ---------------- -------------------- ---------------- ----------- 
+
+(0 rows affected)
+(0 rows affected)

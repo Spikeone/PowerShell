@@ -1,0 +1,92 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\proben_check.isq                   */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: Check der Probennummer, Vergleich mit Auftragsnummer   */
+/*MODULE   : Lauris, BRHV, ssc#72268                                        */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20070828.07:45>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+declare
+  @startdatum         varchar(21),
+  @enddatum           varchar(21)
+  
+set dateformat dmy  
+
+set nocount on
+
+select @startdatum = '01.01.2010 00:00'
+select @enddatum   = '31.03.2010 23:59'
+
+print ''
+print '+------------------------------------------------------------------------------+'
+print '|Lauris, Auftraege, die schon vor dem ersten Probeneingang aktiviert wurden    |'
+print '+------------------------------------------------------------------------------+'
+print ''
+
+select distinct
+  AuftragX1=A.AUFTRAGX
+into
+  #temp1
+  
+from
+  PROBE PR (index PROBE_FK2),
+  AUFTRAG A (index auftrag_ED)
+
+where
+  A.ERFASSDAT between @startdatum and @enddatum and
+  A.LABEINDAT is not null and
+  PR.AUFTRAGX = A.AUFTRAGX and
+  PR.PKENNUNG = 3 and
+  A.LABEINDAT = PR.ERFASSDAT
+  
+-- select A.AUFTRAGNR, A.LABEINDAT from AUFTRAG A, #temp1 t1 where A.AUFTRAGX=t1.AuftragX1
+
+select distinct
+  AuftragX2=A.AUFTRAGX
+into
+  #temp2
+  
+from
+  PROBE PR (index PROBE_FK2),
+  AUFTRAG A (index auftrag_ED)
+
+where
+  A.ERFASSDAT between @startdatum and @enddatum and
+  A.LABEINDAT is not null and
+  PR.AUFTRAGX = A.AUFTRAGX and
+  PR.PKENNUNG = 3 and
+  A.LABEINDAT < PR.ERFASSDAT and
+  PR.AUFTRAGX not in (select AuftragX1 from #temp1)
+  
+-- select * from #temp2  
+set nocount off
+select 
+  AuftragNr=A.AUFTRAGNR,
+  AuftLabeindat = convert(char(11),A.LABEINDAT ,104)+convert(char(8),A.LABEINDAT ,108)+' ',
+  ProbeLabeindat = convert(char(11),PR.ERFASSDAT ,104)+convert(char(8),PR.ERFASSDAT ,108)+' ',
+--  Auftragdat = convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  PR.PROBEEXTID,
+  AuftErfassdat = convert(char(11),A.ERFASSDAT ,104)+convert(char(8),A.ERFASSDAT ,108)+' ',
+  ProbeErstellt = convert(char(11),PR.SQLERFASSDAT ,104)+convert(char(8),PR.SQLERFASSDAT ,108)+' ',
+  ProbeErfassPer=P.PERSONID,
+  AuftragX=A.AUFTRAGX
+  
+from #temp2 t2, AUFTRAG A, PROBE PR, PERSON P
+where 
+  PR.AUFTRAGX = t2.AuftragX2 and
+  PR.PSTATUS > 0 and
+  A.AUFTRAGX = t2.AuftragX2 and
+  P.PERSONX=PR.ERFASSPERS
+order by AuftragX
+-- 
+-- set nocount off
+-- 
+-- select * from #temp2
+
+go

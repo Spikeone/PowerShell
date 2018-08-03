@@ -1,0 +1,85 @@
+Msg 208, Level 16, State 1:
+Line 20:
+master..SYSTEMINFO not found. Specify owner.objectname or use sp_help to check whether the object exists (sp_help may produce lots of output).
+ 
+Swisslab-Information: 
+ Name                           Revision                  CrDate          
+ ------------------------------ ------------------------- --------------- 
+ Kalenderwoche                  2004_45.ENTW              01.11.04  00:00 
+ letztes Swisspro               NULL                      03.11.04  15:19 
+
+(2 rows affected)
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                           1 
+
+(1 row affected)
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#5.02.08# FW=#2.0.50727.3082# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                    
+
+(1 row affected)
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#5.02.08# FW=#2.0.50727.3082# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                    
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                     0               0           0 
+
+(1 row affected)
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+
+(0 rows affected)
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ CLIENT   POCTGERAET       0         NULL             NULL       DM               NULL       NULL     15.02.2005 10:03:00  DM                                    NULL                       48          -1          -1 LAURIS             6      0       30          27 
+ CLIENT   POCTGERAET       0         NULL             NULL       KU               NULL       NULL     19.06.2008 10:16:00  SWLSTAFF                              NULL                       63          -1          -1 LAURIS          1171      0       30          27 
+ CLIENT   POCTGERAET       0         NULL             NULL       PD               NULL       NULL     18.02.2005 13:32:00  DM                                    NULL                       52          -1          -1 LAURIS            14      0       30          27 
+ CLIENT   POCTGERAET       0         NULL             NULL       poct             NULL       NULL     14.03.2005 10:11:00  SWLSTAFF                              NULL                       53          -1          -1 LAURIS            16      0       30          27 
+ CLIENT   POCTGERAET       0         NULL             NULL       ria              NULL       NULL     26.01.2005 14:45:00  SWLSTAFF                              NULL                       32          -1          -1 LAURIS             5      0       30          27 
+ CLIENT   POCTGERAET       0         NULL             NULL       SC               NULL       NULL     16.02.2005 15:05:00  DM                                    NULL                       50          -1          -1 LAURIS            13      0       30          27 
+ CLIENT   POCTGERAET       0         NULL             NULL       schul            NULL       NULL     26.01.2005 12:48:00  SWLSTAFF                              NULL                       29          -1          -1 LAURIS             4      0       30         141 
+ CLIENT   POCTGERAET       1         NULL             NULL       schul            NULL       NULL     26.01.2005 12:48:00  SWLSTAFF                              NULL                       30          -1          -1 LAURIS             4      0       30         142 
+ CLIENT   POCTGERAET       0         NULL             NULL       TJE              NULL       NULL     08.06.2007 13:18:00  SWLSTAFF                              NULL                       59          -1          -1 LAURIS            19      0       30          27 
+ CLIENT   POCTGERAET       0         NULL             NULL       TP               NULL       NULL     25.05.2005 14:37:00  DM                                    NULL                       56          -1          -1 LAURIS            17      0       30          27 
+ CLIENT   POCTGERAET       0         NULL             NULL       TS               NULL       NULL     10.02.2005 11:19:00  DM                                    NULL                       33          -1          -1 LAURIS             7      0       30          27 
+ CLIENT   POCTGRUPPE       0         NULL             NULL       NULL             S02        NULL     26.01.2005 12:24:00  schul                                 NULL                       27          -1          -1 LAURIS          NULL      0       31          37 
+ CLIENT   POCTGRUPPE       0         NULL             NULL       s01              NULL       NULL     15.11.2004 15:58:00  SWLSTAFF                              NULL                       26          -1          -1 LAURIS             2      0       31          29 
+ CLIENT   POCTKOMMENT      0         NULL             NULL       NULL             NULL       NULL     15.11.2004 15:57:00  SWLSTAFF         09.02.2005 09:14:00  DM                         25          -1          -1 LAURIS          NULL      0       14         115 
+ CLIENT   POCTQC           0         NULL             NULL       NULL             KRS        *Pflege  10.02.2005 12:38:00  DM               15.05.2007 15:54:00  DM                         37          -1          -1 LAURIS          NULL      0       30          25 
+ CLIENT   POCTQC           0         NULL             NULL       DM               NULL       NULL     15.02.2005 09:44:00  DM                                    NULL                       47          -1          -1 LAURIS             6      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       KU               NULL       NULL     19.06.2008 10:16:00  SWLSTAFF                              NULL                       64          -1          -1 LAURIS          1171      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       PD               NULL       NULL     18.02.2005 13:32:00  DM                                    NULL                       51          -1          -1 LAURIS            14      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       poct             NULL       NULL     14.03.2005 10:11:00  SWLSTAFF                              NULL                       54          -1          -1 LAURIS            16      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       ria              NULL       NULL     15.02.2005 09:30:00  SWLSTAFF                              NULL                       45          -1          -1 LAURIS             5      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       SC               NULL       NULL     16.02.2005 15:05:00  DM                                    NULL                       49          -1          -1 LAURIS            13      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       TJE              NULL       NULL     08.06.2007 13:15:00  SWLSTAFF                              NULL                       58          -1          -1 LAURIS            19      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       TP               NULL       NULL     25.05.2005 14:37:00  DM                                    NULL                       57          -1          -1 LAURIS            17      0        0           1 
+ CLIENT   POCTQC           0         NULL             NULL       TS               NULL       NULL     15.02.2005 09:36:00  DM                                    NULL                       46          -1          -1 LAURIS             7      0        0           1 
+
+(24 rows affected)

@@ -1,0 +1,53 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLSERVER            Sybase 12.5.3 EBF 5  Adaptive Server Enterprise/12.5.3/EBF 13061 ESD#5/P/NT (IX86)/OS 4.0/ase1253/1939/32-bit/OPT/Tue Dec 06 00:21:31 2005                                                                                                                                           
+                                SWFHETZNEU           Sybase ASE 12.5.3 EB Adaptive Server Enterprise/12.5.3/EBF 13061 ESD#5/P/NT (IX86)/OS 4.0/ase1253/1939/32-bit/OPT/Tue Dec 06 00:21:31 2005                                                                                                                                           
+
+(2 rows affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                      33443           33230         110 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                LLIMB            Labor Limbach                                                    
+
+(1 row affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Routine1.0       Routine1.0                                                              Sep 27 2006  9:25AM                       NULL       50000000        59999999         50234950          9999999                234950                9765049     2.3495 %     216.94 Nummern           45011.91 Tage                  NULL                   NULL         NULL 
+                                Blutzucker2.0    Blutzucker2.0                                                           Oct  4 2006  1:33PM                       NULL       25000000        25999999         25002900           999999                  2900                 997099     0.2900 %       2.70 Nummern          369958.11 Tage                  NULL                   NULL         NULL 
+                                Blutdepot4.0     Blutdepot4.0                                                            Oct  9 2006  9:07AM                       NULL       40500000        49999999         40500900          9499999                   900                9499099     0.0095 %       0.84 Nummern        11303927.81 Tage                  NULL                   NULL         NULL 
+                                LabLimbach       Labor Limbach                                                           Sep 15 2008  9:29AM                       NULL       90000000        90003000         90001103             3000                  1103                   1897    36.7667 %       3.03 Nummern             626.03 Tage                  NULL                   NULL         NULL 
+                                LaborLimbach     Labor Limbach                                                           Apr  8 2009 11:54AM                       NULL      150800001       150850000        150800002            49999                     1                  49998     0.0020 %       0.01 Nummern         7949682.00 Tage                  NULL                   NULL         NULL 
+                                Blutgase         Blutgase                                                                Jun 24 2009  8:38AM                       NULL       89500000        89999999         89500000           499999                     0                 499999     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL         NULL 
+
+(6 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

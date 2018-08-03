@@ -1,0 +1,79 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_autoentlass.isq          */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [060130.2030]                                                  */
+/*KURZINFO : SWL-II: automatische Entlassung von Patienten aus der PATILISTE*/
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20060130.2030>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[080404] 1.01 mbe Aktivbis Zeit auf 0 Uhr gesetzt, damit sie am Ende des  */
+/*                  Tages wieder zurückgesetzt wird.                        */
+/*[060128] 1.00 lis erstellt.                                               */
+/****************************************************************************/
+
+/* Parameter deklarieren         */
+
+declare
+  @startdat      smalldatetime,
+  @enddat        smalldatetime,
+  @datum         varchar(21)
+  
+set dateformat dmy  
+
+set nocount on
+
+print ''
+print '+--------------------------------------------------------------+'
+print '|Lauris, PATILISTE: AKTIVBIS setzen nach AUTOENTLASS(Einsender)|'
+print '+--------------------------------------------------------------+'
+print ''
+select @startdat=getdate()
+select @datum='Start: ' + convert(char(9),@startdat,4)+convert(char(5),@startdat,8)
+print @datum
+
+set nocount off
+
+select 
+  Patifall_Nr=F.PATIFALLNR, 
+  Einscode=E.EINSCODE,
+  Erfassdat=convert(char(11),P.ERFASSDAT ,104)+convert(char(8),P.ERFASSDAT ,108)+' ',
+  Aufnahme=convert(char(11),F.AUFNDAT ,104)+convert(char(8),F.AUFNDAT ,108)+' ',
+  Aktivbis_Neu=convert(char(11),dateadd(day,0,F.AUFNDAT) ,104)+convert(char(8),'23:59:00',108)+' ',
+  Aktivbis_Alt=convert(char(11),P.AKTIVBIS ,104)+convert(char(8),P.AKTIVBIS ,108)+' '
+from PATILISTE P, EINSENDER E, PATIFALL F
+where F.PATIFALLX=P.PATIFALLX 
+  and F.PATIART='AM'
+  and E.EINSENDERX=P.EINSENDERX
+order by P.ERFASSDAT
+
+
+print ''                                                                                                                   
+print 'PATILISTE: Update AKTIVBIS'                                                                                         
+print ''                                                                                                                   
+update PATILISTE set AKTIVBIS = convert(char(11),dateadd(day,0,F.AUFNDAT) ,104)+convert(char(8),'23:59:00',108) 
+from PATILISTE P, PATIFALL F 
+where F.PATIFALLX=P.PATIFALLX 
+  and F.PATIART='AM'
+
+/* print ''                                                                               */
+/* print 'PATILISTE: AKTIVBIS nach update'                                                */
+/* print ''                                                                               */
+/* select                                                                                 */
+/*   Patifall_Nr=F.PATIFALLNR,                                                            */
+/*   Einscode=E.EINSCODE,                                                                 */
+/*   Erfassdat=convert(char(11),P.ERFASSDAT ,104)+convert(char(8),P.ERFASSDAT ,108)+' ',  */
+/*   Aktivbis=convert(char(11),P.AKTIVBIS ,104)+convert(char(8),P.AKTIVBIS ,108)+' '      */
+/* from PATILISTE P, EINSENDER E, PATIFALL F                                              */
+/* where F.PATIFALLX=P.PATIFALLX                                                          */
+/*   and E.EINSENDERX=P.EINSENDERX                                                        */
+/* order by P.ERFASSDAT                                                                   */
+
+set nocount on
+select @enddat=getdate()
+select @datum='Ende: ' + convert(char(9),@enddat,4)+convert(char(5),@enddat,8)
+print ''
+print @datum
+go

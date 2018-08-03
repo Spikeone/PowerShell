@@ -1,0 +1,66 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 16.02.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 15438 ESD#8/P/NT (IX86)/OS 4.0/ase1254/2105/32-bit/OPT/Sat Mar 22 04:44:15 2008                                                                                                                                           
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Konrad_Zuse                       2010.01    23.06.10  00:00                 
+ letztes Swisspro                  2010.01    01.09.10  13:53                 
+ swissup3.tab                       2.13 $    01.09.10  13:45                 
+ swlupgrade.tab                     2.20.1 $  09.03.10  15:01                 
+ Lauris (via lauris.ini)            1.04 $    01.09.10  13:51                 
+ Blutbank (via barkasse.pro)        1.09 $    01.09.10  13:50                 
+ Statistik (via statistik.pro)      5.76 $    19.10.10  14:28                 
+ BB-Statistik (via spendestat.pro)  1.24 $    01.09.10  13:50                 
+                                                                              
+ neu:PI_ARCHSAVEBLOBVIADATUM        1.16 $    19.10.10  14:28 SWISSLAB        
+ neu:PI_AUFTRAG                     4.90 $    19.10.10  14:28 SWISSLAB        
+ neu:PI_TASKFLAGREORG               2.44 $    19.10.10  14:28 SWISSLAB        
+ neu:PI_VEKTORALLE                  1.82 $    19.10.10  14:28 SWISSLAB        
+ neu:PR_ABLIAUFTPATIEINS            4.03 $    19.10.10  14:28 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                         249 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#8.08.15¹# FW=#2.0.50727.832# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                    
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#10.03.04¹# FW=#2.0.50727.3082# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                  
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                  7101            5417           9 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                EX-MIKRO(VKJK)   Mikrobilogie Labor MS (VKJK)                                     
+                                EX-MIKRO (SML)   Mikrobiologie Labor MS (SML)                                     
+                                EX-MIKRO (VINC)  Mikrobiologie Labor MS (VINC DA)                                 
+                                EX-MIKRO (LAU)   Mikrobiologie Labor MS (LAU)                                     
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 

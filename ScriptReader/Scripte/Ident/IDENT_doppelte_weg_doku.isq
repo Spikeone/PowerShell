@@ -1,0 +1,101 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_doppelte_weg.isq         */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [060128.2030]                                                  */
+/*KURZINFO : SWL-II: doppelte Einträge in IDENT entfernen                   */
+/*MODULE   : Lauris, Pflege der Tabelle IDENT für SWISSPRO                  */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20090119.2200>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+print '+----------------------------------------------------------+'
+print '|Lauris: entfernen doppelter Einträge in IDENT             |'
+print '+----------------------------------------------------------+'
+print ''
+print '--- mehrfache Einträge in IDENT (Lauris) ---'
+print ''
+set nocount on
+Select
+  I.IDENTX,
+  I.IDENTCODE,
+  LogindatLetzt=convert(char(11),I.LOGINDATLETZT,104)+convert(char(8),I.LOGINDATLETZT,108)+' ',
+  ErfassDat= convert(char(11),I.ERFASSDAT,104)+convert(char(8),I.ERFASSDAT,108)+' ',
+  StornoDat=convert(char(11),I.STORNODAT,104)+convert(char(8),I.STORNODAT,108)+' ',I.STORNODAT,
+  I.ERFASSPERS,
+  I.LOGINDATLETZT
+  into #P1
+from
+  IDENT I
+Group By
+  I.IDENTCODE, I.STORNODAT
+Having Count(*) > 1
+
+select IDENTX, IDENTCODE, LogindatLetzt, ErfassDat, StornoDat from #P1 order by IDENTX
+
+set nocount off
+print ''
+select Ident='mehrfach:', I.IDENTCODE, E.EINSCODE,
+Logindatletzt=convert(char(11),I.LOGINDATLETZT,104)+convert(char(8),I.LOGINDATLETZT,108)+' ',
+Erfassdat= convert(char(11),I.ERFASSDAT,104)+convert(char(8),I.ERFASSDAT,108)+' ',
+Stornodat=convert(char(11),I.STORNODAT,104)+convert(char(8),I.STORNODAT,108)+' ',I.STORNODAT,
+ErfassPers=P.PERSONID
+from #P1 temp1, IDENT I, EINSENDER E, PERSON P
+where I.IDENTX=temp1.IDENTX and
+E.EINSENDERX=*I.EINSENDERX and
+P.PERSONX=I.ERFASSPERS
+order by I.IDENTCODE, I.ERFASSDAT
+
+print ''
+print ''
+print 'Diese Benutzer verbleiben in IDENT'
+set nocount on
+Select Max(I.IDENTX) As Benutzer_bleibt
+  into #P2
+from IDENT I, #P1 temp1
+where
+      temp1.IDENTCODE = I.IDENTCODE
+  and (temp1.LOGINDATLETZT < I.LOGINDATLETZT or temp1.LOGINDATLETZT is null)
+Group by I.IDENTCODE
+
+-- select * from #P2 order by Benutzer_bleibt
+
+set nocount off
+select Script='bleibt  :', I.IDENTX, I.IDENTCODE,
+Abteilung=E.EINSCODE,
+Logindatletzt=convert(char(11),I.LOGINDATLETZT,104)+convert(char(8),I.LOGINDATLETZT,108)+' ',
+Erfassdat= convert(char(11),I.ERFASSDAT,104)+convert(char(8),I.ERFASSDAT,108)+' ',
+Stornodat=convert(char(11),I.STORNODAT,104)+convert(char(8),I.STORNODAT,108)+' ',
+ErfassPers=PE.PERSONID
+from #P2 temp2, IDENT I, EINSENDER E, PERSON PE
+where
+I.IDENTX=temp2.Benutzer_bleibt and
+E.EINSENDERX=*I.EINSENDERX and
+PE.PERSONX=I.ERFASSPERS
+order by I.IDENTX
+
+print ''
+print ''
+print 'Diese doppelten Benutzereinträge werden storniert'
+select Script='storno:', I.IDENTX, I.IDENTCODE, I.LOGINDATLETZT, Abteilung=E.EINSCODE, ErfassPers=PE.PERSONID, I.ERFASSDAT, I.STORNODAT
+from #P1 temp1, IDENT I, EINSENDER E, PERSON PE
+where temp1.IDENTX not in (select Benutzer_bleibt from #P2)
+  and I.IDENTX=temp1.IDENTX
+  and E.EINSENDERX=*I.EINSENDERX
+  and PE.PERSONX=I.ERFASSPERS
+  and I.STORNODAT is null
+order by I.IDENTX
+
+-- print ''
+-- print ''
+-- print 'hier die Aktion: update IDENT set STORNODAT=dateadd(minute,-IDENTX,getdate())'
+-- update IDENT set STORNODAT=dateadd(minute,-temp1.IDENTX,getdate())
+-- from IDENT I, #P1 temp1
+-- where temp1.IDENTX not in (select Benutzer_bleibt from #P2)
+--   and I.IDENTX=temp1.IDENTX
+--   and I.STORNODAT is null
+
+go

@@ -1,0 +1,17 @@
+set dateformat dmy
+go
+select 
+ U.TABELLE, 
+ U.KEYVALUE, 
+ PatifallNr=U.KEYIDENT, 
+ U.SPALTE, 
+ Wertalt=substring(U.WERTALT,1,16), 
+ Wertneu=Substring(U.WERTNEU,1,16), 
+ Erfassdat=convert(char(11),U.ERFASSDAT,104)+convert(char(8),U.ERFASSDAT,108)+' ', 
+ ErfassPers=P.PERSONID, 
+ U.HOSTNAME
+from UPDATEDOC U, PERSON P
+where TABELLE = 'PATILISTE' and 
+ U.ERFASSDAT > '15.05.2006 00:00' and
+ P.PERSONX=U.ERFASSPERS
+go

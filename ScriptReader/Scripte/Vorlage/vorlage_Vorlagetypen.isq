@@ -1,0 +1,29 @@
+print '--- Lauris Vorlagetypen) !!nur aktive Vorlagen!! ---'
+go
+select
+ FormularCode=substring(FO.FORMULARCODE,1,16),
+ Vorlagename=substring(VO.VORLAGENAME,1,24),
+ Vorlagetyp=case when (VO.VORLAGETYP = 0) then 'kein'
+                 when (VO.VORLAGETYP = 1) then 'Ueberschrift'
+                 when (VO.VORLAGETYP = 2) then 'Benutzervorlage'
+                 when (VO.VORLAGETYP = 3) then 'Basisvorlage'
+                 when (VO.VORLAGETYP = 4) then 'Behandlungspfad'
+            end,
+ Einsender=E.EINSCODE,
+ Clientcode=substring(C.CLIENTCODE,1,10),
+ Benutzer=I.IDENTCODE,
+ Erfassdat=convert(char(11),VO.ERFASSDAT,104)+convert(char(8),VO.ERFASSDAT,108)+' ',
+ ErfassPers=P.PERSONID,
+ Mutdat=convert(char(11),VO.MUTDAT,104)+convert(char(8),VO.MUTDAT,108)+' ',
+ Mutpers=P2.PERSONID
+from VORLAGE VO, IDENT I, PERSON P, PERSON P2, CLIENT C, EINSENDER E, FORMULAR FO
+where
+ VO.STORNODAT is null and
+ VO.FORMULARX *= FO.FORMULARX and
+ VO.CLIENTX *= C.CLIENTX and 
+ VO.IDENTX *= I.IDENTX and 
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.ERFASSPERS *= P.PERSONX and
+ VO.MUTPERS *= P2.PERSONX
+order by Vorlagetyp, FormularCode 
+go

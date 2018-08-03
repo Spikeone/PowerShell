@@ -1,0 +1,43 @@
+select distinct
+  PersonID              = P1.PERSONID,
+  IdentCode             = I.IDENTCODE,
+  LogindatLetzt         = convert(char(11),I.LOGINDATLETZT ,104)+convert(char(8),I.LOGINDATLETZT ,108)+' ',
+  IdentEignerx          = I.EIGNER,
+  IdentNutzerx          = I.NUTZER,
+  IdentErfassPers       = P2.PERSONID,
+  ErfasspersEigner      = L2.EIGNER,
+  ErfasspersNutzer      = L2.NUTZER,
+  ErfasspersSEigner     = L2.SEIGNER,
+  ErfasspersSNutzer     = L2.SNUTZER,
+  PPersonX              = P1.PERSONX,
+  IPersonX              = I.PERSONX 
+--  LoginX                = L2.LOGINX
+
+
+
+from 
+  IDENT I, 
+  PERSON P1, 
+  PERSON P2,
+  LOGIN L2
+where
+  I.STORNODAT is null and
+  P1.PERSONX=I.PERSONX and
+  P2.PERSONX=I.ERFASSPERS and
+  L2.PERSONX=P2.PERSONX and
+  L2.STORNODAT is null
+
+go  
+
+-- print "fuer Mandantenfaehigkeit definierte Logins"
+-- go
+-- select  LOGINID, SEIGNER, SNUTZER, Mandant=EINSCODE from LOGIN L, EINSENDER E
+--   where L.SEIGNER*=E.EIGNERBIT and
+--         (SEIGNER<>-1 or SEIGNER=hextoint("0x80000000"))
+--   order by SEIGNER
+-- go
+-- print "Anzahl nicht mandantenfaehiger Logins"
+-- go
+-- select ANZAHL=count(*) from LOGIN
+--   where SEIGNER=-1
+-- go 

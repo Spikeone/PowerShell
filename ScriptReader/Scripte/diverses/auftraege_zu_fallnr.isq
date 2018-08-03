@@ -1,0 +1,28 @@
+set dateformat dmy
+go
+
+select 
+  PF.PATIFALLNR,
+  PF_Eins=E1.EINSCODE,
+  AU.AUFTRAGNR, 
+  Au_Eins=E2.EINSCODE,
+  Erfassdat         =convert(char(11),AU.ERFASSDAT        ,104)+convert(char(8),AU.ERFASSDAT        ,108)+' ',
+  Labeindat         =convert(char(11),AU.LABEINDAT        ,104)+convert(char(8),AU.LABEINDAT        ,108)+' ',
+  Auftragdat        =convert(char(11),AU.AUFTRAGDAT       ,104)+convert(char(8),AU.AUFTRAGDAT       ,108)+' ',
+  Abnahmedat        =convert(char(11),AU.ABNAHMEDAT       ,104)+convert(char(8),AU.ABNAHMEDAT       ,108)+' ',
+  Plandat           =convert(char(11),AU.PLANDAT          ,104)+convert(char(8),AU.PLANDAT          ,108)+' ',
+  Erfasspers        =PE.PERSONID
+from
+  PATIFALL PF,
+  AUFTRAG AU,
+  PERSON PE,
+  EINSENDER E1,
+  EINSENDER E2
+where
+  PF.PATIFALLNR in ('100376307','100152852','100152837')  
+  and AU.PATIFALLX=PF.PATIFALLX
+  and E1.EINSENDERX=PF.EINSENDERX
+  and E2.EINSENDERX=AU.EINSENDERX
+  and PE.PERSONX=AU.ERFASSPERS
+order by PATIFALLNR  
+go  

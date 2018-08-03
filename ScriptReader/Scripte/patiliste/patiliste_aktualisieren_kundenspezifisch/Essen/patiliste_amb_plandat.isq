@@ -1,0 +1,251 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_amb_plandat.isq          */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [091005.1100]                                                  */
+/*KURZINFO : SWL-II: Aufnahme ambulanter Fälle mit zukuenftigem Auftrag     */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20091005.1100>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[091005] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy  
+
+/* Parameter deklarieren         */
+
+declare
+  @startdat                      smalldatetime,
+  @enddat                        smalldatetime,
+  @datumtxt                      varchar(23),
+  @aufruftxt                     varchar(23),
+  @endqarttxt                    varchar(34),
+  @endqartfolgetxt               varchar(34),
+  @quart                         tinyint,
+  @plandays                      tinyint,
+  @einsender                     varchar(16),
+  @endquart1                     smalldatetime,
+  @endquart2                     smalldatetime,
+  @endquart3                     smalldatetime,
+  @endquart4                     smalldatetime,
+  @endquart_akt                  smalldatetime,
+  @endquart_next4                smalldatetime,
+  @endquartakt                   smalldatetime,
+  @endquartfolge                 smalldatetime,
+  @diffquart                     smalldatetime,
+  @diffyear                      int,
+  
+  @USER                          smallint,
+  @EINSENDERX                    int,
+  @MODUS                         tinyint,
+  @PATIFALLX                     int,
+  @PATIART                       char(8),
+  @KOSTTRTYP                     char(6),
+  @PZIMMERNR                     varchar(8),
+  @AKTIVBIS                      smalldatetime,
+  @STORNO                        tinyint,
+  @QUIET                         tinyint,
+  @REPORT                        tinyint, 
+  @CHECKONLY                     tinyint,
+
+  @patifallx                     int,
+  @einsenderx                    int,
+  @patiart                       char(8),
+  @kosttrtyp                     char(6),
+  @pzimmernr                     varchar(8),
+  @aktivbis                      smalldatetime,
+                                 
+  @found                         int,
+  @cnt                           int,
+  @insertpf                      char(4)
+
+set nocount on
+
+/* -------- Aufrufparameter Beginn -------- */
+select @plandays       =     5   -- Zeithorizont für zukünfiges Plandatum (PLANDAT.AUFTRAG)
+select @REPORT         =     1   -- REPORT-Modus
+select @CHECKONLY      =     1   -- 0 -> insert into PATILISTE,  1 -> keine Änderungen an PATILISTE
+/* -------- Aufrufparameter Ende   -------- */
+
+/* ------------ Voreinstellungen PI_PATILISTE Beginn -------------------*/
+select @STORNO         =     0
+select @QUIET          =     1
+select @MODUS          =     1   -- XREF ist 1=EINSENDERX, 2=CLIENTX, 3=IDENTX 
+/* -------------Voreinstellungen PI_PATILISTE Ende ---------------------*/    
+
+print '+-----------------------------------------------------------------------+'
+print '|Lauris, PATILISTE: Aufnahme ambulanter Fälle mit zukuenftigem Auftrag  |'
+print '+-----------------------------------------------------------------------+'
+print ''
+if @CHECKONLY = 1 
+begin
+  print '+-----------------------------------------------------------------------+'
+  print '| ==========  Demo-Modus, keine Aenderungen an PATILISTE  ============  |'
+  print '+-----------------------------------------------------------------------+'
+  print ''
+end
+
+select @startdat=getdate()
+select @datumtxt='Start: ' + convert(char(11),@startdat,104)+convert(char(5),@startdat,108)
+select @endquart1    =     '31.03.2000 23:59'
+select @endquart2    =     '30.06.2000 23:59'
+select @endquart3    =     '30.09.2000 23:59'
+select @endquart4    =     '31.12.2000 23:59'
+print  @datumtxt
+select @diffyear     = datediff(year,@endquart1,getdate())
+select @endquartakt  = case when @startdat between dateadd(year,@diffyear,@endquart1) and dateadd(year,@diffyear  ,@endquart2)   then dateadd(year,@diffyear  ,@endquart2)   
+                            when @startdat between dateadd(year,@diffyear,@endquart2) and dateadd(year,@diffyear  ,@endquart3)   then dateadd(year,@diffyear  ,@endquart3)
+                            when @startdat between dateadd(year,@diffyear,@endquart3) and dateadd(year,@diffyear  ,@endquart4)   then dateadd(year,@diffyear  ,@endquart4)
+                            when @startdat between dateadd(year,@diffyear,@endquart4) and dateadd(year,@diffyear+1,@endquart1)   then dateadd(year,@diffyear+1,@endquart1)
+                       end
+select @endquartfolge= case when @startdat between dateadd(year,@diffyear,@endquart1) and dateadd(year,@diffyear  ,@endquart2)   then dateadd(year,@diffyear  ,@endquart3)   
+                            when @startdat between dateadd(year,@diffyear,@endquart2) and dateadd(year,@diffyear  ,@endquart3)   then dateadd(year,@diffyear  ,@endquart4)
+                            when @startdat between dateadd(year,@diffyear,@endquart3) and dateadd(year,@diffyear  ,@endquart4)   then dateadd(year,@diffyear+1,@endquart1)
+                            when @startdat between dateadd(year,@diffyear,@endquart4) and dateadd(year,@diffyear+1,@endquart1)   then dateadd(year,@diffyear+1,@endquart2)
+                       end                      
+select @USER=PERSONX from LOGIN where LOGINID=suser_name() and STORNODAT is null
+select @aufruftxt = 'Aufruf durch: ' +PERSONID from PERSON where PERSONX=@USER
+                       
+if @REPORT=1  
+begin
+  select @endqarttxt     ='Quartalsende zum: ' + convert(char(11),@endquartakt,104)+convert(char(5),@endquartakt,108) 
+  select @endqartfolgetxt='Ende Folgequart.: ' + convert(char(11),@endquartfolge,104)+convert(char(5),@endquartfolge,108)
+  print  @aufruftxt
+  print  @endqarttxt
+  print  @endqartfolgetxt
+end
+
+
+create table #ptemp(
+  cnt            numeric       identity not null,
+  patifallx      int           null,
+  patifallnr     char(16)      null,
+  pfeinsenderx   int           null,
+  patiart        char(8)       null,
+  kosttrtyp      char(6)       null,
+  pzimmernr      varchar(8)    null,
+  entldatverw    smalldatetime null,
+  plandat        smalldatetime null,
+  auftragnr      char(16)      null,
+  patilistex     int           null,
+  pleinsenderx   int           null,
+  aktivbis       smalldatetime null,
+  patifalleins   char(16)      null,
+  patilisteeins  char(16)      null,
+  auftrageins    char(16)      null,
+  insertpf       char(4)       null
+ )
+
+insert into #ptemp
+select
+  patifallx             =     PF.PATIFALLX,
+  patifallnr            =     PF.PATIFALLNR,
+  pfeinsenderx          =     PF.EINSENDERX,
+  patiart               =     PF.PATIART,
+  kosttrtyp             =     PF.KOSTTRTYP,
+  pzimmernr             =     PF.PZIMMERNR,
+  entldatverw           =     PF.ENTLDATVERW,
+  plandat               =     A.PLANDAT,
+  auftragnr             =     A.AUFTRAGNR,
+  patilistex            =     PL.PATILISTEX,
+  pleinsenderx          =     PL.EINSENDERX,
+  aktivbis              =     PL.AKTIVBIS,
+  patifalleins          =     P1.EINSCODE,
+  patilisteeins         =     P2.EINSCODE,
+  auftrageins           =     P3.EINSCODE,
+  insertpf              =     'no'
+ 
+from PATIFALL PF, AUFTRAG A, TASKFLAG T, PATILISTE PL, EINSENDER P1, EINSENDER P2,  EINSENDER P3
+
+where
+      A.AUFTRAGX = T.XREF
+  and A.PLANDAT  is not null 
+  and A.PLANDAT  between  @startdat and dateadd(day,@plandays,@startdat)
+  and PF.PATIFALLX =  A.PATIFALLX
+--  and (PF.PATIART ='A' or PF.PATIART ='a')
+  and PL.PATIFALLX =* PF.PATIFALLX
+  and P1.EINSENDERX=  PF.EINSENDERX
+  and P2.EINSENDERX=*  PL.EINSENDERX
+  and P3.EINSENDERX=  A.EINSENDERX
+order by plandat
+select @found = @@identity
+if @REPORT=1 
+
+select @cnt = 0
+while @cnt < @found
+begin
+  select @cnt        = @cnt+1  
+  update #ptemp set insertpf = 'yes'
+  where patilistex is null and (entldatverw is null or entldatverw > getdate())
+end
+
+if @REPORT=1 
+begin
+  print ''
+  print ' Patientenfälle 5 Tage vor Auftragsplandat in die Lauris-Patienliste nehmen'
+  print ''
+
+  set nocount off
+  select patifallnr, 
+         patiart,
+         patifalleins, 
+         entldatverw, 
+         auftragnr, 
+         auftrageins, 
+         plandat, 
+         insertpf, 
+         patilisteeins, 
+         aktivbis
+  from #ptemp
+  set nocount on
+end  
+  
+select @cnt = 0
+while @cnt < @found
+begin
+
+  select @cnt        = @cnt+1  
+  select @insertpf   = 'no'
+  select @EINSENDERX = pt.pfeinsenderx,
+         @PATIFALLX  = pt.patifallx ,
+         @PATIART    = pt.patiart   ,
+         @KOSTTRTYP  = pt.kosttrtyp ,
+         @PZIMMERNR  = pt.pzimmernr ,
+         @AKTIVBIS   = @endquartakt,
+         @insertpf   = pt.insertpf
+  from #ptemp pt  
+  where     
+        pt.cnt=@cnt    
+    and pt.insertpf = 'yes'              
+  if @insertpf = 'yes'
+  begin
+    select 'exec PI_PATILISTE: @cnt,'        = @cnt, 
+                             ' @MODUS,'      = @MODUS,
+                             ' @EINSENDERX,' = @EINSENDERX, 
+                             ' @PATIFALLX,'  = @PATIFALLX, 
+                             ' @PATIART,'    = @PATIART, 
+                             ' @KOSTTRYP,'   = @KOSTTRTYP, 
+                             ' @PZIMMERNR,'  = @PZIMMERNR, 
+                             ' @AKTIVBIS,'   = @AKTIVBIS,  
+                             ' @STORNO,'     = @STORNO,
+                             ' @QUIET'       = @QUIET
+    if @CHECKONLY=0
+    begin
+      exec PI_PATILISTE
+             @USER       = @USER      ,
+             @EINSENDERX = @EINSENDERX,
+             @MODUS      = @MODUS     ,
+             @PATIFALLX  = @PATIFALLX ,
+             @PATIART    = @PATIART   ,
+             @KOSTTRTYP  = @KOSTTRTYP ,
+             @PZIMMERNR  = @PZIMMERNR ,
+             @AKTIVBIS   = @AKTIVBIS  ,
+             @STORNO     = @STORNO    ,
+             @QUIET      = @QUIET      
+    end
+  end
+end
+
+go

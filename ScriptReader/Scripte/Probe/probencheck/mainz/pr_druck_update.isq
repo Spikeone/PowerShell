@@ -1,0 +1,37 @@
+set dateformat dmy
+go
+select
+  EI.EINSCODE,
+  PR.PROBEEXTID,
+  Etikinfo=substring(PR.ETIKINFO,1,12),
+  EtikDruck=substring(PR.ETIKDRUCK,1,12),
+  PR.ETIKDRUCKDAT,
+  PR.AUFTRAGX,
+  AU.EINSENDERX,
+  AU.LABEINDAT
+
+from PROBE PR (index PROBE_FK2), AUFTRAG AU, TASKFLAG T, EINSENDER EI
+where
+      T.XREF=AU.AUFTRAGX
+  and PR.AUFTRAGX=AU.AUFTRAGX
+  and PR.PSTATUS > 0
+  and PR.PKENNUNG = 3
+  and PR.ETIKDRUCK is null
+  and EI.EINSENDERX=AU.EINSENDERX
+order by EINSCODE
+go
+
+
+update
+  PROBE
+set
+  ETIKDRUCK=ETIKINFO,
+  ETIKDRUCKDAT='11.01.2012 11:30'
+from PROBE PR (index PROBE_FK2), AUFTRAG AU, TASKFLAG T
+where
+      T.XREF=AU.AUFTRAGX
+  and PR.AUFTRAGX=AU.AUFTRAGX
+  and PR.PSTATUS > 0
+  and PR.PKENNUNG = 3
+  and PR.ETIKDRUCK is null
+go

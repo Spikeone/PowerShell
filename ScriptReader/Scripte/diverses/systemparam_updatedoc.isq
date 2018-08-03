@@ -1,0 +1,4 @@
+set dateformat dmy
+go
+select * from UPDATEDOC where TABELLE='SYSTEMPARAM' and ERFASSDAT > '01.02.2007 00:00'
+go

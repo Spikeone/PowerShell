@@ -1,0 +1,70 @@
+set dateformat dmy
+declare
+  @startdat                       smalldatetime,
+  @enddat                         smalldatetime,
+  @datum                          varchar(28),
+  @anz_clients                    int,
+  @anz_user                       int,
+  @sys_kurz                       varchar(36),
+  @text_message                   varchar(58)
+
+set nocount on
+
+select @startdat=getdate()
+select @datum=', ausgeführt am: ' + convert(char(11),@startdat ,104)+convert(char(8),@startdat ,108)+' '
+select @sys_kurz = 'Lauris Systeminfo fuer: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+select @text_message = @sys_kurz + @datum
+
+print ''
+print '-------------------------------------------------------------'
+print @text_message 
+print '-------------------------------------------------------------'
+print ''
+print ''
+
+/* Ausgabe einiger Systeminfos */
+select '' as 'SQL-Systeminformationen: ',
+       substring(KUERZEL, 1, 20) as 'Kuerzel',
+       substring(ORT, 1, 20) as 'Ort',
+       substring(SERVERNAME, 1, 20) as 'Servername',
+       substring(BESCHREIBUNG, 1, 20) as 'Beschreibung',
+       @@version as 'Sybase-Version'
+  from master..SYSTEMINFO
+
+
+/* Lauris Nutzung */
+select @anz_clients = count(*) from CLIENT where STORNODAT is null and LOGINDATLETZT > dateadd(day,-30,getdate())
+select @anz_user    = count(*) from IDENT where STORNODAT is null and LOGINDATLETZT > dateadd(day,-30,getdate()) 
+print ''
+print ''
+select 'Anzahl Clients: ' + convert(char(6),@anz_clients) + '  Anzahl User: ' + convert(char(6),@anz_user) as 'Anmeldungen (in 30 Tagen):'
+go
+
+
+print ''
+print ''
+print 'aktive Lauris-Versionen:'
+go
+select
+  Lauris_Versionen = 'v'+substring(VERSIONINFO,5,10)
+into #vertemp
+from CLIENT 
+where 
+  STORNODAT is null and LOGINDATLETZT > dateadd(day,-30,getdate())
+
+select 
+  count(*) as Anzahl,
+  Lauris_Versionen
+from #vertemp
+group by Lauris_Versionen 
+order by Lauris_Versionen desc
+go
+
+/* Ausgabe der Swisslab-Revision */
+print ''
+print ''
+print 'Swisslab-Revision:'
+exec PR_REVISION
+go
+
+

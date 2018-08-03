@@ -1,0 +1,92 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\vorzeitig_aktivierte_Auftraege.isq */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : aktivierte Aufträge ohne Probeneingang (via Taskflag)          */
+/*MODULE   : Lauris                                                         */
+/*TIMESTAMP: <20070828.07:45>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+set dateformat dmy  
+
+set nocount on
+
+print ''
+print '+------------------------------------------------------------------------------+'
+print '|Lauris, Auftraege, die schon vor dem ersten Probeneingang aktiviert wurden    |'
+print '+------------------------------------------------------------------------------+'
+print ''
+
+-- alle Aufträge mit aktiven Proben
+select distinct
+  AuftragX1=TF.XREF
+into
+  #temp1
+from
+  PROBE PR (index PROBE_FK2),
+  TASKFLAG TF (index TASKFLAG_PK1)
+where
+  TF.TSTATUS > 0 and
+  PR.AUFTRAGX = TF.XREF and
+  PR.PSTATUS > 0
+
+  
+-- alle Aufträge mit inaktiven Proben
+select distinct
+  AuftragX2=TF.XREF
+into
+  #temp2
+from
+  PROBE PR (index PROBE_FK2),
+  TASKFLAG TF (index TASKFLAG_PK1)
+where
+  TF.TSTATUS > 0 and
+  PR.AUFTRAGX = TF.XREF and
+  PR.PSTATUS = 0
+
+
+-- alle Auftraege aus Tabelle 2 (inaktive Proben), die nicht in Tabelle 1 sind (aktive Proben)
+select
+  AuftragX3=t2.AuftragX2
+into
+  #temp3
+from
+  #temp2 t2
+where
+  t2.AuftragX2 not in (select AuftragX1 from #temp1)
+
+
+set nocount off
+select 
+  Lauf=A.LAUF,
+  AuftragNr=A.AUFTRAGNR,
+  AuftErfassdat = convert(char(11),A.ERFASSDAT ,104)+convert(char(8),A.ERFASSDAT ,108)+' ',
+  Auftragdat = convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  AuftLabeindat = convert(char(11),A.LABEINDAT ,104)+convert(char(8),A.LABEINDAT ,108)+' ',
+  AuftStornodat = convert(char(11),A.STORNODAT ,104)+convert(char(8),A.STORNODAT ,108)+' ',
+  TStatus=T.TSTATUS,
+  TErfassdat = convert(char(11),T.TERFASSDAT ,104)+convert(char(8),T.TERFASSDAT ,108)+' ',
+  TStatusdat = convert(char(11),T.TSTATUSDAT ,104)+convert(char(8),T.TSTATUSDAT ,108)+' ',
+  AuftErfassPer=P1.PERSONID,
+  PR.PROBEEXTID,
+  PR.PSTATUS,
+  ProbeErstellt = convert(char(11),PR.SQLERFASSDAT ,104)+convert(char(8),PR.SQLERFASSDAT ,108)+' ',
+  EtikDruckdat = convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' ',
+  ProbeLabeindat = convert(char(11),PR.ERFASSDAT ,104)+convert(char(8),PR.ERFASSDAT ,108)+' ',
+  ProbeErfassPer=P2.PERSONID,
+  AuftragX=A.AUFTRAGX,
+  ProbeX=PR.PROBEX
+  
+from #temp3 t3, AUFTRAG A, TASKFLAG T, PROBE PR, PERSON P1, PERSON P2
+where 
+  PR.AUFTRAGX = t3.AuftragX3 and
+  A.AUFTRAGX = t3.AuftragX3 and
+  P1.PERSONX=A.ERFASSPERS and
+  P2.PERSONX=PR.ERFASSPERS and
+  T.XREF=A.AUFTRAGX 
+order by AuftragNr, PROBEEXTID
+
+go

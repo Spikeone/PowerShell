@@ -1,0 +1,118 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\proben_check.isq                   */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [070828.2030]                                                  */
+/*KURZINFO : SWL-II: Check des Probenetikettendrucks, Verbleib in der Ablage*/
+/*MODULE   : Lauris                                                         */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20100207.21:26>                                               */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[100207] 1.00 lis erstellt                                                */
+/****************************************************************************/
+set showplan on
+go
+set statistics time,io on
+go
+set dateformat dmy
+go
+
+declare
+  @auftdatmin                       smalldatetime,
+  @auftdatmax                       smalldatetime
+  
+set nocount on  
+/************************************************************************************************************************/
+select @auftdatmin          = '01.01.2007 00:00'            /* !!!!!! min. Auftragsdatum                        !!!!!!! */
+select @auftdatmax          = '31.12.2011 23:59'            /* !!!!!! min. Auftragsdatum                        !!!!!!! */
+/************************************************************************************************************************/
+set nocount off
+
+print ''
+print 'aktivierte Proben aktiver Lauris-Aufträge, deren Etiketten nicht gedruckt wurden'
+print '----------- SWISSLAB -------------------------------------------------------------'
+print ''
+
+select
+  AuftragNr=A.AUFTRAGNR,
+  Einsender=E.EINSCODE,
+  ProbeExtid=PR.PROBEEXTID,
+  ProbeErfassDat=convert(char(11),PR.SQLERFASSDAT ,104)+convert(char(8),PR.SQLERFASSDAT ,108)+' ',
+  ProbeErfassPers=P1.PERSONID,
+  EtikDruckDat=convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' ',
+  EtikInfo = substring(PR.ETIKINFO,1,16),
+  EtikDruck = substring(PR.ETIKDRUCK,1,16),
+  Pstatus = PR.PSTATUS,
+  Pkennung  = PR.PKENNUNG,    
+  AuftragErfassDat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  AuftragErfassPers=P2.PERSONID,
+  A.AUFTRAGX,
+  PR.PROBEX,
+  A.SQLERFASSDAT
+from
+  AUFTRAG A,
+  PROBE PR,
+  PERSON P1 (index PERSON_PK),
+  PERSON P2 (index PERSON_PK),
+  EINSENDER E (index EINSENDER_PK),
+  BEHAELTER BE
+  
+where 
+      PR.ERFASSDAT between @auftdatmin and @auftdatmax
+  and A.FORMULARX is not null
+  and PR.AUFTRAGX=A.AUFTRAGX
+  and PR.PSTATUS > 0
+  and PR.PKENNUNG = 3
+  and PR.ETIKDRUCK is null
+  and P1.PERSONX=PR.ERFASSPERS
+  and P2.PERSONX=*PR.STORNOPERS
+  and BE.BEHAELTERX=*PR.BEHAELTERX
+  and E.EINSENDERX=A.EINSENDERX
+
+order by A.SQLERFASSDAT
+
+print ''
+print 'aktivierte Proben aktiver Lauris-Aufträge, deren Etiketten nicht gedruckt wurden'
+print '----------- SWISSARCH -------------------------------------------------------------'
+print ''
+
+select
+  AuftragNr=A.AUFTRAGNR,
+  Einsender=E.EINSCODE,
+  ProbeExtid=PR.PROBEEXTID,
+  ProbeErfassDat=convert(char(11),PR.SQLERFASSDAT ,104)+convert(char(8),PR.SQLERFASSDAT ,108)+' ',
+  ProbeErfassPers=P1.PERSONID,
+  EtikDruckDat=convert(char(11),PR.ETIKDRUCKDAT ,104)+convert(char(8),PR.ETIKDRUCKDAT ,108)+' ',
+  EtikInfo = substring(PR.ETIKINFO,1,16),
+  EtikDruck = substring(PR.ETIKDRUCK,1,16),
+  Pstatus = PR.PSTATUS,
+  Pkennung  = PR.PKENNUNG,    
+  AuftragErfassDat=convert(char(11),A.AUFTRAGDAT ,104)+convert(char(8),A.AUFTRAGDAT ,108)+' ',
+  AuftragErfassPers=P2.PERSONID,
+  A.AUFTRAGX,
+  PR.PROBEX,
+  A.SQLERFASSDAT
+from
+  SWISSARCH..AUFTRAG_ARCH A,
+  SWISSARCH..PROBE_ARCH PR (index PROBE_ERFASSDAT),
+  PERSON P1 (index PERSON_PK),
+  PERSON P2 (index PERSON_PK),
+  EINSENDER E (index EINSENDER_PK),
+  BEHAELTER BE
+  
+where 
+      PR.ERFASSDAT between @auftdatmin and @auftdatmax
+  and PR.AUFTRAGX=A.AUFTRAGX
+  and PR.PSTATUS > 0
+  and PR.PKENNUNG = 3
+  and PR.ETIKDRUCK is null
+  and P1.PERSONX=PR.ERFASSPERS
+  and P2.PERSONX=*PR.STORNOPERS
+  and BE.BEHAELTERX=*PR.BEHAELTERX
+  and E.EINSENDERX=A.EINSENDERX
+
+order by A.SQLERFASSDAT
+
+go
+

@@ -1,0 +1,91 @@
+ PersonID         IdentCode        LogindatLetzt        IdentEignerx IdentNutzerx IdentErfassPers  PPersonX    IPersonX    
+ ---------------- ---------------- -------------------- ------------ ------------ ---------------- ----------- ----------- 
+ *labor           labor            14.09.2010 09:54:00            -1           -1 ut                       169         169 
+ *Trampe          Trampe           01.11.2006 08:37:00            -1           -1 SWADMIN                  173         173 
+ *Pflege          Pflege           18.10.2007 14:54:00            -1           -1 SWADMIN                  175         175 
+ *Arzt            Arzt             14.09.2010 09:58:00            -1           -1 SWADMIN                  176         176 
+ *timo            timo             21.07.2004 14:22:00            -1            1 ut                       177         177 
+ *en              en               28.04.2006 11:37:00            -1           -1 SWADMIN                  178         178 
+ *lis             lis              08.03.2011 09:21:00            -1           -1 lis                      179         179 
+ *tb              tb               13.03.2008 08:26:00             1            1 ut                       186         186 
+ *test            test             10.08.2010 15:07:00             1            1 ut                       187         187 
+ *Kopie           Kopie                                           -1            1 ut                       192         192 
+ *tübingen        tübingen                                        -1            1 ut                       194         194 
+ *sebi            sebi                                            -1            1 ut                       199         199 
+ *rg              rg               25.08.2008 15:36:00            -1            1 rg                       200         200 
+ *weh             weh              15.07.2004 15:59:00            -1           -1 STJ                      203         203 
+ *ww              ww               03.01.2011 09:15:00            -1            1 ww                       207         207 
+ *ssc             ssc              19.01.2011 11:31:00            -1           -1 SWADMIN                  208         208 
+ *schulung        schulung         09.11.2009 09:29:00            -1            1 ut                       209         209 
+ *test1           test1            17.02.2005 11:07:00             1            1 ut                       220         220 
+ *IMPTest         IMPTest          19.01.2005 09:53:00             1            1 it                       222         222 
+ *lis3            lis3             09.11.2010 10:59:00             1            1 lis                      225         225 
+ *LIS4            LIS4             23.03.2009 09:40:00            -1           -1 *lis3                    227         227 
+ *LIS5            LIS5             13.11.2006 16:26:00            -1           -1 *lis2                    228         228 
+ *LIS6            LIS6             20.09.2006 14:09:00            -1           -1 *lis3                    229         229 
+ *HAKELBERG       HAKELBERG                                       -1           -1 SQImportIdent            233         233 
+ *LIS7            LIS7             03.05.2010 15:48:00             1            1 *lis3                    235         235 
+ *YPS             YPS              01.08.2005 08:13:00            -1           -1 SQImportIdent            236         236 
+ *dag             dag              04.03.2011 09:25:00             1            1 dag                      242         242 
+ *dag2            dag2             12.06.2006 11:24:00             1            1 dag                      243         243 
+ *lin             lin              23.05.2006 10:11:00             1            1 lin                      245         245 
+ *fbo             fbo              16.11.2010 16:31:00             1            1 FBO                      247         247 
+ *YPS22           YPS22            25.03.2008 11:18:00             0           -1 SQImport                 253         253 
+ *nis             nis              06.07.2009 13:01:00             1            1 lis                      254         254 
+ *jko             jko              20.10.2010 15:45:00             1            1 jko                      255         255 
+ *LIS8            LIS8             29.04.2010 15:37:00             1            1 *lis                     256         256 
+ *ban             ban              27.06.2008 13:27:00             1            1 lis                      278         278 
+ *avt             avt              09.09.2009 15:13:00             1            1 lis                      280         280 
+ *pte             pte              22.08.2008 11:57:00             1            1 lis                      281         281 
+ *LIS44           LIS44            28.11.2008 11:46:00            -1           -1 Lauris                   283         283 
+ *yna             yna              04.08.2008 14:24:00             1            1 yna                      284         284 
+ *ynaSWT          ynaSWT           27.10.2006 15:11:00             1            1 yna                      285         285 
+ *dbu             dbu              04.04.2008 09:24:00             1            1 dbu                      291         291 
+ *svp             svp              18.07.2008 17:05:00             1            1 lis                      296         296 
+ *BVB             BVB                                              1            1 svp                      297         297 
+ *BEST            BEST                                             1            1 svp                      298         298 
+ *OETTKER         OETTKER                                          1            1 svp                      299         299 
+ *BECKMANN        BECKMANN                                         1            1 svp                      300         300 
+ *mns             mns              06.07.2009 13:15:00             1            1 mns                      301         301 
+ *mnsa            mnsa             05.06.2008 13:35:00             1            1 mns                      302         302 
+ *fbo2            fbo2             12.08.2008 10:01:00             1            1 FBO                      303         303 
+ *hc              hc               25.06.2009 08:10:00             1            1 lis                      307         307 
+ *lh              lh               14.12.2007 08:30:00             1            1 lhl                      308         308 
+ *ut              ut               03.09.2010 09:18:00   -2147483648           -1 SWADMIN                  316         316 
+ *mbe             mbe              26.02.2009 14:49:00             1            1 mbe                      319         319 
+ *LIS9            LIS9             26.02.2008 15:49:00            -1           -1 Lauris                   320         320 
+ *LIS11           LIS11            14.09.2010 09:34:00            -1           -1 Lauris                   321         321 
+ *jon             jon              12.12.2008 09:51:00             1            1 jon                      325         325 
+ *jon2            jon2             12.12.2008 09:47:00             1            1 jon                      327         327 
+ *fbo88           fbo88                                            1            7 FBO                      328         328 
+ *daf             daf              05.07.2010 10:40:00             1            1 daf                      329         329 
+ *jons_test       jons_test        18.09.2008 13:47:00             1            1 jon                      346         346 
+ *userIt          userIt                                           1            1 it                       349         349 
+ *pap             pap              02.06.2010 15:28:00             1            1 pap                      353         353 
+ *SLASUser        SLASUser         06.03.2009 14:28:00             1            1 jko                      356         356 
+ *ssc5            ssc5             23.03.2009 08:26:00            16           17 lis                      357         357 
+ *PKH_AYHAN       PKH_AYHAN                                        1            1 dag                      359         359 
+ *fwo             fwo              29.10.2009 15:01:00             1            1 fwo                      362         362 
+ *bzi             bzi              09.09.2009 16:03:00             1            1 bzi                      364         364 
+ *fwo-n           fwo-n            16.07.2009 11:06:00             1            1 fwo                      365         365 
+ *dfs             dfs              03.02.2011 07:54:00             1            1 dfs                      380         380 
+ *stz             stz              07.09.2010 14:36:00             1            1 stz                      382         382 
+ *stm             stm              17.09.2009 13:09:00             1           -1 ssc                      383         383 
+ *SCHUL1          SCHUL1           25.09.2009 14:03:00             1            1 stz                      384         384 
+ *!LIS            !LIS             07.10.2009 09:43:00            -1           -1 Lauris                   385         385 
+ *dfs_kis         dfs_kis          21.06.2010 16:24:00             1            1 dfs                      388         388 
+ *idn             idn              03.08.2010 15:51:00             1            1 dfs                      403         403 
+ *Bestens         Bestens                                          1            1 lis                      405         405 
+ *pze             pze              15.02.2011 17:10:00             1            1 pze                      407         407 
+ *dag dag         dag dag          07.06.2010 10:57:00             1            1 dag                      411         411 
+ *testdag         testdag          21.06.2010 13:38:00             1            1 dag                      413         413 
+ *spi             spi              05.08.2010 10:03:00             1            1 lis                      415         415 
+ *muy             muy              28.02.2011 10:04:00             1            1 muy                      419         419 
+ *muy2            muy2             11.10.2010 15:37:00             1            1 muy                      425         425 
+ *Test-muy        Test-muy                                         1            1 muy                      428         428 
+ *PKH_ZZZZZZ      PKH_ZZZZZZ                                       1            1 lis                      429         429 
+ *rj              rj               03.01.2011 09:27:00             1            1 lis                      432         432 
+ *gub             gub              01.03.2011 16:27:00             1            1 gub                      433         433 
+ *DAG_AUTO        DAG_AUTO         21.01.2011 15:36:00            -1           -1 Lauris                   443         443 
+
+(87 rows affected)

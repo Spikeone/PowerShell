@@ -1,0 +1,2237 @@
+Loading Config... 
+
+... done! 
+
+handleBeginChange
+
+Setting Color to: Red
+
+playSoundFXRandom ( ID: 1 Range: 1) 
+
+playSoundFXRandom ( ID: 1 Range: 1) 
+
+playSoundFXRandom ( ID: 1 Range: 1) 
+
+playSoundFXRandom ( ID: 0 Range: 1) 
+
+Showing buttons... 
+
+Game starting...
+
+Setting Color to: Red
+
+Local game...
+
+Is AI(handle Start game)
+
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+Maximum is: 3
+
+Array is: 0 1 2 3 2 1 0
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 3 Range: 2) 
+
+Value: 0 Type1: int Typ2: 0
+
+Check for winner (X: 3  Y: 0)...
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 1 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 1 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 3 Range: 2) 
+
+Value: 0 Type1: int Typ2: 1
+
+Check for winner (X: 1  Y: 0)...
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+right equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+BlockAI: Nah, I cant win...
+right bottom same
+
+bottom equal
+
+left bottom same
+
+Maximum is: 5
+
+Array is: 3 5 3 4 0 1 0
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 1 Type1: int Typ2: 1
+
+Check for winner (X: 1  Y: 1)...
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 0 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 0 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 3 Range: 2) 
+
+Value: 0 Type1: int Typ2: 1
+
+Check for winner (X: 0  Y: 0)...
+
+right equal
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+right equal
+
+left top same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left bottom same
+
+Maximum is: 6
+
+Array is: 4.5 2 6 2 0 1 0
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 3 Range: 2) 
+
+Value: 0 Type1: int Typ2: 1
+
+Check for winner (X: 2  Y: 0)...
+
+right equal
+
+left top same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 4 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 4 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 3 Range: 2) 
+
+Value: 0 Type1: int Typ2: 1
+
+Check for winner (X: 4  Y: 0)...
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+left bottom same
+
+BlockAI: Nah, I cant win...
+left equal
+
+left bottom same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+bottom equal
+
+right bottom same
+
+left bottom same
+
+bottom equal
+
+Maximum is: 5.5
+
+Array is: 4.5 2 1.5 2.5 5.5 3 2
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 1 Type1: int Typ2: 1
+
+Check for winner (X: 4  Y: 1)...
+
+left bottom same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 3 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 3 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 1 Type1: int Typ2: 1
+
+Check for winner (X: 3  Y: 1)...
+
+right bottom same
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left top same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+bottom equal
+
+right bottom same
+
+right bottom same
+
+bottom equal
+
+Maximum is: 7.5
+
+Array is: 4.5 2 4.5 7.5 4.5 3 2
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 2 Type1: int Typ2: 2
+
+Check for winner (X: 3  Y: 2)...
+
+right bottom same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 0 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 0 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 1 Type1: int Typ2: 3
+
+Check for winner (X: 0  Y: 1)...
+
+bottom equal
+
+right bottom same
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right bottom same
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right top same
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+right bottom same
+
+right bottom same
+
+Maximum is: 6
+
+Array is: 6 3 4.5 4.5 2.5 3 2
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 2 Type1: int Typ2: 3
+
+Check for winner (X: 0  Y: 2)...
+
+right bottom same
+
+right bottom same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 4 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 4 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 2 Type1: int Typ2: 3
+
+Check for winner (X: 4  Y: 2)...
+
+left bottom same
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right top same
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+BlockAI: Nah, I cant win...
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+right bottom same
+
+right bottom same
+
+bottom equal
+
+Maximum is: 7
+
+Array is: 0 2 4.5 7 6 3 3
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 3 Type1: int Typ2: 3
+
+Check for winner (X: 3  Y: 3)...
+
+bottom equal
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 3 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 3 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 4 Type1: int Typ2: 4
+
+Check for winner (X: 3  Y: 4)...
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right top same
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+left equal
+
+left bottom same
+
+BlockAI: Nah, I cant win...
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+right bottom same
+
+right bottom same
+
+bottom equal
+
+bottom equal
+
+left equal
+
+Maximum is: 6
+
+Array is: 0 3 4.5 6 5.5 3 3
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 5 Type1: int Typ2: 5
+
+Check for winner (X: 3  Y: 5)...
+
+...no winner
+
+ButtonName is: btnR4
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 1 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 1 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 2 Type1: int Typ2: 6
+
+Check for winner (X: 1  Y: 2)...
+
+left bottom same
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right top same
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+left bottom same
+
+BlockAI: Nah, I cant win...
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right bottom same
+
+right bottom same
+
+bottom equal
+
+left equal
+
+Maximum is: 6.5
+
+Array is: 1.5 6.5 6 -300 5.5 3 3
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 3 Type1: int Typ2: 6
+
+Check for winner (X: 1  Y: 3)...
+
+left bottom same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 3 
+
+AI_RandomAI: 4 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 4 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 3 Type1: int Typ2: 6
+
+Check for winner (X: 4  Y: 3)...
+
+bottom equal
+
+left top same
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+bottom equal
+
+right equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right top same
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+left top same
+
+BlockAI: Nah, I cant win...
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+left equal
+
+right bottom same
+
+right bottom same
+
+bottom equal
+
+bottom equal
+
+left bottom same
+
+Maximum is: 13
+
+Array is: 1.5 4 6 -300 13 3 3
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 4 Type1: int Typ2: 6
+
+Check for winner (X: 4  Y: 4)...
+
+left bottom same
+
+left top same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 0 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 0 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 3 Type1: int Typ2: 6
+
+Check for winner (X: 0  Y: 3)...
+
+right bottom same
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right top same
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+right bottom same
+
+right bottom same
+
+Maximum is: 7.5
+
+Array is: 5 5 7.5 -300 3.5 3 3
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 1 Type1: int Typ2: 6
+
+Check for winner (X: 2  Y: 1)...
+
+bottom equal
+
+left equal
+
+right top same
+
+right bottom same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 6 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 6 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 3 Range: 2) 
+
+Value: 0 Type1: int Typ2: 6
+
+Check for winner (X: 6  Y: 0)...
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+right equal
+
+left bottom same
+
+right top same
+
+right top same
+
+left top same
+
+BlockAI: I could win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+BlockAI: Nah, I cant win...
+bottom equal
+
+left bottom same
+
+left bottom same
+
+right top same
+
+BlockAI: I should not take Row 2
+Maximum is: 6
+
+Array is: 5 5 -200 -300 3.5 6 5
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 3 Range: 2) 
+
+Value: 0 Type1: int Typ2: 6
+
+Check for winner (X: 5  Y: 0)...
+
+left top same
+
+left top same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 4 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 4 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 5 Type1: int Typ2: 6
+
+Check for winner (X: 4  Y: 5)...
+
+left bottom same
+
+...no winner
+
+ButtonName is: btnR5
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+right equal
+
+left bottom same
+
+right top same
+
+right top same
+
+left top same
+
+BlockAI: I could win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+left bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left bottom same
+
+left bottom same
+
+right top same
+
+right top same
+
+BlockAI: I should not take Row 2
+Maximum is: 5
+
+Array is: 5 5 -200 -300 -300 4.5 5
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 1 Type1: int Typ2: 6
+
+Check for winner (X: 6  Y: 1)...
+
+left bottom same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 5 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 5 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 1 Type1: int Typ2: 6
+
+Check for winner (X: 5  Y: 1)...
+
+left bottom same
+
+right bottom same
+
+left top same
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+right equal
+
+left bottom same
+
+right top same
+
+right top same
+
+left top same
+
+BlockAI: I could win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+left bottom same
+
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left bottom same
+
+left bottom same
+
+right top same
+
+right top same
+
+BlockAI: I should not take Row 2
+Maximum is: 9
+
+Array is: 5 5 -200 -300 -300 9 5
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 2 Type1: int Typ2: 6
+
+Check for winner (X: 5  Y: 2)...
+
+left bottom same
+
+left bottom same
+
+right bottom same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 0 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 0 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 4 Type1: int Typ2: 6
+
+Check for winner (X: 0  Y: 4)...
+
+bottom equal
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+BlockAI: Nah, I cant win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+right equal
+
+left bottom same
+
+right top same
+
+right top same
+
+left top same
+
+BlockAI: I could win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+left bottom same
+
+left bottom same
+
+left bottom same
+
+right top same
+
+right top same
+
+BlockAI: I should not take Row 2
+Maximum is: 7
+
+Array is: 6 7 -200 -300 -300 6 3
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 4 Type1: int Typ2: 6
+
+Check for winner (X: 1  Y: 4)...
+
+bottom equal
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 0 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 0 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 5 Type1: int Typ2: 6
+
+Check for winner (X: 0  Y: 5)...
+
+bottom equal
+
+bottom equal
+
+...no winner
+
+ButtonName is: btnR1
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+right equal
+
+left bottom same
+
+right top same
+
+right top same
+
+left top same
+
+BlockAI: I could win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left top same
+
+left top same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+left bottom same
+
+left bottom same
+
+right top same
+
+right top same
+
+BlockAI: I should not take Row 2
+Maximum is: 6
+
+Array is: -300 4.5 -200 -300 -300 6 3
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 3 Type1: int Typ2: 6
+
+Check for winner (X: 5  Y: 3)...
+
+bottom equal
+
+left top same
+
+left top same
+
+...no winner
+
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 6 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 6 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 2 Type1: int Typ2: 6
+
+Check for winner (X: 6  Y: 2)...
+
+left bottom same
+
+left bottom same
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+right equal
+
+left bottom same
+
+right top same
+
+right top same
+
+left top same
+
+BlockAI: I could win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+left bottom same
+
+left bottom same
+
+left bottom same
+
+BlockAI: I could win...
+left bottom same
+
+left bottom same
+
+left bottom same
+
+right top same
+
+right top same
+
+BlockAI: I should not take Row 2
+Maximum is: 4.5
+
+Array is: -300 4.5 -200 -300 -300 3 4
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 5 Type1: int Typ2: 6
+
+Check for winner (X: 1  Y: 5)...
+
+bottom equal
+
+bottom equal
+
+...no winner
+
+ButtonName is: btnR2
+Setting Color to: Orange
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: Rand AI)
+
+... Invalid AI Type...
+
+... AI_RandomAI taking Action...
+
+AI_RandomAI taking Action...
+
+AI_RandomAI: 6 
+
+AI_RandomAI: Valid Row!
+
+AI_RandomAI:Returning Row 6 
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 5 Range: 2) 
+
+Value: 3 Type1: int Typ2: 6
+
+Check for winner (X: 6  Y: 3)...
+
+bottom equal
+
+...no winner
+
+Setting Color to: Red
+
+updateRundeText
+
+Checking AI Turn...
+Handling AI turn... (AI Type: BlockWinII AI)
+
+... BlockWinII AI taking Action...
+
+
+ButtonID: 0
+
+For color: Orange
+
+ButtonID: 1
+
+For color: Orange
+
+ButtonID: 2
+
+For color: Orange
+
+ButtonID: 3
+
+For color: Orange
+
+ButtonID: 4
+
+For color: Orange
+
+ButtonID: 5
+
+For color: Orange
+
+ButtonID: 6
+
+For color: Orange
+right bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+bottom equal
+
+BlockAI: I could win...
+bottom equal
+
+bottom equal
+
+right equal
+
+left bottom same
+
+right top same
+
+right top same
+
+left top same
+
+BlockAI: I could win...
+bottom equal
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+BlockAI: Nah, I cant win...
+bottom equal
+
+bottom equal
+
+left equal
+
+BlockAI: Nah, I cant win...
+left equal
+
+left bottom same
+
+BlockAI: Nah, I cant win...
+left bottom same
+
+left bottom same
+
+right top same
+
+right top same
+
+BlockAI: I should not take Row 2
+Maximum is: 300
+
+Array is: -300 300 -200 -300 -300 4.5 6
+
+handleRowButtonClick
+
+playSoundFXRandom ( ID: 0 Range: 1) 
+
+Saving Config... 
+
+... done! 
+
+leaving...
+

@@ -1,0 +1,89 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: AUG, ausgeführt am: 04.06.2015 09:38
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           AUG              Klinikum Augsburg    SQLTEST              Test Sybase Server   Adaptive Server Enterprise/15.5/EBF 19896 SMP ESD#5.1/P/X64/Windows Server/asear155/2594/64-bit/OPT/Tue Jun 05 20:55:01 2012                                                                                                                                    
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 5       Anzahl User: 5       Anzahl Auftraege Lauris: 1       Anzahl Auftraege ohne Lauris: 4      
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           5 v12.09.14#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Neil Armstrong                                                                   2012.02    NULL                                     17.09.12  00:00                 
+ letztes Swisspro                                                                 2012.02    NULL                                     19.10.13  17:26                 
+ swissup3.tab                                                                      2.14 $    NULL                                     19.10.13  17:05                 
+ swissup3.tab                                                                      2.14 $    NULL                                     19.10.13  17:05                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     19.10.13  17:21                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     19.10.13  17:19                 
+ Statistik (via statistik.pro)                                                     5.86 $    NULL                                     19.10.13  17:22                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     19.10.13  17:19                 
+                                                                                             NULL                                                                     
+ neu:PI_TUBE                                                                       1.02 $    NULL                                     11.05.15  14:57 SWISSLAB        
+ neu:PI_TUBE_ARCH                                                                  1.02 $    NULL                                     11.05.15  14:57 SWISSLAB        
+ neu:PI_ARCHSAVEFALL                                                               0.0 $*    NULL                                     11.05.15  14:57 SWISSLAB        
+ neu:PI_ARCHRESTOREFALL                                                            0.0 $*    NULL                                     11.05.15  14:57 SWISSLAB        
+ neu:PI_ARCHSAVEAUFTRAG                                                            0.0 $*    NULL                                     11.05.15  14:57 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         
+ ----------- ------ ---------------- 
+           1      5 5                
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+           1 Transfusionsmedizin                                              
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: AUG, beendet am: 04.06.2015 09:38 
+SQL-Abfrage-Dauer: 0   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 15.3.5.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2.16.0.002420 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 15.2.24.1 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.16.0.002414 

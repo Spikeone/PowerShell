@@ -1,0 +1,43 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SWFRDI sqlserver     SQLserver RDI        Adaptive Server Enterprise/12.5.4/EBF 14115 ESD#4/P/NT (IX86)/OS 4.0/ase1254/2034/32-bit/OPT/Thu Nov 30 06:08:17 2006                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                     676424          521372      138823 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                HAULA            Serumchemie Urinchemie Sondermaterial                                   May 30 2006 12:23PM                       NULL       31000001        31999999         31000250           999998                   249                 999749     0.0249 %       0.21 Nummern         4838142.75 Tage              41000001               41999999         NULL 
+                                Notfall          Notfall                                                                 May 30 2006 12:55PM        Jun  6 2006 11:00AM       39000001        39999999         39000001           999998                     0                 999998     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL         NULL 
+                                GERI/HÄMA        Blugerinnung und Hämatologie                                            Jun  6 2006 10:55AM                       NULL       32000001        32999999         32000151           999998                   150                 999848     0.0150 %       0.13 Nummern         7985452.69 Tage              42000001               42999999         NULL 
+                                ENDO             Endokrinologie und Stoffwechselchemie                                   Jun  6 2006 10:57AM        Jun 21 2006  1:55PM       35000001        35999999         35000151           999998                   150                 999848     0.0150 %       0.13 Nummern         7985452.69 Tage              45000001               45999999         NULL 
+                                IMMU             Immunologie und Proteinchemie                                           Jun  6 2006 10:58AM                       NULL       34000001        34999999         34000101           999998                   100                 999898     0.0100 %       0.08 Nummern        11978778.04 Tage              44000001               44999999         NULL 
+                                DRUG             Arzneimittelspiegel                                                     Jun  6 2006 10:59AM                       NULL       36000001        36999999         36000101           999998                   100                 999898     0.0100 %       0.08 Nummern        11978778.04 Tage              46000001               46999999         NULL 
+                                NOTFALL          Notfall                                                                 Jun  6 2006 11:00AM                       NULL       39000001        39999999         39000151           999998                   150                 999848     0.0150 %       0.13 Nummern         7985452.69 Tage              49000001               49999999         NULL 
+                                TEST             Testnummernkreis                                                        Jun  8 2006  9:12AM                       NULL       99000000        99999999         99000100           999999                   100                 999899     0.0100 %       0.08 Nummern        11958792.04 Tage                  NULL                   NULL         NULL 
+                                ENDO             Enkrinologie und Stoffwechselchemie                                     Jun 21 2006  1:55PM        Jun 21 2006  1:56PM       35000001        35999999         35000001           999998                     0                 999998     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL         NULL 
+                                ENDO             Endokrinologie und Stoffwechselchemie                                   Jun 21 2006  1:56PM                       NULL       35000001        35800000         35000001           799999                     0                 799999     0.0000 %       0.00 Nummern  NULL                                45000001               45800000         NULL 
+                                UPA/PAI-1        uPA/PAI-1 im Mamma-Karzinomgewebe                                       Jun 21 2006  1:59PM                       NULL       35800001        35899999         35800101            99998                   100                  99898     0.1000 %       0.08 Nummern         1181793.34 Tage              45800001               45899999         NULL 
+Divide by zero occurred.

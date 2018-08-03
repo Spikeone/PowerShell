@@ -1,0 +1,41 @@
+set nocount on
+print ''
+select '' as '0-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '0%' 
+select '' as '0-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '0%'
+go
+print ''
+select '' as '1-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '1%' 
+select '' as '1-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '1%'
+go
+print ''
+select '' as '2-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '2%' 
+select '' as '2-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '2%'
+go
+print ''
+select '' as '3-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '3%' 
+select '' as '3-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '3%'
+go
+print ''
+select '' as '4-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '4%' 
+select '' as '4-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '4%'
+go
+print ''
+select '' as '5-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '5%' 
+select '' as '5-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '5%'
+go
+print ''
+select '' as '6-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '6%' 
+select '' as '6-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '6%'
+go
+print ''
+select '' as '7-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '7%' 
+select '' as '7-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '7%'
+go
+print ''
+select '' as '8-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '8%' 
+select '' as '8-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '8%'
+go
+print ''
+select '' as '9-Nummern:     ', count(*) from AUFTRAG where AUFTRAGNR like '9%' 
+select '' as '9-Nummern_Arch:',count(*) from SWISSARCH..AUFTRAG_ARCH where AUFTRAGNR like '9%'
+go

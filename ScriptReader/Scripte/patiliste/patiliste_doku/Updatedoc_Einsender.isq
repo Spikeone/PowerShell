@@ -1,0 +1,30 @@
+select 
+ FallNr=U.KEYIDENT,
+ EinsAlt=E1.EINSCODE,
+ EinsNeu=E2.EINSCODE,
+ EinsPatiliste=E3.EINSCODE,
+ ErfassdatUpdateEinsender=U.ERFASSDAT,
+ UpdatePers=PE.PERSONID,
+ ErfasspersPatiliste=PE2.PERSONID 
+from UPDATEDOC U, EINSENDER E1, EINSENDER E2, EINSENDER E3, PERSON PE, PERSON PE2, PATIFALL PF, PATILISTE PL
+where 
+ U.KEYIDENT in ('9879888', 
+                '9826413',
+                '9862374',
+                '9861618',
+                '9868597',
+                '9887269',
+                '9824037',
+                '9869606')
+
+ and U.TABELLE='PATIFALL'
+ and PF.PATIFALLNR=U.KEYIDENT
+ and PL.PATIFALLX=*PF.PATIFALLX 
+ and SPALTE='EINSENDERX'
+ and E1.EINSENDERX =* convert(int,U.WERTALT)
+ and E2.EINSENDERX =* convert(int,U.WERTNEU)
+ and E3.EINSENDERX =* PL.EINSENDERX
+ and PE.PERSONX=U.ERFASSPERS
+ and PE2.PERSONX =* PL.ERFASSPERS
+order by FallNr, U.ERFASSDAT 
+go 

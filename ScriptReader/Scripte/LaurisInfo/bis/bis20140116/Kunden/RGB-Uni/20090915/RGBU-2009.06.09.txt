@@ -1,0 +1,22 @@
+ 
+ Msg 156, Level 15, State 2: 
+ Server 'SYBSUNR', Line 58: 
+ Incorrect syntax near the keyword 'select'. 
+ Msg 102, Level 15, State 1: 
+ Server 'SYBSUNR', Line 58: 
+ Incorrect syntax near ')'. 
+   
+   
+  Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------  
+                                 TestNummern      TestNummernkreis Lauris                                                 Jan 23 2007  2:02PM                       NULL       40000000        40001000         40000060             1000                    60                    940     6.0000 %       0.07 Nummern           13598.67 Tage                  NULL                   NULL         NULL  
+   
+   
+  Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- ---------  
+ Msg 156, Level 15, State 2: 
+ Server 'SYBSUNR', Line 15: 
+ Incorrect syntax near the keyword 'select'. 
+ Msg 102, Level 15, State 1: 
+ Server 'SYBSUNR', Line 15: 
+ Incorrect syntax near ')'. 

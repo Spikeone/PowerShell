@@ -1,0 +1,96 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: UKK, ausgeführt am: 09.06.2015 09:52
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           UKK              Koeln                sybsunr              Routinesystem Sun    Adaptive Server Enterprise/12.5.3/EBF 13057 ESD#5/P/RS6000/AIX 5.1/ase1253/1939/64-bit/FBO/Tue Dec  6 03:37:19 2005                                                                                                                                             
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 649     Anzahl User: 17      Anzahl Auftraege Lauris: 24052   Anzahl Auftraege ohne Lauris: 57085  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         649 v13.03.22.4      
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Antoine de Saint-Exupéry                                                         2013.01    NULL                                     08.04.13  00:00                 
+ letztes Swisspro                                                                 2013.01    NULL                                     07.05.13  08:17                 
+ swissup3.tab                                                                      2.14 $    NULL                                     07.05.13  07:49                 
+ swissup3.tab                                                                      2.14 $    NULL                                     07.05.13  07:49                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     07.05.13  08:06                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     07.05.13  08:03                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     07.05.13  08:08                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     07.05.13  08:04                 
+                                                                                             NULL                                                                     
+ neu:PI_OPTMANUELL                                                                 1.14 $    NULL                                     13.05.13  14:15 SWISSLAB        
+ neu:PI_OPTTASK                                                                    1.09 $    NULL                                     13.05.13  14:15 SWISSLAB        
+ neu:PI_OPTIMIZE                                                                   1.10 $    NULL                                     13.05.13  14:14 SWISSLAB        
+ neu:PI_OPTSWISSARCH                                                               1.15 $    NULL                                     13.05.13  14:14 SWISSLAB        
+ neu:PI_OPTSWISSDOC                                                                1.13 $    NULL                                     13.05.13  14:14 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       24052      1 1                Uniklinik                                                                                                                                                                                                                                                       
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       14708 Notfall-Antrag                                                   
+        8906 Routine-Antrag                                                   
+         180 Sondermaterial-Antrag                                            
+         179 Spezial-Antrag                                                   
+          39 Kinderklinik                                                     
+          39 Liquor-Antrag                                                    
+           1 TEST_Formular Kroll-Ahrends                                      
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ CLIENT   POCTQC           NULL       wrightc    NULL       
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: UKK, beendet am: 09.06.2015 09:52 
+SQL-Abfrage-Dauer: 3   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.1.25.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_01 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.3.22.4 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2013_01 

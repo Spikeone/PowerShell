@@ -1,0 +1,120 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: DHZB, ausgeführt am: 18.06.2015 10:05
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           DHZB             Deutsches Herzzentru SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/15.7/EBF 21150 SMP SP100 /P/X64/Windows Server/ase157sp100/3426/64-bit/OPT/Fri May 03 23:27:48 2013                                                                                                                                  
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 429     Anzahl User: 799     Anzahl Auftraege Lauris: 18992   Anzahl Auftraege ohne Lauris: 47210  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         428 v13.03.22.6      
+           1 v11.04.14#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Antoine de Saint-Exupéry                                                         2013.01    NULL                                     08.04.13  00:00                 
+ letztes Swisspro                                                                 2013.01    NULL                                     08.06.13  16:58                 
+ swissup3.tab                                                                      2.14 $    NULL                                     08.06.13  16:45                 
+ swissup3.tab                                                                      2.14 $    NULL                                     08.06.13  16:45                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     08.06.13  16:54                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     08.06.13  16:53                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     31.03.14  10:33                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     31.03.14  10:33                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     08.06.13  16:53                 
+                                                                                             NULL                                                                     
+ neu:PR_DEFI                                                                       2.42 $    NULL                                     31.03.14  10:33 SWISSLAB        
+ neu:PR_SLAS                                                                       1.46 $    NULL                                     31.03.14  10:33 SWISSLAB        
+ neu:PR_MVK28                                                                      1.18 $    NULL                                     31.03.14  10:33 SWISSLAB        
+ neu:PI_LOGDOC                                                                     1.41 $    NULL                                     31.03.14  10:33 SWISSLAB        
+ neu:PR_BLOBTAB                                                                    1.03 $    NULL                                     31.03.14  10:33 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       17759      1 1                DHZB                                                                                                                                                                                                                                                            
+        1233      2 Mibi             Lauf 2   -- by swlupgrade                                                                                                                                                                                                                                       
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        5132 Laboranforderung IPS1/2                                          
+        4197 Laboranforderung  PKH                                            
+        1500 Laboranforderung H2                                              
+        1139 Transfusion - Produkte                                           
+        1069 Mikrobiologie - Labor Berlin                                     
+         866 Laboranforderung H1C                                             
+         706 Laboranforderung TX-Ambulanz (Dr. Dandel)                        
+         644 Laboranforderung IPS-K                                           
+         634 Transfusion - Blutgruppenserologie                               
+         617 Laboranforderung H3                                              
+         608 Laboranforderung H1K                                             
+         523 Laboranforderung H4                                              
+         208 Laboranforderung kardiologische Ambulanz                         
+         188 Laboranforderung H8                                              
+         176 Transfusion - Produkte - PKH                                     
+         160 Laboranforderung OP                                              
+         159 Laboranforderung chirurgische Ambulanz (Dr. Grauhan)             
+         111 Mikrobiologoe-Berlin OP-LB                                       
+          78 Laboranforderung Marfanzentrum                                   
+          62 Laboranforderung DHZB-BA                                         
+          58 Sonderanforderungen - Labor Berlin                               
+          49 Laboranf. Pulmonale-Hypertonie-Ambulanz + PAEKA                  
+          41 Biobank                                                          
+          31 Laboranforderung kinderkardiologische Ambulanz                   
+          19 Laboranforderung Studienzentrale                                 
+           9 Laborprogramm allg.                                              
+           4 Laboranforderung PKHBA                                           
+           3 Labor Frey (Test)                                                
+           1 Laboranforderung - SHI (TX-Ambulanz)                             
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: DHZB, beendet am: 18.06.2015 10:05 
+SQL-Abfrage-Dauer: 2   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.1.25.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_01 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.3.22.6 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2013_01 

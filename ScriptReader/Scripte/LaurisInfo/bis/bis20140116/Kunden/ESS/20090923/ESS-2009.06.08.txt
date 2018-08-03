@@ -1,0 +1,24 @@
+ 
+ Msg 156, Level 15, State 2: 
+ Server 'SQLROUTINE', Line 58: 
+ Incorrect syntax near the keyword 'select'. 
+ Msg 102, Level 15, State 1: 
+ Server 'SQLROUTINE', Line 58: 
+ Incorrect syntax near ')'. 
+   
+   
+  Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------  
+                                 TEST             Test Nummernkreis                                                       Jul 18 2003 11:38AM        Oct 28 2003  2:49PM       98000000        99999999         98000660          1999999                   660                1999339     0.0330 %       0.31 Nummern         6519056.86 Tage                  NULL                   NULL         NULL  
+                                 ROUTINE          Routine                                                                 Oct 28 2003  2:49PM                       NULL       36000000        36999999         36139049           999999                139049                 860950    13.9049 %      67.83 Nummern           12692.99 Tage                  NULL                   NULL         NULL  
+                                 vROUTINE         Virologie Nummernkreis                                                  Dec  8 2005  2:03PM                       NULL       16000000        17999999         16000002          1999999                     2                1999997     0.0001 %       0.00 Nummern      1277998083.01 Tage                  NULL                   NULL         NULL  
+   
+   
+  Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle    
+  ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- ---------  
+ Msg 156, Level 15, State 2: 
+ Server 'SQLROUTINE', Line 15: 
+ Incorrect syntax near the keyword 'select'. 
+ Msg 102, Level 15, State 1: 
+ Server 'SQLROUTINE', Line 15: 
+ Incorrect syntax near ')'. 

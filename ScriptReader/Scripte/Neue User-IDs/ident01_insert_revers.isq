@@ -1,0 +1,114 @@
+set nocount on
+print ''
+print '--- Lauris: Umstellung der Benutzer-IDs (Vorbereitung und Dokumentation) ---'
+print ''
+go
+delete IDENT01
+go
+
+insert into IDENT01 (IDENTCODE_NEU,IDENTCODE_ALT, EINSCODE_NEU) values ('PUNCH    ', '+PUNCH    ', 'CHA    ')
+insert into IDENT01 (IDENTCODE_NEU,IDENTCODE_ALT, EINSCODE_NEU) values ('HAKELBERG', '+HAKELBERG', 'CHA    ')
+insert into IDENT01 (IDENTCODE_NEU,IDENTCODE_ALT, EINSCODE_NEU) values ('ATRITZEL ', '+ATRITZEL ', 'CHA    ')
+insert into IDENT01 (IDENTCODE_NEU,IDENTCODE_ALT, EINSCODE_NEU) values ('PUNCH    ', '+PUNCH    ', 'CHA    ')
+insert into IDENT01 (IDENTCODE_NEU,IDENTCODE_ALT, EINSCODE_NEU) values ('Kopie    ', '+Kopie    ', 'CHA    ')
+insert into IDENT01 (IDENTCODE_NEU,IDENTCODE_ALT, EINSCODE_NEU) values ('gaga     ', '+gaga     ', 'CHA    ')
+go
+
+update 
+  IDENT01 
+set 
+  IDENTX=I.IDENTX,
+  PERSONX=I.PERSONX,
+  IDENTCODE_SWL=I.IDENTCODE,
+  EINSCODE_ALT=E.EINSCODE,
+  LOGINDATLETZT=I.LOGINDATLETZT, 
+  ERFASSDAT=I.ERFASSDAT,
+  SPERRE=I.SPERRE
+from IDENT01 I01, IDENT I, EINSENDER E  
+where
+  I01.IDENTCODE_ALT=I.IDENTCODE and
+  I.EINSENDERX*=E.EINSENDERX
+go
+
+print ''
+print '--- Einlesen in die Hilfstabelle IDENT01             ---'
+print ''
+go
+select 
+  I.IDENTX,
+  P.PERSONID, 
+  I.IDENTCODE_NEU,
+  I.IDENTCODE_ALT, 
+  I.EINSCODE_NEU, 
+  I.EINSCODE_ALT, 
+  LoginLetzt=convert(char(11),I.LOGINDATLETZT,104)+convert(char(8),I.LOGINDATLETZT,108)+' ',
+  Erfassdat=convert(char(11),I.ERFASSDAT,104)+convert(char(8),I.ERFASSDAT,108)+' ',
+  Status = case when (I.SPERRE=0) then 'aktiv'   
+                when (I.SPERRE=1) then 'geperrt'
+                when (I.SPERRE=2) then 'neu'
+                when (I.SPERRE=3) then 'automatisch gesperrt'
+           end
+from 
+  IDENT01 I, PERSON P
+where
+  P.PERSONX=*I.PERSONX  
+go
+
+print ''
+print '--- Löschen der Einträge ohne IDENTX und/oder PERSONID in der Hilfstabelle IDENT01 ---'
+print ''
+go
+
+select 
+  I.IDENTX,
+  P.PERSONID, 
+  I.IDENTCODE_NEU,
+  I.IDENTCODE_ALT, 
+  I.EINSCODE_NEU, 
+  I.EINSCODE_ALT, 
+  LoginLetzt=convert(char(11),I.LOGINDATLETZT,104)+convert(char(8),I.LOGINDATLETZT,108)+' ',
+  Erfassdat=convert(char(11),I.ERFASSDAT,104)+convert(char(8),I.ERFASSDAT,108)+' ',
+  Status = case when (I.SPERRE=0) then 'aktiv'   
+                when (I.SPERRE=1) then 'geperrt'
+                when (I.SPERRE=2) then 'neu'
+                when (I.SPERRE=3) then 'automatisch gesperrt'
+           end
+from 
+  IDENT01 I, PERSON P
+where
+  P.PERSONX=*I.PERSONX and
+  (I.PERSONX is null or I.IDENTX is null)
+go
+
+delete 
+  IDENT01
+from 
+  IDENT01 I, PERSON P  
+where 
+  P.PERSONX=*I.PERSONX and
+  (I.PERSONX is null or I.IDENTX is null)
+go
+
+print ''
+print '--- bereinigte Hilfstabelle IDENT01 - nur diese Benutzer erhalten später die neue User ID  ---'
+print ''
+go
+select 
+  I.IDENTX,
+  P.PERSONID, 
+  I.IDENTCODE_NEU,
+  I.IDENTCODE_ALT, 
+  I.EINSCODE_NEU, 
+  I.EINSCODE_ALT, 
+  LoginLetzt=convert(char(11),I.LOGINDATLETZT,104)+convert(char(8),I.LOGINDATLETZT,108)+' ',
+  Erfassdat=convert(char(11),I.ERFASSDAT,104)+convert(char(8),I.ERFASSDAT,108)+' ',
+  Status = case when (I.SPERRE=0) then 'aktiv'   
+                when (I.SPERRE=1) then 'geperrt'
+                when (I.SPERRE=2) then 'neu'
+                when (I.SPERRE=3) then 'automatisch gesperrt'
+           end
+from 
+  IDENT01 I, PERSON P
+where
+  P.PERSONX=*I.PERSONX  
+go

@@ -1,0 +1,90 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: STING, ausgeführt am: 10.06.2015 09:53
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           STING            Sankt Ingbert        swissserver          Fileserver, SQLSERVE Adaptive Server Enterprise/12.5.4/EBF 16791 ESD#10/P/NT (IX86)/OS 4.0/ase1254/2159/32-bit/OPT/Mon Nov 02 05:01:55 2009                                                                                                                                          
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 71      Anzahl User: 7       Anzahl Auftraege Lauris: 2582    Anzahl Auftraege ohne Lauris: 2651   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+          71 v11.04.14#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Release 2011.01                                                                  2011.01    NULL                                     06.04.11  00:00                 
+ letztes Swisspro                                                                 2011.01    NULL                                     13.09.11  08:32                 
+ swissup3.tab                                                                      2.14 $    NULL                                     13.09.11  08:14                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     13.09.11  08:28                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     13.09.11  08:27                 
+ Statistik (via statistik.pro)                                                     5.82 $    NULL                                     13.09.11  08:29                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     13.09.11  08:27                 
+                                                                                             NULL                                                                     
+ neu:PI_STINGPATISTAMM                                                             1.00 $    NULL                                     02.01.15  07:29 SWISSLAB        
+ neu:PI_AUFTRAGFALLSTAMM                                                           4.24.3    NULL                                     17.04.13  11:44 SWISSLAB        
+ neu:PI_AUFTRAGFALLSTAMM_ARCH                                                      4.24.3    NULL                                     17.04.13  11:44 SWISSLAB        
+ neu:sp_activeroles                                                                          NULL                                     09.05.12  15:30 sybsystemprocs  
+ neu:sp_add_qpgroup                                                                          NULL                                     09.05.12  15:30 sybsystemprocs  
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        2404      5 ZL               Zentrallabor IGB                                                                                                                                                                                                                                                
+         178      6 BB               Blutdepot IGB                                                                                                                                                                                                                                                   
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        2404 Zentrallabor IGB                                                 
+         178 Blutdepot IGB                                                    
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: STING, beendet am: 10.06.2015 09:54 
+SQL-Abfrage-Dauer: 15  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 11.1.6.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2.0.0.1 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 11.4.14.1 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.0.0.1 

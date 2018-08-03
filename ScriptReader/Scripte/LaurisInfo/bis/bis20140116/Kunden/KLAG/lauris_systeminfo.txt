@@ -1,0 +1,83 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 09.03.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16791 ESD#10/P/NT (IX86)/OS 4.0/ase1254/2159/32-bit/OPT/Mon Nov 02 05:01:55 2009                                                                                                                                          
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.03    23.10.09  00:00                 
+ letztes Swisspro                  2009.03    26.07.10  16:23                 
+ swissup3.tab                       2.09 $    26.07.10  16:05                 
+ swlupgrade.tab                     1.72 $    28.07.08  14:19                 
+ Lauris (via lauris.ini)            1.04 $    26.07.10  16:19                 
+ Blutbank (via barkasse.pro)        1.06 $    26.07.10  16:17                 
+ Statistik (via statistik.pro)      5.63 $    26.07.10  16:20                 
+ BB-Statistik (via spendestat.pro)  1.24 $    26.07.10  16:18                 
+                                                                              
+ neu:PI_LOGDOC                      1.36.1    09.12.10  12:38 SWISSLAB        
+ neu:PI_OPTIMIZE                    1.08 $    09.11.10  13:34 SWISSLAB        
+ neu:PI_OPTMANUELL                  1.07.1    09.11.10  13:34 SWISSLAB        
+ neu:PI_OPTSWISSARCH                1.09 $    09.11.10  13:34 SWISSLAB        
+ neu:PI_OPTSWISSDOC                 1.09 $    09.11.10  13:34 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                        1322 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#8.04.11¹# FW=#2.0.50727.3615# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                   
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#10.02.11# FW=#2.0.50727.1433# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                   
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                 91606           89755         169 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                MB               Mikrobiologie Chlam                                              
+                                MB(Zebra)        Mikrobiologie                                                    
+                                MB(Kyo)          Mikrobiologie                                                    
+                                MB (WO)          Mikrobiologie                                                    
+                                MB(Kyo)IBST      Mikrobiologie                                                    
+                                MB (LA)          Mikrobiologie                                                    
+                                MB-TEST          MB-TEST                                                          
+                                MB(Laas)         L-Mikrogiologie                                                  
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             NULL       NULL     25.08.2010 09:47:00  krasnikk         01.09.2010 08:21:00  pruntschg                3739           1          37 LAURIS          NULL      0        0           3 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             Klagenfurt NULL     25.08.2010 09:25:00  krasnikk                              NULL                     3734           1          37 LAURIS          NULL      0        0           3 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             LAB04      NULL     19.08.2010 08:54:00  krasnikk                              NULL                     3731           1          37 LAURIS          NULL      0        0           3 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             LKH-Hermag NULL     25.08.2010 09:45:00  krasnikk                              NULL                     3737           1          37 LAURIS          NULL      0        0           0 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             LKH-Laas   NULL     30.10.2007 15:09:00  ssc              29.07.2010 15:09:00  krasnikk                 2501          -1          -1 LAURIS          NULL      0        0           3 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             LKH_Wolfsb NULL     25.08.2010 09:46:00  krasnikk                              NULL                     3738           1          37 LAURIS          NULL      0        0           0 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       deislg           NULL       NULL     25.08.2010 09:25:00  krasnikk                              NULL                     3735           1          37 LAURIS          4608      0        0           3 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       krasnikk1        NULL       NULL     19.08.2010 09:14:00  krasnikk         19.08.2010 09:54:00  krasnikk                 3732           1          37 LAURIS          5323      0        0           3 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       pru              NULL       NULL     29.07.2010 11:53:00  pruntschg                             NULL                     3726           4         255 LAURIS          3225      0        0           3 
+ AUFTRAG  NACHFORDERN      0         NULL             NULL       zojere           NULL       NULL     25.08.2010 09:25:00  krasnikk                              NULL                     3736           1          37 LAURIS          4683      0        0           3 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ AUFTRAG  POCTFORMULAR     0         NULL             NULL       NULL             LINT11     NULL     05.11.2007 14:22:00  krasnikk                              NULL                     2505          -1          -1 LAURIS          NULL      0       24          95 
+ AUFTRAG  POCTFORMULAR     0         NULL             NULL       NULL             LKH-Hermag NULL     20.12.2007 13:03:00  krasnikk                              NULL                     2519          -1          -1 LAURIS          NULL      0       24         104 
+ AUFTRAG  POCTFORMULAR     0         NULL             NULL       NULL             LKH-Laas   NULL     30.10.2007 15:11:00  ssc                                   NULL                     2502          -1          -1 LAURIS          NULL      0       24          95 

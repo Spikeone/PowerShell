@@ -1,0 +1,68 @@
+ 
+ ----------------------------------------- 
+ Lauris Info-Script Version vom 18.08.2009 
+ ----------------------------------------- 
+   
+ Ausgeführt am: 16.07. 
+   
+   
+  SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  -------------------------- -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                             SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16791 ESD#10/P/NT (IX86)/OS 4.0/ase1254/2159/32-bit/OPT/Mon Nov 02 05:01:55 2009                                                                                                                                           
+   
+ Swisslab-Information: 
+  Name                              Revision   CrDate          DB               
+  --------------------------------- ---------- --------------- ---------------  
+  Kalenderwoche                     2008.01    09.01.08  00:00                  
+  letztes Swisspro                  2008.01    08.07.08  12:31                  
+  swissup3.tab                      : 2.04 $   08.07.08  12:14                  
+  swlupgrade.tab                    : 1.72 $   28.07.08  14:19                  
+                                                                                
+  neu:PR_SUCHEQKPROBEN              : 1.01 $   12.04.10  14:09 SWISSLAB         
+  neu:PR_SUCHEQKRESULTATE           : 1.00 $   17.03.10  14:28 SWISSLAB         
+  neu:PR_ARCHBEFUNDRESULTAT         : 5.89 $   01.03.10  13:33 SWISSLAB         
+  neu:PR_BEFUNDRESULTAT             : 5.89 $   01.03.10  13:32 SWISSLAB         
+  neu:PR_LAUFZEITEN                 : 1.20 $   23.02.10  14:51 SWISSLAB         
+ aktive Lauris-Versionen: 
+  Anzahl Clients:              
+  --------------- -----------  
+                         1253  
+  LaurisVersion(max)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#8.04.11¹# FW=#2.0.50727.3607# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                    
+  LaurisVersion(min)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#7.10.17# FW=#2.0.50727.3607# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                     
+   
+   
+  Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------- ----------- --------------- -----------  
+                                  78926           77153          81  
+   
+   
+   
+ Anforderung für die Mikrobiologie? 
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+                                 MB               Mikrobiologie Chlam                                               
+                                 MB(Zebra)        Mikrobiologie                                                     
+                                 MB(Kyo)          Mikrobiologie                                                     
+                                 MB (WO)          Mikrobiologie                                                     
+                                 MB(Kyo)IBST      Mikrobiologie                                                     
+                                 MB (LA)          Mikrobiologie                                                     
+                                 MB-TEST          MB-TEST                                                           
+   
+ --- Nachfordern  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+  AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             LKH-Laas   NULL     30.10.2007 15:09:00  ssc              22.11.2007 11:45:00  krasnikk                 2501          -1          -1 LAURIS          NULL      0        0           2  
+   
+   
+ --- POCTen  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+  AUFTRAG  POCTFORMULAR     0         NULL             NULL       NULL             LINT11     NULL     05.11.2007 14:22:00  krasnikk                              NULL                     2505          -1          -1 LAURIS          NULL      0       24          95  
+  AUFTRAG  POCTFORMULAR     0         NULL             NULL       NULL             LKH-Hermag NULL     20.12.2007 13:03:00  krasnikk                              NULL                     2519          -1          -1 LAURIS          NULL      0       24         104  
+  AUFTRAG  POCTFORMULAR     0         NULL             NULL       NULL             LKH-Laas   NULL     30.10.2007 15:11:00  ssc                                   NULL                     2502          -1          -1 LAURIS          NULL      0       24          95  

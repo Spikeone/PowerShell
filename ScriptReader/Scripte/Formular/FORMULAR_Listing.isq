@@ -1,0 +1,68 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [141009]                                                       */
+/*KURZINFO : Auslisten der Tabelle FORMULAR                                 */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20141009.1913>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[141009] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+-- dieses Script wurde (wie man leicht sieht) aus der PR_BEHAELTER erstellt, mit ein paar Kürzungen
+
+set nocount on
+declare
+   @strmessage       varchar(128),
+   @datum            varchar(64),
+   @sys_kurz         varchar(40)
+
+select @datum=', ausgeführt am: ' + convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)+' '
+select @sys_kurz = ' für System: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO 
+select @strmessage = ' Lauris: Liste aller Formulare ' + @datum + @sys_kurz
+print @strmessage
+print ''
+
+select
+   F.FORMULARX,
+   F.FORMULARCODE,
+   F.FORMULARNAME,
+   F.FORMULARTYP,
+   F.KATALOGX,
+   K.FORMULARCODE as KATALOGCODE,
+   F.FORMULARNEUX,
+   N.FORMULARCODE as FORMULARNEUCODE,
+   F.EIGNER,
+   F.NUTZER,
+   F.UNINUMBERX,
+   U.UNINUMBERCODE,
+   F.LAYOUTNAME,
+   F.LAYOUTNAME2,
+   F.LAYOUTTYP,
+   F.REFVEKTORX,
+   V.CODE as REFVEKTORCODE,
+   F.BELEGKEN,
+   F.BERICHTSART,
+   F.TARIFWERKX,
+   T.TARIFCODE,
+   F.SORT
+from
+   FORMULAR F,
+   FORMULAR K,
+   FORMULAR N,
+   UNINUMBER U,
+   TARIFWERK T,
+   ANALYT V
+where
+       F.STORNODAT is null
+   and F.KATALOGX *= K.FORMULARX
+   and F.FORMULARNEUX *= N.FORMULARX
+   and F.UNINUMBERX *= U.UNINUMBERX
+   and F.TARIFWERKX *= T.TARIFWERKX
+   and F.REFVEKTORX *= V.ANALYTX
+order by
+   F.SORT
+
+go

@@ -1,0 +1,13 @@
+set dateformat dmy
+go
+select LOGDAT=convert(char(11),ERFASSDAT,104)+convert(char(8),ERFASSDAT,108)+' ',
+       Absmodul=substring(ABSMODUL,1,24), Abslu=substring(ABSLU,1,12), 
+       ERFASSPERS, ANZAHL1, ANZAHL2, 
+       Fehler=FEHLER, Aktion=substring(AKTION,1,12),
+       Datensatz=substring(DATENSATZ,1,12),
+       Startdat=convert(char(11),STARTDAT,104)+convert(char(8),STARTDAT,108)+' ',
+       Enddat=convert(char(11),ENDDAT,104)+convert(char(8),ENDDAT,108)+' '
+from LOGDOC 
+where ERFASSDAT between '26.07.2010 00:00' and '27.07.2010 22:40'
+ and FEHLER like 'PatiSTAMMX!%'
+go

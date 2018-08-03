@@ -1,0 +1,102 @@
+print ' '
+print '------------------------'
+print 'PATILISTE: Anzahl Fälle:'
+print '------------------------'
+select count (*) from PATILISTE
+go
+
+print ' '
+print '--------------------------------------'
+print 'PATILISTE: Anzahl Fälle ohne AKTIVBIS:'
+print '--------------------------------------'
+select count (*) from PATILISTE where AKTIVBIS is NULL
+go
+
+print ' '
+print '---------------------------------'
+print 'PATILISTE: Anzahl inaktive Fälle:'
+print '---------------------------------'
+select count (*) from PATILISTE where AKTIVBIS is not NULL and AKTIVBIS < getdate()
+go
+
+print ' '
+print 'PATILISTE: Einsetzen ENTLDATVERW + 7 Tage aus PATIFALL, wenn Aktivbis=0'
+print '-----------------------------------------------------------------------'
+select F.PATIFALLNR, P.AKTIVBIS, F.ENTLDATVERW, F.AUFTRAGLETZT, P.ERFASSDAT, PE.PERSONID
+  from PATILISTE P, PATIFALL F, PERSON PE
+  where F.PATIFALLX=P.PATIFALLX
+  and F.ENTLDATVERW is not NULL
+  and P.AKTIVBIS is NULL
+  and PE.PERSONX=P.ERFASSPERS
+go
+  update PATILISTE set AKTIVBIS=dateadd(day,7,F.ENTLDATVERW)
+  from PATILISTE P, PATIFALL F                              
+  where F.PATIFALLX=P.PATIFALLX                             
+  and F.ENTLDATVERW is not NULL 
+  and P.AKTIVBIS is NULL                            
+  and (F.ENTLDATVERW > P.AKTIVBIS or P.AKTIVBIS is NULL)    
+go                                                          
+
+print ' '
+print 'PATILISTE: inaktive Fälle ohne Entlassungsdatum nach 28 Tagen löschen'
+print '---------------------------------------------------------------------'
+select F.PATIFALLNR, P.ERFASSDAT, PE.PERSONID
+  from PATILISTE P, PATIFALL F, PERSON PE
+  where F.PATIFALLX=P.PATIFALLX
+  and F.ENTLDATVERW is NULL
+  and F.AUFTRAGLETZT is NULL
+  and P.AKTIVBIS is null
+  and (dateadd(day,28,P.ERFASSDAT) < getdate())
+  and PE.PERSONX=P.ERFASSPERS
+go
+update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+  from PATILISTE P, PATIFALL F                          
+  where F.PATIFALLX=P.PATIFALLX                         
+  and F.ENTLDATVERW is NULL                             
+  and F.AUFTRAGLETZT is NULL                            
+  and P.AKTIVBIS is null                                
+  and (dateadd(day,28,P.ERFASSDAT) < getdate())         
+go                                                      
+
+print ' '                                                                   
+print 'PATILISTE: alte Fälle ohne Entlassungsdatum 28 Tage nach letztem Auftrag löschen'         
+print '--------------------------------------------------------------------------------'         
+go                                                                           
+select F.PATIFALLNR, P.ERFASSDAT, letzterAuftrag=F.AUFTRAGLETZT, PE.PERSONID
+  from PATILISTE P, PATIFALL F, PERSON PE                                   
+  where F.PATIFALLX=P.PATIFALLX                                             
+  and F.ENTLDATVERW is NULL                                                 
+  and F.AUFTRAGLETZT is not NULL                                            
+  and (dateadd(day,28,F.AUFTRAGLETZT) < getdate())                          
+  and P.AKTIVBIS is null                                                    
+  and PE.PERSONX=P.ERFASSPERS                                               
+go                                                                          
+update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())                  
+  from PATILISTE P, PATIFALL F                                            
+  where F.PATIFALLX=P.PATIFALLX                                           
+  and F.ENTLDATVERW is NULL                                               
+  and F.AUFTRAGLETZT is not NULL                                          
+  and (dateadd(day,28,F.AUFTRAGLETZT) < getdate())                        
+  and P.AKTIVBIS is null                                                  
+go                                                                        
+
+print ' '                                                                   
+print 'PATILISTE: Abgleich der Einsender, die Verwaltung ist Master'         
+print '------------------------------------------------------------'         
+go 
+select F.PATIFALLNR, P.ERFASSDAT, Einsender_PATILISTE=E1.EINSCODE, Einsender_PATIFALL=E2.EINSCODE, PE.PERSONID, P.ERFASSPERS
+  from PATILISTE P, PATIFALL F, EINSENDER E1, EINSENDER E2, PERSON PE
+  where F.PATIFALLX=P.PATIFALLX
+  and F.EINSENDERX <> P.EINSENDERX
+  and P.EINSENDERX=E1.EINSENDERX
+  and F.EINSENDERX=E2.EINSENDERX
+  and PE.PERSONX=P.ERFASSPERS  
+  and   F.EINSENDERX<>P.EINSENDERX
+  order by F.PATIFALLNR
+go
+update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate()) 
+  from PATILISTE P, PATIFALL F                           
+  where F.PATIFALLX=P.PATIFALLX                          
+  and   F.EINSENDERX<>P.EINSENDERX 
+  and P.ERFASSPERS=67                      
+go                                                       

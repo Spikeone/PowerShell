@@ -1,0 +1,101 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: LKNOE, ausgeführt am: 09.06.2015 11:09
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           LKNOE            LK Austria           SQLSERVER            Test Sybase Server   Adaptive Server Enterprise/15.7/EBF 22777 SMP SP122 /P/X64/Windows Server/ase157sp12x/3662/64-bit/OPT/Sat Apr 19 01:26:01 2014                                                                                                                                  
+                           LKNOE            LK-Austria           SQLROUTINE           Routine Database Ser Adaptive Server Enterprise/15.7/EBF 22777 SMP SP122 /P/X64/Windows Server/ase157sp12x/3662/64-bit/OPT/Sat Apr 19 01:26:01 2014                                                                                                                                  
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 1837    Anzahl User: 4398    Anzahl Auftraege Lauris: 35284   Anzahl Auftraege ohne Lauris: 10098  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+        1837 v14.02.13.4      
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Falcon 2.14.1                                                                    2.14       NULL                                     16.04.14  00:00                 
+ letztes Swisspro                                                                 2.14       NULL                                     21.05.14  15:37                 
+ swissup3.tab                                                                      2.14 $    NULL                                     21.02.13  13:54                 
+ swissup3.tab                                                                      2.14 $    NULL                                     21.02.13  13:54                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     21.05.14  15:30                 
+ Blutbank (via barkasse.pro)                                                       1.10 $    NULL                                     21.05.14  15:29                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     21.05.14  15:30                 
+ BB-Statistik (via spendestat.pro)                                                 1.25 $    NULL                                     21.05.14  15:29                 
+                                                                                             NULL                                                                     
+ neu:PI_ABLIPOSALLE                                                                4.75.2    NULL                                     30.04.15  11:11 SWISSLAB        
+ neu:PR_LOGINTRIGGER                                                               1.04 $    NULL                                     12.03.15  15:35 SWISSLAB        
+ neu:PR_TASKWHY                                                                    1.33.1    NULL                                     25.11.14  16:33 SWISSLAB        
+ neu:PI_TASKFLAGREORG                                                              2.63 $    NULL                                     25.11.14  16:33 SWISSLAB        
+ neu:PR_GERAET                                                                     2.41 $    NULL                                     25.11.14  16:32 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        6877   1610 KSZL             LK Krems Zentrallabor                                                                                                                                                                                                                                           
+         860   1630 KSBD             LK Krems Blutdepot                                                                                                                                                                                                                                              
+        1037   3210 LFZL             LK Lilienfeld Zentrallabor                                                                                                                                                                                                                                      
+        7723   4010 MIZL             LK Mistelbach Zentrallabor                                                                                                                                                                                                                                      
+        2923   4110 KOZL             LK Korneuburg Zentrallabor                                                                                                                                                                                                                                      
+        2588   4210 STZL             LK Stockerau Zentrallabor                                                                                                                                                                                                                                       
+       13276   5010 WNZL             LK Wiener Neustadt Zentrallabor                                                                                                                                                                                                                                 
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       33806 Zentrallabor Routine                                             
+         860 Blutgruppen-Serologie / Blutdepot                                
+         500 Laborambulanz                                                    
+          79 Zentrallabor Vitale Indikation / Akut                            
+          39 Zentrallabor Vitale Indikation                                   
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     3 NULL       xxmosele_m NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: LKNOE, beendet am: 09.06.2015 11:09 
+SQL-Abfrage-Dauer: 2   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.11.5.1 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_02 
+. 
+. 
+Lauris-Versionsinfo: 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 14.2.13.4 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.14.3.002337 

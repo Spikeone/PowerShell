@@ -1,0 +1,62 @@
+declare
+  @behaelter_01   char(16),
+  @behaelter_02   char(16),
+  @behaelter_03   char(16),
+  @behaelter_04   char(16),
+  @behaelter_05   char(16),
+
+  @nachfo_01      int,
+  @nachfo_02      int,
+  @nachfo_03      int,
+  @nachfo_04      int,
+  @nachfo_05      int
+
+
+select
+  @behaelter_01 = 'SERUM',         @nachfo_01 = 8640,      -- aus Serum  6 Tage nachforderbar (in Minuten)
+  @behaelter_02 = 'EDTA',          @nachfo_02 = 1440,      -- aus EDTA   1 Tag nachforderbar
+  @behaelter_03 = 'CITRAT',        @nachfo_03 =  360,      -- aus Citrat 6 Stunden nachforderbar
+  @behaelter_04 = '',              @nachfo_04 =    0,      -- aus nn       Tage nachforderbar
+  @behaelter_05 = '',              @nachfo_05 =    0       -- aus nn       Tage nachforderbar
+
+
+
+select
+  FO.FORMULARCODE,
+  Analyt = A.CODE,
+  Nachfo_Minuten = case when BE.BEHAELTERCODE = @behaelter_01 then @nachfo_01
+                        when BE.BEHAELTERCODE = @behaelter_02 then @nachfo_02
+                        when BE.BEHAELTERCODE = @behaelter_03 then @nachfo_03
+                        when BE.BEHAELTERCODE = @behaelter_04 then @nachfo_04
+                        when BE.BEHAELTERCODE = @behaelter_05 then @nachfo_05
+                   end,
+  Nachfo_alt = ANF.NACHFORDERN,
+  Behälter_Lauris = BE.BEHAELTERCODE,
+  Material_SW = MA.MATCODE,
+  MatKreis_SW=convert(char(4),MA.MATERIALKREISNR),
+  ANF.ANFORDERUNGX
+into #temp
+from FORMULAR FO, BEHAELTER BE, MATERIAL MA, ANFORDERUNG ANF, ANALYT A
+where
+  ANF.STORNODAT is null and
+  ANF.NACHFORDERN is null and
+  ANF.BEHAELTERX is not null and
+  A.ANALYTX = ANF.ANALYTX and
+  BE.BEHAELTERX = ANF.BEHAELTERX and
+  FO.FORMULARX = ANF.FORMULARX and
+  FO.STORNODAT is null and
+--  FO.FORMULARCODE in ('GERI/HÄMA','NOTFALL') and
+  MA.MATERIALX = BE.MATERIALX
+order by FO.FORMULARCODE, Behälter_Lauris, Analyt
+select * from #temp
+
+update
+  ANFORDERUNG
+set
+  NACHFORDERN = t.Nachfo_Minuten
+from ANFORDERUNG ANF, #temp t
+where
+  ANF.ANFORDERUNGX = t.ANFORDERUNGX and
+  t.Nachfo_Minuten is not null
+
+go

@@ -1,0 +1,78 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: Dube, ausgeführt am: 09.06.2015 08:39
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           Dube             D?sseldorf           SWDDUBE              D?sseldorf Benrath u Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 0       Anzahl User: 0       Anzahl Auftraege Lauris: 0       Anzahl Auftraege ohne Lauris: 16432  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Enrico Fermi                                                                     2013.02    NULL                                     29.09.13  00:00                 
+ letztes Swisspro                                                                 2013.02    NULL                                     05.03.14  13:30                 
+ swissup3.tab                                                                      2.14 $    NULL                                     03.04.12  14:04                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     05.03.14  13:25                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     05.03.14  13:23                 
+ Statistik (via statistik.pro)                                                     5.88 $    NULL                                     05.03.14  13:25                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     05.03.14  13:23                 
+                                                                                             NULL                                                                     
+ neu:PD_QCSTATUS                                                                   4.25 $    NULL                                     10.09.14  16:13 SWISSLAB        
+ neu:PI_TAIN                                                                       1.35.1    NULL                                     12.03.14  12:21 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: Dube, beendet am: 09.06.2015 08:39 
+SQL-Abfrage-Dauer: 0   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+. 
+. 
+Lauris-Versionsinfo: 

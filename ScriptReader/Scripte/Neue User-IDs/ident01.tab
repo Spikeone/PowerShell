@@ -1,0 +1,53 @@
+print '-----------------------------------------------------------------'
+print 'Tabelle IDENT01...'
+go
+if exists (select 1 from sysobjects where type='U' and name='IDENT01')
+begin
+  drop table IDENT01
+end  
+go
+if not exists (select 1 from sysobjects where type='U' and name='IDENT01')
+begin
+   create table IDENT01xx_cre (
+      IDENTX int null,
+      IDENTCODE_NEU varchar(16) not null,
+      IDENTCODE_ALT varchar(16) not null,
+      IDENTCODE_SWL varchar(16) null,
+      IDENTNAME varchar(64) null,
+      EIGNER int null,
+      NUTZER int null,
+      IDENTTYP smallint null,
+      PERSONX int null,
+      EINSENDERX int null,
+      EINSCODE_NEU varchar (16) null,
+      EINSCODE_ALT varchar (16) null,
+      ROLLEX int null,
+      PASSWDAT smalldatetime null,
+      PASSWFLAG smallint null,
+      CHIPCARD varchar(64) null,
+      KOMMENTAR varchar(255) null,
+      SPERRE tinyint null,
+      CLIENTX int null,
+      AKTIVAB smalldatetime null,
+      AKTIVBIS smalldatetime null,
+      LOGINDATLETZT smalldatetime null,
+      ERFASSDAT smalldatetime null,
+      ERFASSPERS smallint null,
+      MUTDAT smalldatetime null,
+      MUTPERS smallint null,
+      STORNODAT smalldatetime null,
+      STORNOPERS smallint null
+   )
+   exec sp_rename "IDENT01xx_cre", IDENT01
+end
+go
+
+
+print '-----------------------------------------------------------------'
+print '   Index IDENT_PK...'
+go
+if not exists (select 1 from sysindexes where name='IDENT01_PK')
+begin
+   create unique index IDENT01_PK on IDENT01(IDENTCODE_NEU)
+end
+go

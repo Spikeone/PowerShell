@@ -1,0 +1,29 @@
+(10 rows affected)
+ ProbeEXtID BEHAELTERCODE    Etikinfo     EtikDruck    Etikdruckdat    Probenstatus                               AUFTRAGX    EinsCode LabEinDat       SQLErfassdat    PROBEX      
+ ---------- ---------------- ------------ ------------ --------------- ------------------------------------------ ----------- -------- --------------- --------------- ----------- 
+ 8002233388 Sonder           1;0          NULL                         von PI_PROBE aktivierte Probe                  4661421 CHAE1    20120423 14:06  20120423 13:59       363144 
+ 8002301888 Sonder           1;0          NULL                         von PI_PROBE aktivierte Probe                  4661423 CHAE1    20120424 09:19  20120424 09:04       363145 
+ 8002301988 Sonder           1;0          NULL                         von PI_PROBE aktivierte Probe                  4661424 CHAE1                    20120424 09:26       363146 
+ 8002302088 Sonder           1;0          NULL                         von PI_PROBE aktivierte Probe                  4661425 CHAE1    20120424 09:43  20120424 09:42       363147 
+ 8002302188 Sonder           1;0          NULL                         von PI_PROBE aktivierte Probe                  4661426 CHAE1    20120424 09:46  20120424 09:45       363148 
+ 8002233705 EDTA-M           1;0          NULL                         von PI_PROBE aktivierte Probe                  4661474 CHAE1    20120514 10:33  20120514 09:59       363200 
+ 8002234005 EDTA-M           1;0          NULL                         von PI_PROBE aktivierte Probe                  4661477 CHAE1    20120514 11:40  20120514 11:37       363203 
+ 7000010544 Citrat-M         1;0          NULL                         von PI_PROBE aktivierte Probe                  4661564 SWISS    20120619 11:48  20120619 11:47       363297 
+ 7000010603 S                1;0          NULL                         von PI_PROBE aktivierte Probe                  4661565 SWISS    20120619 11:49  20120619 11:49       363299 
+ 7000003301 EDTA             1;0          NULL                         von PI_PROBE aktivierte Probe                  4661566 SWISS    20120619 12:01  20120619 12:00       363300 
+
+(10 rows affected)
+ EinsCode ProbeEXtID Behaelt EtikInfo EtikDruck Etikdruckdat    Probenstatus                               LabEinDat       SQLErfassdat    Erfassdat       VertErst        AktivBis        PRStorno        PROBEX      
+ -------- ---------- ------- -------- --------- --------------- ------------------------------------------ --------------- --------------- --------------- --------------- --------------- --------------- ----------- 
+ SWISS    7000003301 EDTA    1;0      NULL                      von PI_PROBE aktivierte Probe              20120619 12:01  20120619 12:00  20120619 12:01                                                       363300 
+ SWISS    7000010544 Citrat- 1;0      NULL                      von PI_PROBE aktivierte Probe              20120619 11:48  20120619 11:47  20120619 11:48                                                       363297 
+ SWISS    7000010603 S       1;0      NULL                      von PI_PROBE aktivierte Probe              20120619 11:49  20120619 11:49  20120619 11:49                                                       363299 
+ CHAE1    8002233388 Sonder  1;0      NULL                      von PI_PROBE aktivierte Probe              20120423 14:06  20120423 13:59                                                                       363144 
+ CHAE1    8002233705 EDTA-M  1;0      NULL                      von PI_PROBE aktivierte Probe              20120514 10:33  20120514 09:59  20120514 10:33                                                       363200 
+ CHAE1    8002234005 EDTA-M  1;0      NULL                      von PI_PROBE aktivierte Probe              20120514 11:40  20120514 11:37  20120514 11:40                                                       363203 
+ CHAE1    8002301888 Sonder  1;0      NULL                      von PI_PROBE aktivierte Probe              20120424 09:19  20120424 09:04  20120424 09:19                                                       363145 
+ CHAE1    8002301988 Sonder  1;0      NULL                      von PI_PROBE aktivierte Probe                              20120424 09:26  20120424 09:31                                                       363146 
+ CHAE1    8002302088 Sonder  1;0      NULL                      von PI_PROBE aktivierte Probe              20120424 09:43  20120424 09:42  20120424 09:43                                                       363147 
+ CHAE1    8002302188 Sonder  1;0      NULL                      von PI_PROBE aktivierte Probe              20120424 09:46  20120424 09:45  20120424 09:46                                                       363148 
+
+(10 rows affected)

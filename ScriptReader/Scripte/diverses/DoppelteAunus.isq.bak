@@ -1,0 +1,15 @@
+set dateformat dmy
+go
+select 
+  A.AUFTRAGNR, 
+  Erfassdat=convert(char(11),A.ERFASSDAT,104)+convert(char(8),A.ERFASSDAT,108)+' ',
+  Erfasspers=P.PERSONID, 
+  Einscode=E.EINSCODE 
+from AUFTRAG A, EINSENDER E, PERSON P 
+where 
+  A.AUFTRAGNR in
+       (select AUFTRAGNR from AUFTRAG where AUFTRAGNR like '9%' and ERFASSDAT > '01.01.2007 00:00' group by AUFTRAGNR having count(*)>1)
+  and P.PERSONX=A.ERFASSPERS
+  and E.EINSENDERX=A.EINSENDERX     
+order by A.AUFTRAGNR
+go 

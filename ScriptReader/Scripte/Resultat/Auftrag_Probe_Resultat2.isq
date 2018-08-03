@@ -1,0 +1,53 @@
+declare
+  @auftragnr                      varchar(16)
+
+set nocount on
+
+/**********************************************************************************************************/
+select @auftragnr      = '80026046'           /* !!!!!! Auftragsnummer                            !!!!!!! */
+/**********************************************************************************************************/
+
+select
+  A.AUFTRAGNR,
+  A.AUFTRAGX,
+  A.EINSENDERX,
+  A.ERFASSPERS
+into #temp1
+from AUFTRAG A
+where
+  A.AUFTRAGNR = @auftragnr
+set nocount off
+select
+  Analyt=AN.CODE+' '+M1.MATCODE+'('+convert(char(2) not null,M1.MATERIALKREISNR)+'), mfa: '+AN2.CODE+', prf: '+AN3.CODE ,
+  RStat=R.STATUS,
+  RAnfordPers=P.PERSONID,
+  RAnforddat=convert(char(11),R.ANFORDDAT ,104)+convert(char(8),R.ANFORDDAT ,108)+' ',
+  RErfassdat=convert(char(11),R.ERFASSDAT ,104)+convert(char(8),R.ERFASSDAT ,108)+' ',
+  RStornodat=convert(char(11),R.STORNODAT ,104)+convert(char(8),R.STORNODAT ,108)+' ',
+  ProbeExtId_Mat=PR.PROBEEXTID+' '+M2.MATCODE+'('+convert(char(2) not null,M2.MATERIALKREISNR)+')',
+  PStat=PR.PSTATUS,
+  PrAnfordPers=P3.PERSONID,
+  PrSQLErfassdat=convert(char(11),PR.SQLERFASSDAT ,104)+convert(char(8),PR.SQLERFASSDAT ,108)+' ',
+  PrErfassdat=convert(char(11),PR.ERFASSDAT ,104)+convert(char(8),PR.ERFASSDAT ,108)+' ',
+  PRStornodat=convert(char(11),PR.STORNODAT ,104)+convert(char(8),PR.STORNODAT ,108)+' ',
+  t1.AUFTRAGNR,
+  E.EINSCODE,
+  ErfassPersAuft=P2.PERSONID,
+  ALG.ALGOART,
+  ALG.ALGOX
+  
+from #temp1 t1, ANALYT AN (index ANALYT_PK), ANALYT AN2, ANALYT AN3, PERSON P, PERSON P2, PERSON P3, RESULTAT R, EINSENDER E, PROBE PR, MATERIAL M1, MATERIAL M2, ALGO ALG
+where
+      R.AUFTRAGX = t1.AUFTRAGX
+  and PR.PROBEX =* R.PROBEX
+  and P2.PERSONX=t1.ERFASSPERS
+  and P.PERSONX=R.ANFORDPERS
+  and AN.ANALYTX=R.ANALYTX
+  and AN2.ANALYTX=*R.MFAANALYTX
+  and AN3.ANALYTX=*R.PANALYTX
+  and M1.MATERIALX=*AN.DEFMATERIALX
+  and P3.PERSONX=*PR.ERFASSPERS
+  and M2.MATERIALX=*PR.MATERIALX 
+  and E.EINSENDERX=t1.EINSENDERX
+  and ALG.ALGOX =* R.ALGOX
+go

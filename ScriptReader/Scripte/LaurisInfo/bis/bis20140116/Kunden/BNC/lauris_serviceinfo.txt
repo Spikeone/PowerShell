@@ -1,0 +1,49 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                swdntbnc             Uniklinikum Bonn - B Adaptive Server Enterprise/12.5.3/EBF 13331 ESD#7/P/NT (IX86)/OS 4.0/ase1253/1951/32-bit/OPT/Fri Mar 24 02:17:56 2006                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       2821            2748           8 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Test             Testnr.                                                                 Jul 11 2005  1:51PM        Jul 14 2005  1:42PM       10000000        10000999         10000050              999                    50                    949     5.0050 %       0.02 Nummern           38833.08 Tage                  NULL                   NULL         NULL 
+                                Routine-Notfall  Routine-Notfall                                                         Jul 12 2005  3:02PM                       NULL        5000000         5999999          5097310           999999                 97310                 902689     9.7310 %      47.58 Nummern           18970.29 Tage                  NULL                   NULL         NULL 
+                                Urin             Urin                                                                    Jul 14 2005  1:42PM                       NULL        9000000         9999999          9018953           999999                 18953                 981046     1.8953 %       9.28 Nummern          105749.85 Tage                  NULL                   NULL         NULL 
+                                UKB              UKB                                                                     May 14 2009  3:56PM                       NULL       20000000        29999999         20185650          9999999                185650                9814349     1.8565 %     288.72 Nummern           33992.06 Tage                  NULL                   NULL         NULL 
+
+(4 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

@@ -1,0 +1,63 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 15438 ESD#8/P/NT (IX86)/OS 4.0/ase1254/2105/32-bit/OPT/Sat Mar 22 04:44:15 2008                                                                                                                                           
+
+(1 row affected)
+(1 row affected)
+(1 row affected)
+(1 row affected)
+ 
+ 
+ Anzahl Fälle (PATILISTE):      Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------------ ----------- --------------- ----------- 
+                                       4184            4091           0 
+
+(1 row affected)
+ 
+ 
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                Mikro            Mikrobiologie                                                    
+                                MikroOP          Mikrobiologie OP                                                 
+
+(2 rows affected)
+ 
+ 
+ Doppelte Behälter:             Behälter         Behältername                                                     BEHAELTERX  MATERIALX   MaterialCode MaterialName                     Kreis  STORNODAT                  
+ ------------------------------ ---------------- ---------------------------------------------------------------- ----------- ----------- ------------ -------------------------------- ------ -------------------------- 
+
+(0 rows affected)
+ 
+ 
+ Übersicht über Nummernkreise:  Code             Name                                                             Erstellzeitpunkt           Stornozeitpunkt            Erste Nummer   Letzte Nummer   Nächste Nummer   Anzahl Nummern   Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Verbrauch pro Tag   Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycletyp   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- -------------------------- -------------- --------------- ---------------- ---------------- --------------------- ---------------------- ------------ ------------------- ---------------------- --------------------- ---------------------- ------------ 
+                                Test             Test                                                                    Oct 24 2008  9:38AM                       NULL       83000000        83999999         83000564           999999                   564                 999435     0.0564 %       1.76 Nummern          567055.32 Tage                  NULL                   NULL            0 
+                                Test-Nr          Test Nummernkreis                                                       Dec  8 2008 10:20AM                       NULL       90000000        99999999         90000466          9999999                   466                9999533     0.0047 %       1.69 Nummern         5901011.96 Tage                  NULL                   NULL            0 
+                                KA               KA (MVZ)                                                                Dec  8 2008 10:54AM                       NULL       80400001        80405000         80401475             4999                  1474                   3525    29.4859 %       5.36 Nummern             657.65 Tage                  NULL                   NULL            0 
+                                HE               Prof. Hetzer                                                            Dec  8 2008 11:03AM                       NULL       81300001        81305000         81300004             4999                     3                   4996     0.0600 %       0.01 Nummern          457966.67 Tage                  NULL                   NULL            0 
+                                FL               Prof. Fleck                                                             Dec  8 2008 11:04AM                       NULL       81400001        81405000         81400100             4999                    99                   4900     1.9804 %       0.36 Nummern           13611.11 Tage                  NULL                   NULL            0 
+                                TXD              Dr. Dandel                                                              Dec  8 2008 11:05AM                       NULL       81500001        81505000         81502395             4999                  2394                   2605    47.8896 %       8.71 Nummern             299.24 Tage                  NULL                   NULL            0 
+                                TXL              Dr. Lehmkuhl                                                            Dec  8 2008 11:05AM                       NULL       81600001        81605000         81603748             4999                  3747                   1252    74.9550 %      13.63 Nummern              91.89 Tage                  NULL                   NULL            0 
+                                CAG              Dr. Grauhan                                                             Dec  8 2008 11:07AM                       NULL       82200001        82205000         82200828             4999                   827                   4172    16.5433 %       3.01 Nummern            1387.30 Tage                  NULL                   NULL            0 
+                                STU              Studien                                                                 Dec  8 2008 11:12AM                       NULL       80200001        80205000         80200001             4999                     0                   4999     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL            0 
+                                BA               Betriebsarzt                                                            Dec  8 2008 11:12AM                       NULL       80100001        80105000         80100405             4999                   404                   4595     8.0816 %       1.47 Nummern            3127.78 Tage                  NULL                   NULL            0 
+                                Station          Station DHZB                                                            Dec  8 2008 11:15AM                       NULL       70000001        79999999         70080435          9999998                 80434                9919564     0.8043 %     292.49 Nummern           33914.52 Tage                  NULL                   NULL            0 
+                                PKH              Paulinenkrankenhaus                                                     Dec  8 2008 11:16AM                       NULL       60000001        69999999         60024606          9999998                 24605                9975393     0.2461 %      89.47 Nummern          111490.88 Tage                  NULL                   NULL            0 
+                                BERG             Labor Berg                                                              Dec  8 2008 11:17AM                       NULL       50000001        54999999         50024125          4999998                 24124                4975874     0.4825 %      87.72 Nummern           56722.16 Tage                  NULL                   NULL            0 
+                                POCT             POCT                                                                    Dec  8 2008 11:30AM                       NULL       40000000        49999999         40000000          9999999                     0                9999999     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL            0 
+                                DEPOT            Depot-Auftragserfassung                                                 Dec  8 2008 11:38AM                       NULL       89900000        89999999         89900000            99999                     0                  99999     0.0000 %       0.00 Nummern  NULL                                    NULL                   NULL            0 
+                                TXS              TXA Sonstige                                                            Feb  5 2009 11:07AM                       NULL       81700001        81799999         81700357            99998                   356                  99642     0.3560 %       1.65 Nummern           60456.94 Tage                  NULL                   NULL            0 
+
+(16 rows affected)
+ 
+ 
+ Fast volle Nummernkreise:      Code             Name                                                             Erstellzeitpunkt           Verbrauchte Nummern   Verbleibende Nummern   Füllstand    Zeit bis Voll          Erste Reservenummer   Letzte Reservenummer   Recycle   
+ ------------------------------ ---------------- ---------------------------------------------------------------- -------------------------- --------------------- ---------------------- ------------ ---------------------- --------------------- ---------------------- --------- 
+
+(0 rows affected)
+ 
+ 
+ Doppelte Nummernkreise:        UninumberX (Aktiv)   Code (Aktiv)     Name (Aktiv)                                                     UninumberX (Inaktiv)   Code (Inaktiv)   Name (Inaktiv)                                                   Stornozeipunkt (Inaktiv)   
+ ------------------------------ -------------------- ---------------- ---------------------------------------------------------------- ---------------------- ---------------- ---------------------------------------------------------------- -------------------------- 
+
+(0 rows affected)

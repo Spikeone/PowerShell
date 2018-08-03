@@ -1,0 +1,62 @@
+ 
+ ----------------------------------------- 
+ Lauris Info-Script Version vom 18.08.2009 
+ ----------------------------------------- 
+   
+ Ausgeführt am: 19.07. 
+   
+   
+  SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  -------------------------- -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                             SWFRDI sqlserver     SQLserver RDI        Adaptive Server Enterprise/12.5.4/EBF 14115 ESD#4/P/NT (IX86)/OS 4.0/ase1254/2034/32-bit/OPT/Thu Nov 30 06:08:17 2006                                                                                                                                            
+   
+ Swisslab-Information: 
+  Name                              Revision   CrDate          DB               
+  --------------------------------- ---------- --------------- ---------------  
+  Kalenderwoche                     2009.02    08.04.09  00:00                  
+  letztes Swisspro                  2009.02    27.10.09  13:26                  
+  swissup3.tab                       2.08 $    27.10.09  13:06                  
+  swlupgrade.tab                     2.37.1 $  23.03.10  12:54                  
+  Lauris (via lauris.ini)            1.03 $    29.10.09  13:39                  
+  Blutbank (via barkasse.pro)        1.06 $    23.03.10  12:53                  
+  Statistik (via statistik.pro)      5.56 $    27.10.09  13:22                  
+  BB-Statistik (via spendestat.pro)  1.21 $    27.10.09  13:18                  
+                                                                                
+  neu:PI_ABLI                        3.37 $    23.03.10  12:54 SWISSLAB         
+  neu:PI_AKTQMMASOLL                 1.00.1    23.03.10  12:54 SWISSLAB         
+  neu:PI_AKTVK                       1.64.1    23.03.10  12:54 SWISSLAB         
+  neu:PI_ANALYT                      3.10 $    23.03.10  12:54 SWISSLAB         
+  neu:PI_CFGT                        1.24 $    23.03.10  12:54 SWISSLAB         
+  mehr mit: PR_REVISION A(LLE)                                                  
+ aktive Lauris-Versionen: 
+  Anzahl Clients:              
+  --------------- -----------  
+                            0  
+  LaurisVersion(max)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     NULL                                                                                                                                                                                                                                                             
+  LaurisVersion(min)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     NULL                                                                                                                                                                                                                                                             
+   
+   
+  Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------- ----------- --------------- -----------  
+                                 960971          752845      184228  
+   
+   
+   
+ Anforderung für die Mikrobiologie? 
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+   
+ --- Nachfordern  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+   
+   
+ --- POCTen  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  

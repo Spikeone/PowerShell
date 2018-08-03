@@ -1,0 +1,1263 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\..\laurisChangeLog.isq            */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [160121]                                                       */
+/*KURZINFO : Lauris Stammdaten Änderungen                                   */
+/*MODULE   : Lauris Stammdaten                                              */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20160121.1530>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[160121] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+
+-- Aufrufparameter
+set nocount on
+declare
+  @abDatum          smalldatetime,
+  @bisDatum         smalldatetime,
+  @archivsuche      int,
+  @language         int
+
+/*******************************************************************************************************************************************/
+select @abDatum          = '01.01.2015 00:00'   /* !!!!!! Ab Datum suchen                                                          !!!!!!! */
+select @bisDatum         = getdate()            /* !!!!!! Bis zum jetzigen Zeitpunkt suchen                                        !!!!!!! */
+-- select @bisDatum         = '01.01.2010 00:00'   /* !!!!!! Bis Datum suchen                                                      !!!!!!! */
+select @language         = 10                   /* !!!!!! SPRACHID (Tabelle FESTWERT)                                              !!!!!!! */
+select @archivsuche      = 1                    /* !!!!!! 0 -> nicht in SWISSARCH suchen, 1 -> auch in SWISSARCH suchen            !!!!!!! */
+/*******************************************************************************************************************************************/
+
+
+-- Deklarationen
+declare
+  @strmessage       varchar(128),
+  @datum            varchar(64),
+  @sys_kurz         varchar(40)
+
+select @datum=', ausgeführt am: ' + convert(char(11),getdate() ,104)+convert(char(5),getdate() ,108)+' '
+select @sys_kurz = ' für System: ' + substring(KUERZEL, 1, 20) from master..SYSTEMINFO
+select @strmessage = ' Lauris Stammdatenänderungen ' + @datum + @sys_kurz
+print @strmessage
+select @strmessage = ' Untersuchter Zeitraum ab ' + convert(char(11),@abDatum ,104)+convert(char(5),@abDatum ,108)+' bis ' + convert(char(11),@bisDatum ,104)+convert(char(5),@bisDatum ,108)+' '
+print @strmessage
+print ''
+
+print ' Beschreibung der Tabellen-Items:                                                                                                            '
+print ' type               Art der Stammdaten-Änderung, mögliche Werte: New, Del., Inakt. und Update.                                               '
+print ' table              Name der geänderten SQL-Tabelle.                                                                                         '
+print ' actual data type   Der jetzige Analyt-, Einsender-, Vorlagentyp usf., NICHT der Datentyp zum Zeitpunkt der Änderungserfassung.              '
+print ' code               Bezeichner des Tabelleneintrags, z.B. Analytcode, Vorlagenname, Identcode usf., wenn vorhanden.                          '
+print ' item               Bei Updates: welches Item im Datensatz geändert wurde, z.B. ANALYT, KENNUNG, EINSCODE. Bei  SYSTEMPARAM: INT- oder TEXTVALUE'
+print ' value              Bei Updates: alter Wert -> neuer Wert, bei New, Del., Inakt. ggf. Beschreibung, wenn vorhanden.                          '                         
+print ' scope              Geltungsbereich (wenn vorhanden), z.B. ANFORDERUNG verweist auf ein Formular, SYSTEMPARAM auf global oder Einsender usf. '
+print ' scopevalue         Wert des Geltungsbereichs (wenn vorhanden).                                                                              '
+print ' entrydat           Zeitpunkt der Stammdaten-Änderung.                                                                                       '
+print ' entrypers          Wer hat die Stammdaten geändert.                                                                                         '
+print ' deldat             Stornierungszeitpunkt.                                                                                                   '
+print ' delpers            Wer hat storniert.                                                                                                       '
+print ' refvalue           Der Referenzwert (X-Wert) zur Tabelle, zur Vereinfachung von Recherchen.                                                 '
+print ''
+
+
+
+create table #changes(
+  cnt               numeric       identity not null, -- cnt
+  Tabelle           char(16)      null,              -- Tabelle
+  XRef              int           null,              -- XRef     (KEYVALUE)
+  Code              char(32)      null,              -- Code     (KEYIDENT)
+  Item              varchar(30)   null,              -- Item     (SPALTE)
+  Wertalt           varchar(255)  null,              -- Wertalt  (aus UPDATEDOC)
+  Wertneu           varchar(255)  null,              -- Wertneu  (aus UPDATEDOC)
+  Wert              varchar(255)  null,              -- Wert
+  Wann              smalldatetime null,              -- Wann     wurde geändert
+  Wer               smallint      null,              -- Wer      hat es geändert
+  Art               varchar(6)    null,              -- Art      (New, Storno, Update)
+  Datentyp          varchar(64)   null,              -- Datentyp (Modulid für SYSTEMPARAM, Anforderungstyp, Analyttyp)
+  Paramtyp          smallint      null,              -- Paramtyp (für SYSTEMPARAM)
+  Scope             varchar(12)   null,              -- Scope    (für SYSTEMPARAM)
+  Scopewert         varchar(16)   null,              -- Scopewert(für SYSTEMPARAM, ANFORDERUNG, VORLAGE)
+  Produkt           varchar(16)   null,              -- Produkt  (für SYSTEMPARAM)
+  Stornodat         smalldatetime null,              -- Stornodat
+  Stornopers        smallint      null,              -- Stornopers
+  Xref2             int           null )             -- Xref2    Referenzwert in VORLAGEANF, BEFUNDSICHTANF auf VORLAGE, BEFUNDSICHT
+
+
+-- UPDATEDOC auswerten
+if @archivsuche = 0
+begin
+  insert into #changes
+  select
+    U.TABELLE     ,         -- Tabelle
+    U.KEYVALUE    ,         -- XRef     (KEYVALUE)
+    U.KEYIDENT    ,         -- Code     (KEYIDENT)
+    case when (U.SPALTE is null or U.SPALTE = '') then U.SPALTE16 else U.SPALTE end,  -- Item     (SPALTE)
+    WERTALT = str_replace(U.WERTALT,char(13)+char(10),' '),         -- WERTALT
+    WERTNEU = str_replace(U.WERTNEU,char(13)+char(10),' '),         -- WERTNEU
+    null          ,         -- Wert
+    U.ERFASSDAT   ,         -- Wann     wurde geändert
+    U.ERFASSPERS  ,         -- Wer      hat es geändert
+    'Update'      ,         -- Art      (New, Storno, Update)
+    null          ,         -- Datentyp (Modulid für SYSTEMPARAM, Anforderungstyp, Analyttyp)
+    null          ,         -- Paramtyp (für SYSTEMPARAM)
+    null          ,         -- Scope    (für SYSTEMPARAM)
+    null          ,         -- Scopewert(für SYSTEMPARAM, ANFORDERUNG, VORLAGE)
+    null          ,         -- Produkt  (für SYSTEMPARAM)
+    null          ,         -- Stornodat
+    null          ,         -- Stornopers
+    null                    -- Xref2    Referenzwert in VORLAGEANF, BEFUNDSICHTANF auf VORLAGE, BEFUNDSICHT
+  from UPDATEDOC U
+  where
+    U.ERFASSDAT between @abDatum and @bisDatum and
+    U.TABELLE in ('FORMULAR',
+                  'VORLAGE',
+                  'ANFORDERUNG',
+                  'VORLAGEANF',
+                  'BEHAELTER',
+                  'VADEMECUM',
+                  'BARCODE',
+                  'BARCODEANF',
+                  'SYSTEMPARAM',
+                  'IDENT',
+                  'CLIENT',
+                  'UNINUMBER',
+                  'BEFUNDSICHT',
+                  'BEFUNDSICHTANF',
+                  'ANALYTINFO',    -- /lis es gibt keine Einträge in UPDATEDOC für ANALYTINFO (Vademecum), m.E. durchaus verzichtbar...
+                  'ANALYT',
+                  'METHGRUPPE',
+                  'EINSENDERGRUPPE',
+                  'DEFI',
+                  'DEFIGRUPPE',
+                  'MATERIAL') and
+  --  U.TABELLE in ('BEFUNDSICHT') and
+    U.SPALTE not in ('NUMNEXT','SORT')
+end    -- if @archivsuche = 0
+
+if @archivsuche = 1
+begin
+  insert into #changes
+  select
+    U.TABELLE     ,         -- Tabelle
+    U.KEYVALUE    ,         -- XRef     (KEYVALUE)
+    U.KEYIDENT    ,         -- Code     (KEYIDENT)
+    case when (U.SPALTE is null or U.SPALTE = '') then U.SPALTE16 else U.SPALTE end,  -- Item     (SPALTE)
+    WERTALT = str_replace(U.WERTALT,char(13)+char(10),' '),         -- WERTALT
+    WERTNEU = str_replace(U.WERTNEU,char(13)+char(10),' '),         -- WERTNEU
+    null          ,         -- Wert
+    U.ERFASSDAT   ,         -- Wann     wurde geändert
+    U.ERFASSPERS  ,         -- Wer      hat es geändert
+    'Update'      ,         -- Art      (New, Storno, Update)
+    null          ,         -- Datentyp (Modulid für SYSTEMPARAM, Anforderungstyp, Analyttyp)
+    null          ,         -- Paramtyp (für SYSTEMPARAM)
+    null          ,         -- Scope    (für SYSTEMPARAM)
+    null          ,         -- Scopewert(für SYSTEMPARAM, ANFORDERUNG, VORLAGE)
+    null          ,         -- Produkt  (für SYSTEMPARAM)
+    null          ,         -- Stornodat
+    null          ,         -- Stornopers
+    null                    -- Xref2    Referenzwert in VORLAGEANF, BEFUNDSICHTANF auf VORLAGE, BEFUNDSICHT
+  from UPDATEDOC U
+  where
+    U.ERFASSDAT between @abDatum and @bisDatum and
+    U.TABELLE in ('FORMULAR',
+                  'VORLAGE',
+                  'ANFORDERUNG',
+                  'VORLAGEANF',
+                  'BEHAELTER',
+                  'VADEMECUM',
+                  'BARCODE',
+                  'BARCODEANF',
+                  'SYSTEMPARAM',
+                  'IDENT',
+                  'CLIENT',
+                  'UNINUMBER',
+                  'BEFUNDSICHT',
+                  'BEFUNDSICHTANF',
+                  'ANALYTINFO',    -- /lis es gibt keine Einträge in UPDATEDOC für ANALYTINFO (Vademecum), m.E. durchaus verzichtbar...
+                  'ANALYT',
+                  'METHGRUPPE',
+                  'EINSENDERGRUPPE',
+                  'DEFI',
+                  'DEFIGRUPPE',
+                  'MATERIAL')  and
+  --  U.TABELLE in ('BEFUNDSICHT') and
+   U.SPALTE not in ('NUMNEXT','SORT')
+    union 
+    select
+      U.TABELLE     ,         -- Tabelle
+      U.KEYVALUE    ,         -- XRef     (KEYVALUE)
+      U.KEYIDENT    ,         -- Code     (KEYIDENT)
+      case when (U.SPALTE is null or U.SPALTE = '') then U.SPALTE16 else U.SPALTE end,  -- Item     (SPALTE)
+      WERTALT = str_replace(U.WERTALT,char(13)+char(10),' '),         -- WERTALT
+      WERTNEU = str_replace(U.WERTNEU,char(13)+char(10),' '),         -- WERTNEU
+      null          ,         -- Wert
+      U.ERFASSDAT   ,         -- Wann     wurde geändert
+      U.ERFASSPERS  ,         -- Wer      hat es geändert
+      'Update'      ,         -- Art      (New, Storno, Update)
+      null          ,         -- Datentyp (Modulid für SYSTEMPARAM, Anforderungstyp, Analyttyp)
+      null          ,         -- Paramtyp (für SYSTEMPARAM)
+      null          ,         -- Scope    (für SYSTEMPARAM)
+      null          ,         -- Scopewert(für SYSTEMPARAM, ANFORDERUNG, VORLAGE)
+      null          ,         -- Produkt  (für SYSTEMPARAM)
+      null          ,         -- Stornodat
+      null          ,         -- Stornopers
+      null                    -- Xref2    Referenzwert in VORLAGEANF, BEFUNDSICHTANF auf VORLAGE, BEFUNDSICHT
+    from SWISSARCH..UPDATEDOC_ARCH U
+    where
+      U.ERFASSDAT between @abDatum and @bisDatum and
+      U.TABELLE in ('FORMULAR',
+                    'VORLAGE',
+                    'ANFORDERUNG',
+                    'VORLAGEANF',
+                    'BEHAELTER',
+                    'VADEMECUM',
+                    'BARCODE',
+                    'BARCODEANF',
+                    'SYSTEMPARAM',
+                    'IDENT',
+                    'CLIENT',
+                    'UNINUMBER',
+                    'BEFUNDSICHT',
+                    'BEFUNDSICHTANF',
+                    'ANALYTINFO',    -- /lis es gibt keine Einträge in UPDATEDOC für ANALYTINFO (Vademecum), m.E. durchaus verzichtbar...
+                    'ANALYT',
+                    'METHGRUPPE',
+                    'EINSENDERGRUPPE',
+                    'DEFI',
+                    'DEFIGRUPPE',
+                    'MATERIAL') and
+    --  U.TABELLE in ('BEFUNDSICHT') -- and
+     U.SPALTE not in ('NUMNEXT','SORT')
+--  select count(*) from #changes
+-- select count(*) from #changes where Tabelle = 'METHGRUPPE'
+-- select * from #changes
+end    -- if @archivsuche = 1
+
+
+-- SYSTEMPARAM
+insert into #changes
+select
+  'SYSTEMPARAM',                                                                -- Tabelle
+  S.SYSTEMPARAMX,                                                               -- XRef
+  S.PARAMID,                                                                    -- Code
+  case when S.INTVALUE is not null then 'INTVALUE'                              -- Item
+       when S.TXTVALUE is not null then 'TXTVALUE'
+       else '<-empty->' end,
+  null,                                                                          -- Wertalt
+  case when S.INTVALUE is not null then convert(varchar(255),S.INTVALUE,10)     -- Wertneu
+       when S.TXTVALUE is not null then S.TXTVALUE end,
+  null,                                                                          -- Wert
+  S.ERFASSDAT,                                                                  -- Wann     wurde geändert
+  S.ERFASSPERS,                                                                 -- Wer      hat es geändert
+  'New',                                                                        -- Art      (New, Storno, Update)
+  S.MODULID,                                                                    -- Datentyp (Modulid für SYSTEMPARAM, Anforderungstyp, Analyttyp)
+  S.PARAMTYP,                                                                   -- Paramtyp (für SYSTEMPARAM)
+  null,                                                                         -- Scope    (für SYSTEMPARAM)
+  null,                                                                         -- Scopewert(für SYSTEMPARAM, ANFORDERUNG, VORLAGE)
+  S.PRODUKT,                                                                    -- Produkt  (für SYSTEMPARAM)
+  S.STORNODAT,                                                                  -- Stornodat
+  S.STORNOPERS,                                                                 -- Stornopers
+  null                                                                          -- Xref2    Referenzwert in VORLAGEANF, BEFUNDSICHTANF auf VORLAGE, BEFUNDSICHT
+
+from SYSTEMPARAM S where S.ERFASSDAT between @abDatum and @bisDatum
+
+-- SYSTEMPARAM DELETEs einfügen
+insert into #changes
+select
+  'SYSTEMPARAM',                                                                -- Tabelle
+  S.SYSTEMPARAMX,                                                               -- XRef
+  S.PARAMID,                                                                    -- Code
+  case when S.INTVALUE is not null then 'INTVALUE'                              -- Item
+       when S.TXTVALUE is not null then 'TXTVALUE'
+       else '<-empty->' end,
+  case when S.INTVALUE is not null then convert(varchar(255),S.INTVALUE,10)     -- Wertalt
+       when S.TXTVALUE is not null then S.TXTVALUE end,
+  null,                                                                          -- Wertneu
+  null,                                                                          -- Wert
+  S.STORNODAT,                                                                  -- Wann     wurde geändert
+  S.ERFASSPERS,                                                                 -- Wer      hat es geändert
+  'Del.',                                                                     -- Art      (New, Storno, Update)
+  S.MODULID,                                                                    -- Datentyp (Modulid für SYSTEMPARAM, Anforderungstyp, Analyttyp)
+  S.PARAMTYP,                                                                   -- Paramtyp (für SYSTEMPARAM)
+  null,                                                                         -- Scope    (für SYSTEMPARAM)
+  null,                                                                         -- Scopewert(für SYSTEMPARAM, ANFORDERUNG, VORLAGE)
+  S.PRODUKT,                                                                    -- Produkt  (für SYSTEMPARAM)
+  S.STORNODAT,                                                                  -- Stornodat
+  S.STORNOPERS,                                                                 -- Stornopers
+  null                                                                          -- Xref2    Referenzwert in VORLAGEANF, BEFUNDSICHTANF auf VORLAGE, BEFUNDSICHT
+from SYSTEMPARAM S, PERSON P where S.STORNODAT between @abDatum and @bisDatum and P.PERSONX = S.ERFASSPERS
+-- select * from #changes
+
+-- PRODUKT, MODULID, PARAMNAME, PARAMTYP, Scope und Scopewert aus SYSTEMPARAM übernehmen
+update #changes set
+  Code = case when (S.PARAMNAME <> '0') then Code + ' - ' + S.PARAMNAME else Code end,
+  Paramtyp = S.PARAMTYP,
+  Produkt = S.PRODUKT,
+  Datentyp = S.MODULID,
+  Scope = case when S.TABELLE is not null then S.TABELLE else 'global' end,
+  Scopewert = case when (S.TABELLE is not null and S.XREF is not null) then convert(varchar(16),S.XREF) else '' end
+from #changes C, SYSTEMPARAM S, PERSON P
+where
+  C.Tabelle = 'SYSTEMPARAM' and
+  S.SYSTEMPARAMX = C.XRef and
+  P.PERSONX =* S.STORNOPERS
+
+-- Nicht-Lauris Systemparameter rauslöschen
+delete from #changes
+where Produkt <> 'LAURIS'
+
+-- SYSTEMPARAM bez. Scopewerten überarbeiten
+update #changes set Scopewert = E.EINSCODE      -- Abteiliung
+from #changes C, EINSENDER E
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Scope = 'EINSENDER' and
+      E.EINSENDERX = convert(int, C.Scopewert)
+update #changes set Scopewert = CL.CLIENTCODE   -- Arbeitsplatz
+from #changes C, CLIENT CL
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Scope = 'CLIENT' and
+      CL.CLIENTX = convert(int, C.Scopewert)
+update #changes set Scopewert = I.IDENTCODE     -- Benutzer
+from #changes C, IDENT I
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Scope = 'IDENT' and
+      I.IDENTX = convert(int, C.Scopewert)
+
+-- SYSTEMPARAM bez. Analyte überarbeiten
+update #changes set Wertalt = A1.CODE, Wertneu = A2.CODE, Item = C.Item + ' (ANALYTX)'
+from #changes C, ANALYT A1, ANALYT A2
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Paramtyp in (10, 11, 12) and
+      C.Item = 'INTVALUE' and
+      A1.ANALYTX =* convert(int, C.Wertalt) and
+      A2.ANALYTX =* convert(int, C.Wertneu)
+
+-- SYSTEMPARAM bez. Einsender überarbeiten
+update #changes set Wertalt = E1.EINSCODE, Wertneu = E2.EINSCODE, Item = C.Item + ' (EINSENDERX)'
+from #changes C, EINSENDER E1, EINSENDER E2
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Paramtyp in (16,17,18,26) and
+      C.Item = 'INTVALUE' and
+      E1.EINSENDERX =* convert(int, C.Wertalt) and
+      E2.EINSENDERX =* convert(int, C.Wertneu)
+
+-- SYSTEMPARAM bez. Defi-Texten überarbeiten
+update #changes set Wertalt = D1.DEFICODE, Wertneu = D2.DEFICODE, Item = C.Item + ' (DEFIX)'
+from #changes C, DEFI D1, DEFI D2
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Paramtyp in (13,14,15) and
+      C.Item = 'INTVALUE' and
+      D1.DEFIX =* convert(int, C.Wertalt) and
+      D2.DEFIX =* convert(int, C.Wertneu)
+
+-- SYSTEMPARAM bez. Materialien überarbeiten
+update #changes set Wertalt = M1.MATCODE, Wertneu = M2.MATCODE, Item = C.Item + ' (MATERIALX)'
+from #changes C, MATERIAL M1, MATERIAL M2
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Paramtyp in (19) and
+      C.Item = 'INTVALUE' and
+      M1.MATERIALX =* convert(int, C.Wertalt) and
+      M2.MATERIALX =* convert(int, C.Wertneu)
+
+-- SYSTEMPARAM bez. Rollen überarbeiten
+update #changes set Wertalt = R1.CODE, Wertneu = R2.CODE, Item = C.Item + ' (ROLLEX)'
+from #changes C, ROLLE R1, ROLLE R2
+where C.Tabelle = 'SYSTEMPARAM' and
+      (C.Paramtyp in (23) or C.Item = 'ROLLEX') and
+      R1.ROLLEX =* convert(int, C.Wertalt) and
+      R2.ROLLEX =* convert(int, C.Wertneu)
+
+-- SYSTEMPARAM bez. Formularen überarbeiten
+update #changes set Wertalt = F1.FORMULARCODE, Wertneu = F2.FORMULARCODE, Item = C.Item + ' (FORMULARX)'
+from #changes C, FORMULAR F1, FORMULAR F2
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Paramtyp in (24) and
+      C.Item = 'INTVALUE' and
+      F1.FORMULARX =* convert(int, C.Wertalt) and
+      F2.FORMULARX =* convert(int, C.Wertneu)
+
+-- SYSTEMPARAM bez. Tarifwerk überarbeiten
+update #changes set Wertalt = W1.TARIFCODE, Wertneu = W2.TARIFCODE, Item = C.Item + ' (TARIFWERKX)'
+from #changes C, TARIFWERK W1, TARIFWERK W2
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Paramtyp in (27) and
+      C.Item = 'INTVALUE' and
+      W1.TARIFWERKX =* convert(int, C.Wertalt) and
+      W2.TARIFWERKX =* convert(int, C.Wertneu)
+
+-- SYSTEMPARAM bez. Dokumenttypen überarbeiten
+update #changes set Wertalt = D1.DOKTYPCODE, Wertneu = D2.DOKTYPCODE, Item = C.Item + ' (DOKUMENTTYPX)'
+from #changes C, SWISSDOC..DOKUMENTTYP D1, SWISSDOC..DOKUMENTTYP D2
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Paramtyp in (28,29) and
+      C.Item = 'INTVALUE' and
+      D1.DOKUMENTTYPX =* convert(int, C.Wertalt) and
+      D2.DOKUMENTTYPX =* convert(int, C.Wertneu)
+
+-- SYSTEMPARAM bez. Geräten überarbeiten
+update #changes set Wertalt = G1.GERAETECODE + " " + G1.BEZEICHNUNG, Wertneu = G2.GERAETECODE + " " + G2.BEZEICHNUNG, Item = C.Item + ' (GERAETX)'
+from #changes C, GERAET G1, GERAET G2
+where C.Tabelle = 'SYSTEMPARAM' and
+      C.Paramtyp in (30,31) and
+      C.Item = 'INTVALUE' and
+      G1.GERAETX =* convert(int, C.Wertalt) and
+      G2.GERAETX =* convert(int, C.Wertneu)
+-- Ende Systemparam --
+
+
+-- ANALYT --
+insert into #changes
+select
+  'ANALYT',
+  A.ANALYTX,
+  A.CODE,
+  '',
+  '',
+  case when A.BESCHREIBUNG is null then '' when A.BESCHREIBUNG is not null then A.BESCHREIBUNG end,
+  '',
+  A.ERFASSDAT,
+  A.ERFASSPERS,
+  'New',
+  '',
+  null,
+  '',
+  '',
+  '',
+  A.STORNODAT,
+  A.STORNOPERS,
+  null
+from ANALYT A, PERSON P, PERSON P2 where A.ERFASSDAT between @abDatum and @bisDatum and P.PERSONX = A.ERFASSPERS and P2.PERSONX =* A.STORNOPERS
+insert into #changes
+select
+  'ANALYT',
+  A.ANALYTX,
+  A.CODE,
+  '',
+  case when A.BESCHREIBUNG is null then '' when A.BESCHREIBUNG is not null then A.BESCHREIBUNG end,
+  '',
+  '',
+  A.AKTIVBIS,
+  null,
+  'Inakt.',
+  '',
+  null,
+  '',
+  '',
+  '',
+  A.AKTIVBIS,
+  null,
+  null
+from ANALYT A where A.AKTIVBIS between @abDatum and @bisDatum
+-- ANALYT KENNUNG eintragen
+update #changes set Datentyp = FW.FWTEXT1
+from #changes C, ANALYT A, FESTWERT FW
+where C.Tabelle = 'ANALYT' and A.ANALYTX = XRef and FW.TABELLE = 'ANALYT' and FW.SPALTE = 'KENNUNG' and FW.INTWERT =* A.KENNUNG and FW.SPRACHID = @language and FW.STORNODAT is null
+-- ANALYT KENNUNG eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then FW1.FWTEXT1 else '' end, Wertneu = case when Wertneu is not null then FW2.FWTEXT1 else '' end
+from #changes C, ANALYT A, FESTWERT FW1, FESTWERT FW2
+where C.Tabelle = 'ANALYT' and C.Item = 'KENNUNG' and A.ANALYTX = XRef and FW1.TABELLE = 'ANALYT' and FW1.SPALTE = 'KENNUNG' and FW1.INTWERT =* convert(int, C.Wertalt) and FW1.SPRACHID = @language and FW1.STORNODAT is null and FW2.TABELLE = 'ANALYT' and FW2.SPALTE = 'KENNUNG' and FW2.INTWERT =* convert(int, C.Wertneu) and FW2.SPRACHID = @language and FW2.STORNODAT is null
+
+
+-- METHGRUPPE
+-- ANALYT KENNUNG eintragen
+update #changes set Datentyp = case when (FW.FWTEXT1 <> '' and FW.FWTEXT1 is not null) then FW.FWTEXT1 else 'KENNUNG = ' + convert(varchar(16),A.KENNUNG) end 
+from #changes C, ANALYT A, FESTWERT FW
+where C.Tabelle = 'METHGRUPPE' and A.ANALYTX = XRef and FW.TABELLE = 'ANALYT' and FW.SPALTE = 'KENNUNG' and FW.INTWERT =* A.KENNUNG and FW.SPRACHID = @language and FW.STORNODAT is null
+
+
+-- EINSENDERGRUPPE
+-- EINSENDER EINSTYP eintragen
+update #changes set Datentyp = FW.FWTEXT1
+from #changes C, EINSENDER E, FESTWERT FW
+where C.Tabelle = 'EINSENDERGRUPPE' and E.EINSENDERX = XRef and FW.TABELLE = 'EINSENDER' and FW.SPALTE = 'EINSTYP' and FW.INTWERT =* E.EINSTYP and FW.SPRACHID = @language and FW.STORNODAT is null
+
+-- DEFI --
+insert into #changes
+select
+  'DEFI',
+  D.DEFIX,
+  D.DEFICODE,
+  '',
+  '',
+  case when D.DEFIKURZ is null then '' when D.DEFIKURZ is not null then D.DEFIKURZ end,
+  '',
+  D.ERFASSDAT,
+  D.ERFASSPERS,
+  'New',
+  '',
+  null,
+  '',
+  '',
+  '',
+  D.STORNODAT,
+  D.STORNOPERS,
+  null
+from DEFI D, PERSON P, PERSON P2 where D.ERFASSDAT between @abDatum and @bisDatum and P.PERSONX = D.ERFASSPERS and P2.PERSONX =* D.STORNOPERS
+insert into #changes
+select
+  'ANALYT',
+  D.DEFIX,
+  D.DEFICODE,
+  '',
+  case when D.DEFIKURZ is null then '' when D.DEFIKURZ is not null then D.DEFIKURZ end,
+  '',
+  '',
+  D.STORNODAT,
+  null,
+  'Storno',
+  '',
+  null,
+  '',
+  '',
+  '',
+  D.STORNODAT,
+  null,
+  null
+from DEFI D where D.STORNODAT between @abDatum and @bisDatum
+-- DEFI KENNUNG eintragen
+update #changes set Datentyp = FW.FWTEXT1
+from #changes C, DEFI D, FESTWERT FW
+where C.Tabelle = 'DEFI' and D.DEFIX = XRef and FW.TABELLE = 'DEFI' and FW.SPALTE = 'DKENNUNG' and FW.INTWERT =* D.DKENNUNG and FW.SPRACHID = @language and FW.STORNODAT is null
+-- ANALYT KENNUNG eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then FW1.FWTEXT1 else '' end, Wertneu = case when Wertneu is not null then FW2.FWTEXT1 else '' end
+from #changes C, DEFI D, FESTWERT FW1, FESTWERT FW2
+where C.Tabelle = 'DEFI' and C.Item = 'DKENNUNG' and D.DEFIX = XRef and FW1.TABELLE = 'DEFI' and FW1.SPALTE = 'DKENNUNG' and FW1.INTWERT =* convert(int, C.Wertalt) and FW1.SPRACHID = @language and FW1.STORNODAT is null and FW2.TABELLE = 'DEFI' and FW2.SPALTE = 'DKENNUNG' and FW2.INTWERT =* convert(int, C.Wertneu) and FW2.SPRACHID = @language and FW2.STORNODAT is null
+
+
+-- DEFIGRUPPE
+-- DEFI DKENNUNG eintragen
+update #changes set Datentyp = FW.FWTEXT1
+from #changes C, DEFI D, FESTWERT FW
+where C.Tabelle = 'DEFIGRUPPE' and D.DEFIX = XRef and FW.TABELLE = 'DEFI' and FW.SPALTE = 'DKENNUNG' and FW.INTWERT =* D.DKENNUNG and FW.SPRACHID = @language and FW.STORNODAT is null
+
+-- ANFORDERUNG --
+-- ANFORDERUNG Behälter eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then B1.BEHAELTERCODE else '' end, Wertneu = case when Wertneu is not null then B2.BEHAELTERCODE else '' end
+from #changes C, ANFORDERUNG ANF, BEHAELTER B1, BEHAELTER B2
+where C.Tabelle = 'ANFORDERUNG' and Item = 'BEHAELTERX' and ANF.ANFORDERUNGX = XRef and B1.BEHAELTERX =* convert(int, C.Wertalt) and B2.BEHAELTERX =* convert(int, C.Wertneu)
+-- ANFORDERUNG Analyt, MFA oder Profilanalyt eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then A1.CODE else '' end, Wertneu = case when Wertneu is not null then A2.CODE else '' end
+from #changes C, ANFORDERUNG ANF, ANALYT A1, ANALYT A2
+where C.Tabelle = 'ANFORDERUNG' and Item in ('ANALYTX','MFAANLYTX','PANALYTX') and ANF.ANFORDERUNGX = XRef and A1.ANALYTX =* convert(int, C.Wertalt) and A2.ANALYTX =* convert(int, C.Wertneu)
+-- ANFORDERUNG ANFORDERUNGTYP eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then FW1.FWTEXT1 else '' end, Wertneu = case when Wertneu is not null then FW2.FWTEXT1 else '' end
+from #changes C, ANFORDERUNG ANF, FESTWERT FW1, FESTWERT FW2
+where C.Tabelle = 'ANFORDERUNG' and C.Item = 'ANFORDERUNGTYP' and ANF.ANFORDERUNGX = XRef and FW1.TABELLE = 'ANFORDERUNG' and FW1.SPALTE = 'ANFORDERUNGTYP' and FW1.INTWERT =* convert(int, C.Wertalt) and FW1.SPRACHID = @language and FW1.STORNODAT is null and FW2.TABELLE = 'ANFORDERUNG' and FW2.SPALTE = 'ANFORDERUNGTYP' and FW2.INTWERT =* convert(int, C.Wertneu) and FW2.SPRACHID = @language and FW2.STORNODAT is null
+
+-- ANFORDERUNG inserts und deletes
+insert into #changes
+select
+  'ANFORDERUNG',                                                                                                       -- Tabelle
+  A.ANFORDERUNGX,                                                                                                      -- XRef     (KEYVALUE)
+  case when ANA.CODE is null then '' else ANA.CODE end,                                                                -- Code     (KEYIDENT)
+  '',                                                                                                                  -- Item     (SPALTE)
+  '',                                                                                                                  -- Wertalt  (aus UPDATEDOC)
+  case when A.BESCHREIBUNG is null then ANA.BESCHREIBUNG when A.BESCHREIBUNG is not null then A.BESCHREIBUNG end,      -- Wertneu  (aus UPDATEDOC)
+  '',                                                                                                                  -- Wert
+  A.ERFASSDAT,                                                                                                         -- Wann     wurde geändert
+  A.ERFASSPERS,                                                                                                        -- Wer      hat es geändert
+  'New',                                                                                                               -- Art      (New, Storno, Update)
+  '',                                                                                                                  -- Datentyp (Modulid für SYSTEMPARAM, Anforderungstyp, Analyttyp)
+  null,                                                                                                                -- Paramtyp (für SYSTEMPARAM)
+  '',                                                                                                                  -- Scope    (für SYSTEMPARAM)
+  '',                                                                                                                  -- Scopewert(für SYSTEMPARAM, ANFORDERUNG, VORLAGE)
+  '',                                                                                                                  -- Produkt  (für SYSTEMPARAM)
+  A.STORNODAT,                                                                                                         -- Stornodat
+  A.STORNOPERS,                                                                                                        -- Stornopers
+  A.FORMULARX                                                                                                          -- Xref2    Referenzwert in VORLAGEANF, BEFUNDSICHTANF auf VORLAGE, BEFUNDSICHT
+from ANFORDERUNG A, PERSON P, ANALYT ANA, PERSON P2  where A.ERFASSDAT between @abDatum and @bisDatum and P.PERSONX = A.ERFASSPERS and ANA.ANALYTX =* A.ANALYTX and P2.PERSONX =* A.STORNOPERS
+insert into #changes
+select
+  'ANFORDERUNG',                                                                                                       -- Tabelle
+  A.ANFORDERUNGX,                                                                                                      -- XRef     (KEYVALUE)
+  case when ANA.CODE is null then '' else ANA.CODE end,                                                                -- Code     (KEYIDENT)
+  '',                                                                                                                  -- Item     (SPALTE)
+  case when A.BESCHREIBUNG is null then ANA.BESCHREIBUNG when A.BESCHREIBUNG is not null then A.BESCHREIBUNG end,      -- Wertalt  (aus UPDATEDOC)
+  '',                                                                                                                  -- Wertneu  (aus UPDATEDOC)
+  '',                                                                                                                  -- Wert
+  A.STORNODAT,                                                                                                         -- Wann     wurde geändert
+  A.STORNOPERS,                                                                                                        -- Wer      hat es geändert
+  'Del.',                                                                                                            -- Art      (New, Storno, Update)
+  '',                                                                                                                  -- Datentyp (Modulid für SYSTEMPARAM, Anforderungstyp, Analyttyp)
+  null,                                                                                                                -- Paramtyp (für SYSTEMPARAM)
+  '',                                                                                                                  -- Scope    (für SYSTEMPARAM)
+  '',                                                                                                                  -- Scopewert(für SYSTEMPARAM, ANFORDERUNG, VORLAGE)
+  '',                                                                                                                  -- Produkt  (für SYSTEMPARAM)
+  A.STORNODAT,                                                                                                         -- Stornodat
+  A.STORNOPERS,                                                                                                         -- Stornopers
+  A.FORMULARX                                                                                                          -- Xref2    Referenzwert in VORLAGEANF, BEFUNDSICHTANF auf VORLAGE, BEFUNDSICHT
+from ANFORDERUNG A, PERSON P, ANALYT ANA, PERSON P2  where A.STORNODAT between @abDatum and @bisDatum and P.PERSONX = A.STORNOPERS and ANA.ANALYTX =* A.ANALYTX and P2.PERSONX =* A.STORNOPERS
+-- ANFORDERUNG Anforderungsstyp, Analyt und Formular eintragen
+update #changes set Code = case when A.CODE is not null then A.CODE else '' end, Scope = 'FORMULAR', Scopewert = F.FORMULARCODE, Datentyp = case when FW.FWTEXT1 is not null then FW.FWTEXT1 else 'ANFORDERUNGTYP = ' + convert(varchar(16),ANF.ANFORDERUNGTYP) end
+from #changes C, ANALYT A, ANFORDERUNG ANF, FORMULAR F, FESTWERT FW
+where C.Tabelle = 'ANFORDERUNG' and ANF.ANFORDERUNGX = XRef and F.FORMULARX = ANF.FORMULARX and A.ANALYTX =* ANF.ANALYTX and FW.TABELLE = 'ANFORDERUNG' and FW.SPALTE = 'ANFORDERUNGTYP' and FW.INTWERT =* ANF.ANFORDERUNGTYP and FW.SPRACHID = @language and FW.STORNODAT is null
+
+
+-- BEHAELTER
+insert into #changes
+select
+  'BEHAELTER',
+  B.BEHAELTERX,
+  B.BEHAELTERCODE ,
+  '',
+  '',
+  B.BEHAELTERNAME,
+  '',
+  B.ERFASSDAT,
+  B.ERFASSPERS,
+  'New',
+  '',
+  null,
+  'MATERIAL',
+  case when B.MATERIALX is not null then M.MATCODE else '' end,
+  '',
+  B.STORNODAT,
+  B.STORNOPERS,
+  null
+from BEHAELTER B, MATERIAL M where B.ERFASSDAT between @abDatum and @bisDatum and M.MATERIALX =* B.MATERIALX
+insert into #changes
+select
+  'BEHAELTER',
+  B.BEHAELTERX,
+  B.BEHAELTERCODE ,
+  '',
+  B.BEHAELTERNAME,
+  '',
+  '',
+  B.STORNODAT,
+  B.STORNOPERS,
+  'Del.',
+  '',
+  null,
+  'MATERIAL',
+  case when B.MATERIALX is not null then M.MATCODE else '' end,
+  '',
+  B.STORNODAT,
+  B.STORNOPERS,
+  null
+from BEHAELTER B, MATERIAL M where B.STORNODAT between @abDatum and @bisDatum and M.MATERIALX =* B.MATERIALX
+-- Behälter bez. Material überarbeiten, wenn Update
+update #changes set Wertalt = M1.MATCODE, Wertneu = M2.MATCODE
+from #changes C, MATERIAL M1, MATERIAL M2
+where C.Tabelle = 'BEHAELTER' and
+      C.Item = 'MATERIALX' and
+      M1.MATERIALX =* convert(int, C.Wertalt) and
+      M2.MATERIALX =* convert(int, C.Wertneu)
+-- Behälter bez. Scopewert (Material) überarbeiten
+update #changes set Scope = 'MATERIAL', Scopewert = M.MATCODE
+from #changes C, BEHAELTER B, MATERIAL M
+where C.Tabelle = 'BEHAELTER' and
+      B.BEHAELTERX = C.XRef and
+      M.MATERIALX = B.MATERIALX
+
+
+-- FORMULAR
+insert into #changes
+select
+  'FORMULAR',
+  F.FORMULARX,
+  F.FORMULARCODE ,
+  '',
+  '',
+  F.FORMULARNAME,
+  '',
+  F.ERFASSDAT,
+  F.ERFASSPERS,
+  'New',
+  '',
+  null,
+  '',
+  '',
+  '',
+  F.STORNODAT,
+  F.STORNOPERS,
+  null
+from FORMULAR F where F.ERFASSDAT between @abDatum and @bisDatum
+insert into #changes
+select
+  'FORMULAR',
+  F.FORMULARX,
+  F.FORMULARCODE ,
+  '',
+  F.FORMULARNAME,
+  '',
+  '',
+  F.STORNODAT,
+  F.STORNOPERS,
+  'Del.',
+  '',
+  null,
+  '',
+  '',
+  '',
+  F.STORNODAT,
+  F.STORNOPERS,
+  null
+from FORMULAR F where F.STORNODAT between @abDatum and @bisDatum
+-- Formular Nummernkreis eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then U1.UNINUMBERCODE else '' end, Wertneu = case when Wertneu is not null then U2.UNINUMBERCODE else '' end
+from #changes C, UNINUMBER U1, UNINUMBER U2
+where C.Tabelle = 'FORMULAR' and C.Item = 'UNINUMBERX' and U1.UNINUMBERX =* convert(int, C.Wertalt) and U2.UNINUMBERX =* convert(int, C.Wertneu)
+-- Formular Tarifwerk eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then T1.TARIFCODE else '' end, Wertneu = case when Wertneu is not null then T2.TARIFCODE else '' end
+from #changes C, TARIFWERK T1, TARIFWERK T2
+where C.Tabelle = 'FORMULAR' and C.Item = 'TARIFWERKX' and T1.TARIFWERKX =* convert(int, C.Wertalt) and T2.TARIFWERKX =* convert(int, C.Wertneu)
+
+
+-- MATERIAL
+insert into #changes
+select
+  'MATERIAL',
+  M.MATERIALX,
+  M.MATCODE ,
+  '',
+  '',
+  M.MATERIALNAME,
+  '',
+  M.ERFASSDAT,
+  M.ERFASSPERS,
+  'New',
+  '',
+  null,
+  '',
+  '',
+  '',
+  M.STORNODAT,
+  M.STORNOPERS,
+  null
+from MATERIAL M where M.ERFASSDAT between @abDatum and @bisDatum
+insert into #changes
+select
+  'MATERIAL',
+  M.MATERIALX,
+  M.MATCODE ,
+  '',
+  M.MATERIALNAME,
+  '',
+  '',
+  M.ERFASSDAT,
+  M.ERFASSPERS,
+  'New',
+  '',
+  null,
+  '',
+  '',
+  '',
+  M.STORNODAT,
+  M.STORNOPERS,
+  null
+from MATERIAL M where M.STORNODAT between @abDatum and @bisDatum
+
+
+-- UNINUMBER
+insert into #changes
+select
+  'UNINUMBER',
+  U.UNINUMBERX,
+  U.UNINUMBERCODE ,
+  '',
+  '',
+  U.UNINUMBERNAME,
+  '',
+  U.ERFASSDAT,
+  U.ERFASSPERS,
+  'New',
+  '',
+  null,
+  '',
+  '',
+  '',
+  U.STORNODAT,
+  U.STORNOPERS,
+  null
+from UNINUMBER U where U.ERFASSDAT between @abDatum and @bisDatum
+insert into #changes
+select
+  'UNINUMBER',
+  U.UNINUMBERX,
+  U.UNINUMBERCODE ,
+  '',
+  U.UNINUMBERNAME,
+  '',
+  '',
+  U.ERFASSDAT,
+  U.ERFASSPERS,
+  'Del.',
+  '',
+  null,
+  '',
+  '',
+  '',
+  U.STORNODAT,
+  U.STORNOPERS,
+  null
+from UNINUMBER U where U.STORNODAT between @abDatum and @bisDatum
+
+
+-- VORLAGE
+insert into #changes
+select
+  'VORLAGE',
+  V.VORLAGEX,
+  V.VORLAGENAME,
+  '',
+  '',
+  V.VORLAGENAME,
+  '',
+  V.ERFASSDAT,
+  V.ERFASSPERS,
+  'New',
+  '',
+  null,
+  '',
+  '',
+  '',
+  V.STORNODAT,
+  V.STORNOPERS,
+  null
+from VORLAGE V where V.ERFASSDAT between @abDatum and @bisDatum
+insert into #changes
+select
+  'VORLAGE',
+  V.VORLAGEX,
+  V.VORLAGENAME,
+  '',
+  V.VORLAGENAME,
+  '',
+  '',
+  V.STORNODAT,
+  V.STORNOPERS,
+  'Del.',
+  '',
+  null,
+  '',
+  '',
+  '',
+  V.STORNODAT,
+  V.STORNOPERS,
+  null
+from VORLAGE V where V.STORNODAT between @abDatum and @bisDatum
+
+-- Vorlagen bez. Scopewerten überarbeiten
+update #changes set Scope = 'Global', Scopewert = ''      -- globale Vorlagen
+from #changes C, VORLAGE V
+where C.Tabelle = 'VORLAGE' and
+      V.VORLAGEX = C.XRef and
+      V.EINSENDERX is  null and
+      V.CLIENTX is null and
+      V.IDENTX is null
+update #changes set Scope = 'Abteilung', Scopewert = E.EINSCODE      -- Abteilung
+from #changes C, EINSENDER E, VORLAGE V
+where C.Tabelle = 'VORLAGE' and
+      V.VORLAGEX = C.XRef and
+      V.EINSENDERX is not null and
+      E.EINSENDERX = V.EINSENDERX
+update #changes set Scope = 'Client', Scopewert = CL.CLIENTCODE   -- Arbeitsplatz
+from #changes C, CLIENT CL, VORLAGE V
+where C.Tabelle = 'VORLAGE' and
+      V.VORLAGEX = C.XRef and
+      V.CLIENTX is not null and
+      CL.CLIENTX = V.CLIENTX
+update #changes set Scope = 'User', Scopewert = I.IDENTCODE     -- Benutzer
+from #changes C, IDENT I, VORLAGE V
+where C.Tabelle = 'VORLAGE' and
+      V.VORLAGEX = C.XRef and
+      V.IDENTX is not null and
+      I.IDENTX = V.IDENTX
+-- Vorlagentyp eintragen
+update #changes set Datentyp = FW.FWTEXT1
+from #changes C, VORLAGE V, FESTWERT FW
+where C.Tabelle = 'VORLAGE' and 
+      V.VORLAGEX = XRef and 
+      FW.TABELLE = 'VORLAGE' and 
+      FW.SPALTE = 'VORLAGETYP' and 
+      FW.INTWERT =* V.VORLAGETYP and 
+      FW.SPRACHID = @language and 
+      FW.STORNODAT is null
+-- Vorlagentyp eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then FW1.FWTEXT1 else '' end, Wertneu = case when Wertneu is not null then FW2.FWTEXT1 else '' end
+from #changes C, VORLAGE V, FESTWERT FW1, FESTWERT FW2
+where C.Tabelle = 'VORLAGE' and 
+      C.Item = 'VORLAGETYP' and 
+      V.VORLAGEX = XRef and 
+      FW1.TABELLE = 'VORLAGE' and 
+      FW1.SPALTE = 'VORLAGETYP' and 
+      FW1.INTWERT =* convert(int, C.Wertalt) and 
+      FW1.SPRACHID = @language and FW1.STORNODAT is null and FW2.TABELLE = 'VORLAGE' and 
+      FW2.SPALTE = 'VORLAGETYP' and 
+      FW2.INTWERT =* convert(int, C.Wertneu) and 
+      FW2.SPRACHID = @language and 
+      FW2.STORNODAT is null
+-- Vorlagen bez. Einsender überarbeiten (wenn geändert)
+update #changes set Wertalt = E1.EINSCODE, Wertneu = E2.EINSCODE
+from #changes C, EINSENDER E1, EINSENDER E2
+where C.Tabelle = 'VORLAGE' and
+      C.Art = 'Update' and
+      C.Item = 'EINSENDERX' and
+      E1.EINSENDERX =* convert(int, C.Wertalt) and
+      E2.EINSENDERX =* convert(int, C.Wertneu)
+-- Vorlagen bez. Arbeitsplatz (Client) überarbeiten (wenn geändert)
+update #changes set Wertalt = C1.CLIENTCODE, Wertneu = C2.CLIENTCODE
+from #changes C, CLIENT C1, CLIENT C2
+where C.Tabelle = 'VORLAGE' and
+      C.Art = 'Update' and
+      C.Item = 'CLIENTX' and
+      C1.CLIENTX =* convert(int, C.Wertalt) and
+      C2.CLIENTX =* convert(int, C.Wertneu)
+-- Vorlagen bez. User überarbeiten (wenn geändert)
+update #changes set Wertalt = I1.IDENTCODE, Wertneu = I2.IDENTCODE
+from #changes C, IDENT I1, IDENT I2
+where C.Tabelle = 'VORLAGE' and
+      C.Art = 'Update' and
+      C.Item = 'IDENTX' and
+      I1.IDENTX =* convert(int, C.Wertalt) and
+      I2.IDENTX =* convert(int, C.Wertneu)
+
+
+-- VORLAGEANF
+insert into #changes
+select
+  'VORLAGEANF',
+  VA.VORLAGEANFX,
+  VO.VORLAGENAME,
+  '',
+  '',
+  A.CODE,
+  '',
+  VA.ERFASSDAT,
+  VA.ERFASSPERS,
+  'New',
+  '',
+  null,
+  '',
+  '',
+  '',
+  VA.STORNODAT,
+  VA.STORNOPERS,
+  VO.VORLAGEX
+from VORLAGEANF VA, VORLAGE VO, ANALYT A where VA.ERFASSDAT between @abDatum and @bisDatum and VO.VORLAGEX = VA.VORLAGEX and A.ANALYTX =* VA.ANALYTX
+
+insert into #changes
+select
+  'VORLAGEANF',
+  VA.VORLAGEANFX,
+  VO.VORLAGENAME,
+  '',
+  A.CODE,
+  '',
+  '',
+  VA.STORNODAT,
+  VA.STORNOPERS,
+  'Del.',
+  '',
+  null,
+  '',
+  '',
+  '',
+  VA.STORNODAT,
+  VA.STORNOPERS,
+  VO.VORLAGEX
+from VORLAGEANF VA, VORLAGE VO, ANALYT A where VA.STORNODAT between @abDatum and @bisDatum and VO.VORLAGEX = VA.VORLAGEX and A.ANALYTX =* VA.ANALYTX
+-- Vorlagen bez. Scopewerten überarbeiten
+update #changes set Xref2 = VA.VORLAGEX, Code = V.VORLAGENAME     -- bei Updates VORLAGENAME in Code und VORLAGEX in Xref2 nachtragen
+from #changes C, VORLAGEANF VA, VORLAGE V
+where C.Tabelle = 'VORLAGEANF' and
+      C.Art = 'Update' and
+      VA.VORLAGEANFX = C.XRef and
+      V.VORLAGEX = VA.VORLAGEX
+update #changes set Scope = 'Global', Scopewert = ''      -- globale Vorlagen
+from #changes C, VORLAGE V
+where C.Tabelle = 'VORLAGEANF' and
+      V.VORLAGEX = C.Xref2 and
+      V.EINSENDERX is  null and
+      V.CLIENTX is null and
+      V.IDENTX is null
+update #changes set Scope = 'Abteilung', Scopewert = E.EINSCODE      -- Abteilung
+from #changes C, EINSENDER E, VORLAGE V
+where C.Tabelle = 'VORLAGEANF' and
+      V.VORLAGEX = C.Xref2 and
+      V.EINSENDERX is not null and
+      E.EINSENDERX = V.EINSENDERX
+update #changes set Scope = 'Client', Scopewert = CL.CLIENTCODE   -- Arbeitsplatz
+from #changes C, CLIENT CL, VORLAGE V
+where C.Tabelle = 'VORLAGEANF' and
+      V.VORLAGEX = C.Xref2 and
+      V.CLIENTX is not null and
+      CL.CLIENTX = V.CLIENTX
+update #changes set Scope = 'User', Scopewert = I.IDENTCODE     -- Benutzer
+from #changes C, IDENT I, VORLAGE V
+where C.Tabelle = 'VORLAGEANF' and
+      V.VORLAGEX = C.Xref2 and
+      V.IDENTX is not null and
+      I.IDENTX = V.IDENTX
+-- Vorlagentyp eintragen
+update #changes set Datentyp = FW.FWTEXT1
+from #changes C, VORLAGE V, FESTWERT FW
+where C.Tabelle = 'VORLAGEANF' and V.VORLAGEX = Xref2 and FW.TABELLE = 'VORLAGE' and FW.SPALTE = 'VORLAGETYP' and FW.INTWERT =* V.VORLAGETYP and FW.SPRACHID = @language and FW.STORNODAT is null
+-- VORLAGEANF Analyt, MFA oder Profilanalyt eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then A1.CODE else '' end, Wertneu = case when Wertneu is not null then A2.CODE else '' end
+from #changes C, ANALYT A1, ANALYT A2
+where C.Tabelle = 'VORLAGEANF' and C.Item in ('ANALYTX','MFAANLYTX','PANALYTX') and A1.ANALYTX =* convert(int, C.Wertalt) and A2.ANALYTX =* convert(int, C.Wertneu)
+-- VORLAGEANF Behälter eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then B1.BEHAELTERCODE else '' end, Wertneu = case when Wertneu is not null then B2.BEHAELTERCODE else '' end
+from #changes C, VORLAGEANF VA, BEHAELTER B1, BEHAELTER B2
+where C.Tabelle = 'VORLAGEANF' and C.Item = 'BEHAELTERX' and B1.BEHAELTERX =* convert(int, C.Wertalt) and B2.BEHAELTERX =* convert(int, C.Wertneu)
+-- VORLAGEANF DEFICODE eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then D1.DEFICODE else '' end, Wertneu = case when Wertneu is not null then D2.DEFICODE else '' end
+from #changes C, DEFI D1, DEFI D2
+where C.Tabelle = 'VORLAGEANF' and C.Item = 'ERGEBNISD' and D1.DEFIX =* convert(int, C.Wertalt) and D2.DEFIX =* convert(int, C.Wertneu)
+
+
+-- CLIENT
+insert into #changes
+select 
+  'CLIENT',                               
+  C.CLIENTX,                              
+  C.CLIENTCODE,                           
+  '',                                     
+  '',                                     
+  C.CLIENTNAME,                           
+  '',                                     
+  C.ERFASSDAT,                            
+  C.ERFASSPERS,                           
+  'New',                                  
+  '',                                     
+  null,                                   
+  '',                                     
+  '',                                     
+  '',                                     
+  C.STORNODAT,                            
+  C.STORNOPERS,                           
+  null                                      
+from CLIENT C 
+where C.ERFASSDAT between @abDatum and @bisDatum
+insert into #changes
+select 
+  'CLIENT',  
+  C.CLIENTX,  
+  C.CLIENTCODE ,
+  '', 
+   C.CLIENTNAME, 
+  '', 
+  '', 
+  C.STORNODAT, 
+  C.STORNOPERS, 
+  'Del.', 
+  '', 
+  null, 
+  '', 
+  '', 
+  '', 
+  C.STORNODAT, 
+  C.STORNOPERS,
+  null 
+from CLIENT C where C.STORNODAT between @abDatum and @bisDatum
+-- Clienttyp eintragen
+update #changes set Datentyp = FW.FWTEXT1
+from #changes C, CLIENT CL, FESTWERT FW
+where C.Tabelle = 'CLIENT' and 
+      CL.CLIENTX = XRef and 
+      FW.TABELLE = 'CLIENT' and 
+      FW.SPALTE = 'CLIENTTYP' and 
+      FW.INTWERT =* CL.CLIENTTYP and 
+      FW.SPRACHID = @language and 
+      FW.STORNODAT is null
+-- Clienttyp eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then FW1.FWTEXT1 else '' end, Wertneu = case when Wertneu is not null then FW2.FWTEXT1 else '' end
+from #changes C, CLIENT CL, FESTWERT FW1, FESTWERT FW2
+where C.Tabelle = 'CLIENT' and 
+      C.Item = 'CLIENTTYP' and 
+      CL.CLIENTX = XRef and 
+      FW1.TABELLE = 'CLIENT' and 
+      FW1.SPALTE = 'CLIENTTYP' and 
+      FW1.INTWERT =* convert(int, C.Wertalt) and 
+      FW1.SPRACHID = @language and 
+      FW1.STORNODAT is null and 
+      FW2.TABELLE = 'CLIENT' and 
+      FW2.SPALTE = 'CLIENTTYP' and 
+      FW2.INTWERT =* convert(int, C.Wertneu) and 
+      FW2.SPRACHID = @language and 
+      FW2.STORNODAT is null
+-- Clientsperre eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then FW1.FWTEXT1 else '' end, Wertneu = case when Wertneu is not null then FW2.FWTEXT1 else '' end
+from #changes C, CLIENT CL, FESTWERT FW1, FESTWERT FW2
+where C.Tabelle = 'CLIENT' and 
+      C.Item = 'SPERRE' and 
+      CL.CLIENTX = XRef and 
+      FW1.TABELLE = 'CLIENT' and 
+      FW1.SPALTE = 'SPERRE' and 
+      FW1.INTWERT =* convert(int, C.Wertalt) and 
+      FW1.SPRACHID = @language and 
+      FW1.STORNODAT is null and 
+      FW2.TABELLE = 'IDENT' and 
+      FW2.SPALTE = 'SPERRE' and 
+      FW2.INTWERT =* convert(int, C.Wertneu) and 
+      FW2.SPRACHID = @language and 
+      FW2.STORNODAT is null
+-- Client bez. Einsender überarbeiten (wenn geändert)
+update #changes set Wertalt = E1.EINSCODE, Wertneu = E2.EINSCODE
+from #changes C, EINSENDER E1, EINSENDER E2
+where C.Tabelle = 'CLIENT' and
+      C.Art = 'Update' and
+      C.Item = 'EINSENDERX' and
+      E1.EINSENDERX =* convert(int, C.Wertalt) and
+      E2.EINSENDERX =* convert(int, C.Wertneu)
+-- Benutzer bez. Rollen überarbeiten (wenn geändert)
+update #changes set Wertalt = R1.CODE, Wertneu = R2.CODE, Item = C.Item
+from #changes C, ROLLE R1, ROLLE R2
+where C.Tabelle = 'CLIENT' and
+      (C.Item = 'ROLLEX') and
+      R1.ROLLEX =* convert(int, C.Wertalt) and
+      R2.ROLLEX =* convert(int, C.Wertneu)
+
+
+-- IDENT
+insert into #changes
+select 
+  'IDENT',  
+  I.IDENTX,  
+  I.IDENTCODE , 
+  '', 
+  '', 
+  case when I.IDENTNAME is not null then I.IDENTNAME else '' end, 
+  '', 
+  I.ERFASSDAT, 
+  I.ERFASSPERS, 
+  'New', 
+  '', 
+  null, 
+  '', 
+  '', 
+  '', 
+  I.STORNODAT, 
+  I.STORNOPERS,
+  null
+from IDENT I 
+where I.ERFASSDAT between @abDatum and @bisDatum 
+-- Scope eintragen
+update #changes set Scope = 'Global', Scopewert = ''      -- keiner Abteilung zugehörig
+from #changes C, IDENT I
+where C.Tabelle = 'IDENT' and
+      I.IDENTX = C.XRef and
+      I.EINSENDERX is  null
+update #changes set Scope = 'Abteilung', Scopewert = E.EINSCODE      -- Abteilung
+from #changes C, EINSENDER E, IDENT I
+where C.Tabelle = 'IDENT' and
+      I.IDENTX = C.XRef and
+      I.EINSENDERX is not null and
+      E.EINSENDERX = I.EINSENDERX
+
+-- Benutzertyp eintragen
+update #changes set Datentyp = FW.FWTEXT1
+from #changes C, IDENT I, FESTWERT FW
+where C.Tabelle = 'IDENT' and 
+      I.IDENTX = XRef and 
+      FW.TABELLE = 'IDENT' and 
+      FW.SPALTE = 'IDENTTYP' and 
+      FW.INTWERT =* I.IDENTTYP and 
+      FW.SPRACHID = @language and 
+      FW.STORNODAT is null
+-- Benutzertyp eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then FW1.FWTEXT1 else '' end, Wertneu = case when Wertneu is not null then FW2.FWTEXT1 else '' end
+from #changes C, IDENT I, FESTWERT FW1, FESTWERT FW2
+where C.Tabelle = 'IDENT' and 
+      C.Item = 'IDENTTYP' and 
+      I.IDENTX = XRef and 
+      FW1.TABELLE = 'IDENT' and 
+      FW1.SPALTE = 'IDENTTYP' and 
+      FW1.INTWERT =* convert(int, C.Wertalt) and 
+      FW1.SPRACHID = @language and 
+      FW1.STORNODAT is null and 
+      FW2.TABELLE = 'IDENT' and 
+      FW2.SPALTE = 'IDENTTYP' and 
+      FW2.INTWERT =* convert(int, C.Wertneu) and 
+      FW2.SPRACHID = @language and 
+      FW2.STORNODAT is null
+-- Benutzersperre eintragen (wenn geändert)
+update #changes set Wertalt = case when Wertalt is not null then FW1.FWTEXT1 else '' end, Wertneu = case when Wertneu is not null then FW2.FWTEXT1 else '' end
+from #changes C, IDENT I, FESTWERT FW1, FESTWERT FW2
+where C.Tabelle = 'IDENT' and 
+      C.Item = 'SPERRE' and 
+      I.IDENTX = XRef and 
+      FW1.TABELLE = 'IDENT' and 
+      FW1.SPALTE = 'SPERRE' and 
+      FW1.INTWERT =* convert(int, C.Wertalt) and 
+      FW1.SPRACHID = @language and 
+      FW1.STORNODAT is null and 
+      FW2.TABELLE = 'IDENT' and 
+      FW2.SPALTE = 'SPERRE' and 
+      FW2.INTWERT =* convert(int, C.Wertneu) and 
+      FW2.SPRACHID = @language and 
+      FW2.STORNODAT is null
+-- Benutzer bez. Einsender überarbeiten (wenn geändert)
+update #changes set Wertalt = E1.EINSCODE, Wertneu = E2.EINSCODE
+from #changes C, EINSENDER E1, EINSENDER E2
+where C.Tabelle = 'IDENT' and
+      C.Art = 'Update' and
+      C.Item = 'EINSENDERX' and
+      E1.EINSENDERX =* convert(int, C.Wertalt) and
+      E2.EINSENDERX =* convert(int, C.Wertneu)
+-- Benutzer bez. Rollen überarbeiten (wenn geändert)
+update #changes set Wertalt = R1.CODE, Wertneu = R2.CODE, Item = C.Item
+from #changes C, ROLLE R1, ROLLE R2
+where C.Tabelle = 'IDENT' and
+      (C.Item = 'ROLLEX') and
+      R1.ROLLEX =* convert(int, C.Wertalt) and
+      R2.ROLLEX =* convert(int, C.Wertneu)
+
+
+-- abschließende Bereinigungen
+update #changes set Scope = '', Scopewert = ''  -- nicht alle Satmmdaten haben einen Scope
+from #changes C
+where C.Tabelle not in ('SYSTEMPARAM','BEFUNDSICHT','VORLAGE') and
+      C.Scope = null and
+      C.Scopewert = null
+
+
+-- Ausgabe
+-- set nocount off
+select
+--   cnt,
+   type = c.Art,
+   'table' = c.Tabelle,
+   'actual data type' = case when c.Datentyp is not null then substring(c.Datentyp,1,32) else '' end,
+   code = c.Code,
+   item = c.Item,
+   'value'     = case when c.Art = 'Update' then substring(c.Wertalt,1,32) + ' --> ' + substring(c.Wertneu,1,32)  -- Update
+                   when c.Art = 'Storno' or c.Art = 'inakt.' then substring(c.Wertalt,1,32) + ' --> '             -- Storno/inaktiviert
+                   when c.Art = 'New'  then ' --> ' + substring(c.Wertneu,1,32)                                   -- New
+                   when (c.Wertalt = null or c.Wertalt = '') and c.Wertneu <> '' then substring(c.Wertneu,1,32)                   -- New
+--                 when c.Wertalt <> '' and (c.Wertneu = null or c.Wertneu = '') then substring(c.Wertalt,1,32)                   -- Storno
+--                 when (c.Wertalt = null or c.Wertalt = '') and c.Wertneu <> '' then substring(c.Wertneu,1,32)                   -- New
+              end,
+   scope = c.Scope,
+   scopevalue = c.Scopewert,
+   entrydat = convert(char(11),c.Wann,102)+convert(char(5),c.Wann,108)+' ',
+   entrypers = substring(P1.PERSONID,1,12),
+   deldat = convert(char(11),c.Stornodat,102)+convert(char(5),c.Stornodat,108)+' ',
+   delpers = case when P2.PERSONID is not null then substring(P2.PERSONID,1,12) else '' end,
+   refvalue = c.XRef
+--   Wertalt, 
+--   Wertneu, 
+from #changes c, PERSON P1, PERSON P2
+where
+   P1.PERSONX =* c.Wer and
+   P2.PERSONX =* c.Stornopers -- and
+--   c.Art = 'Update' and
+--   c.Tabelle in ('METHGRUPPE','EINSENDERGRUPPE')
+--   c.Tabelle in ('EINSENDERGRUPPE')
+--   c.Tabelle in ('IDENT')
+--   c.Tabelle in ('CLIENT','IDENT')
+-- c.Tabelle in ('ANALYTINFO')
+-- c.Tabelle in ('VORLAGE','VORLAGEANF')
+-- c.Tabelle in ('UNINUMBER')
+-- c.Tabelle in ('MATERIAL')
+-- c.Tabelle in ('ANFORDERUNG','FORMULAR', 'BEHAELTER')
+-- c.Tabelle in ('FORMULAR')
+-- c.Tabelle in ('BEHAELTER')
+-- c.Tabelle in ('SYSTEMPARAM','ANALYT','BEHAELTER','FORMULAR')
+-- c.Tabelle in ('BEFUNDSICHTANF','BEFUNDSICHT')
+order by c.Wann
+
+
+go

@@ -1,0 +1,85 @@
+ 
+ ----------------------------------------- 
+ Lauris Info-Script Version vom 18.08.2009 
+ ----------------------------------------- 
+   
+ Ausgeführt am: 19.07. 
+   
+   
+  SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  -------------------------- -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                             SYBSUNR              Sybase ASE 12.5.4 au Adaptive Server Enterprise/12.5.4/EBF 14065 ESD#3/P/Sun_svr4/OS 5.8/ase1254/2030/64-bit/FBO/Sat Oct 14 07:19:31 2006                                                                                                                                             
+                             SWDSSUNR             Sybase ASE 12.5.4 au Adaptive Server Enterprise/12.5.4/EBF 14065 ESD#3/P/Sun_svr4/OS 5.8/ase1254/2030/64-bit/FBO/Sat Oct 14 07:19:31 2006                                                                                                                                             
+   
+ Swisslab-Information: 
+  Name                              Revision   CrDate          DB               
+  --------------------------------- ---------- --------------- ---------------  
+  Kalenderwoche                     2009.03    23.10.09  00:00                  
+  letztes Swisspro                  2009.03    23.03.10  17:06                  
+  swissup3.tab                       2.09 $    23.03.10  16:53                  
+  swlupgrade.tab                     2.20 $    02.06.09  15:18                  
+  Lauris (via lauris.ini)            1.04 $    23.03.10  17:03                  
+  Blutbank (via barkasse.pro)        1.06 $    23.03.10  17:00                  
+  Statistik (via statistik.pro)      5.63 $    23.03.10  17:03                  
+  BB-Statistik (via spendestat.pro)  1.24 $    23.03.10  17:00                  
+                                                                                
+  neu:PI_STORNOLAURISANFO            1.19 $    13.07.10  15:24 SWISSLAB         
+  neu:PR_GETPRINTMSG                 1.00 $    13.07.10  15:22 SWISSLAB         
+  neu:PR_BEFUNDDOKUMENT              1.28.1    01.07.10  10:57 SWISSLAB         
+  neu:PI_VEKTORALLE                  1.72 $    24.03.10  12:06 SWISSLAB         
+  neu:PR_LASRESULTATVEKTOR           1.88 $    24.03.10  11:19 SWISSLAB         
+  mehr mit: PR_REVISION A(LLE)                                                  
+ aktive Lauris-Versionen: 
+  Anzahl Clients:              
+  --------------- -----------  
+                         1233  
+  LaurisVersion(max)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#9.08.18¹# FW=#1.1.4322.2463# OS=#5.1.2600.0#Win32NT                                                                                                                                                                                                          
+  LaurisVersion(min)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#10.03.04# FW=#2.0.50727.1433# OS=#5.0.2195.262144#Win32NT                                                                                                                                                                                                    
+   
+   
+  Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------- ----------- --------------- -----------  
+                                  27668           23738           0  
+   
+   
+   
+ Anforderung für die Mikrobiologie? 
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+   
+ --- Nachfordern  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+  AUFTRAG  NACHFORDERN      0         NULL             LAURISCLIE NULL             NULL       NULL     08.07.2010 16:29:00  ssc                                   NULL                    68819          -1          -1 LAURIS          NULL      0        0           1  
+  AUFTRAG  NACHFORDERN      0         NULL             NULL       KNISPESE         NULL       NULL     12.07.2010 16:49:00  ssc                                   NULL                    68822          -1          -1 LAURIS           741      0        0           2  
+   
+   
+ --- POCTen  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+  AUFTRAG  POCTFORMULAR     0         NULL             NULL       NULL             NULL       NULL     16.04.2008 10:39:00  ssc                                   NULL                    41711          -1          -1 LAURIS          NULL      0       24          62  
+  CLIENT   POCTGERAET       0         NULL             NULL       KNISPESE         NULL       NULL     12.10.2006 11:30:00  SWLSTAFF                              NULL                    29672          64          64 LAURIS           741      0       30         218  
+  CLIENT   POCTGERAET       0         NULL             NULL       mdrauh           NULL       NULL     14.10.2004 12:01:00  SWLSTAFF                              NULL                     4093          -1          -1 LAURIS             6      0       30        1036  
+  CLIENT   POCTGERAET       0         NULL             NULL       neumeirf         NULL       NULL     08.03.2005 14:27:00  neumeirf                              NULL                     9171          64          64 LAURIS           102      0       30         218  
+  CLIENT   POCTGERAET       0         NULL             NULL       SCHMIDAD         NULL       NULL     12.11.2004 12:56:00  SWLSTAFF         12.11.2004 13:23:00  SWLSTAFF                 5175          -1          -1 LAURIS           178      0       30        1011  
+  CLIENT   POCTGERAET       0         NULL             NULL       test             NULL       NULL     14.10.2004 08:44:00  SWLSTAFF                              NULL                     4090          -1          -1 LAURIS             1      0       30         218  
+  CLIENT   POCTGERAET       0         NULL             NULL       test1            NULL       NULL     21.05.2010 09:35:00  ssc                                   NULL                    67793          -1          -1 LAURIS             9      0       30        1076  
+  CLIENT   POCTGRUPPE       0         NULL             NULL       test1            NULL       NULL     21.05.2010 09:35:00  ssc                                   NULL                    67794          -1          -1 LAURIS             9      0       31        1045  
+  CLIENT   POCTKOMMENT      0         NULL             NULL       KNISPESE         NULL       NULL     12.10.2006 11:30:00  SWLSTAFF                              NULL                    29673          64          64 LAURIS           741      0       14         608  
+  CLIENT   POCTKOMMENT      0         NULL             NULL       mdrauh           NULL       NULL     14.10.2004 12:01:00  SWLSTAFF                              NULL                     4094          -1          -1 LAURIS             6      0       14         605  
+  CLIENT   POCTKOMMENT      0         NULL             NULL       neumeirf         NULL       NULL     08.03.2005 14:30:00  neumeirf                              NULL                     9175          64          64 LAURIS           102      0       14         608  
+  CLIENT   POCTKOMMENT      0         NULL             NULL       SCHMIDAD         NULL       NULL     12.11.2004 12:56:00  SWLSTAFF                              NULL                     5176          -1          -1 LAURIS           178      0       14         362  
+  CLIENT   POCTKOMMENT      0         NULL             NULL       test             NULL       NULL     14.10.2004 08:44:00  SWLSTAFF                              NULL                     4091          -1          -1 LAURIS             1      0       14        2302  
+  CLIENT   POCTKOMMENT      0         NULL             NULL       test1            NULL       NULL     21.05.2010 09:36:00  ssc                                   NULL                    67795          -1          -1 LAURIS             9      0       14        2302  
+  CLIENT   POCTQC           0         NULL             NULL       KNISPESE         NULL       NULL     12.10.2006 11:30:00  SWLSTAFF                              NULL                    29674          64          64 LAURIS           741      0        0           1  
+  CLIENT   POCTQC           0         NULL             NULL       mdrauh           NULL       NULL     14.10.2004 12:01:00  SWLSTAFF                              NULL                     4092          -1          -1 LAURIS             6      0        0           1  
+  CLIENT   POCTQC           0         NULL             NULL       neumeirf         NULL       NULL     08.03.2005 14:27:00  neumeirf                              NULL                     9174          64          64 LAURIS           102      0        0           1  
+  CLIENT   POCTQC           0         NULL             NULL       SCHMIDAD         NULL       NULL     12.11.2004 12:56:00  SWLSTAFF                              NULL                     5174          -1          -1 LAURIS           178      0        0           1  
+  CLIENT   POCTQC           0         NULL             NULL       test             NULL       NULL     14.10.2004 08:44:00  SWLSTAFF         18.07.2008 13:57:00  ssc                      4089          -1          -1 LAURIS             1      0        0           0  
+  CLIENT   POCTQC           0         NULL             NULL       test1            NULL       NULL     21.05.2010 09:34:00  ssc                                   NULL                    67792          -1          -1 LAURIS             9      0        0           1  

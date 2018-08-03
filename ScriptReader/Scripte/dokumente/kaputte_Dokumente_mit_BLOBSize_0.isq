@@ -1,0 +1,31 @@
+select
+  D.DOKUMENTX
+into #temp
+from SWISSDOC..DOKUMENT D
+where
+  D.ERFASSDAT > '01.08.2015 00:00' and
+  D.AKTIVBIS is null
+
+select
+  Patifall = P.PATIFALLNR,
+  Auftragnr = substring(A.AUFTRAGNR,1,12),
+  E.EINSCODE,
+  D2.DOKTYPCODE,
+  DokTypBeschreibung = substring(D2.DOKBESCHREIBUNG,1,24),
+  DokBeschreibung = substring(D.DOBESCHREIBUNG,1,24),
+  blobsize = datalength(BL.BIN_IMAGE),
+  D.DATEIGROESSE,
+  Erfassdat=convert(char(11),D.ERFASSDAT ,104)+convert(char(8),D.ERFASSDAT ,108)+' ',
+  Erfasspers=PE.PERSONID
+from #temp t, AUFTRAG A, EINSENDER E, PATIFALL P, SWISSDOC..DOKUMENT D, SWISSDOC..DOKUMENTTYP D2, PERSON PE, SWISSDOC..BLOBTAB BL
+where
+  D.DOKUMENTX = t.DOKUMENTX and
+  A.AUFTRAGX = D.AUFTRAGX and
+  D2.DOKUMENTTYPX = D.DOKUMENTTYPX and
+  P.PATIFALLX = A.PATIFALLX and
+  E.EINSENDERX = A.EINSENDERX and
+  PE.PERSONX = D.ERFASSPERS and
+  BL.DOKUMENTX = D.DOKUMENTX and
+  datalength(BL.BIN_IMAGE) < 100
+order by D.ERFASSDAT
+go

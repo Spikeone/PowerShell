@@ -1,0 +1,96 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: Hetz, ausgeführt am: 09.06.2015 10:21
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           Hetz             Neustadt             sqlbackup            Backupserver         Adaptive Server Enterprise/15.5/EBF 20629 SMP ESD#5.2/P/NT (IX86)/Windows 2003/asear155/2602/32-bit/OPT/Sun Dec 09 10:51:05 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 205     Anzahl User: 424     Anzahl Auftraege Lauris: 5142    Anzahl Auftraege ohne Lauris: 2771   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         205 v12.12.06.2      
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Neil Armstrong                                                                   2012.02    NULL                                     17.09.12  00:00                 
+ letztes Swisspro                                                                 2012.02    NULL                                     22.05.13  14:19                 
+ swissup3.tab                                                                      2.14 $    NULL                                     22.05.13  13:13                 
+ swissup3.tab                                                                      2.14 $    NULL                                     22.05.13  13:13                 
+ swlupgrade.tab                                                                    2.20.1 $  NULL                                     29.07.10  12:00                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     22.05.13  13:53                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     22.05.13  13:42                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     22.05.13  13:56                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     22.05.13  13:43                 
+                                                                                             NULL                                                                     
+ neu:PI_DUMPSTART                                                                  1.23 $    NULL                                     29.11.14  08:00 SWISSLAB        
+ neu:sp__dumpdb                                                                    1.37 $    NULL                                     29.11.14  07:59 sybsystemprocs  
+ neu:PR_LOGINTRIGGER                                                               1.03 $    NULL                                     29.11.14  07:55 SWISSLAB        
+ neu:PD_DELETEAUFTRAG                                                              2.16 $    NULL                                     31.07.13  08:34 SWISSLAB        
+ neu:PD_DELETESTAMM                                                                2.12 $    NULL                                     31.07.13  08:34 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        5142      1 1                Lauf 1                                                                                                                                                                                                                                                          
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        4417 Routine5.0                                                       
+         517 Spontan- / Mittelstrahlurin                                      
+         206 Labor Limbach                                                    
+           2 Blutzucker2.0                                                    
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ CLIENT   POCTQC           NULL       NULL       NULL       
+ CLIENT   POCTQC           NULL       ANWeiss    NULL       
+ CLIENT   POCTQC           NULL       mlampert   NULL       
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: Hetz, beendet am: 09.06.2015 10:21 
+SQL-Abfrage-Dauer: 10  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.1.25.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_01 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 12.12.6.2 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2012_02 

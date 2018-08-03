@@ -1,0 +1,105 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_aktualisieren.isq        */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [060130.2030]                                                  */
+/*KURZINFO : SWL-II: Pflege der Lauris-Patientenliste im TAIN               */
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20060130.2030>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+/* Parameter deklarieren         */
+
+declare
+  @startdat                       smalldatetime,
+  @enddat                         smalldatetime,
+  @datum                          varchar(21),
+  @sqi                            varchar(16),
+  @sqi1                           varchar(16),
+  @sqix                           int,
+  @sqix1                          int,
+  @max_minutes                    int,
+  @REPORT                         tinyint, 
+  @UPDATE                         tinyint
+
+
+set nocount on
+
+/**********************************************************************************************************/
+select @max_minutes    = 4320             /* !!!!!! max. Alter der Neueintraege in Minuten (3 Tage)!!!!!! */
+select @sqi            = 'SQImport'       /* !!!!!! hier den PATI-SQImport-Login eintragen        !!!!!!! */
+select @sqi1           = 'SQImportPati'   /* !!!!!! hier den PATI-SQImport-Login eintragen        !!!!!!! */
+select @REPORT         =  1               /* !!!!!! 1 = Änderungen an PATILISTE berichten         !!!!!!! */
+select @UPDATE         =  0               /* !!!!!! 0 = keine Änderungen an PATILISTE durchführen !!!!!!! */
+/**********************************************************************************************************/
+
+
+select @sqix  = 0
+select @sqix1 = 0
+select @sqix =PERSONX from PERSON where PERSONID=@sqi and STORNODAT is null
+select @sqix1=PERSONX from PERSON where PERSONID=@sqi1 and STORNODAT is null
+/* select PERSONX, PERSONID from PERSON where PERSONID=@sqi and STORNODAT is null        */
+
+set dateformat dmy
+select @startdat=getdate()
+select @datum='Start: ' + convert(char(9),@startdat,4)+convert(char(5),@startdat,8)
+if @REPORT = 1 
+begin
+  print @datum
+  print '+---------------------------------------------------------------------------------+'
+  print '|Lauris, PATILISTE falsche_Neueintraege mit Entlassungsdatum in der Vergangenheit |'
+  print '+---------------------------------------------------------------------------------+'
+  print ''
+  print ''
+  print ''
+end
+set nocount off
+if @REPORT = 1 
+begin
+  
+  select 
+    PatiFall=substring(F.PATIFALLNR,1,10),
+    PatArt=substring(F.PATIART,1,2) +' / '+ substring(P.PATIART,1,2),
+    ErfassdatPatiliste=convert(char(11),P.ERFASSDAT,104)+convert(char(8),P.ERFASSDAT,108)+' ',
+    AktivbisPatiliste=convert(char(11),P.AKTIVBIS,104)+convert(char(8),P.AKTIVBIS,108)+' ',
+    EntlassungdatVerw=convert(char(11),F.ENTLDATVERW,104)+convert(char(8),F.ENTLDATVERW,108)+' ',
+    Einsender_PATILISTE=E1.EINSCODE, 
+    Einsender_PATIFALL=E2.EINSCODE, 
+    PE.PERSONID, P.ERFASSPERS
+  from PATILISTE P, PATIFALL F, EINSENDER E1, EINSENDER E2, PERSON PE
+  where 
+        P.ERFASSDAT > dateadd(minute,-@max_minutes,getdate())
+    and F.PATIFALLX=P.PATIFALLX
+    and F.ENTLDATVERW < P.ERFASSDAT
+    and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+    and P.EINSENDERX*=E1.EINSENDERX
+    and F.EINSENDERX*=E2.EINSENDERX
+    and PE.PERSONX=P.ERFASSPERS
+    order by F.PATIFALLNR
+end
+
+if @UPDATE = 1 
+begin
+ update PATILISTE set AKTIVBIS=dateadd(hour,-1,getdate())
+   from PATILISTE P, PATIFALL F
+   where 
+        P.ERFASSDAT > dateadd(minute,-@max_minutes,getdate())
+     and F.PATIFALLX=P.PATIFALLX
+     and F.ENTLDATVERW < P.ERFASSDAT
+     and (P.ERFASSPERS=@sqix or P.ERFASSPERS=@sqix1)
+end   
+
+set nocount on
+if @REPORT = 1 
+begin
+  select @enddat=getdate()
+  select @datum='Ende: ' + convert(char(9),@enddat,4)+convert(char(5),@enddat,8)
+  print ''
+  print @datum         
+end
+  
+go

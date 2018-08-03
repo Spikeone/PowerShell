@@ -1,0 +1,83 @@
+/****************************************************************************/
+/*FILENAME : o:\lauris\service\sqlscript\patiliste_autoentlass.isq          */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [060130.2030]                                                  */
+/*KURZINFO : SWL-II: automatische Entlassung von Patienten aus der PATILISTE*/
+/*MODULE   : Lauris, Pflege der PATILISTE im TAIN                           */
+/*BEW_ANZ  :                                                                */
+/*BEW_GEF  :                                                                */
+/*TIMESTAMP: <20060130.2030>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[060128] 1.00 lis erstellt                                                */
+/****************************************************************************/
+
+/* Parameter deklarieren         */
+
+declare
+  @startdat      smalldatetime,
+  @enddat        smalldatetime,
+  @datum         varchar(21),
+  @quartn        varchar(6),
+  @quart         tinyint,
+  @einsender     varchar(16)
+  
+  
+set dateformat dmy  
+
+set nocount on
+
+print '+--------------------------------------------------------------+'
+print '|Lauris, PATILISTE: Entlassung quartalsweise für Polikliniken  |'
+print '+--------------------------------------------------------------+'
+print ''
+select @startdat=getdate()
+select @datum='Start: ' + convert(char(9),@startdat,4)+convert(char(5),@startdat,8)
+select @quartn=convert(char(6),@startdat,4)
+print @datum
+
+select @quart=0
+if @quartn='29.01.' select @quart=1
+if @quartn='01.04.' select @quart=2
+if @quartn='01.07.' select @quart=3
+if @quartn='01.10.' select @quart=4
+
+if (@quart>0)
+begin
+  print ''
+  print 'PATILISTE: neues Quartal -> Entlassung quartalsweise für Polikliniken'
+  print ''
+  select 
+    einsender=E1.EINSCODE, 
+    Patifall_Nr=F.PATIFALLNR,
+    Patilistex=P.PATILISTEX
+    into #temp1
+  from PATILISTE P, 
+    EINSENDER E1, 
+    PATIFALL F
+  where F.PATIFALLX=P.PATIFALLX 
+    and E1.EINSENDERX=P.EINSENDERX
+
+    select " Entlassung ambulanter Patienten quartalsweise " + einsender + " " + Patifall_Nr
+    from EINSENDER E2, EINSVEKTOR EV, EINSENDER E3, #temp1 
+    where E2.EINSENDERX=EV.EINSENDERX 
+      and E3.EINSENDERX=EV.EINSVEKTORX 
+      and E2.EINSCODE=einsender
+      and E3.EINSCODE="POLI"
+      
+    update PATILISTE set AKTIVBIS=getdate() 
+    from EINSENDER E2, EINSVEKTOR EV, EINSENDER E3, #temp1, PATILISTE P 
+    where E2.EINSENDERX=EV.EINSENDERX 
+      and E3.EINSENDERX=EV.EINSVEKTORX 
+      and E2.EINSCODE=einsender
+      and E3.EINSCODE="POLI"
+      and P.PATILISTEX=Patilistex 
+end
+
+set nocount on
+select @enddat=getdate()
+select @datum='Ende: ' + convert(char(9),@enddat,4)+convert(char(5),@enddat,8)
+print ''
+print @datum
+
+go

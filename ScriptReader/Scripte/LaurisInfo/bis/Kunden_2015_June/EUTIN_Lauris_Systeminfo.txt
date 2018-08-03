@@ -1,0 +1,81 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: EUTIN, ausgeführt am: 09.06.2015 08:50
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           EUTIN            Sana Kliniken Osthol SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 15438 ESD#8/P/NT (IX86)/OS 4.0/ase1254/2105/32-bit/OPT/Sat Mar 22 04:44:15 2008                                                                                                                                           
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 0       Anzahl User: 0       Anzahl Auftraege Lauris: 0       Anzahl Auftraege ohne Lauris: 8609   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+ 
+ 
+Swisslab-Revision:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2009.02    08.04.09  00:00                 
+ letztes Swisspro                  2009.02    14.10.09  15:37                 
+ swissup3.tab                       2.08 $    14.10.09  15:07                 
+ swlupgrade.tab                     2.20.1 $  30.03.10  11:35                 
+ Lauris (via lauris.ini)            1.03 $    14.10.09  15:31                 
+ Blutbank (via barkasse.pro)        1.06 $    30.03.10  11:34                 
+ Statistik (via statistik.pro)      5.51 $    30.03.10  11:36                 
+ BB-Statistik (via spendestat.pro)  1.21 $    14.10.09  15:24                 
+                                                                              
+ neu:PR_ABLIAUFTPATIEINS            3.88 $    30.03.10  12:04 SWISSLAB        
+ neu:PR_BEFUNDDOKUMENT              1.28 $    30.03.10  11:37 SWISSLAB        
+ neu:PR_DOKUMENT                    1.57.1    30.03.10  11:37 SWISSLAB        
+ neu:PR_LOCK                        2.46 $    30.03.10  11:37 SWISSLAB        
+ neu:PR_LOGS                        2.43 $    30.03.10  11:37 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                 
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: EUTIN, beendet am: 09.06.2015 08:50 
+SQL-Abfrage-Dauer: 5   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+. 
+. 
+Lauris-Versionsinfo: 

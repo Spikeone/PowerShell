@@ -1,0 +1,59 @@
+print '--- Lauris: Formular_und_Vorlagen_Eigner.isq  ---'
+select
+  F.FORMULARX,
+  Formular=F.FORMULARCODE,
+  Erfassdat=convert(char(11),F.ERFASSDAT,104)+convert(char(8),F.ERFASSDAT,108)+' ',
+  ErfassPers=P.PERSONID,
+  Mutdat=convert(char(11),F.MUTDAT,104)+convert(char(8),F.MUTDAT,108)+' ',
+  MutPers=P2.PERSONID,
+  Eigner=F.EIGNER,
+  EignerCode=T1.EINSCODE,
+  Nutzer=F.NUTZER,
+  NutzerCode=T2.EINSCODE
+from 
+  FORMULAR F,
+  PERSON P,
+  PERSON P2,
+  EINSENDER T1,
+  EINSENDER T2
+where 
+  F.STORNODAT is null and
+  F.ERFASSPERS=P.PERSONX and
+  F.MUTPERS*=P2.PERSONX and  
+  T1.EIGNERBIT=*F.EIGNER and
+  T1.STORNODAT is null and
+  T1.AKTIVBIS is null and
+  T2.EIGNERBIT=*F.NUTZER and
+  T2.STORNODAT is null and
+  T2.AKTIVBIS is null
+go
+
+select
+  V.VORLAGEX,
+  V.FORMULARX,
+  Vorlage=substring(V.VORLAGENAME,1,16),
+  Erfassdat=convert(char(11),V.ERFASSDAT,104)+convert(char(8),V.ERFASSDAT,108)+' ',
+  ErfassPers=P.PERSONID,
+  Mutdat=convert(char(11),V.MUTDAT,104)+convert(char(8),V.MUTDAT,108)+' ',
+  MutPers=P2.PERSONID,
+  Eigner=V.EIGNER,
+  EignerCode=T1.EINSCODE,
+  Nutzer=V.NUTZER,
+  NutzerCode=T2.EINSCODE
+from 
+  VORLAGE V,
+  PERSON P,
+  PERSON P2,
+  EINSENDER T1,
+  EINSENDER T2
+where 
+  V.STORNODAT is null and
+  V.ERFASSPERS=P.PERSONX and
+  V.MUTPERS*=P2.PERSONX and  
+  T1.EIGNERBIT=*V.EIGNER and
+  T1.STORNODAT is null and
+  T1.AKTIVBIS is null and
+  T2.EIGNERBIT=*V.NUTZER and
+  T2.STORNODAT is null and
+  T2.AKTIVBIS is null
+go

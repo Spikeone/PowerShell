@@ -1,0 +1,141 @@
+/****************************************************************************/
+/*FILENAME : Arch.isq                                                       */
+/*AUTOR    : ww                                                             */
+/*ERSTELLT : [001204.1100]                                                  */
+/*KURZINFO : Zeitbezogene Archivierung nach SWISSARCH  im Tain2             */
+/*TIMESTAMP: <20050815.1207>                                                */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[08012010] bja: Zeitraum von 180 Tage auf 215 gesetzt wegen Abrechnung (temporaer)*/
+/*[080307] ww: Zeitraum von 1460/395 auf 180 Tage gekuerzt,upddBB auf 12 Mon*/
+/*[050815] ww: auftragsweise + QK                                           */
+/*[010515.1700] kla: in Tain2 eingebaut                                     */
+/****************************************************************************/
+
+/* Die Defauts sind sehr konservativ eingestellt !!!                        */
+
+/* --- kundenspezifisch anpassen!!! ---                                     */
+go
+print '--- Start Archivierung ARCHSAVEAUFTRAGVIADATUM '
+go
+exec PI_ARCHSAVEAUFTRAGVIADATUM
+@OK          = 1,             /* muss sein, wenn @VEKTOR nicht gegeben*/
+@KOSTTRTYP   = '%',           /* welche Kostentraeger archivieren */
+--@KOSTTRNICHT = 'P',         /* welche Kostentraeger NICHT archivieren */
+@AMBULANT    = 'A%',          /* das sind ambulante Auftraeg*/
+@AMBUENTLTAGE= 215,  --1460,  /* ambulante n Tage nach Entlassungsdatum(Verwaltung)*/
+@ENTLTAGE    = 215,  --1460,  /* NICHT ambulante n Tage nach Entlassungsdatum(Verwaltung)*/
+@MAXAUFT     = 25000,         /* hoechstens soviele Auftraege, dann ganz beenden*/
+@MAXMINUTEN  = 60,            /* hoechstens soviele Minuten, dann ganz beenden */
+--@ENDZEIT     = '23:40',       /* hoechstens bis zu dieser Zeit (gewinnt vor @MAXMINUTEN) */
+@DELAY       = '00:00:00:100',/* von Auft zu Auft n Sekunden warten, '0' ohne warten*/
+@ANONYM      = 0,             /* auch die MIT Stamm und Fall archivieren */
+@VEKTORCODE  = 'VORWERT',     /* Vektor, der dauerhaften Vorwerte*/
+@RESTORETAGE = 3,             /* solange nicht archivieren, wenn gerade reaktiviert */
+@LAUF        = 0,             /* gewuenschter Lauf. 0 = alle Laeufe */
+@IGNOREBB    = 1,             /* wenn =1, dann Auftraege trotz BB-Referenzen archivieren */
+--@FALLNRNICHT = null         /* so beginnende Fallnummer nicht*/
+@LAUFNICHT   = 240,           /* Die Altdaten nicht archviveren, Wunsch von Harald Feldmann */
+@FUELL       = 1              /* Fuellstand nur vorher */
+go
+
+print '--- Start Archivierung ARCHSAVEAUFTRAGVIADATUM ohne BB'
+go
+exec PI_ARCHSAVEAUFTRAGVIADATUM
+@OK          = 1,             /* muss sein, wenn @VEKTOR nicht gegeben*/
+@KOSTTRTYP   = '%',           /* welche Kostentraeger archivieren */
+--@KOSTTRNICHT = 'P',         /* welche Kostentraeger NICHT archivieren */
+@AMBULANT    = 'A%',          /* das sind ambulante Auftraeg*/
+@AMBUENTLTAGE= 215,  --395,           /* ambulante n Tage nach Entlassungsdatum(Verwaltung)*/
+@ENTLTAGE    = 215,  --395,           /* NICHT ambulante n Tage nach Entlassungsdatum(Verwaltung)*/
+@MAXAUFT     = 25000,         /* hoechstens soviele Auftraege, dann ganz beenden*/
+@MAXMINUTEN  = 60,            /* hoechstens soviele Minuten, dann ganz beenden */
+-- @ENDZEIT     = null,       /* hoechstens bis zu dieser Zeit (gewinnt vor @MAXMINUTEN) */
+@DELAY       = '00:00:00:100',/* von Auft zu Auft n Sekunden warten, '0' ohne warten*/
+@ANONYM      = 0,             /* auch die MIT Stamm und Fall archivieren */
+@VEKTORCODE  = 'VORWERT',     /* Vektor, der dauerhaften Vorwerte*/
+@RESTORETAGE = 3,             /* solange nicht archivieren, wenn gerade reaktiviert */
+@LAUF        = 0,             /* gewuenschter Lauf. 0 = alle Laeufe */
+@IGNOREBB    = 0,             /* wenn =1, dann Auftraege trotz BB-Referenzen archivieren */
+--@FALLNRNICHT = null         /* so beginnende Fallnummer nicht*/
+@LAUFNICHT   = 111,           /* BB nicht */
+@FUELL       = 0              /* Fuellstand nicht */
+go
+
+
+-- so war es bis 15.8.05 ww
+-- print '--- Start Archivierung ARCHSAVEVIADATUM ---'
+-- go
+--
+-- exec PI_ARCHSAVEVIADATUM
+-- @OK           =1,             /*muss sein, wenn @VEKTOR nicht gegeben*/
+-- @KOSTTRTYP    ='%',           /*Nur die Kostentraeger Archivieren (like)*/
+-- @KOSTTRNICHT  =null,          /*die Kostentraeger NICHT archivieren (like)*/
+-- @AMBULANT     ='A%',          /*das sind ambulante Faelle*/
+-- @LAUFNICHT    =111,           /* spezial in Mar wg. Migration, BB=Laufgruppe 111 nicht */
+-- @AMBUENTLTAGE =395,           /*ambulante n Tage nach Entlassungsdatum(Verwaltung)*/
+-- @AMBUAUFTTAGE =395,           /*ambulante n Tage nach Archivdatum wenn kein Entlassungsdatum(Verwaltung)*/
+-- @ENTLTAGE     =395,           /*NICHT ambulante n Tage nach Entlassungsdatum(Verwaltung)*/
+-- @AUFTTAGE     =395,           /*NICHT ambulante n Tage nach Archivdatum wenn kein Entlassungsdatum(Verwaltung)*/
+-- @DIFFTAGE     =14,            /*nicht archivieren, wenn weiterer Fall vorhanden mit weniger als n Tage Differenz*/
+-- @MAXFALL      =80000,         /*hoechstens soviele Faelle, dann ganz beenden*/
+-- @MAXMINUTEN   =300,           /*.. und hoechstens soviel Minuten */
+-- @DELAY        ='00:00:01:000',/*von Fall zu Fall n Sekunden warten, '0' ohne warten*/
+-- @SHOWONLY     =0,             /*=1 nur anzeigen, nicht ausfuehren*/
+-- @VEKTORCODE   ='LABOR',       /*Vektor, der dauerhaften Vorwerte*/
+-- @AUFTTRAN     =0,             /* Transaktion fallweise, nicht auftragsweise */
+-- @AUFTRAEGE    =1              /* auch anonyme Auftraege archivieren */
+-- go
+
+print '--- Start Archivierung Rechnungen ---'
+go
+exec PI_ARCHSAVERECHNUNGVIADATUM
+@OK          = 1,             /*muss sein*/
+@MAXRECH     = 20000,         /* max Rechnungen*/
+@MAXMINUTEN  = 30,            /* Max Zeit */
+@RESTORETAGE = 31,            /*nicht archivieren, wenn vor weniger Tagen dearchiviert*/
+@MINBEZTAGE  = 730,           /*mindestens so lange muessen Rechnungen bezahlt sein, falls in Rechleger nix ordentliches steht*/
+@DELAY       = '00:00:00:100' /*von Rechnung zu Rechnung n Sekunden warten, '0' ohne warten*/
+go
+
+
+print '--- Start Archivierung Budget (FALG) ---'
+go
+exec PI_ARCHSAVEBUDGET
+@OK           =1,             /*muss sein*/
+@MAXROWS      =200000,        /* maximal 200.000 Zeilen in Tabelle BUDGET*/
+@MONATE       = 12,           /*nur Datensaetze aelter als soviel Monate archivieren (def 12)*/
+@DELAY        = '00:00:02'    /* nach 5.000 solange warten, '0' ohne warten*/
+go
+
+print '--- Start Archivierung ARCHSAVEQKVIADATUM QualKo'
+go
+exec PI_ARCHSAVEQKVIADATUM
+@OK          = 1,         -- muss sein
+@FERTIGTAGE  = 390,  --720     -- bis soviele Tage zurueck wird archviert (PROBE.ERFASSDAT)
+@MAXPROBE    = 50000,     -- hoechstens soviele Proben, dann ganz beenden
+@MAXMINUTEN  = 60,        -- hoechstens soviele Minuten, dann ganz beenden
+--@ENDZEIT     = null,
+@DELAY       = '00:00:01' -- nach je 50 Proben n Sekunden warten, '0' ohne warten
+go
+
+print '--- Start Archivierung ARCHUPDATEDOC ---'
+go
+
+exec PI_ARCHUPDATEDOC
+@OK           =1,             /*muss sein*/
+@STAMMTABELLE ='ALLE',        /*'ALLE', dann die nachstehenden, oder einzeln Tabellen auffuehren*/
+                              /*ANALYT, METHGRUPPE, NORMWERT, DEFI, DEFIGRUPPE, EINSENDER, EINSENDERGRUPPE,*/
+                              /*ABLI, ALGO, CHARGE, SOLLWERT, TARIFWERK, GEBZIFFER. GERAET, MATERIAL, */
+                              /*MATGRUPPE, PERSON,TARIF, LOGIN, syslogins*/
+@STAMMMONAT   =3,             /* obige nach sovielen Monaten ins Archiv */
+@PRODTABELLE  ='ALLE',        /*'ALLE', dann die nachstehenden, oder einzeln Tabellen auffuehren*/
+                              /*Produktionsdaten PATISTAMM, PATIFALL, AUFTRAG, PROBE, RESULTAT*/
+@PRODMONAT    =3,             /* obige nach sovielen Monaten ins Archiv */
+@BBTABELLE    ='ALLE',        /*'ALLE', dann die nachstehenden, oder einzeln Tabellen auffuehren*/
+                              /*BLUTMERKMAL, SPENDER, SPENDE, TERMIN, KONSERVE,*/
+                              /*SEROLOGIE, SPERRE, SRESULTAT */
+@BBMONAT      =12,  --24,     /* obige nach sovielen Monaten ins Archiv */
+@DELAY        ='00:00:01'     /* nach tausend solange warten, '0' ohne warten*/
+go
+/*Dateiende */

@@ -1,0 +1,60 @@
+-----------------------------------------
+Lauris Info-Script Version vom 18.08.2009
+-----------------------------------------
+ 
+Ausgeführt am: 14.09.
+ 
+ 
+ SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ -------------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                            SQLSERVER            Routineserver        Adaptive Server Enterprise/12.5.3/EBF 13331 ESD#7/P/NT (IX86)/OS 4.0/ase1253/1951/32-bit/OPT/Fri Mar 24 02:17:56 2006                                                                                                                                           
+ 
+Swisslab-Information:
+ Name                              Revision   CrDate          DB              
+ --------------------------------- ---------- --------------- --------------- 
+ Kalenderwoche                     2008.01    09.01.08  00:00                 
+ letztes Swisspro                  2008.01    18.06.08  12:58                 
+ swissup3.tab                      : 2.08 $   15.12.08  16:14                 
+ swlupgrade.tab                    : 1.78 $   15.12.08  16:14                 
+                                                                              
+ neu:PI_PERSON                     : 2.26 $   15.12.08  16:49 SWISSLAB        
+ neu:PR_PERSON                     : 2.16 $   15.12.08  16:49 SWISSLAB        
+ neu:PR_GETVALID                   : 1.06 $   15.12.08  16:49 SWISSLAB        
+ neu:PD_BLOBTAB                    : 1.08 $   15.12.08  16:17 SWISSLAB        
+ neu:PI_ARCHRECOVER                : 1.56 $   15.12.08  16:17 SWISSLAB        
+(return status = 0)
+aktive Lauris-Versionen:
+ Anzahl Clients:             
+ --------------- ----------- 
+                         675 
+ LaurisVersion(max)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#6.12.08# FW=#2.0.50727.42# OS=#5.2.3790.131072#Win32NT                                                                                                                                                                                                      
+ LaurisVersion(min)                                                                                                                                                                                                                                                                 
+ ------------------ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                    SW=#6.12.08# FW=#1.1.4322.2032# OS=#5.0.2195.0#Win32NT                                                                                                                                                                                                          
+ 
+ 
+ Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv     
+ ------------------------- ----------- --------------- ----------- 
+                                  3404            1241          58 
+ 
+ 
+ 
+Anforderung für die Mikrobiologie?
+ Mikrobiologie-Formulare:       Code             Name                                                             
+ ------------------------------ ---------------- ---------------------------------------------------------------- 
+                                Mikro07_BB       Mikrobiologie BB,LB,HB                                           
+                                Mikro07_CW       Mikrobiologie CW,NA                                              
+                                Mikro07_SI       Mikrobiologie SI                                                 
+ 
+--- Nachfordern  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 
+ 
+ 
+--- POCTen  ---
+ 
+ ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE    
+ -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- ----------- 

@@ -1,0 +1,61 @@
+/* Parameter deklarieren         */
+
+declare
+  @code1          varchar(16),
+  @code2          varchar(16),
+  @anax1          int,
+  @anax2          int
+
+set nocount on
+
+
+/* -------------------------------------------------------------------------------- */
+select @code1 = 'KLBB'   /* !!!!!! hier den zu suchenden Analytcode eintragen !! */
+select @code2 = 'BMAT'   /* !!!!!! hier den zu suchenden Analytcode eintragen !! */
+/* -------------------------------------------------------------------------------- */
+
+
+select @anax1 = 0
+select @anax2 = 0
+select @anax1 = ANALYTX from ANALYT where CODE=@code1 and STORNODAT is null 
+select @anax2 = ANALYTX from ANALYT where CODE=@code2 and STORNODAT is null 
+set nocount off
+
+set dateformat dmy
+
+set nocount on
+select
+  A.AUFTRAGNR,
+  A.AUFTRAGX,
+  A.EINSENDERX,
+  A.ERFASSPERS
+into #temp1
+from AUFTRAG A (index AUFTRAG_PK1)
+where
+  dateadd(day,20,A.AUFTRAGDAT) > getdate()
+
+select
+  t1.AUFTRAGNR,
+  E.EINSCODE,
+  ErfassPersAuft=P2.PERSONID,
+  AN.CODE,
+  Resultatstatus=R.STATUS,
+  AnfordPers=P.PERSONID,
+  Anforddat=convert(char(11),R.ANFORDDAT ,104)+convert(char(8),R.ANFORDDAT ,108)+' ',
+  Stornodat=convert(char(11),R.STORNODAT ,104)+convert(char(8),R.STORNODAT ,108)+' '
+into #temp2
+from #temp1 t1, ANALYT AN (index ANALYT_PK) , PERSON P, PERSON P2, RESULTAT R, EINSENDER E
+where
+  R.AUFTRAGX = t1.AUFTRAGX and
+  P2.PERSONX=t1.ERFASSPERS and
+  R.ANALYTX in (@anax1,@anax2) and
+  P.PERSONX=R.ANFORDPERS and
+  AN.ANALYTX=R.ANALYTX and
+  E.EINSENDERX=t1.EINSENDERX
+
+set nocount off
+select * from #temp2
+Group By
+  AUFTRAGNR
+Having Count(*) > 1 
+go

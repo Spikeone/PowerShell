@@ -1,0 +1,17 @@
+ Systeminformationen:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                         
+ ------------------------------ -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                                SQLSERVER            Klinikum Karlsbad-La Adaptive Server Enterprise/11.5.1.2/P/NT/OS 4.00/SWR 9298 ESD 3/fbu/Fri Nov 24 21:06:53 PST 2000                                                                                                                                                                
+
+(1 row affected)
+Msg 102, Level 15, State 1:
+Line 53:
+Incorrect syntax near '('.
+Msg 102, Level 15, State 1:
+Line 53:
+Incorrect syntax near 'B'.
+Msg 102, Level 15, State 1:
+Line 119:
+Incorrect syntax near '('.
+Msg 102, Level 15, State 1:
+Line 119:
+Incorrect syntax near 'U1'.

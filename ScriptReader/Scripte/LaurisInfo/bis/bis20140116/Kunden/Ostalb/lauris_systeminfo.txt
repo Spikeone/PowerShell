@@ -1,0 +1,67 @@
+ 
+ ----------------------------------------- 
+ Lauris Info-Script Version vom 18.08.2009 
+ ----------------------------------------- 
+   
+ Ausgeführt am: 19.07. 
+   
+   
+  SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  -------------------------- -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                             SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16822 ESD#9.1/P/NT (IX86)/OS 4.0/ase1254/2146/32-bit/OPT/Wed Apr 15 04:05:47 2009                                                                                                                                          
+                             SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16822 ESD#9.1/P/NT (IX86)/OS 4.0/ase1254/2146/32-bit/OPT/Wed Apr 15 04:05:47 2009                                                                                                                                          
+   
+ Swisslab-Information: 
+  Name                              Revision   CrDate          DB               
+  --------------------------------- ---------- --------------- ---------------  
+  Kalenderwoche                     2009.03    23.10.09  00:00                  
+  letztes Swisspro                  2009.03    24.02.10  08:56                   
+  swissup3.tab                       2.09 $    24.02.10  08:33                  
+  swlupgrade.tab                     2.20 $    28.07.09  08:39                  
+  Lauris (via lauris.ini)            1.04 $    24.02.10  10:08                  
+  Blutbank (via barkasse.pro)        1.06 $    24.02.10  08:48                  
+  Statistik (via statistik.pro)      5.63 $    24.02.10  08:53                  
+  BB-Statistik (via spendestat.pro)  1.24 $    24.02.10  08:49                  
+                                                                                
+  neu:PI_AKTQMMASOLL                 1.00.1    05.03.10  13:40 SWISSLAB         
+  neu:PI_SOLLWERT                    2.66 $    05.03.10  13:40 SWISSLAB         
+  neu:PR_MVK28                       1.08 $    05.03.10  13:40 SWISSLAB         
+  neu:PR_RESULTATUNPLAU              2.59.1    05.03.10  13:39 SWISSLAB         
+  mehr mit: PR_REVISION A(LLE)                                                  
+ aktive Lauris-Versionen: 
+  Anzahl Clients:              
+  --------------- -----------  
+                          150  
+  LaurisVersion(max)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#8.05.28¹# FW=#2.0.50727.3603# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                    
+  LaurisVersion(min)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#10.01.08# FW=#2.0.50727.3603# OS=#5.1.2600.196608#Win32NT                                                                                                                                                                                                    
+   
+   
+  Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------- ----------- --------------- -----------  
+                                   2822            2822           0  
+   
+   
+   
+ Anforderung für die Mikrobiologie? 
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+   
+ --- Nachfordern  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+   
+   
+ --- POCTen  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+  CLIENT   POCTGERAET       0         NULL             NULL       MM               NULL       NULL     04.01.2006 09:34:00  ssc2                                  NULL                      353           2           2 LAURIS            18      0       30          42  
+  CLIENT   POCTKOMMENT      0         NULL             NULL       MM               NULL       NULL     04.01.2006 09:34:00  ssc2             30.03.2006 08:30:00  ssc2                      354           2           2 LAURIS            18      0       14           3  
+  CLIENT   POCTQC           0         NULL             NULL       NULL             2IN1       NULL     02.01.2006 13:21:00  ssc2                                  NULL                      333           2           2 LAURIS          NULL      0        0           1  
+  CLIENT   POCTQC           0         NULL             NULL       MM               NULL       NULL     01.03.2006 13:52:00  ssc2                                  NULL                      437           2           2 LAURIS            18      0        0           1  
+  CLIENT   POCTQC           0         NULL             NULL       ssc              NULL       NULL     29.03.2006 12:14:00  SWLSTAFF                              NULL                      438          -1          -1 LAURIS            36      0        0           1  

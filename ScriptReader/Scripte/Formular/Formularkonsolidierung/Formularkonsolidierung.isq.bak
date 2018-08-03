@@ -1,0 +1,340 @@
+/****************************************************************************/
+/*FILENAME : O:\Lauris\Service\_Sqlscript\                                  */
+/*AUTOR    : lis                                                            */
+/*ERSTELLT : [160116]                                                       */
+/*KURZINFO : Formularkonsolidierung: Informationen zu Profilvorlagen        */
+/*         : Zuordnung von Profilvorlagen zu einem anderen Formular         */
+/*MODULE   : Lauris Stammdaten                                              */
+/*TIMESTAMP: <200116.1913>                                                  */
+/****************************************************************************/
+/*AENDERUNG:                                                                */
+/*[160116] 1.00             lis: erstellt                                   */
+/****************************************************************************/
+set nocount on
+
+-- Aufrufparameter
+declare
+  @formularcode_alt varchar(64),
+  @formularcode_neu varchar(64),
+  @language         int,
+  @formularx_alt    int,
+  @formularx_neu    int,
+  @FORMULARTYP_alt  smallint,
+  @FORMULARTYP_neu  smallint,
+  @listinactive     int,
+  @report           int,
+  @message          varchar(64)
+
+/*******************************************************************************************************************************************/
+select @formularcode_alt = 'zROUTINE'           /* !!!!!! Das neue Konsolidierungsformular                                         !!!!!!! */
+select @formularcode_neu = 'zMASTER'            /* !!!!!! Das neue Konsolidierungsformular                                         !!!!!!! */
+select @language         = 10                   /* !!!!!! SPRACHID (für Tabelle FESTWERT)                                          !!!!!!! */
+select @listinactive     =  0                   /* !!!!!! 1 = Inaktive Einträge in Profilvorlagen anzeigen                         !!!!!!! */
+select @report           =  1                   /* !!!!!! 0 = nur Einträge die im neuen Formular fehlen anzeigen                   !!!!!!! */
+                                                /* !!!!!! 1 = alle Einträge anzeigen                                               !!!!!!! */
+                                                /* !!!!!! 2 = alle Einträge anzeigen, erweiterte Anzeige                           !!!!!!! */
+/*******************************************************************************************************************************************/
+
+select @formularx_alt = FORMULARX from FORMULAR where FORMULARCODE = @formularcode_alt
+select @FORMULARTYP_alt = FORMULARTYP from FORMULAR where FORMULARX = @formularx_alt
+select @formularx_neu = FORMULARX from FORMULAR where FORMULARCODE = @formularcode_neu
+select @FORMULARTYP_neu = FORMULARTYP from FORMULAR where FORMULARX = @formularx_neu
+
+if @formularx_alt is null
+begin
+  select @message = 'Formular ' + @formularcode_alt + ' nicht gefunden'
+  goto error
+end
+if @formularx_neu is null
+begin
+  select @message = 'Formular ' + @formularcode_neu + ' nicht gefunden'
+  goto error
+end
+
+create table #matches(
+  cnt               numeric       identity not null, -- Counter
+  Formular          varchar(36)   null,              -- FORMULARCODE alt
+  Vorlage           varchar(64)   null,              -- VORLAGENAME
+  Analyt            varchar(16)   null,              -- CODE     (ANALYT)
+  Analyttyp         varchar(64)   null,              -- Analyttyp
+  Anforderungtyp    varchar(64)   null,              -- Anforderungstyp aus altem Formular
+  Anftypneu         varchar(64)   null,              -- Anforderungstyp aus altem Formular
+  Scope             varchar(12)   null,              -- Scope    (Abteilung, Client, User)
+  Scopewert         varchar(16)   null,              -- Scopewert
+  Art               varchar(6)    null,              -- ART (ANFORDERUNG)
+  Behaelter         varchar(16)   null,              -- BEHAELTERCODE
+  Mfaanalyt         varchar(16)   null,              -- MFAANALYT (aus ANFORDERUNG)
+  Panalyt           varchar(16)   null,              -- PANALYT   (aus ANFORDERUNG)
+  AnfoX_alt         int           null,              -- ANFORDERUNGX altes Formular
+  AnfoX_neu         int           null,              -- ANFORDERUNGX altes Formular
+  Status            varchar(32)   null,              -- 'OK', 'missing'
+  Vorlageanfx       int           null,              -- VORLAGEANFX
+  Artneu            varchar(6)    null,              -- ART (ANFORDERUNG)
+  Behaelterneu      varchar(16)   null,              -- BEHAELTERCODE
+  Vorlagex          int           null,              -- VORLAGEX
+  Einsenderx        int           null,              -- EINSENDERX
+  Clientx           int           null,              -- CLIENTX
+  Identx            int           null,              -- IDENTX
+  Analytx           int           null,              -- ANALYTX
+  Panforderungx_alt int           null,              -- PANFORDERUNGX aus PR_ANFORDERUNG, Verweis auf MFA/Block/Kette altes Formular
+  Panforderungx_neu int           null,              -- PANFORDERUNGX aus PR_ANFORDERUNG, Verweis auf MFA/Block/Kette neues Formular
+  MFAAnalytx        int           null,              -- MFAANALYTX aus VORLAGEANF
+  Behaelterx        int           null)              -- BEHAELTERX aus VORLAGEANF
+
+-- VORLAGEANF auswerten
+insert into #matches
+select
+  @formularcode_alt + ' -> ' + @formularcode_neu,
+  VO.VORLAGENAME   ,      --  Vorlage      varchar(64)  VORLAGENAME
+  A.CODE           ,      --  Analyt       varchar(16)  CODE     (ANALYT)
+  FW.FWTEXT1       ,      --  Analyttyp    varchar(64)  Analyttyp
+  null             ,      --  Anforderungtyp    varchar(64)  Anforderungstyp aus altem Formular
+  null             ,      --  Anftypneu    varchar(64)  Anforderungstyp aus altem Formular
+  case when VO.EINSENDERX is not null then 'Abteilung'  --  Scope        varchar(12)  Scope    (Abteilung, Client, User)
+       when VO.CLIENTX is not null then 'Arbeitsplatz'
+       when VO.IDENTX is not null then 'Benutzer' 
+  end              ,
+  case when VO.EINSENDERX is not null then convert(varchar(16),VO.EINSENDERX)  --  Scopewert    varchar(16)  Scopewert
+       when VO.CLIENTX is not null then convert(varchar(16),VO.CLIENTX)
+       when VO.IDENTX is not null then convert(varchar(16),VO.IDENTX)
+  end              ,
+  VA.ART           ,      --  Art          varchar(6)   ART (ANFORDERUNG)
+  case when B.BEHAELTERCODE is not null then B.BEHAELTERCODE else 'none' end ,      --  Behaelter    varchar(16)  BEHAELTERCODE
+  case when AM.CODE is not null then AM.CODE else '' end,      --  Mfaanalyt    varchar(16)  MFAANALYT (aus ANFORDERUNG)
+  case when AP.CODE is not null then AP.CODE else '' end,      --  Panalyt      varchar(16)  PANALYT   (aus ANFORDERUNG)
+  null             ,      --  AnfoX_alt    int          ANFORDERUNGX altes Formular
+  null             ,      --  AnfoX_neu    int          ANFORDERUNGX altes Formular
+  '--'             ,      --  Status       varchar(64)  'Art', 'Behälter'
+  VA.VORLAGEANFX   ,      --  Vorlageanfx  int          VORLAGEANFX
+  null             ,      --  Artneu       varchar(6)   ART (ANFORDERUNG)
+  null             ,      --  Behaelterneu varchar(16)  BEHAELTERCODE
+  VO.VORLAGEX      ,      -- VORLAGEX                                                                      
+  VO.EINSENDERX    ,      -- EINSENDERX                                                                    
+  VO.CLIENTX       ,      -- CLIENTX                                                                       
+  VO.IDENTX        ,      -- IDENTX                                                                        
+  VA.ANALYTX       ,      -- ANALYTX                                                                       
+  null             ,      -- PANFORDERUNGX aus PR_ANFORDERUNG, Verweis auf MFA/Block/Kette altes Formular  
+  null             ,      -- PANFORDERUNGX aus PR_ANFORDERUNG, Verweis auf MFA/Block/Kette neues Formular  
+  VA.MFAANALYTX    ,      -- aus VORLAGEANF                                                                
+  VA.BEHAELTERX           -- aus VORLAGEANF                                                                
+from VORLAGEANF VA, VORLAGE VO, FORMULAR F, ANALYT A,  ANALYT AM,  ANALYT AP, FESTWERT FW, BEHAELTER B
+where VA.STORNODAT is null and
+      VO.VORLAGEX = VA.VORLAGEX and
+      VO.STORNODAT is null and
+      VO.FORMULARX = @formularx_alt and
+      F.FORMULARX = VO.FORMULARX and
+--      VO.VORLAGEX in (74) and
+      A.ANALYTX = VA.ANALYTX and
+      AM.ANALYTX =* VA.MFAANALYTX and
+      AP.ANALYTX =* VA.PANALYTX and
+      FW.TABELLE = 'ANALYT' and
+      FW.SPALTE = 'KENNUNG' and
+      FW.INTWERT =* A.KENNUNG and
+      FW.SPRACHID = @language and
+      FW.STORNODAT is null and
+      B.BEHAELTERX =* VA.BEHAELTERX
+
+-- Einträge für stornierte EINSENDER, CLIENT, IDENT entfernen
+delete #matches from #matches m, EINSENDER E where m.Einsenderx is not null and E.EINSENDERX = m.Einsenderx and E.STORNODAT is not null
+delete #matches from #matches m, CLIENT C where m.Clientx is not null and C.CLIENTX = m.Clientx and C.STORNODAT is not null
+delete #matches from #matches m, IDENT I where m.Identx is not null and I.IDENTX = m.Identx and I.STORNODAT is not null
+
+-- Vorlagen bez. Scopewerten überarbeiten
+update #matches set Scopewert = E.EINSCODE      -- Abteiliung
+from #matches m, EINSENDER E
+where m.Scope = 'Abteilung' and
+      E.EINSENDERX = convert(int, m.Scopewert)
+update #matches set Scopewert = CL.CLIENTCODE   -- Arbeitsplatz
+from #matches m, CLIENT CL
+where m.Scope = 'Arbeitsplatz' and
+      CL.CLIENTX = convert(int, m.Scopewert)
+update #matches set Scopewert = I.IDENTCODE     -- Benutzer
+from #matches m, IDENT I
+where m.Scope = 'Benutzer' and
+      I.IDENTX = convert(int, m.Scopewert)
+
+-- altes Formular einlesen
+:r anfo_alt.inc
+
+-- Fund im Alt-Formular vermerken (ANFORDERUNGX und ANFORDERUNGTYP)
+update #matches set
+  AnfoX_alt = a.ANFORDERUNGX,
+  Anforderungtyp = case when FW.FWTEXT1 is not null then FW.FWTEXT1 else 'Typ = ' + convert(varchar(4),a.ANFORDERUNGTYP) end
+from #matches m, #anfo_alt a, FESTWERT FW
+where
+  m.Analyt = a.ANALYTCODE and
+  m.Art = a.ART and
+  m.Behaelterx = a.BEHAELTERX and
+  a.ANFORDERUNGX is not null and
+  FW.TABELLE = 'ANFORDERUNG' and
+  FW.SPALTE = 'ANFORDERUNGTYP' and
+  FW.INTWERT = a.ANFORDERUNGTYP and
+  FW.SPRACHID = @language and
+  FW.STORNODAT is null
+
+-- Nicht im Formular, aber in MFA/Block/Kette enthalten
+update #matches set
+  Anforderungtyp =  'gehört zu MFA/Block/Kette (' + Mfaanalyt +')',
+  Panforderungx_alt = a.PANFORDERUNGX
+from #matches m, #anfo_alt a
+where
+  m.Analyt = a.ANALYTCODE and
+  m.Art = a.ART and
+  a.PANFORDERUNGX is not null and
+  m.Behaelterx = a.BEHAELTERX and
+  m.AnfoX_alt is null 
+  
+-- Weder im Formular noch in MFA/Block/Kette enthalten -> auslisten
+if @listinactive = 1
+begin
+  update #matches set
+    Anforderungtyp =  'inaktiv, nicht im Formular ' + @formularcode_alt + ' enthalten'
+  from #matches m, #anfo_alt a
+  where
+    m.AnfoX_alt is null and
+    m.Panforderungx_alt is null
+end
+-- Weder im Formular noch in MFA/Block/Kette enthalten -> löschen 
+if @listinactive = 0
+begin
+  delete #matches where Anforderungtyp is null
+end 
+
+/*
+-- Weder im Formular noch in MFA/Block/Kette enthalten... gelöscht?
+select m.Analyt, anf.ANFORDERUNGX, anf.STORNODAT
+from #matches m, ANFORDERUNG anf
+where 
+  m.AnfoX_alt is null and
+  m.Panforderungx_alt is null and
+  anf.FORMULARX = @formularx_alt and
+  anf.ANALYTX = m.Analytx
+  
+
+update #matches set
+  Anforderungtyp =  'Anforderung im Ausgangsformular gelöscht'
+from #matches m, #anfo_alt a, ANFORDERUNG ANF
+where
+  m.Anforderungtyp is null and
+--  m.Analyt = a.ANALYTCODE and
+--  m.Art = a.ART and
+--  m.Behaelter = a.BEHAELTERCODE and
+  m.AnfoX_alt is null and
+  ANF.ANALYTX = m.Analytx and
+  ANF.FORMULARX = @formularx_alt and
+  ANF.STORNODAT is not null
+  
+-- Weder im Formular noch in MFA/Block/Kette enthalten... auch keine Stornos gefunden
+update #matches set
+  Anforderungtyp =  'Anforderung im Ausgangsformular nicht enthalten'
+from #matches m, #anfo_alt a
+where
+  m.Anforderungtyp is null and
+  m.Analyt = a.ANALYTCODE and
+--  m.Art = a.ART and
+--  m.Behaelter = a.BEHAELTERCODE and
+  m.AnfoX_alt is null 
+*/
+
+-- neues Formular einlesen
+:r anfo_neu.inc
+
+-- Fund im Neu-Formular vermerken (ANFORDERUNGX und ANFORDERUNGTYP)
+update #matches set
+  AnfoX_neu = a.ANFORDERUNGX,
+  Anftypneu = case when FW.FWTEXT1 is not null then FW.FWTEXT1 else 'Typ = ' + convert(varchar(4),a.ANFORDERUNGTYP) end,
+  Status = 'OK'
+from #matches m, #anfo_neu a, FESTWERT FW
+where
+  m.Analyt = a.ANALYTCODE and
+  m.Art = a.ART and
+  m.Behaelterx = a.BEHAELTERX and
+  a.ANFORDERUNGX is not null and
+  FW.TABELLE = 'ANFORDERUNG' and
+  FW.SPALTE = 'ANFORDERUNGTYP' and
+  FW.INTWERT = a.ANFORDERUNGTYP and
+  FW.SPRACHID = @language and
+  FW.STORNODAT is null
+
+-- Nicht im Formular, aber in MFA/Block/Kette enthalten
+update #matches set
+  Anftypneu =  'gehört zu MFA/Block/Kette (' + Mfaanalyt +')',
+  Panforderungx_neu = a.PANFORDERUNGX,
+  Status = 'OK'
+from #matches m, #anfo_neu a
+where
+  m.Analyt = a.ANALYTCODE and
+  m.Art = a.ART and
+  a.PANFORDERUNGX is not null and
+  m.Behaelterx = a.BEHAELTERX and
+  m.AnfoX_alt is null 
+
+update #matches set
+  Status =  'fehlt im Formular ' + @formularcode_neu
+from #matches m, #anfo_neu a
+where
+  (m.AnfoX_alt is not null or m.Panforderungx_alt is not null) and 
+  m.AnfoX_neu is null and 
+  m.Panforderungx_neu is null
+
+
+if @report <= 1
+begin
+  select
+    Vorlage,
+    Scope,
+    Scopewert,
+    Analyt,
+    'Analytart (Swisslab)' = substring(Analyttyp,1,24),
+    'Anforderungtyp (Formular)' = substring(Anforderungtyp,1,48),
+    Art,
+    Behaelter,
+    Mfaanalyt,
+    Panalyt,
+    Status,
+    Formular  
+  from #matches 
+  where Status like case when @report = 0 then 'fehlt%'
+                         when @report = 1 then '%'
+                    end
+  order by Vorlagex, Mfaanalyt, Vorlageanfx
+end
+
+if @report = 2
+begin
+  select
+    Vorlage,
+    Scope,
+    Scopewert,
+    Analyt,
+    'Analytart (Swisslab)' = substring(Analyttyp,1,24),
+    'Anforderungtyp (Formular)' = substring(Anforderungtyp,1,48),
+    Status,
+    Art,
+    Behaelter,
+    Mfaanalyt,
+    Panalyt,
+    Formular  
+    Analytx,      
+    MFAAnalytx,
+    Anforderungx_alt = AnfoX_alt,  
+    Panforderungx_alt,
+    Anforderungx_neu = AnfoX_neu,  
+    Panforderungx_neu,
+    Vorlageanfx,
+    Vorlagex,
+    Einsenderx,
+    Clientx,
+    Identx  
+  from #matches 
+  order by Vorlagex, Mfaanalyt, Vorlageanfx
+end
+
+goto ende
+
+error:
+Print @message
+
+ende:
+
+go

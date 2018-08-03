@@ -1,0 +1,90 @@
+/****************************************************************************/
+/*FILENAME : taskreorUKGM.isq                                               */
+/*AUTOR    : EK                                                             */
+/*ERSTELLT : [080415.0000]                                                  */
+/*KURZINFO : TASKFLAG-Reorganisation: UKGM                                  */
+/*LANGINFO : PreTain-TASKFLAG-Reorganisation: Spende UKGM                   */
+/*TIMESTAMP: <20080415.0000>                                                */
+/*$Revision: 1.01$                                                          */
+/****************************************************************************/
+/* [080415] 1.01 ek erstellt                                                */
+/****************************************************************************/
+
+/* --- Anzeige einer Uebersicht ueber die TASKFLAG-Tabelle -------------- */
+print " => Uebersicht Taskflagtabelle (vor taskreorg.isq):"
+go
+select distinct
+    TFWann="TFvor_TReor    ",
+	LAUF, TSTATUS, Anzahl=count(*) from TASKFLAG T
+  group by LAUF, TSTATUS
+  order by LAUF, TSTATUS
+go
+
+
+/*--- LeistungsDaten-Export-Vektor neu machen/refreshen --- */
+/* ACHTUNG ACHTUNG : funktioniert wg. isql nur OHNE UMLAUTE im TarifCode !!!!! */
+
+/* Kundenspezifisch: TarifCode !!!!! Der Export-Vektor sollte immer soo heissen! */
+
+exec PI_MAKETARIFVEKTOR @TARIFCODE="GI_ORBIS", @VEKTORCODE="gLEIEXPZL", @OVERWRITE=1
+go
+exec PI_MAKETARIFVEKTOR @TARIFCODE="GI_VI-ORBIS", @VEKTORCODE="gLEIEXPVI", @OVERWRITE=1
+go
+
+/* ----------------------------------------------------------------------------------------------------------- */
+/* DruckItem, welches im Auftrag bei jedem Resultat gesetzt wird bei Festschreibung des Spendestatus.          */
+/* DRUCKITEM = DRUCKDATLETZT                                                                                   */
+/* ----------------------------------------------------------------------------------------------------------- */
+/* Druckitem, welches in jedem Resultat aus dem Anzeigevektor gesetzt wird beim Bestätigen des Prüfprotokolls. */
+/* PRUEFITEM = BEFUNDDAT                                                                                       */
+/* ----------------------------------------------------------------------------------------------------------- */
+
+print " =>  Erledigte UKGM Auftraege aus LAUF=7 mit DRUCKDATLETZT : (von Status 1 -> 90)"
+go
+exec	PI_TASKFLAGREORG @TASKID=1, @TSTATUS=1, @TSTATDRUCK=90, @LAUF=7, @DRUCKITEM='DRUCKDATLETZT',@MITREORGSTATUS=1
+go
+
+
+print " =>  Delay 7 Tage UKGM Auftraege aus LAUF=7: (von Status 90 -> 1)"
+go
+exec	PI_TASKFLAGREORG @TASKID=1, @TSTATUS=90, @TSTATDELAY=1, @LAUF=7, @VEKTORDELAY='LABORSP', @TAGEDELAY=7
+go
+
+
+print " =>  Erledigte UKGM Auftraege aus LAUF=7 mit DRUCKDATLETZT : (von Status 90 -> 99)"
+go
+exec	PI_TASKFLAGREORG @TASKID=1, @TSTATUS=99, @TSTATDRUCK=99, @LAUF=7, @DRUCKITEM='DRUCKDATLETZT',@MITREORGSTATUS=1
+go
+
+/* ----------------------------------------------------------------------------------------------------------- */
+print " =>  MATKREIS_SP zuruecksetzen "
+go
+
+exec	PI_KREISAUTOINI @AUTOID='MATKREIS_SP'
+go
+
+print " =>  AUTOLAGERNR und AUTOPOOLNR zuruecksetzen "
+go
+
+exec PI_AUTOINCRESET @AUTOID='AUTOLAGERNR',@SEQZUORD=1
+go
+
+exec PI_AUTOINCRESET @AUTOID='AUTOPOOLNR',@SEQZUORD=1
+go
+
+print " =>  PTAGNR der Virologie zuruecksetzen "
+/* Rücksetzen der Laborkreisnummern (PTAGNR) der Serologie  ---- */
+exec PI_AUTOINCRESET @AUTOID='PTAGNR_GI_Test',@SEQZUORD=4
+go
+
+
+print " => Uebersicht Taskflagtabelle (nach taskreorg.isq, nach TStatus):"
+select distinct
+    TFWann="TFnachTReor.T  ",
+    TSTATUS, Anzahl=count(*) from TASKFLAG T
+  group by TSTATUS
+  order by TSTATUS
+go
+
+print "-------------------------------------------------------------------------- "
+go

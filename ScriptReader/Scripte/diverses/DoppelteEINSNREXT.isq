@@ -1,0 +1,15 @@
+set dateformat dmy
+go
+select 
+  E.EINSCODE, 
+  E.EINSNREXT,
+  E.EINSKURZ,
+  Erfassdat=convert(char(11),E.ERFASSDAT,104)+convert(char(8),E.ERFASSDAT,108)+' ',
+  Erfasspers=P.PERSONID
+from  EINSENDER E, PERSON P 
+where 
+  E.EINSNREXT in
+       (select EINSNREXT from EINSENDER where STORNODAT is null group by EINSNREXT having count(*)>1)
+  and P.PERSONX=E.ERFASSPERS   
+order by E.EINSCODE
+go 

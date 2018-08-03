@@ -1,0 +1,105 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: sol, ausgeführt am: 12.06.2015 10:10
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           sol              Solingen             sqlroutine           Routine_Sybase_Serve Adaptive Server Enterprise/15.5/EBF 19895 SMP ESD#5.1/P/NT (IX86)/Windows 2003/asear155/2594/32-bit/OPT/Tue Jun 05 20:46:49 2012                                                                                                                                
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 161     Anzahl User: 36      Anzahl Auftraege Lauris: 15689   Anzahl Auftraege ohne Lauris: 5888   
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+          12 v7.12.19²#       
+         149 v12.09.14#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Neil Armstrong                                                                   2012.02    NULL                                     17.09.12  00:00                 
+ letztes Swisspro                                                                 2012.02    NULL                                     05.12.12  15:33                 
+ swissup3.tab                                                                      2.14 $    NULL                                     05.12.12  15:12                 
+ swissup3.tab                                                                      2.14 $    NULL                                     05.12.12  15:12                 
+ swlupgrade.tab                                                                    2.20.1 $  NULL                                     08.03.10  14:25                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     05.12.12  15:30                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     05.12.12  15:24                 
+ Statistik (via statistik.pro)                                                     5.86 $    NULL                                     05.12.12  15:30                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     05.12.12  15:24                 
+                                                                                             NULL                                                                     
+ neu:br                                                                            1.08 $    NULL                                     20.02.13  16:35 SWISSLAB        
+ neu:PD_DELETEAUFTRAG                                                              2.16 $    NULL                                     20.02.13  16:35 SWISSLAB        
+ neu:PD_DELETESTAMM                                                                2.12 $    NULL                                     20.02.13  16:35 SWISSLAB        
+ neu:PI_ABORTLOGSUSPEND                                                            1.04 $    NULL                                     20.02.13  16:35 SWISSLAB        
+ neu:PI_LOGDOC                                                                     1.39 $    NULL                                     20.02.13  16:35 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       15689      1 1                Lauf 1                                                                                                                                                                                                                                                          
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        6624 Notfall - Anforderung                                            
+        5674 Routine - Anforderung                                            
+        1418 Bakteriologie - Anforderung                                      
+         731 Urin - Anforderung                                               
+         638 Blutsenkung - Anforderung                                        
+         214 Notfall - GYCH + M1CH                                            
+         180 Notfall Kinderklinik                                             
+          63 Notfall Intensivstation                                          
+          45 Vitamine                                                         
+          37 Sondermaterial-Anforderung                                       
+          28 Sammelurin-/ Funktionstest - Anforderung                         
+          25 Blutkultur - Kinderklinik                                        
+          10 Liquor - Anforderung                                             
+           2 Sonderanforderung-Kinderklinik                                   
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     0 NULL       NULL       NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: sol, beendet am: 12.06.2015 10:10 
+SQL-Abfrage-Dauer: 3   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 12.7.3.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2.0.0.1 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 12.9.14.1 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.0.0.1 

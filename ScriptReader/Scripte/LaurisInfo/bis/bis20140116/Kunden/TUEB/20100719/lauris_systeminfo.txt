@@ -1,0 +1,73 @@
+ 
+ ----------------------------------------- 
+ Lauris Info-Script Version vom 18.08.2009 
+ ----------------------------------------- 
+   
+ Ausgeführt am: 19.07. 
+   
+   
+  SQL-Information:           Servername           Beschreibung         Version                                                                                                                                                                                                                                                          
+  -------------------------- -------------------- -------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                             SQLServer VMWare T?b VMWare Serversystem  Adaptive Server Enterprise/12.5.3/EBF 13331 ESD#7/P/NT (IX86)/OS 4.0/ase1253/1951/32-bit/OPT/Fri Mar 24 02:17:56 2006                                                                                                                                            
+                             LISROUTINEDB         Uni Tuebingen        Adaptive Server Enterprise/12.5.3/EBF 13331 ESD#7/P/NT (IX86)/OS 4.0/ase1253/1951/32-bit/OPT/Fri Mar 24 02:17:56 2006                                                                                                                                            
+   
+ Swisslab-Information: 
+  Name                              Revision   CrDate          DB               
+  --------------------------------- ---------- --------------- ---------------  
+  Kalenderwoche                     2009.02    08.04.09  00:00                  
+  letztes Swisspro                  2009.02    11.11.09  09:01                  
+  swissup3.tab                       2.08 $    11.11.09  08:35                  
+  swlupgrade.tab                     2.20 $    11.11.09  08:35                  
+  Lauris (via lauris.ini)            1.04 $    26.05.10  07:13                  
+  Blutbank (via barkasse.pro)        1.06 $    11.11.09  08:49                  
+  Statistik (via statistik.pro)      5.51 $    11.11.09  08:55                  
+  BB-Statistik (via spendestat.pro)  1.21 $    11.11.09  08:50                  
+                                                                                
+  neu:PI_ARCHSAVEBLOBVIADATUM        1.10.1    30.06.10  18:00 SWISSLAB         
+  neu:PR_KONSERVEMONITOR             1.26 $    26.05.10  07:29 SWISSLAB         
+  neu:PR_LASBEFUNDEINGANG            1.12 $    26.05.10  07:13 SWISSLAB         
+  neu:PR_LASFALLAUSWAHL              1.80 $    26.05.10  07:13 SWISSLAB         
+  neu:PR_LASPATISUCHE                1.93 $    26.05.10  07:13 SWISSLAB         
+  mehr mit: PR_REVISION A(LLE)                                                  
+ aktive Lauris-Versionen: 
+  Anzahl Clients:              
+  --------------- -----------  
+                         1592  
+  LaurisVersion(max)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#9.01.26¹# FW=#2.0.50727.1433# OS=#5.1.2600.131072#Win32NT                                                                                                                                                                                                    
+  LaurisVersion(min)                                                                                                                                                                                                                                                                  
+  ------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+                     SW=#10.05.12# FW=#2.0.50727.1433# OS=#5.0.2195.262144#Win32NT                                                                                                                                                                                                    
+   
+   
+  Füllstand Patientenliste: Gesamt      ohne AKTIVBIS   Inaktiv      
+  ------------------------- ----------- --------------- -----------  
+                                  34055           27018          36  
+   
+   
+   
+ Anforderung für die Mikrobiologie? 
+  Mikrobiologie-Formulare:       Code             Name                                                              
+  ------------------------------ ---------------- ----------------------------------------------------------------  
+                                 FORM21           Mikrobiologie                                                     
+                                 FORM22           Mikrobiologie - Serologie                                         
+                                 FORM25           Med. Virologie                                                    
+                                 FORM96           FREY TEST Mikro                                                   
+   
+ --- Nachfordern  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+  AUFTRAG  NACHFORDERN      0         NULL             NULL       NULL             NULL       NULL     12.07.2010 16:17:00  edeipper         13.07.2010 15:33:00  edeipper                 6610           4         255 LAURIS          NULL      0        0           2  
+  AUFTRAG  NACHFORDERN      0         NULL             NULL       eipper           NULL       NULL     19.02.2008 08:14:00  edeipper                              NULL                     4344           4         255 LAURIS           442      0        0           1  
+  AUFTRAG  NACHFORDERN      0         NULL             NULL       labo             NULL       NULL     12.07.2010 16:08:00  edeipper                              NULL                     6609           4         255 LAURIS           224      0        0           2  
+  AUFTRAG  NACHFORDERN      0         NULL             NULL       sapkasmedkl      NULL       NULL     23.06.2010 14:24:00  edeipper                              NULL                     6550           4         255 LAURIS           553      0        0           1  
+  AUFTRAG  NACHFORDERN      0         NULL             NULL       test1            NULL       NULL     26.04.2010 15:18:00  htstaerr                              NULL                     6409           4         255 LAURIS           495      0        0           1  
+   
+   
+ --- POCTen  --- 
+   
+  ModulID  ParamID          ParamName TxtValue         Clientcode IDENTCODE        Einsender  Rolle    Erfassdat            ErfassPers       Mutdat               MutPers          SYSTEMPARAMX EIGNER      NUTZER      Produkt  IDENTX      PRIORI PARAMTYP INTVALUE     
+  -------- ---------------- --------- ---------------- ---------- ---------------- ---------- -------- -------------------- ---------------- -------------------- ---------------- ------------ ----------- ----------- -------- ----------- ------ -------- -----------  
+  AUFTRAG  POCTFORMULAR     0         NULL             NULL       NULL             NULL       NULL     07.12.2009 10:22:00  htstaerr         22.06.2010 14:13:00  htstaerr                 5745          -1          -1 LAURIS          NULL      0       24          48  

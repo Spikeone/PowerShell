@@ -1,0 +1,85 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BONN, ausgeführt am: 08.06.2015 13:15
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           BONN             Bonn, Universitaetsk SQLSERVER            Routine Sybase Serve Adaptive Server Enterprise/15.7/EBF 21150 SMP SP100 /P/X64/Windows Server/ase157sp100/3426/64-bit/OPT/Fri May 03 23:27:48 2013                                                                                                                                  
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 219     Anzahl User: 289     Anzahl Auftraege Lauris: 2559    Anzahl Auftraege ohne Lauris: 29     
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+         219 v13.03.22#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Antoine de Saint-Exupéry                                                         2013.01    NULL                                     08.04.13  00:00                 
+ letztes Swisspro                                                                 2013.01    NULL                                     02.07.13  12:02                 
+ swissup3.tab                                                                      2.14 $    NULL                                     02.07.13  11:50                 
+ swissup3.tab                                                                      2.14 $    NULL                                     02.07.13  11:50                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     02.07.13  11:58                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     02.07.13  11:57                 
+ Statistik (via statistik.pro)                                                     5.87 $    NULL                                     02.07.13  11:58                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     02.07.13  11:57                 
+                                                                                             NULL                                                                     
+ neu:PR_DEPOTMONITOR                                                               2.66 $    NULL                                     27.11.13  16:50 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        2559      2 Lauf 2           Lauf 2   -- by PI_Tain                                                                                                                                                                                                                                          
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        2559 MED III HÄM/ONKO                                                 
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: BONN, beendet am: 08.06.2015 13:15 
+SQL-Abfrage-Dauer: 0   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.1.25.1 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_01 
+. 
+. 
+Lauris-Versionsinfo: 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.3.22.1 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2013_01 

@@ -1,0 +1,184 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: KLAG, ausgeführt am: 09.06.2015 15:53
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           KLAG             Landeskrankenhaus Kl SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/15.7/EBF 23010 SMP SP130 /P/X64/Windows Server/ase157sp13x/3819/64-bit/OPT/Fri Aug 22 22:28:21 2014                                                                                                                                  
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 1407    Anzahl User: 2413    Anzahl Auftraege Lauris: 40473   Anzahl Auftraege ohne Lauris: 27214  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+        1405 v13.11.18.4      
+           2 v11.12.09#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Enrico Fermi                                                                     2013.02    NULL                                     29.09.13  00:00                 
+ letztes Swisspro                                                                 2013.02    NULL                                     12.11.14  18:11                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     12.11.14  18:05                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     12.11.14  18:04                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     12.11.14  18:06                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     12.11.14  18:04                 
+                                                                                             NULL                                                                     
+ neu:PR_MIKROSTAT                                                                  1.57.1    NULL                                     27.01.15  13:43 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+       24239      1 1                Routine Klagenfurt                                                                                                                                                                                                                                              
+          64      2 2                Notfall Klagenfurt                                                                                                                                                                                                                                              
+        6402      3 3                Mikrobiologie                                                                                                                                                                                                                                                   
+        5677      4 4                Wolfsberg                                                                                                                                                                                                                                                       
+         613      5 5                Hermagor                                                                                                                                                                                                                                                        
+         216      6 6                BB-Wolfsberg                                                                                                                                                                                                                                                    
+        1361      7 7                Laas                                                                                                                                                                                                                                                            
+         478      8 8                Kinderlabor                                                                                                                                                                                                                                                     
+        1423      9 9                Nukl.Med                                                                                                                                                                                                                                                        
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+       12626 Routine                                                          
+        7797 Gesamt-Formular                                                  
+        5596 Mikrobiologie                                                    
+        4435 W-Routine                                                        
+        1299 Spezialuntersuchung1 2004                                        
+        1291 Nukl-Med (intern)                                                
+        1261 Laas-Routine                                                     
+        1186 W-Notfall                                                        
+         865 alt____Routine u. erweiterte Routine                             
+         612 Hermagor                                                         
+         363 LKH-Villach - ILM Klagenfurt                                     
+         309 Hygiene                                                          
+         296 Kinder-f. Ambulanz                                               
+         216 W-Blutdepot                                                      
+         188 Versand Limbach                                                  
+         185 TBC                                                              
+         160 Autoantikörper                                                   
+         154 Liquor                                                           
+         154 Spezialhämatologie                                               
+         144 Mikrobiologie Chlam                                              
+         134 Wolfsberg-Klagenfurt                                             
+         134 Kinderlabor-f.Station                                            
+         133 Nuklearmedizin                                                   
+          97 Punktate/Drain                                                   
+          96 Versand-Formular                                                 
+          89 Allergie                                                         
+          76 L-Versand Klagenfurt                                             
+          74 Hygiene-Formular f. Apotheke                                     
+          64 Notfall - Anforderung                                            
+          56 NB-Kontr.                                                        
+          49 Laas-Versand/Dr. Holzweber                                       
+          45 Augen-Kurzbeleg                                                  
+          39 Versand nach Villach                                             
+          34 L-Mikrogiologie                                                  
+          26 TEG-Rotem                                                        
+          26 Kinder-f.Amb(Zebra)                                              
+          21 SBH-Neugeborene -WO                                              
+          18 W-Versand                                                        
+          15 W-Funktionstest                                                  
+          13 Funktionsteste                                                   
+          12 Hermagor-Klagenfurt                                              
+          11 Stichverletzung (Patient)                                        
+           9 L-Versand                                                        
+           8 Spezialhämatologie (+Begleitschein)                              
+           7 Alkohol-Gutachten                                                
+           7 Spezialuntersuchung 2 2004                                       
+           4 Serologie                                                        
+           4 Konditionierung                                                  
+           4 W-IMCL-Spezialhämatologie                                        
+           4 Versandformular für Psych-Vorlage                                
+           3 Knochenbank (Zebra)                                              
+           3 Nephropathiescreening                                            
+           3 Versand-Bestätigungstest                                         
+           2 RV                                                               
+           2 W-TEG                                                            
+           2 Knochenbank                                                      
+           2 Influenza - Enteroviren                                          
+           1 L-POCT                                                           
+           1 Kinder Labor                                                     
+           1 Hermagor-Laas                                                    
+           1 L-Rundversuche                                                   
+           1 1.Med. Kurzbeleg                                                 
+           1 CF/Mukoviszidose-Standard                                        
+           1 Gesamtformular Klagenfurt                                        
+           1 Hermagor-ausser der Dienstzeit                                   
+           1 Neuro-Ergänzung Vaskulitis (nurOA)                               
+           1 Meningitis/Meningoenzephalitis (Erregersuche >10 Zellen)         
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  POCTFORMULAR     0                                L-POCT           NULL       NULL       LACHK03    
+ AUFTRAG  POCTFORMULAR     0                                L-POCT           NULL       NULL       LINT11     
+ AUFTRAG  POCTFORMULAR     0                                L-POCT           NULL       NULL       LKH-Laas   
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ AUFTRAG  NACHFORDERN                     2 NULL       NULL       NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       NULL       Klagenfurt 
+ AUFTRAG  NACHFORDERN                     3 NULL       NULL       LAB04      
+ AUFTRAG  NACHFORDERN                     3 NULL       NULL       LACHK03    
+ AUFTRAG  NACHFORDERN                     0 NULL       NULL       LKH-Hermag 
+ AUFTRAG  NACHFORDERN                     3 NULL       NULL       LKH-Laas   
+ AUFTRAG  NACHFORDERN                     0 NULL       NULL       LKH-Villac 
+ AUFTRAG  NACHFORDERN                     0 NULL       NULL       LKH-Villac 
+ AUFTRAG  NACHFORDERN                     0 NULL       NULL       LKH_Wolfsb 
+ AUFTRAG  NACHFORDERN                     6 NULL       NULL       Nucl.Med.A 
+ AUFTRAG  NACHFORDERN                     6 NULL       NULL       NUK51      
+ AUFTRAG  NACHFORDERN                     3 NULL       auerm      NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       deislg     NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       freitagc   NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       gassingers NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       haulerc    NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       krasnikk1  NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       leopoldi   NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       obernoster NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       pickertl   NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       pru        NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       rumplera   NULL       
+ AUFTRAG  NACHFORDERN                     3 NULL       zojere     NULL       
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: KLAG, beendet am: 09.06.2015 15:53 
+SQL-Abfrage-Dauer: 3   Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.11.5.1 
+L:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_02 
+. 
+. 
+Lauris-Versionsinfo: 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.11.18.4 
+L:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2.13.1.002283 

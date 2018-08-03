@@ -1,0 +1,29 @@
+print '--- Tabelle aktiver benutzerdefinierter Vorlagen (Profile) (Lauris) ---'
+go
+select distinct
+ FormularCode=F.FORMULARCODE,
+ Vorlage=substring(VO.VORLAGENAME,1,32),
+ Analyt=AN1.CODE,
+ Abteilung=E.EINSCODE,
+ Arbeitsplatz=C.CLIENTCODE,
+ Benutzer=I.IDENTCODE,
+ Ersteller=P.PERSONID
+
+from VORLAGEANF VA, PERSON P, VORLAGE VO, ANALYT AN1, ANALYT AN2, ANALYT AN3, BEHAELTER BE, FORMULAR F, EINSENDER E, CLIENT C, IDENT I
+where
+ VA.STORNODAT is null and
+ VA.VORLAGEX = VO.VORLAGEX and
+ VO.STORNODAT is null and
+ VO.EINSENDERX *= E.EINSENDERX and
+ VO.CLIENTX *= C.CLIENTX and
+ VO.IDENTX *= I.IDENTX and
+ VA.ERFASSPERS = P.PERSONX and
+ P.PERSONID like '*%' and
+ VA.ANALYTX *= AN1.ANALYTX and
+ VA.MFAANALYTX *= AN2.ANALYTX and
+ VA.PANALYTX *= AN3.ANALYTX and
+ VA.BEHAELTERX *= BE.BEHAELTERX and
+ VO.FORMULARX*=F.FORMULARX
+order by 
+ Abteilung desc, Arbeitsplatz desc,Benutzer desc
+go

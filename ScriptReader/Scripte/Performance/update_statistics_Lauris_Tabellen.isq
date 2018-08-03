@@ -1,0 +1,56 @@
+update statistics ANALYTINFO
+go
+sp_recompile ANALYTINFO
+go
+update statistics ANFORDERUNG
+go
+sp_recompile ANFORDERUNG
+go
+update statistics BARCODE
+go
+sp_recompile BARCODE
+go
+update statistics BARCODEANF
+go
+sp_recompile BARCODEANF
+go
+update statistics BEHAELTER
+go
+sp_recompile BEHAELTER
+go
+update statistics CLIENT
+go
+sp_recompile CLIENT
+go
+update statistics FORMULAR
+go
+sp_recompile FORMULAR
+go
+update statistics IDENT
+go
+sp_recompile IDENT
+go
+update statistics SYSTEMPARAM
+go
+sp_recompile SYSTEMPARAM
+go
+update statistics UNINUMBER
+go
+sp_recompile UNINUMBER
+go
+update statistics UNINUMBERLOG
+go
+sp_recompile UNINUMBERLOG
+go
+update statistics VORLAGE
+go
+sp_recompile VORLAGE
+go
+update statistics VORLAGEANF
+go
+sp_recompile VORLAGEANF
+go
+update statistics PATILISTE
+go
+sp_recompile PATILISTE
+go

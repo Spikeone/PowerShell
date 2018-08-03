@@ -1,0 +1,46 @@
+print '--- Lauris: ANFORDERUNG  ---'
+select
+  Formular=F.FORMULARCODE,
+  AnalytCode=A.CODE,
+  Anforderung = case when (ANF.AUSWAHL = 0) then 'nicht möglich'
+                     when (ANF.AUSWAHL = 1) then 'normal'
+                     when (ANF.AUSWAHL = 2) then 'gesperrt'
+                     when (ANF.AUSWAHL = 3) then 'exklusiv'
+                     when (ANF.AUSWAHL = 4) then 'selektiv'
+                     when (ANF.AUSWAHL = 5) then 'fordern'
+                     when (ANF.AUSWAHL = 6) then 'erzwingen'
+                     when (ANF.AUSWAHL = 7) then 'versteckt immer'
+                     when (ANF.AUSWAHL = 8) then 'unsichtbar'
+                     end,                  
+  NachfordernStd=ANF.NACHFORDEN/60,
+  Material_Swisslab=M.MATERIALNAME,
+  Kreis=M.MATERIALKREISNR,
+  Behälter=B.BEHAELTERCODE,
+  Beh_Storno=convert(char(11),B.STORNODAT,104)+convert(char(8),B.STORNODAT,108)+' ',
+  ANF.BEHAELTERX,
+  A.DEFMATERIALX, 
+  AnfTyp=ANF.ANFORDERUNGTYP,
+  AnfArt=ANF.ART,
+  Erfassdat=convert(char(11),ANF.ERFASSDAT,104)+convert(char(8),ANF.ERFASSDAT,108)+' ',
+  ErfassPers=P.PERSONID,
+  Mutdat=convert(char(11),ANF.MUTDAT,104)+convert(char(8),ANF.MUTDAT,108)+' ',
+  MutPers=P2.PERSONID
+
+from 
+  ANFORDERUNG ANF,
+  ANALYT A,
+  BEHAELTER B,
+  MATERIAL M,
+  FORMULAR F,
+  PERSON P,
+  PERSON P2
+where 
+  ANF.STORNODAT is null and 
+  ANF.ANALYTX is not null and
+  A.ANALYTX=ANF.ANALYTX and
+  F.FORMULARX=ANF.FORMULARX and
+  B.BEHAELTERX=*ANF.BEHAELTERX and
+  M.MATERIALX=*A.DEFMATERIALX and
+  ANF.ERFASSPERS=P.PERSONX and
+  ANF.MUTPERS=P2.PERSONX
+go

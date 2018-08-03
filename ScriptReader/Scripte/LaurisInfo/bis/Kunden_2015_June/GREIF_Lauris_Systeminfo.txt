@@ -1,0 +1,92 @@
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: GREIF, ausgeführt am: 08.06.2015 09:02
+-------------------------------------------------------------
+ 
+ 
+ SQL-Systeminformationen:  Kuerzel          Ort                  Servername           Beschreibung         Sybase-Version                                                                                                                                                                                                                                                  
+ ------------------------- ---------------- -------------------- -------------------- -------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+                           GREIF            Universitaetskliniku SQLCLUSTER           Routine Sybase Serve Adaptive Server Enterprise/12.5.4/EBF 16791 ESD#10/P/NT (IX86)/OS 4.0/ase1254/2159/32-bit/OPT/Mon Nov 02 05:01:55 2009                                                                                                                                          
+ 
+ 
+ Statistik über 30 Tage:                                                                                            
+ ------------------------------------------------------------------------------------------------------------------ 
+ Anzahl Clients: 1158    Anzahl User: 678     Anzahl Auftraege Lauris: 8346    Anzahl Auftraege ohne Lauris: 63855  
+ 
+ 
+aktive Lauris-Versionen (installierte Version siehe Dateiende):
+ Anzahl      Lauris_Versionen 
+ ----------- ---------------- 
+           1 v7.06.07²#       
+          11 v7.06.07# F      
+        1146 v13.03.22#       
+ 
+ 
+Swisslab-Revision:
+ Name                                                                             Revision   FileName                                 CrDate          DB              
+ -------------------------------------------------------------------------------- ---------- ---------------------------------------- --------------- --------------- 
+                                                                                             NULL                                                                     
+ Antoine de Saint-Exupéry                                                         2013.01    NULL                                     08.04.13  00:00                 
+ letztes Swisspro                                                                 2013.01    NULL                                     11.07.13  15:38                 
+ swissup3.tab                                                                      2.14 $    NULL                                     11.07.13  15:11                 
+ swissup3.tab                                                                      2.14 $    NULL                                     11.07.13  15:11                 
+ Lauris (via lauris.ini)                                                           1.04 $    NULL                                     11.07.13  15:26                 
+ Blutbank (via barkasse.pro)                                                       1.09 $    NULL                                     11.07.13  15:24                 
+ Statistik (via statistik.pro)                                                     5.92 $    NULL                                     07.04.14  14:10                 
+ BB-Statistik (via spendestat.pro)                                                 1.24 $    NULL                                     11.07.13  15:24                 
+                                                                                             NULL                                                                     
+ neu:PR_SPENDEKONSERVE                                                             1.90 $    NULL                                     19.06.14  08:39 SWISSLAB        
+ neu:PI_DOKUMENTFLAG                                                               1.19 $    NULL                                     07.04.14  14:10 SWISSLAB        
+ neu:PR_BLOBTAB                                                                    1.03 $    NULL                                     07.04.14  14:10 SWISSLAB        
+ neu:PR_DOKUMENT                                                                   1.71 $    NULL                                     07.04.14  14:10 SWISSLAB        
+ neu:PR_DOKUMENT2                                                                  1.06 $    NULL                                     07.04.14  14:10 SWISSLAB        
+ mehr mit: PR_REVISION A(LLE)                                                                NULL                                                                     
+(return status = 0)
+ 
+ 
+ 
+--------- Auftrags-Statistiken und POCT ------------
+ 
+Laurisanforderungen nach Laborbereichen
+ Anzahl      LAUF   LAUFCODE         LBESCHREIBUNG                                                                                                                                                                                                                                                   
+ ----------- ------ ---------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+        8346      1 IKCL             (ML 1) Klinische ChemieDZ                                                                                                                                                                                                                                       
+ 
+Laurisanforderungen nach Formularen
+ Anzahl      FORMULARNAME                                                     
+ ----------- ---------------------------------------------------------------- 
+        8345 Routine                                                          
+           1 Entwicklung                                                      
+ 
+ 
+--- aktive POCT-Formulare  ---
+ 
+ ModulID  ParamID          ParamName                        Formular         Clientcode Ident      Einsender  
+ -------- ---------------- -------------------------------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Zugang zu Qualitätskontrollen-Dialog?  ---
+ 
+ ModulID  ParamID          Clientcode Ident      Einsender  
+ -------- ---------------- ---------- ---------- ---------- 
+ 
+ 
+--- Nachforderungen eingeschaltet?  ---
+ 
+ ModulID  ParamID          Tage_Nachfordern Clientcode Ident      Einsender  
+ -------- ---------------- ---------------- ---------- ---------- ---------- 
+ 
+-------------------------------------------------------------
+Lauris Systeminfo fuer: GREIF, beendet am: 08.06.2015 09:03 
+SQL-Abfrage-Dauer: 74  Sekunden
+-------------------------------------------------------------
+. 
+. 
+Gateway-Versionsinfo: 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - Version 13.1.25.1 
+H:\swlbasis.nt\Gateway\bin\Gateway.exe - ProduktVersion 2013_01 
+. 
+. 
+Lauris-Versionsinfo: 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - Version 13.3.22.6 
+H:\swlbasis.nt\Lauris2\bin\Swisslab.Lauris.Client.dll - ProduktVersion 2013_01 
