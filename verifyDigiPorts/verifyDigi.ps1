@@ -59,6 +59,15 @@ function parseCSVFile ($strFileName)
 }
 
 
+# **********************************************************************
+# Funktion Get-Telnet
+# * baut Telnet-Verbindungen auf und setzt Befehle ab
+# -> Commands (Array mit den abzusetzenden Befehlen)
+# -> RemoteHost (Hostname oder IP-Adresse, wohin Telnet gehen soll
+# -> Port (Telnet-Port am Zielgerät)
+# -> WaitTime (Zeit, die gewartet wird bis zum Empfangen des Streams
+# -> OutputPath (Pfad, wohin der Output geschrieben werden soll)
+# **********************************************************************
 Function Get-Telnet
 {   Param (
         [Parameter(ValueFromPipeline=$true)]
@@ -101,7 +110,7 @@ Function Get-Telnet
 
 # **********************************************************************
 # Funktion parseXMLFile
-# * Verarbeitet Datei
+# * Verarbeitet XML-Datei von Digi-Box mit Config
 # -> Dateiname (strFileName)
 # <- Array mit Dateiinhalt
 # **********************************************************************
@@ -110,10 +119,12 @@ function parseXMLFile ($strFileName)
 	$arrPorts = New-Object System.Collections.ArrayList
 	
 	$file = Get-Content -Path $strFileName
+	# suche alle Port-Konfigurationen
 	$matches = ([regex]'<serial[^>]*>.*?(?=<\/serial>)<\/serial>').Matches($file)
 	
 	ForEach ($match in $matches) 
 	{		
+		# Wenn Beschreibung enthalten, gebe diese aus
 		if (([regex]'<desc>.+<\/desc>').Matches($match) -ne $null)
 		{
 			$Port = ([regex]'<desc>.+<\/desc>').Matches($match)[0]
@@ -127,15 +138,17 @@ function parseXMLFile ($strFileName)
 }
 
 # **********************************************************************
-# Funktion parseXMLFile
-# * Verarbeitet Datei
-# -> Dateiname (strFileName)
-# <- Array mit Dateiinhalt
+# Funktion compareConfig
+# * Vergleiche Access mit Config
+# -> DigiAccess (Informationen aus Access)
+# -> DigiConfig (Informationen aus Config)
+# <- Array mit Vergleich
 # **********************************************************************
 function compareConfig ($DigiAccess, $DigiConfig)
 {
 	$arrDigiFull = New-Object System.Collections.ArrayList
 	
+	# Anzahl zu vergleichender Ports
 	$numberOfPorts = (($DigiAccess.Length - 2),$DigiConfig.Length | Measure -Max).Maximum
 
 	for ($i=0; $i -lt $numberOfPorts; $i++)
@@ -158,29 +171,42 @@ function compareConfig ($DigiAccess, $DigiConfig)
 		
 	}
 	
+	# muss angegeben werden, sonst gibt es Probleme, wenn nur ein Port beschrieben
 	$arrDigiFull += ,@("ENDE","ENDE")
 	
 	return $arrDigiFull
 }
 
+
+# **********************************************************************
+# Main
+# **********************************************************************
 $arrPrint = New-Object System.Collections.ArrayList
 
+# hole Digis aus CSV von Access
 $arrDigi = parseCSVFile "U:\Bischof\verifyDigiPorts\digi.csv"
 
+# bearbeite jede Digi-Box
 ForEach ($Digi in $arrDigi)
 {
 	$filename = "\\stringer\it\Bischof\" + $Digi[0] + ".xml"
+	# Verbinde über Telnet und gebe Config in Datei aus
 	Get-Telnet -RemoteHost $Digi[1] -Commands "root","dbps","backup print" -OutputPath $filename
 
+	# Verarbeite die Config und ziehe die beschrifteten Ports
 	$arrPorts = parseXMLFile $filename
 
+	# Vergleiche die Ports aus Config und aus Access
 	$arrComparison = compareConfig $Digi $arrPorts
 	
 	$Row = 1
+	# Gebe vergleich in Datei aus
 	ForEach ($Port in $arrComparison)
 	{
+		# muss angegeben werden, sonst gibt es Probleme, wenn nur ein Port beschrieben
 		if ($Port[0] -ne "ENDE")
 		{
+			# setze Vergleichs-Zeile zusammen und gebe diese aus
 			$strLine = $Digi[0] + ';' + ([string]$Row) + ';' + $Port[0] + ';' + $Port[1]
 			$strLine | Out-File "\\stringer\it\Bischof\verifyDigiPorts\output.csv" -Append
 			$Row++
