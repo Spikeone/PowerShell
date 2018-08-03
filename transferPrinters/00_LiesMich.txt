@@ -1,0 +1,33 @@
+Beschreibung:
+------------
+Dies ist ein kleines Script für die Übertrageung der Drucker von einem zu einem anderen PC.
+
+
+Hinweis:
+-------
+Powershell ist es standardmäßig verboten eine Script auszuführen. Um dies zu tun muss diese Regel aufgehoben werden.
+1. Powershell als Administrator starten
+2. Im Powershell-Fenster folgenden Befehl eingeben und die Änderung bestätigen: "Set-ExecutionPolicy -ExecutionPolicy ByPass"
+3. Script ausführen
+4. Im Powershell-Fenster folgenden Befehl eingeben und die Änderung bestätigen: "Set-ExecutionPolicy -ExecutionPolicy Restricted"
+
+
+
+Funktionsumfang:
+---------------
+* Export der Drucker (Druckername, Druckverzeichnis, Druckertreiber)
+* Import der Drucker (Druckername, Druckverzeichnis, Druckertreiber)
+
+
+
+
+
+Changelog
+---------
+0.02 Pfade
+* Möglichkeit die Datei zum Laden auszuwählen
+* Möglichkeit die Datei zum Speichern auszuwählen
+
+0.01 initialer Release
+* Erstellung des Scripts
+* rudimentäre Funktionen (Export der Konfig in Datei und Import der Konfig aus Datei)
