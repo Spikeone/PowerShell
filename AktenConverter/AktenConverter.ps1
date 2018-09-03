@@ -87,9 +87,6 @@ function convertToPDF ($Source, $Destination)
 	$word.quit()
 } 
 
-$global:strFilePath = "C:\Users\bischof\Desktop\Akte\gesamte_akte.html"
-$global:strNewFilePath = "C:\Users\bischof\Desktop\Akte\PDF.pdf"
-
 # 1. Datei auswählen
 $global:strFilePath = getFileName
 $global:strTempFilePath = $global:strFilePath.Insert($global:strFilePath.Length - 5,'_Temp')
